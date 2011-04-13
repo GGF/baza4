@@ -1,0 +1,46 @@
+.menu {
+    text-align: center;
+    margin: 0px;
+    padding:0px;
+    background-color: rgb(200, 255, 200);
+    width:100%;
+}
+
+.menu-item_outerWrap {
+    display: inline-block;
+    margin:1px;
+}
+
+.menu-item {
+    display:table-cell;
+    padding: 0px; 
+    position: relative;
+    font-size:1.1em;
+    font-weight:bold;
+    text-align: center;
+    vertical-align: middle;
+    width: 70px;
+    height: 70px;
+    max-width: 70px;
+    max-height: 70px;
+    min-width: 70px;
+    min-height: 70px;
+    background-image: url(img/cp.png);
+    background-position:center center;
+    background-repeat:no-repeat;
+}
+
+a.menu-item {
+    text-decoration:none;
+    color:black;
+    padding:0px;
+}
+
+.menutext {
+    margin-left:3px;
+    margin-right:3px;
+}
+
+.menu-item-sel {
+    background-color: rgb(100, 255, 100);
+}

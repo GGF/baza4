@@ -1,0 +1,1 @@
+<a class='filelink' href='{$tzlink}'>рг-{$tzid}</a><br>

@@ -1,0 +1,26 @@
+.sun {
+	/*display: none;*/
+	display:block;
+	position: absolute;
+	right: 0px;
+	z-index: 10;
+}
+
+#userswin {
+	top:50px;
+}
+
+#sun {
+	display:block;
+	margin:0px;
+	padding:0px;
+	width:50px;
+	height:50px;
+	max-width:50px;
+	max-height:50px;
+	min-width:50px;
+	min-height:50px;
+	background-image: url(img/sun.gif);
+	background-position:center center;
+	background-repeat:no-repeat;
+}

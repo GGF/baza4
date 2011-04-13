@@ -1,0 +1,1 @@
+<a class='filelink' href='{$sllink}'>{$type}-{$slid}</a><br>

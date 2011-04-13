@@ -1,0 +1,245 @@
+<?php
+
+/*
+ *  Класс Таблица для вывода данных из базы
+ */
+
+class sqltable extends lego_abstract {
+    /*
+     * @var $type string тип таблицы, то есть тип отображаемых данных
+     */
+
+    public $type;
+    /*
+     * @var $tid string уникальный идентификатор для замены AJAX
+     */
+    public $tid;
+
+    /*
+     * @var $data array массив данных, ключ - колонка, значение клетка
+     */
+    protected $data;
+    /*
+     * @var string Заголовок таблицы
+     */
+    protected $title;
+    /*
+     * @var bool можно ли удалять записи
+     */
+    protected $del;
+    /*
+     * @var bool можно ли редактировать записи
+     */
+    protected $edit;
+    /*
+     * @var bool Есть ли кнопки, делать ли сортировку в заголовках
+     */
+    protected $buttons;
+    /*
+     * @var bool нужна ли кнопка добавления записи
+     */
+    protected $addbutton;
+    /*
+     * @var array массив названий колонок имя - имя поля, значение - загголовок
+     */
+    protected $cols;
+    public $firsttrid;
+    public $lasttrid;
+    public $index;
+    public $find;
+    public $order;
+    public $idstr;
+    public $all;
+
+    /*
+     *
+     */
+    protected $model;
+    protected $view;
+    protected $form;
+
+    /*
+     * Initialization
+     */
+
+    // обязательно определять для модуля
+    public function getDir() {
+        return __DIR__;
+    }
+
+    public function __construct($name=false) {
+        parent::__construct($name);
+    }
+
+    public function init() {
+        $this->type = $this->getName();
+        $this->tid = uniqid($this->type);
+
+
+        if (!empty($_POST[find])) {
+            $_GET[$this->getName()][index][2] = multibyte::UTF_decode($_POST[find]);
+        }
+
+        $param = $this->getLegoParam('index');
+        //console::getInstance()->out($this->type);
+        $this->all = (bool) $param[0];
+        $this->order = $param[1];
+        $this->find = $param[2];
+        $this->idstr = $param[3];
+
+        $this->del = $_SESSION[rights][$this->type][del];
+        $this->edit = $_SESSION[rights][$this->type][edit];
+        $this->buttons = true;
+        $this->addbutton = $_SESSION[rights][$this->type][edit];
+
+        try {
+            profiler::add('Выполнение', $this->getName() . get_class($this) . ': Попытка создать модель');
+            $classname = "{$this->getName()}_model";
+            if (!class_exists($classname)) {
+                $classname = get_class($this) . "_model";
+            }
+            if (!class_exists($classname))
+                throw new Exception("Нет класса {$classname}");
+            $this->model = new $classname();
+            $this->model->init();
+            profiler::add('Выполнение', $this->getName() . ': Попытка создать модель удалась');
+        } catch (Exception $e) {
+            console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
+        }
+        try {
+            profiler::add('Выполнение', $this->getName() . ': Попытка создать вид');
+            $classname = "{$this->getName()}_view";
+            if (!class_exists($classname)) {
+                $classname = get_class($this) . "_view";
+            }
+            if (!class_exists($classname)) {
+                $classname = "sqltable_view";
+            }
+            if (!class_exists($classname))
+                throw new Exception("Нет класса {$classname}");
+            $this->view = new $classname($this);
+            profiler::add('Выполнение', $this->getName() . ': Попытка создать вид удалась');
+        } catch (Exception $e) {
+            console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
+        }
+        try {
+            profiler::add('Выполнение', $this->getName() . ': Попытка создать форму');
+            $this->form = new ajaxform(''); // для подключения скриптов
+            profiler::add('Выполнение', $this->getName() . ': Попытка создать форму удалась');
+        } catch (Exception $e) {
+            console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
+        }
+    }
+
+    public function __set($name, $value) {
+        // console::getInstance()->out($this->getName() . ' : Попытка установить значение переменной ' . $name . ' в ' . $value);
+        $this->{$name} = $value;
+    }
+
+    public function __get($name) {
+        // console::getInstance()->out($this->getName() . ' : Попытка получить значение переменной ' . $name);
+        return $this->{$name};
+    }
+
+    /*
+     * Controller
+     */
+
+    public function action_index($all='', $order='', $find='', $idstr='') {
+        $all = empty($all) ? $this->all : $all;
+        $order = empty($order) ? $this->order : $order;
+        $find = empty($find) ? (empty($_REQUEST[find]) ? $this->find : multibyte::UTF_decode($_REQUEST[find])) : $find;
+        $idstr = empty($idstr) ? $this->idstr : $idstr;
+        $this->all = $all;
+        $this->order = $order;
+        $this->find = $find;
+        $this->idstr = $idstr;
+        if ($this->model != null) {
+            if (empty($this->cols))
+                $this->cols = $this->model->getCols();
+            if (empty($this->data))
+                $this->data = $this->model->getData($all, $order, $find, $idstr);
+        }
+
+        return $this->view == null ? "" : $this->view->show();
+    }
+
+    public function action_delete($id, $confirmed=false, $delstr='') {
+        if (Ajax::isAjaxRequest() || $confirmed) {
+            // в этом случае уже подтверждено иначе надо проверить
+        } else {
+            $out = empty($delstr) ? "Удалить {$id}?" : "Удалить {$delstr}?";
+            return $this->view->getConfirm($out, 'delete', $id, true);
+        }
+        $this->model->delete($id);
+        return $this->action_index();
+    }
+
+    public function action_edit($id) {
+        $rec = $this->model->getRecord($id);
+        $rec[isnew] = empty($id);
+        $rec[edit] = $id;
+        $rec[action] = $this->actUri('processingform')->ajaxurl($this->getName());
+        $out = $this->view->showrec($rec);
+        if ($out)
+            return $this->view->getForm($out);
+        else {
+            $out = "Не радактируется!";
+            return $this->view->getMessage($out);
+        }
+    }
+
+    public function action_open($id) {
+        return $this->action_edit($id);
+    }
+
+    public function action_add() {
+        return $this->action_edit(0);
+    }
+
+    public function action_processingform() {
+        // хидер переключим
+        ajaxform_recieve::init();
+        $form = new ajaxform($this->getName());
+        $form->initBackend();
+        //echo var_dump($form);
+        if (!$form->errors) {
+            // сохранение
+            $res = $this->model->setRecord(array_merge($form->request, array("files" => $form->files)));
+            if ((!is_array($res) && $res == 0) || (is_array($res) && !$res[affected])) {
+                $alert = empty($res[alert]) ? "Не обработано ни одной записи" : $res[alert];
+                $form->alert($alert);
+                $form->processed();
+            } else {
+                // удачное завернение с закрытием диалога
+                $form->processed("$('#dialog').dialog('close').remove();reload_table();");
+            }
+        } else {
+            foreach ($form->errors as $err) {
+                $form->alert(print_r($err, true));
+            }
+            // в случае ошибок обработка без закрытия
+            $form->processed();
+        }
+        return '';
+    }
+
+    public function getMessage($message) {
+        return $this->view->getMessage($message);
+    }
+
+    public function action_getboards() {
+        $customerid = $_REQUEST[customerid];
+        $data = $this->model->getBoards($customerid);
+        return $this->view->getSelect($data);
+    }
+
+    public function action_getblocks() {
+        $customerid = $_REQUEST[customerid];
+        $data = $this->model->getBlocks($customerid);
+        return $this->view->getSelect($data);
+    }
+
+}
+
+?>
