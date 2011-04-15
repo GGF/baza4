@@ -19,7 +19,21 @@ class orders_posintz_model extends sqltable_model {
                     (!empty($order) ? " ORDER BY {$order} " : " ORDER BY posintz.id DESC ") .
                     ($all ? "" : "LIMIT 20");
         } else {
-            return $ret;
+            if(!empty($_SESSION[customer_id])) {
+            $sql="SELECT *,tz.id AS tzid,posintz.id as posid,posintz.id
+                    FROM `posintz`
+                    JOIN (blocks,customers,orders,tz)
+                    ON ( posintz.block_id = blocks.id
+                         AND posintz.tz_id = tz.id
+                         AND orders.id = tz.order_id
+                         AND customers.id = orders.customer_id
+                        ) " .
+                    (!empty($find)?"WHERE (blocks.blockname LIKE '%{$find}%') ":"") .
+                    (!empty($order) ? " ORDER BY {$order} " : " ORDER BY posintz.id DESC ") .
+                    ($all ? "" : "LIMIT 20");
+            } else {
+                return $ret;
+            }
         }
         $ret = sql::fetchAll($sql);
         return $ret;
@@ -29,6 +43,12 @@ class orders_posintz_model extends sqltable_model {
         $cols = array();
         if (empty($_SESSION[customer_id])) {
             $cols[customer] = "Заказчик";
+        }
+        if (empty($_SESSION[order_id])) {
+            $cols[number] = "Заказ";
+        }
+        if (empty($_SESSION[tz_id])) {
+            $cols[tzid] = "ТЗ";
         }
         $cols[posid] = "ID";
         $cols[blockname] = "Плата";

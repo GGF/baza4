@@ -126,11 +126,16 @@ class Cache {
             $contents = array();
 
             // ѕроходим по списку файлов и объедин€ем все в один большой кусок
-            // TOTO Ч†обработка Ђ?php в начале файла без закрывающего тега
+            // TODO Ч†обработка Ђ?php в начале файла без закрывающего тега
+            // TODO - обработка вложеных инклудов
             foreach ($this->list as $f) {
 
-                if (file_exists($f))
-                    $contents[] = trim(file_get_contents($f));
+                if (file_exists($f)) {
+                    $content = trim(file_get_contents($f));
+                    $content = str_replace('__DI' . 'R__', "'" . dirname(realpath($f)) . "'", $content);
+                    $content = str_replace('__FI' . 'LE__', "'". realpath($f) . "'", $content);
+                    $contents[] = $content;
+                }
             }
 
             $contents = implode('', $contents);

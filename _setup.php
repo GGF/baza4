@@ -19,7 +19,7 @@ $_SERVER["debug"] = array(
 );
 $_SERVER['SYSCACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 $_SERVER[CACHE] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
-//$_SERVER["debug"] = false;
+$_SERVER["debug"] = false;
 // База данных
 $_SERVER["mysql"] = array(
     "lang" => array(
@@ -59,10 +59,6 @@ define("NETBIOS_SERVERNAME","servermpp");
 define("SHARE_ROOT_DIR","/home/common/"); 
 // каталог сохранения файлов относительно DOCUMENT_ROOT
 define("UPLOAD_FILES_DIR","/files"); 
-
-if (!isset($_SESSION)) {
-    session_start();
-}
 
 $_SESSION["user"] = new Auth();
 

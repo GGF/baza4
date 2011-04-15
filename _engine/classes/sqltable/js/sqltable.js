@@ -94,14 +94,15 @@ $(document).ready(function(){
         curtr=$(this).attr('id');
     });
 
-    $('input.find').live('blur',function(){
-        $(this).val('');
-    });
-
     $('form[name=find]').live('submit',function(){
         $().lego.load($('table.listtable').attr('name'), $(this).attr('action'),$(this).serialize());
         return false;
     });
+
+    $('input[name=find]').live('blur',function(){
+        $(this).val('');
+    });
+    
     table_set_keyboard();
     /* следующий блок добавляет контекстное меню для копирования ссылок
 	   и для открытия по клику использует applet
@@ -124,31 +125,40 @@ $(document).ready(function(){
 function table_set_keyboard()
 {
 
-    var Handled;
+    var tskHandled;
     $(document).keypress(function(ev) {
-        if (Handled) return false;
+        if (tskHandled) return false;
         return true;
     });
 
+    //    $(document).keyup(function(event){
+    //        log(event.keyCode);
+    //    });
     // со сменой на версию 1.4.3 плохо работает jquery.keyboard попытаюсь сменить на обычный кейпрес
     // однако используем индесы оттуда
     // keypress имеет другие коды!!!
     $(document).keydown(function(event){
-        //log(event.keyCode);
+        tskHandled = false;
+
         if ($.inArray(event.keyCode,$.keyb.getRange('letters')) != -1 ||
             $.inArray(event.keyCode,$.keyb.getRange('allnum')) != -1) {
             // для ввода в строку поиска
+            
             if ($('#dialog').length>0 && $('#dialog').is(':visible')) {
                 return true;
             } else {
-                find=$('.find').last();
-                find.focus();
-                return true;
+                var find=$('input[name=find]');
+                if (find.val().length==0) {
+                    find.focus();
+                    return true;
+                } else {
+                    //log(find.val().length);
+                    return true;
+                }
             }
+            return true;
         } else if (event.keyCode==$.keyb.getIndexCode('enter')) {
-            //log('enter');
             if ($('input.find').last().val().length>0) {
-                //log($('input.find').last().val().length);
                 return true;
             }
             if ($('#dialog').length<=0 || $('#dialog').is(':hidden')) {
@@ -156,14 +166,15 @@ function table_set_keyboard()
                 tr.click();
                 return true;
             } else {
-                $('.partybutton').first().click();
-                // отменить дальнейшую обработку
-                Handled = true;
-                event.returnValue = false;
-                event.stopPropagation();
-                eevent.preventDefault();
-                return false;
-                return false; // должно заблокировать дальнейшую обработку энтер, в опере не срабатывает
+                if ($('.partybutton').length>0) {
+                    $('.partybutton').first().click();
+                    // отменить дальнейшую обработку
+                    tskHandled = true;
+                    event.returnValue = false;
+                    event.stopPropagation();
+                    eevent.preventDefault();
+                    return false; // должно заблокировать дальнейшую обработку энтер, в опере не срабатывает
+                }
             }
             return true;
         } else if (event.keyCode==$.keyb.getIndexCode('aup')) {
@@ -173,7 +184,6 @@ function table_set_keyboard()
                 curtr = $('#'+curtr).attr('prev');
                 $('#'+curtr).addClass("yellow");
                 if (($('#'+curtr).position().top)<($('#maindiv').position().top)) {
-                    //log($('#maindiv').height()+'x'+ $('#maindiv').width());
                     if (curtr == firsttr) {
                         $('#maindiv').scrollTop(0);
                     } else {
@@ -183,16 +193,13 @@ function table_set_keyboard()
             }
             return false;
         } else if (event.keyCode==$.keyb.getIndexCode('adown')) {
-            //log($('#maindiv').height()+'x'+ $('#maindiv').width());
             if ($('#dialog').length<=0 || $('#dialog').is(':hidden')) {
                 $('.chettr').removeClass("yellow");
                 $('.nechettr').removeClass("yellow");
                 curtr = $('#'+curtr).attr('next');
                 $('#'+curtr).addClass("yellow");
-                //log($('#'+curtr).position().top);
                 if (($('#'+curtr).position().top+$('#'+curtr).height())>($('#maindiv').position().top+$('#maindiv').height())) {
                     $('#maindiv').scrollTop($('#maindiv').scrollTop()+$('#'+curtr).height());
-                //log($('#maindiv').height()+'x'+ $('#maindiv').width());
                 }
             }
             return false;

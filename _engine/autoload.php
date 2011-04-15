@@ -45,7 +45,7 @@ define('__LEGO_DIR__', strtr(str_replace(realpath($_SERVER['DOCUMENT_ROOT']),
  */
 function __autoload($class_name) {
 
-    if (true) { //$_SERVER[debug][noCache][php]) {
+    if ($_SERVER[debug][noCache][php] || !file_exists($_SERVER['SYSCACHE'] . '/autoexec_' . md5(implode($_REQUEST, '')) . '.php')) {
         $class_folder = 'classes';
         // Локальные классы (в каждой папке проекта может быть папка $class_folder. 
         // Она и называется локальными классам)
@@ -71,6 +71,7 @@ function __autoload($class_name) {
             $file_full_name = "{$class_path}/{$slashed_class_name}.class.php";
             if (file_exists($file_full_name)) {
                 require_once($file_full_name);
+                $_SESSION[cache][] = $file_full_name;
                 return;
             }
 
@@ -79,6 +80,7 @@ function __autoload($class_name) {
                     "{$class_path}/{$slashed_class_name}/{$class_name}.class.php";
             if (file_exists($file_full_name)) {
                 require_once($file_full_name);
+                $_SESSION[cache][] = $file_full_name;
                 return;
             }
 
@@ -86,6 +88,7 @@ function __autoload($class_name) {
             $file_full_name = "{$class_path}/{$short_path}/{$class_name}.class.php";
             if (file_exists($file_full_name)) {
                 require_once($file_full_name);
+                $_SESSION[cache][] = $file_full_name;
                 return;
             }
 
@@ -94,6 +97,7 @@ function __autoload($class_name) {
                     "{$class_path}/{$short_path}/{$class_name}/{$class_name}.class.php";
             if (file_exists($file_full_name)) {
                 require_once($file_full_name);
+                $_SESSION[cache][] = $file_full_name;
                 return;
             }
         }
@@ -101,6 +105,7 @@ function __autoload($class_name) {
         /* 
          * В случае если отладка отключена поключить кэшированый автоинслуд 
          */
+        require_once $_SERVER['SYSCACHE'] . '/autoexec_' . md5(implode($_REQUEST, '')) . '.php';
     }
 }
 

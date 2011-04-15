@@ -3,23 +3,32 @@
 class sqltable_model {
 
     public function __construct() {
+        
     }
+
     public function init() {
+        
     }
+
     public function getData($all=false, $order='', $find='', $idstr='') {
         return array();
     }
+
     public function getCols() {
         return array();
     }
+
     public function delete($delete) {
         return true;
     }
+
     public function getRecord($edit) {
-        if (is_numeric($edit)) return false;
+        if (is_numeric($edit))
+            return false;
         $ret = sql::fetchOne($edit);
         return $ret;
     }
+
     public function setRecord($data) {
         extract($data);
         console::getInstance()->out(print_r($data, true));
@@ -109,6 +118,10 @@ class sqltable_model {
         } else {
             return "None";
         }
+    }
+
+    public function getNeedArc() {
+        return false; // TODO: Костыль
     }
 
 }

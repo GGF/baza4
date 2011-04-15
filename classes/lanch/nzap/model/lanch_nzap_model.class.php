@@ -256,7 +256,7 @@ class lanch_nzap_model extends sqltable_model {
     }
 
     public function getSl($rec) {
-        if ($rec[dpp]) {
+        if (true){//$rec[dpp]) {
             return $this->getSlDpp($rec);
         } else {
             return $this->getSlMpp($rec);
@@ -332,9 +332,8 @@ class lanch_nzap_model extends sqltable_model {
             $mark = $rec["mark{$i}"];
         }
         $rec = array_merge($rec, compact('platonblock', 'numlam', 'rmark', 'immer', 'mask', 'layers', 'class', 'mark'));
-        $rec[zagotinparty] = $zagotinparty = 25;
-// сделать собственно сопроводительный
-
+        // сделать собственно сопроводительный
+        $zagotinparty = 25;
         if ($dozap) {
             //
             $zagotovokvsego = ceil($dozapnumbers / $platonblock);
@@ -371,7 +370,7 @@ class lanch_nzap_model extends sqltable_model {
         }
         $rec[pio1] = $numpl1 == 0 ? $numbers : $numpl1; // позже возможно можно будет удалить если numpl будет из ТЗ заполнятся
         $rec[datez] = $rec[date];
-        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . trim(sprintf("%5.1f",$rec[tolsh]));
+        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . trim(sprintf("%5.1f", $rec[tolsh]));
         $rec[tolsh] = trim(sprintf("%5.1f", $rec[tolsh]));
         $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";
         $rec[zmask] = strstr($rec[mask], multibyte::UTF_encode('ЖМ')) ? "+" : "-";
@@ -381,9 +380,9 @@ class lanch_nzap_model extends sqltable_model {
         $rec[scomp] = sprintf("%3.2f", $rec[scomp] / 10000);
         $rec[ssold] = sprintf("%3.2f", $rec[ssold] / 10000);
         $rec[lamel] = $rec[numlam] > 0 ? "+" : "-";
-        $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat])?"":$rec[psimat]. '-' . trim(sprintf("%5.1f",$rec[tolsh]))) :
-                                              ($rec[ppsimat]. '-' . trim(sprintf("%5.1f",$rec[tolsh])))
-                        ) . $rec[commentp];
+        $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
+                        ($rec[ppsimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh])))
+                ) . $rec[commentp];
         $rec[dozap] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
         $rec = array_merge($rec, compact('ppart', 'part'));
         return $rec;

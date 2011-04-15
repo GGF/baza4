@@ -535,3 +535,4 @@ class Minify {
         return $css;
     }
 }
+?>

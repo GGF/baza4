@@ -323,3 +323,5 @@ abstract class lego_abstract extends JsCSS {
 }
 
 lego_abstract::staticConsturct();
+
+?>
