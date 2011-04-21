@@ -45,12 +45,12 @@ class lanch_nzap_view extends sqltable_view {
     public function createsl($rec) {
 
         extract($rec);
-        $excel = file_get_contents($this->getDir() . ($layers>2?"/slmpp.xml":"/sl.xml"));
+        $excel = file_get_contents($this->getDir() . ($dpp?"/sl.xml":"/slmpp.xml"));
         preg_match_all('/_([0-9a-z]+)_/', $excel, $matchesarray);
         for ($i=0; $i< count($matchesarray[0]); $i++) {
             $excel = str_replace($matchesarray[0][$i],${$matchesarray[1][$i]},$excel);
         }
-        console::getInstance()->out(print_r($rec,true));
+        //console::getInstance()->out(print_r($rec,true));
         if (fileserver::savefile($filename, $excel)) {
             Output::assign('sllink', fileserver::sharefilelink($filename));
             Output::assign('slid', $lanch_id);

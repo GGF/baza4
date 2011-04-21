@@ -50,7 +50,7 @@ class lanch_conduct_model extends sqltable_model {
     }
     public function  setRecord($data) {
         extract($data);
-        console::getInstance()->out(print_r($data,true));
+        //console::getInstance()->out(print_r($data,true));
 	if (!empty($edit)) {
 		$sql = "UPDATE conductors SET pib='{$pib}', side='{$side}', lays='{$lays}', user_id='{$_SESSION["userid"]}', ts=NOW() WHERE id='{$edit}'";
 

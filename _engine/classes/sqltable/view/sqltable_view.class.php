@@ -86,12 +86,12 @@ class sqltable_view extends views {
                         "value='Äîáàâèòü' title='Äîáàâèòü' id=addbutton>";
 
             $findurl = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr)->url();
-            $ret .= //"<tr><td colspan=100 class='search'>" .
-                    //"<form name='find' method='post' action='{$findurl}'>" .
+            $ret .= "<tr><td colspan=100 class='search'>" .
+                    "<form name='find' method='post' action='{$findurl}'>" .
                     "<input type=text class='find' " .
                     "placeholder='" . (!empty($this->owner->find) ? $this->owner->find : "Èñêàòü...") . "' " .
                     "name='find' id='findtext{$this->owner->tid}' " .
-                    ">";//                   "</form>";
+                    "></form>";
         }
         return $ret;
     }
