@@ -310,11 +310,16 @@ class lanch_nzap_model extends sqltable_model {
         $res = sql::fetchOne($sql);
         $rec[comment2] = empty($res["comment"]) ? '' : multibyte::UTF_encode($res["comment"]);
 // собрать данные о платах в блоке
-        $sql = "SELECT *, board_name AS boardname, sizex AS psizex, sizey AS psizey FROM blockpos JOIN (boards) ON (boards.id=blockpos.board_id) WHERE blockpos.block_id='{$block_id}'";
+        $sql = "SELECT *, board_name AS boardname, sizex AS psizex, sizey AS psizey 
+                FROM blockpos 
+                JOIN (boards) 
+                ON (boards.id=blockpos.board_id) 
+                WHERE blockpos.block_id='{$block_id}' 
+                ORDER BY blockpos.id"; // для правильного количества в запуске
         $res = sql::fetchAll($sql);
         $i = 0; // счетчик
         $platonblock = $numlam = $rmark = $immer = 0;
-        $mask = $layers = $class = $mark = '';
+        $commentp = $mask = $layers = $class = $mark = '';
         foreach ($res as $rs) {
             $platonblock = max($platonblock, $rs[nib]);
             $numlam+=$rs[numlam];
@@ -324,14 +329,14 @@ class lanch_nzap_model extends sqltable_model {
             $i++;
             $sql = "SELECT comment FROM coments WHERE id='{$rs[comment_id]}'";
             $com = sql::fetchOne($sql);
-            $commentp = empty($com["comment"]) ? '' : multibyte::UTF_encode($com["comment"]);
+            $commentp .= empty($com["comment"]) ? '' : multibyte::UTF_encode($com["comment"]);
             foreach ($rs as $key => $val) {
                 $rec[$key . $i] = multibyte::UTF_encode($val);
             }
             $mask = $rec["mask{$i}"];
             $mark = $rec["mark{$i}"];
         }
-        $rec = array_merge($rec, compact('platonblock', 'numlam', 'rmark', 'immer', 'mask', 'layers', 'class', 'mark'));
+        $rec = array_merge($rec, compact('platonblock', 'numlam', 'rmark', 'immer', 'mask', 'layers', 'class', 'mark', 'commentp'));
         // сделать собственно сопроводительный
         $zagotinparty = 25;
         if ($dozap) {
