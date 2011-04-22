@@ -15,21 +15,6 @@ class baza extends firstlevel {
         return $this->menu->getOutput();
     }
     
-//    public function action_lanch() {
-//        $this->_goto('/lanch.php');
-//    }
-//    public function action_cp() {
-//        $this->_goto('/cp.php');
-//    }
-//
-//    protected function action_orders() {
-//        $this->_goto('/orders.php');
-//    }
-//
-//    public function action_sklads() {
-//        $this->_goto('http://baza/sklads/');
-//    }
-
     public function action_wiki() {
         $this->_goto('http://mppwiki.mpp/');
     }

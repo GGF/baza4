@@ -76,21 +76,22 @@ class sqltable extends lego_abstract {
         $this->tid = uniqid($this->type);
 
 
-        if (!empty($_POST[find])) {
-            $_GET[$this->getName()][index][2] = multibyte::UTF_decode($_POST[find]);
-        }
+//        if (!empty($_POST[find])) {
+//            $_GET[get_class($this)][index][2] = multibyte::UTF_decode($_POST[find]);
+//        }
 
         $param = $this->getLegoParam('index');
         //console::getInstance()->out($this->type);
         $this->all = (bool) $param[0];
         $this->order = $param[1];
-        $this->find = $param[2];
+        $this->find = empty($_REQUEST[find])?$param[2]:  multibyte::UTF_decode($_REQUEST[find]);
         $this->idstr = $param[3];
 
         $this->del = Auth::getInstance()->getRights($this->type,'del');
         $this->edit = Auth::getInstance()->getRights($this->type,'edit');
         $this->buttons = true;
         $this->addbutton = Auth::getInstance()->getRights($this->type,'edit');
+        console::getInstance()->out('init - ' . $this->order . '-' . $this->find . '-' . $this->idstr);
 
         try {
             profiler::add('Выполнение', $this->getName() . get_class($this) . ': Попытка создать модель');
@@ -148,8 +149,11 @@ class sqltable extends lego_abstract {
     public function action_index($all='', $order='', $find='', $idstr='') {
         $all = empty($all) ? $this->all : $all;
         $order = empty($order) ? $this->order : $order;
-        $find = empty($find) ? (empty($_REQUEST[find]) ? $this->find : multibyte::UTF_decode($_REQUEST[find])) : $find;
+        $find = empty($_REQUEST[find]) ? (empty($find) ? $this->find : $find) : multibyte::UTF_decode($_REQUEST[find]); 
+        
         $idstr = empty($idstr) ? $this->idstr : $idstr;
+        console::getInstance()->out('ai - ' . $order . '-' . $find . '-' . $idstr);
+
         $this->all = $all;
         $this->order = $order;
         $this->find = $find;

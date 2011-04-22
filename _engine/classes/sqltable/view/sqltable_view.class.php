@@ -32,10 +32,9 @@ class sqltable_view extends views {
         }
         $ret .= "<tr>";
         $cfind = (Ajax::isAjaxRequest() ? urldecode($this->owner->find) : $this->owner->find);
+        $cfind = urlencode($this->owner->find);
         $cidstr = (Ajax::isAjaxRequest() ? urldecode($this->owner->idstr) : $this->owner->idstr);
-        //$ccord = (Ajax::isAjaxRequest()?urldecode($this->owner->order):$this->owner->order);
         $ccord = urldecode($this->owner->order);
-        //console::getInstance()->out(get_class($this) . ' : col = ' . print_r($this->owner->cols,true));
         $cols = $this->owner->cols;
         if (!empty($cols)) {
             reset($cols);
@@ -43,6 +42,7 @@ class sqltable_view extends views {
             while (list($key, $val) = each($cols)) {
                 if ($this->owner->buttons) {
                     $cord = ($this->owner->order == $key ? ($key . " DESC") : $key);
+                    console::getInstance()->out('stvc 46 -'. $ccord . '-' . $cfind . '-' . $cidstr);
                     $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->url();
                     $ret .= "<th>" .
                             (($key == 'check' or $key == "№") ? $val :
@@ -84,7 +84,6 @@ class sqltable_view extends views {
                         "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
                         "href='{$this->owner->actUri('add')->url()}' " .
                         "value='Добавить' title='Добавить' id=addbutton>";
-
             $findurl = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr)->url();
             $ret .= "<tr><td colspan=100 class='search'>" .
                     "<form name='find' method='post' action='{$findurl}'>" .

@@ -416,7 +416,7 @@ function parse_str (str, array){
 }
 
 function urldecode (str){
-    return decodeURIComponent(str.replace(/\+/g, '%20'));
+   return decodeURIComponent(str.replace(/\+/g, '%20'));
 }
 
 function urlencode (str){
