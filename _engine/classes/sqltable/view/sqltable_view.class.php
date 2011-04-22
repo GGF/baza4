@@ -155,7 +155,6 @@ class sqltable_view extends views {
                             "href='{$this->owner->actUri('edit', $rs['id'])->url()}' " .
                             "id=editlink><div>&nbsp;</div></a>";
                 }
-                //console::getInstance()->out(print_r($_SESSION[rights],true) . " del " . $this->owner->del);
                 if ($this->owner->del) {
                     $out .= "<td class='del'><a title='Удалить' " .
                             "data-need-confirm='Удалить " . addslashes(htmlspecialchars($delstr)) . "' " .

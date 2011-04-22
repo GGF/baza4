@@ -130,7 +130,6 @@ class ajaxform extends JsCSS {
 
         if ($name != AJAXFORM_TEMP) {
 
-            //$this->_session = &$_SESSION[cmsForm][$this->name]; // link $_SESSION to internal
             $session = $this->sessionRead();
             if (!$action && $session)
                 $this->errorCritical("Не удалось прочитать файл с сессией ({$session}) — либо файл поврежден, либо в Backend указан неправильный ID формы, либо ID сессии поменялся в процессе вызова.");
@@ -510,7 +509,6 @@ class ajaxform extends JsCSS {
         $this->html = implode($this->result[html]);
         $this->htmlReplace = implode($this->result[htmlReplace]);
 
-        // TODO: как обрабатывается
         if (ajaxform_recieve::$ajaxform_recieve) {
 
             $this->_result[alert] = $this->alert;

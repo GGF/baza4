@@ -60,7 +60,12 @@ define("SHARE_ROOT_DIR","/home/common/");
 // каталог сохранения файлов относительно DOCUMENT_ROOT
 define("UPLOAD_FILES_DIR","/files"); 
 
-$_SESSION["user"] = new Auth();
-
 header("Content-Type: text/html; charset={$_SERVER[cmsEncoding]}");
+
+if (!Auth::getInstance()->run()->success){
+       echo Auth::getInstance()->getOutput();
+       echo console::getInstance()->run()->getOutput();
+       exit;
+}
+
 ?>

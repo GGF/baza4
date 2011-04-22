@@ -123,7 +123,7 @@ class orders_tz_model extends sqltable_model {
         $odate = $rs["orderdate"];
         $cdate = date("m-d-Y");
 
-        $sql = "INSERT INTO tz (order_id,tz_date,user_id) VALUES ('{$orderid}',NOW(),'{$_SESSION[userid]}')";
+        $sql = "INSERT INTO tz (order_id,tz_date,user_id) VALUES ('{$orderid}',NOW(),'".Auth::getInstance()->getUser('id')."')";
         sql::query($sql);
 
         $tzid = sql::lastId();

@@ -87,10 +87,10 @@ class sqltable extends lego_abstract {
         $this->find = $param[2];
         $this->idstr = $param[3];
 
-        $this->del = $_SESSION[rights][$this->type][del];
-        $this->edit = $_SESSION[rights][$this->type][edit];
+        $this->del = Auth::getInstance()->getRights($this->type,'del');
+        $this->edit = Auth::getInstance()->getRights($this->type,'edit');
         $this->buttons = true;
-        $this->addbutton = $_SESSION[rights][$this->type][edit];
+        $this->addbutton = Auth::getInstance()->getRights($this->type,'edit');
 
         try {
             profiler::add('Выполнение', $this->getName() . get_class($this) . ': Попытка создать модель');

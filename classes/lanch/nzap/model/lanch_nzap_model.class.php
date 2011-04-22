@@ -56,7 +56,7 @@ class lanch_nzap_model extends sqltable_model {
                          LEFT JOIN (blocks) ON (blocks.id=block_id)
                 WHERE posintz.id='{$id}'";
         $rs = sql::fetchOne($sql);
-        //$rec[block][filelink] = $_SESSION["rights"]["nzap"]["edit"]?fileserver::sharefilelink($rs["file_link"]):"";
+        //$rec[block][filelink] = Auth::getInstance()->getRights("nzap","edit")?fileserver::sharefilelink($rs["file_link"]):"";
         $rec[block][filelink] = fileserver::sharefilelink($rs["file_link"]);
         $rec[block][blockname] = $rs[blockname];
         $rec[block][boardinorder] = $rs[numbers];
@@ -96,7 +96,7 @@ class lanch_nzap_model extends sqltable_model {
             $customer = $rs1["customer"];
             $rec[boards][] = $board;
         }
-        //if ($_SESSION["rights"]["nzap"]["edit"]) {
+        //if (Auth::getInstance()->getRights("nzap","edit")) {
         if ($nl > 2) {
             // многослойку радара партии по одной
             if ($rs["customer_id"] == '8') // радар
@@ -154,11 +154,11 @@ class lanch_nzap_model extends sqltable_model {
         $res = sql::fetchOne($sql);
         if (empty($res)) {
             $sql = "INSERT INTO masterplate (tz_id,posintz,mpdate,user_id,posid,customer_id,block_id)
-                    VALUES ('{$tzid}','{$posintz}',Now(),'{$_SESSION["userid"]}','{$tzposid}','{$customer_id}','{$block_id}')";
+                    VALUES ('{$tzid}','{$posintz}',Now(),'".Auth::getInstance()->getUser('userid')."','{$tzposid}','{$customer_id}','{$block_id}')";
             sql::query($sql);
             $rec[mp_id] = sql::lastId();
         } else {
-            $sql = "UPDATE masterplate SET mpdate=NOW(), user_id='{$_SESSION[userid]}' WHERE id='{$res[id]}'";
+            $sql = "UPDATE masterplate SET mpdate=NOW(), user_id='".Auth::getInstance()->getUser('userid')."' WHERE id='{$res[id]}'";
             $rs = sql::fetchOne($res);
             $rec[mp_id] = $res["id"];
         }
@@ -198,7 +198,7 @@ class lanch_nzap_model extends sqltable_model {
         if (empty($rs)) {
             $sql = "INSERT INTO lanch
             (ldate, user_id,pos_in_tz_id)
-            VALUES (NOW(),'{$_SESSION["userid"]}','{$posid}')";
+            VALUES (NOW(),'".Auth::getInstance()->getUser('userid')."','{$posid}')";
             sql::query($sql);
             $lanch_id = sql::lastId();
         } else {
@@ -408,7 +408,7 @@ class lanch_nzap_model extends sqltable_model {
         $sql = "UPDATE lanch
         SET ldate=NOW(), block_id='{$block_id}',
             numbz='{$zag}', numbp='{$numbp}',
-            user_id='{$_SESSION["userid"]}', part='{$party}',
+            user_id='".Auth::getInstance()->getUser('userid')."', part='{$party}',
             tz_id='{$tzid}', pos_in_tz='{$posintz}'
         WHERE id='{$lanch_id}'";
         sql::query($sql);

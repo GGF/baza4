@@ -29,7 +29,7 @@ class lanch_nzap_view extends sqltable_view {
             foreach ($party as $key => $val) {
                 Output::assign($key, $val);
             }
-            if ($_SESSION[rights][lanch_nzap][edit]) {
+            if (Auth::getInstance()->getRights('lanch_nzap','edit')) {
             if ($party[slid]) {
                 $out .= $this->fetch('partylink.tpl');
             } else {

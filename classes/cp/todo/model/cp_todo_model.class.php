@@ -18,7 +18,7 @@ class cp_todo_model extends sqltable_model {
                 (!empty($order) ? "ORDER BY " . $order . " " : "ORDER BY cts ") . ((isset($all)) ? "" : "LIMIT 20");
         $ret = sql::fetchAll($sql);
         foreach ($ret as &$value) {
-            $value[what]=html_entity_decode($value[what]);
+            $value[what] = html_entity_decode($value[what]);
         }
         return $ret;
     }
@@ -48,13 +48,13 @@ class cp_todo_model extends sqltable_model {
         return $rec;
     }
 
-    public function  setRecord($data) {
+    public function setRecord($data) {
         extract($data);
         //console::getInstance()->out(print_r($data, true));
         if (!empty($edit)) {
-                $sql="UPDATE todo SET what='".addslashes($what)."', cts=NOW(), rts='0', u_id='".$_SESSION[userid]."' WHERE id='{$edit}'";
+            $sql = "UPDATE todo SET what='" . addslashes($what) . "', cts=NOW(), rts='0', u_id='" . Auth::getInstance()->getUser('userid') . "' WHERE id='{$edit}'";
         } else {
-                $sql="INSERT INTO todo (what,cts,rts,u_id) VALUES ('".addslashes($what)."',NOW(),'0',".$_SESSION[userid].")";
+            $sql = "INSERT INTO todo (what,cts,rts,u_id) VALUES ('" . addslashes($what) . "',NOW(),'0'," . Auth::getInstance()->getUser('userid') . ")";
         }
         sql::query($sql);
         return sql::affected();

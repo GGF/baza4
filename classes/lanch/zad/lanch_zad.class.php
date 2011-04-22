@@ -8,7 +8,7 @@ class lanch_zad extends sqltable {
     }
 
     public function action_edit($id) {
-        if (!$_SESSION[rights][$this->getName()][edit])
+        if (!Auth::getInstance()->getRights($this->getName(),'edit'))
             return $this->view->getMessage('Нет прав на редактирование');
 
         $rec[isnew] = true;

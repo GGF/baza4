@@ -79,7 +79,7 @@ class firstlevel extends lego_abstract {
     }
 
     public function action_back() {
-        $_SESSION["user"]->logout();
+        Auth::getInstance()->logout();
     }
 
     public function action_home() {

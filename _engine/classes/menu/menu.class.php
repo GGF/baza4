@@ -45,7 +45,7 @@ class Menu extends lego_abstract {
             } else {
                 $righttype = $type;
             }
-            if ($right and !$_SESSION[rights][$righttype][view])
+            if ($right and !Auth::getInstance()->getRights($righttype,'view'))
                 continue;
 
             if ($type == "newline") {

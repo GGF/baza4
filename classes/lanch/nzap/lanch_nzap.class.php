@@ -13,7 +13,7 @@ class lanch_nzap extends sqltable {
     }
 
     public function action_edit($id) {
-        if (!$_SESSION[rights][$this->getName()][view]) // тут можно смотреть, но редактирование(запуск) проверяется в виде(view)
+        if (!Auth::getInstance()->getRights($this->getName(),'view')) // тут можно смотреть, но редактирование(запуск) проверяется в виде(view)
             return $this->view->getMessage('Нет прав на редактирование');
         $rec = $this->model->getRecord($id);
         if ($rec[mp]) {

@@ -32,7 +32,7 @@ class lanch_conduct_model extends sqltable_model {
         return $cols;
     }
     public function delete($id) {
-        $sql = "UPDATE conductors SET ts=NOW(), user_id='{$_SESSION[userid]}', ready='1' WHERE id='{$id}'";
+        $sql = "UPDATE conductors SET ts=NOW(), user_id='".Auth::getInstance()->getUser('userid')."', ready='1' WHERE id='{$id}'";
 	sql::query($sql);
         return sql::affected();
     }
@@ -52,10 +52,10 @@ class lanch_conduct_model extends sqltable_model {
         extract($data);
         //console::getInstance()->out(print_r($data,true));
 	if (!empty($edit)) {
-		$sql = "UPDATE conductors SET pib='{$pib}', side='{$side}', lays='{$lays}', user_id='{$_SESSION["userid"]}', ts=NOW() WHERE id='{$edit}'";
+		$sql = "UPDATE conductors SET pib='{$pib}', side='{$side}', lays='{$lays}', user_id='".Auth::getInstance()->getUser('userid')."', ts=NOW() WHERE id='{$edit}'";
 
 	} else {
-		$sql = "INSERT INTO conductors (board_id,pib,side,lays,user_id,ts) VALUES('{$board_id}','{$pib}','{$side}','{$lays}','{$_SESSION["userid"]}',NOW())";
+		$sql = "INSERT INTO conductors (board_id,pib,side,lays,user_id,ts) VALUES('{$board_id}','{$pib}','{$side}','{$lays}','".Auth::getInstance()->getUser('userid')."',NOW())";
 	}
 	sql::query($sql);
         return sql::affected();
