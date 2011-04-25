@@ -16,7 +16,7 @@ class orders_blocks_model extends sqltable_model {
                     FROM blocks
                     JOIN (customers,boards,blockpos)
                     ON (customers.id=blocks.customer_id AND blockpos.block_id=blocks.id AND blockpos.board_id=boards.id ) " .
-                    (!empty($find) ? "WHERE blockname LIKE '%{$find}%' " : "") .
+                    (!empty($find) ? "WHERE blockname LIKE '%{$find}%' OR board_name LIKE '%{$find}%' " : "") .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY blockname  DESC ") .
                     ($all ? "LIMIT 50" : "LIMIT 20");
         } else {
@@ -28,7 +28,7 @@ class orders_blocks_model extends sqltable_model {
                     FROM blocks
                     JOIN (customers,boards,blockpos) 
                     ON (customers.id=blocks.customer_id AND blockpos.block_id=blocks.id AND blockpos.board_id=boards.id ) " .
-                    (!empty($find) ? "WHERE blockname LIKE '%{$find}%' AND customers.id='{$_SESSION[customer_id]}' " : " WHERE customers.id='{$_SESSION[customer_id]}' ") .
+                    (!empty($find) ? "WHERE (blockname LIKE '%{$find}%'  OR board_name LIKE '%{$find}%') AND customers.id='{$_SESSION[customer_id]}' " : " WHERE customers.id='{$_SESSION[customer_id]}' ") .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY blockname DESC ") .
                     ($all ? "LIMIT 50" : "LIMIT 20");
         }
@@ -44,6 +44,8 @@ class orders_blocks_model extends sqltable_model {
         $cols[blockid] = "ID";
         $cols[blockname] = "Название блока";
         $cols[size] = "Размер";
+        $cols[scomp] = 'COMP';
+        $cols[ssolder] = 'SOLDER';
         return $cols;
     }
 

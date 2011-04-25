@@ -14,12 +14,37 @@ class lanch extends secondlevel {
         $this->menu->add('mp', 'Мастерплаты');
         $this->menu->add('zad', 'Задел');
         $this->menu->add('pt', 'Шаблоны');
-        $this->menu->add('boards', 'Платы');
-        $this->menu->add('blocks', 'Заготовки');
+        $this->menu->add('boards', 'Платы',false);
+        $this->menu->add('blocks', 'Заготовки',false);
         $this->menu->add('back', 'Назад', false);
         $this->menu->run();
         return $this->menu->getOutput();
     }
+    
+    public function action_boards() {
+        $this->table = new orders_boards();
+        $this->table->run();
+        if (Ajax::isAjaxRequest()) {
+            return $this->table->getOutput();
+        }
+        $this->setOutputAssigns();
+        Output::assign('menu', $this->getIndexMenu());
+        Output::setContent($this->table->getOutput());
+        return $this->fetch("body_base.tpl");
+    }
+    
+    public function action_blocks() {
+        $this->table = new orders_blocks();
+        $this->table->run();
+        if (Ajax::isAjaxRequest()) {
+            return $this->table->getOutput();
+        }
+        $this->setOutputAssigns();
+        Output::assign('menu', $this->getIndexMenu());
+        Output::setContent($this->table->getOutput());
+        return $this->fetch("body_base.tpl");
+    }  
+    
 }
 
 ?>
