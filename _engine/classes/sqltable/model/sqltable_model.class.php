@@ -31,7 +31,6 @@ class sqltable_model {
 
     public function setRecord($data) {
         extract($data);
-        //console::getInstance()->out(print_r($data, true));
         return true;
     }
 

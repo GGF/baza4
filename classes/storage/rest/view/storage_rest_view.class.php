@@ -10,7 +10,6 @@ class storage_rest_view extends sqltable_view {
     public function showrec($rec) {
 
         $rec[fields] = array();
-        //console::getInstance()->out(print_r($rec));
         array_push($rec[fields],
 			array(
 				"type"		=> AJAXFORM_TYPE_TEXT,

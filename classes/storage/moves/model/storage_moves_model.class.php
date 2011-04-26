@@ -91,8 +91,6 @@ class storage_moves_model extends storage_rest_model {
 
     public function setRecord($data) {
         extract($data);
-                //console::getInstance()->out(print_r($data, true));
-
         // отредактировано
         // найдем поставщика
         if (!empty($supply_id)) {

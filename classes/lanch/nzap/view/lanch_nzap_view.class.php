@@ -50,7 +50,6 @@ class lanch_nzap_view extends sqltable_view {
         for ($i=0; $i< count($matchesarray[0]); $i++) {
             $excel = str_replace($matchesarray[0][$i],${$matchesarray[1][$i]},$excel);
         }
-        //console::getInstance()->out(print_r($rec,true));
         if (fileserver::savefile($filename, $excel)) {
             Output::assign('sllink', fileserver::sharefilelink($filename));
             Output::assign('slid', $lanch_id);

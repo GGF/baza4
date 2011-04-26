@@ -7,7 +7,6 @@
 class lanch_zap_model extends sqltable_model {
 
     public function getData($all=false,$order='',$find='',$idstr='') {
-        //console::getInstance()->out("all - {$all}, order - {$order}, find - {$find}, idstr - {$idstr}");
         $ret = array();
 	$sql="SELECT *,lanch.id AS lanchid,lanch.id
                 FROM lanch

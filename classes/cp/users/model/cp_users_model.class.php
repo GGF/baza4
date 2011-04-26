@@ -7,7 +7,6 @@
 class cp_users_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        //console::getInstance()->out("all - {$all}, order - {$order}, find - {$find}, idstr - {$idstr}");
         $ret = array();
         $sql = "SELECT *
                 FROM users " .
@@ -43,7 +42,6 @@ class cp_users_model extends sqltable_model {
 
     public function  setRecord($data) {
         extract($data);
-        //console::getInstance()->out(print_r($data, true));return true;
         if ($action == "users") {
             if (!empty($edit)) {
                 // редактирование

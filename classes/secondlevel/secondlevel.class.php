@@ -17,10 +17,8 @@ class secondlevel extends firstlevel {
             if ($replaced==0) throw new Exception("Нет такого метода {$name}");
             $act = $this->getName() . "_" . $act;
             if (class_exists($act)) {
-                //console::getInstance()->out("есть класс {$act}".  print_r($arguments,true));
                 $this->table = new $act();
             } else {
-                //console::getInstance()->out("Не есть класс {$act}".print_r($arguments,true));
                 $this->table = new sqltable($act);
             }
             

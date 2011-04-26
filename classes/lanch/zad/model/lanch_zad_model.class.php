@@ -54,7 +54,6 @@ class lanch_zad_model extends sqltable_model {
     public function  setRecord($data) {
         extract($data);
         $ldate = sql::datepicker2date($ldate);
-//        console::getInstance()->out(print_r($data,true));
         if (!empty($edit)) {
             $sql = "UPDATE zadel SET number = '{$number}', ldate='{$ldate}', niz='{$niz}' WHERE id='{$edit}'";
         } else {

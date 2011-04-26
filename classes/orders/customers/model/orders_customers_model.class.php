@@ -7,7 +7,6 @@
 class orders_customers_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        //console::getInstance()->out("all - {$all}, order - {$order}, find - {$find}, idstr - {$idstr}");
         $ret = array();
         $sql = "SELECT * FROM customers " .
                 (!empty($find) ? "WHERE (customers.customer LIKE '%{$find}%'
@@ -88,7 +87,6 @@ class orders_customers_model extends sqltable_model {
 
     public function  setRecord($data) {
         extract($data);
-        //console::getInstance()->out(print_r($data, true));return;
         if (!empty($edit)) {
             // редактирование
             $sql = "UPDATE customers SET customer='{$customer}', fullname='{$fullname}', kdir='{$kdir}'

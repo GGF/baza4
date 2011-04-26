@@ -54,7 +54,6 @@ class cp_users_view extends sqltable_view {
     }
 
     public function showrigths($rec) {
-        //console::getInstance()->out(print_r($rec, true));return true;
         $uid = $rec[edit];
         $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
         $form->init($rec[edit]);

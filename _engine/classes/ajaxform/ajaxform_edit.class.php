@@ -107,7 +107,7 @@ class ajaxform_edit {
             }
         }
         $out .= "</table>";
-        //$out .= '<div >'.$this->form->add("confirm").'</div>';
+//        $out .= '<div >'.$this->form->add("confirm").'</div>';
         //$out .= '<div style="display:none" >' . $this->form->add("submit") . '</div>';
         $out .= $this->form->end();
         $out .= $this->form->destroy();
@@ -124,24 +124,4 @@ class ajaxform_edit {
     }
 
 }
-
-//function checkbox2array($val, $key) {
-//    if (strstr($key, "|")) {
-//        $tmp = preg_match_all("/([^|]+)/", $key, $matches); //$key=substr($key,0,$pos)."[";
-//        $matches = $matches[0];
-//        $key = $matches[0];
-//        global ${$key};
-//        switch (count($matches)) {
-//            case 2:
-//                ${$key}[$matches[1]] = $val;
-//                break;
-//            case 3:
-//                ${$key}[$matches[1]][$matches[2]] = $val;
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-//}
-
 ?>

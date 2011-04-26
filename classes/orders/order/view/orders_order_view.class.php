@@ -62,11 +62,19 @@ class orders_order_view extends sqltable_view {
         ));
         array_push($fields,
                 array(
-                    "type" => AJAXFORM_TYPE_TEXT,
+                    "type" => AJAXFORM_TYPE_HIDDEN,
                     "name" => "curfile",
                     "label" => "Текущий файл:",
                     "value" => basename($this->owner->model->getFileNameById($rec["filelink"])),
                     "options" => array("html" => "readonly",),
+        ));
+        array_push($fields,
+                array(
+                    "type" => AJAXFORM_TYPE_BUTTON,
+                    "name" => "addfile",
+                    "label" => "Добавить файлов:",
+                    "value" => '+',
+                    "options" => array("html" => " ",),
         ));
 
         $form->addFields($fields);

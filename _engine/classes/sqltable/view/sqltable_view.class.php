@@ -42,7 +42,6 @@ class sqltable_view extends views {
             while (list($key, $val) = each($cols)) {
                 if ($this->owner->buttons) {
                     $cord = ($this->owner->order == $key ? ($key . " DESC") : $key);
-                    console::getInstance()->out('stvc 46 -'. $ccord . '-' . $cfind . '-' . $cidstr);
                     $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->url();
                     $ret .= "<th>" .
                             (($key == 'check' or $key == "¹") ? $val :

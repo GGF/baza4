@@ -7,7 +7,6 @@
 class orders_posintz_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        //console::getInstance()->out("all - {$all}, order - {$order}, find - {$find}, idstr - {$idstr}");
         $ret = array();
         if (!empty($_SESSION[tz_id])) {
             $tzid = $_SESSION[tz_id];

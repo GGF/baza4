@@ -7,7 +7,6 @@
 class cp_todo_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        //console::getInstance()->out("all - {$all}, order - {$order}, find - {$find}, idstr - {$idstr}");
         $ret = array();
         $sql = "SELECT *, todo.id
                 FROM todo
@@ -50,7 +49,6 @@ class cp_todo_model extends sqltable_model {
 
     public function setRecord($data) {
         extract($data);
-        //console::getInstance()->out(print_r($data, true));
         if (!empty($edit)) {
             $sql = "UPDATE todo SET what='" . addslashes($what) . "', cts=NOW(), rts='0', u_id='" . Auth::getInstance()->getUser('userid') . "' WHERE id='{$edit}'";
         } else {

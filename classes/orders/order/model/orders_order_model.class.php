@@ -7,7 +7,6 @@
 class orders_order_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        //console::getInstance()->out("all - {$all}, order - {$order}, find - {$find}, idstr - {$idstr}");
         $ret = array();
         if (empty($_SESSION[customer_id])) {
             $customer = "Выберите заказчика!!!";
@@ -98,7 +97,6 @@ class orders_order_model extends sqltable_model {
 
     public function  setRecord($data) {
         extract($data);
-        //console::getInstance()->out(print_r($data, true));return;
         $orderdate = sql::datepicker2date($orderdate);
 
         // файл если есть сохраним

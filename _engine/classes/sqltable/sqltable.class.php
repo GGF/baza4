@@ -81,7 +81,6 @@ class sqltable extends lego_abstract {
 //        }
 
         $param = $this->getLegoParam('index');
-        //console::getInstance()->out($this->type);
         $this->all = (bool) $param[0];
         $this->order = $param[1];
         $this->find = empty($_REQUEST[find])?$param[2]:  multibyte::UTF_decode($_REQUEST[find]);
@@ -91,7 +90,6 @@ class sqltable extends lego_abstract {
         $this->edit = Auth::getInstance()->getRights($this->type,'edit');
         $this->buttons = true;
         $this->addbutton = Auth::getInstance()->getRights($this->type,'edit');
-        console::getInstance()->out('init - ' . $this->order . '-' . $this->find . '-' . $this->idstr);
 
         try {
             profiler::add('Выполнение', $this->getName() . get_class($this) . ': Попытка создать модель');
@@ -133,12 +131,10 @@ class sqltable extends lego_abstract {
     }
 
     public function __set($name, $value) {
-        // console::getInstance()->out($this->getName() . ' : Попытка установить значение переменной ' . $name . ' в ' . $value);
         $this->{$name} = $value;
     }
 
     public function __get($name) {
-        // console::getInstance()->out($this->getName() . ' : Попытка получить значение переменной ' . $name);
         return $this->{$name};
     }
 
@@ -152,7 +148,6 @@ class sqltable extends lego_abstract {
         $find = empty($_REQUEST[find]) ? (empty($find) ? $this->find : $find) : multibyte::UTF_decode($_REQUEST[find]); 
         
         $idstr = empty($idstr) ? $this->idstr : $idstr;
-        console::getInstance()->out('ai - ' . $order . '-' . $find . '-' . $idstr);
 
         $this->all = $all;
         $this->order = $order;

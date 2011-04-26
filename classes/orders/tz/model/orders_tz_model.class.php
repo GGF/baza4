@@ -7,7 +7,6 @@
 class orders_tz_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        //console::getInstance()->out("all - {$all}, order - {$order}, find - {$find}, idstr - {$idstr}");
         $ret = array();
         if (!empty($_SESSION[customer_id])) {
             if (empty($_SESSION[order_id])) {
@@ -92,7 +91,6 @@ class orders_tz_model extends sqltable_model {
 
     public function  setRecord($data) {
         extract($data);
-        //console::getInstance()->out(print_r($data, true));return;
 
         sql::query($sql);
 

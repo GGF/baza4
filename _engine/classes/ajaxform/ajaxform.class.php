@@ -45,7 +45,7 @@ define("AJAXFORM_TEMP", "temp");
 define("AJAXFORM_CACHE", isset($_SERVER[modForm][cachePath]) ? $_SERVER[modForm][cachePath] : $_SERVER[CACHE] . "/form_ajax");
 define("AJAXFORM_CACHE_LIFETIME", isset($_SERVER[modForm][cacheLifetime]) ? $_SERVER[modForm][cacheLifetime] : 60 * 60 * 12); // half day
 
-class ajaxform extends JsCSS {
+class ajaxform extends lego_abstract {
 
     public static $captcha = array("width" => 90, "height" => 19);
     public static $registered = array();
@@ -109,7 +109,7 @@ class ajaxform extends JsCSS {
         if ($action) {
 
             if (ajaxform::$registered[$name])
-                console::getInstance ()->warning("FORM_REGISTERED: Форма «{$name}» уже зарегистрирована на этой странице. Скрипт продолжил работу, но работоспособность не гарантируется.");
+                console::getInstance()->warning("FORM_REGISTERED: Форма «{$name}» уже зарегистрирована на этой странице. Скрипт продолжил работу, но работоспособность не гарантируется.");
             ajaxform::$registered[registered][$name] = true;
         }
 
@@ -621,7 +621,28 @@ class ajaxform extends JsCSS {
             "В" => "8",
         );
 
-        return mb_strToUpper(cmsReplace($replaces, $var, true));
+        return mb_strToUpper($this->Replace($replaces, $var, true));
+    }
+
+    /*
+     * 
+     */
+
+    function Replace($array, $text, $str = false) {
+
+        $patterns = array();
+        $replaces = array();
+
+        foreach ($array as $k => $v) {
+
+            $patterns [] = $k;
+            $replaces [] = $v;
+        }
+
+        if ($str)
+            return str_replace($patterns, $replaces, $text);
+        else
+            return preg_replace($patterns, $replaces, $text);
     }
 
     /**
@@ -1084,9 +1105,9 @@ class ajaxform extends JsCSS {
 
         echo $this->text("confirm", "", array("length" => 6, "errors" => array("noSpan" => true), "html" => "autocomplete='off'"));
         echo " ";
-        echo "<img src='/lib/core/classes/form_ajax/ajax_confirm.php?formName={$this->name}&rnd=" . cmsTime() . "' id='" . $this->getID("captcha") . "' class='captcha cmsForm_captcha' title='" . cmsLang_var("cmsForm.captcha.title") . "' width='" . ajaxform::$captcha[width] . "' height='" . ajaxform::$captcha[height] . "'>";
+        echo "<img src='/?ajaxform[act]=captcha&ajax=ajaxform&formName={$this->name}&rnd=" . array_sum(explode(" ", microtime())) . "' id='" . $this->getID("captcha") . "' class='captcha cmsForm_captcha' title='CAPTCHA' width='" . ajaxform::$captcha[width] . "' height='" . ajaxform::$captcha[height] . "'>";
         echo " ";
-        echo "<label><a href='javascript: ajaxform.reloadCaptcha(\"{$this->name}\", \"{$this->uid}\")' class='dashed'>" . cmsLang_var("cmsForm.captcha.reload") . "</a></label>";
+        echo "<label><a href='javascript: ajaxform.reloadCaptcha(\"{$this->name}\", \"{$this->uid}\")' class='dashed'>repload...</a></label>";
         echo "<script> $('#" . $this->getID("confirm") . "').keyup(function(e){ ajaxform.cleanCaptcha(e, this); }); </script>";
 
         return ob_get_clean();
@@ -1692,6 +1713,15 @@ class ajaxform extends JsCSS {
         }
 
         return $subject;
+    }
+    
+    public function action_captha() {
+	$form = new ajaxform($_REQUEST[formName]);
+	$form->initConfirm();
+	$form->confirmGenerate();
+	$out = $form->confirmImage();
+	$form->sessionSet();
+        return $out;
     }
 
 }

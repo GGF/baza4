@@ -7,7 +7,6 @@
 class lanch_conduct_model extends sqltable_model {
 
     public function getData($all=false,$order='',$find='',$idstr='') {
-        //console::getInstance()->out("all - {$all}, order - {$order}, find - {$find}, idstr - {$idstr}");
         $ret = array();
         $sql="SELECT *,conductors.id AS condid,boards.id AS plid,conductors.id
                 FROM conductors 
@@ -50,7 +49,6 @@ class lanch_conduct_model extends sqltable_model {
     }
     public function  setRecord($data) {
         extract($data);
-        //console::getInstance()->out(print_r($data,true));
 	if (!empty($edit)) {
 		$sql = "UPDATE conductors SET pib='{$pib}', side='{$side}', lays='{$lays}', user_id='".Auth::getInstance()->getUser('userid')."', ts=NOW() WHERE id='{$edit}'";
 
