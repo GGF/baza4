@@ -3,3 +3,6 @@
     overflow-y:auto;
 }
 
+td.hidden {
+    line-height: 0px;
+}

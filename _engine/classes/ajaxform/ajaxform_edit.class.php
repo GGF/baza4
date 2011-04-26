@@ -23,7 +23,7 @@ class ajaxform_edit {
     public $unidfirst;
     public $actionurl;
 
-    public function __construct($type,$action='') {
+    public function __construct($type, $action='') {
 
         $this->type = $type;
         $this->actionurl = $action;
@@ -33,81 +33,54 @@ class ajaxform_edit {
     public function init($edit) {
 
         $this->form = new ajaxform($this->type, $this->actionurl);
-        $this->form->addFields(array(
-            array(
-                "type" => AJAXFORM_TYPE_HIDDEN,
-                "name" => "edit",
-                "value" => $edit,
-            ),
-            //array("type"		=> AJAXFORM_TYPE_CODE,	),
-            array(
-                "type" => AJAXFORM_TYPE_SUBMIT,
-                "name" => "submit",
-                "value" => "Послать",
-            ),
+        $this->addFieldAsArray(
+                array(
+                    "type" => AJAXFORM_TYPE_HIDDEN,
+                    "name" => "edit",
+                    "value" => $edit,
         ));
     }
 
-    public function addfield($label, $name, $type) {
+    public function addField($label, $name, $type) {
         $this->fields[$name] = new Field($label, $name, $type);
         return $this;
     }
 
-    public function addFields($fields) {
-        $lfields = array();
-        $obligatory = array();
-        $formats = array();
-        $checkers = array();
+    public function addFieldAsArray($field, $unid=false) {
+        $this->addField($field["label"], $field["name"], $field["type"]);
+        $nunid = $unid;
+        if ($field["type"] == AJAXFORM_TYPE_TEXT or $field["type"] == AJAXFORM_TYPE_SELECT) {
+            $nunid = uniqid('fld');
+            $field["options"]["html"] .= " " . $field["type"] . " fieldid='" . $unid . "' fieldnext='" . $nunid . "'";
+            array_push($this->unids, $unid);
+        }
+        $this->form->addFields(array($field));
+        if ($field["obligatory"])
+            $this->form->addObligatory($field["obligatory"]);
+        if ($field["format"])
+            $this->form->addFormat($field["format"]["name"], $field["format"]["type"], $field["format"]["pregPattern"]);
+        if ($field["check"])
+            $this->form->addChecker($field["check"]["name"], $field["check"]["type"], $field["check"]["pregPattern"], $field["check"]["pregReplace"]);
+        return $nunid;
+    }
 
+    public function addFields($fields) {
         $this->unidfirst = $first = $unid = uniqid('fld');
         foreach ($fields as $field) {
-            $this->addfield($field["label"], $field["name"], $field["type"]);
-            if ($field["type"] == AJAXFORM_TYPE_TEXT or $field["type"] == AJAXFORM_TYPE_SELECT) {
-                $nunid = uniqid('fld');
-                $field["options"]["html"] .= " " . $field["type"] . " fieldid='" . $unid . "' fieldnext='" . $nunid . "'";
-                array_push($this->unids, $unid);
-                $unid = $nunid;
-            }
-            $last = array_push($lfields, $field);
-            // проверка на облигаторы, форматы и чекеры
-            if ($field["obligatory"])
-                array_push($obligatory, $field["name"]);
-            if ($field["format"])
-                array_push($formats, array("name" => $field["name"], "type" => $field["format"]["type"], "pregPattern" => $field["format"]["pregPattern"]));
-            if ($field["check"])
-                array_push($checkers, array("name" => $field["name"], "type" => $field["check"]["type"], "pregPattern" => $field["check"]["pregPattern"], "pregReplace" => $field["check"]["pregReplace"]));
+            $unid = $this->addFieldAsArray($field, $unid);
         }
-        $this->form->addFields($lfields);
-        foreach ($obligatory as $name)
-            $this->form->addObligatory($name);
-        foreach ($formats as $name)
-            $this->form->addFormat($name["name"], $name["type"], $name["pregPattern"]);
-        foreach ($checkers as $name)
-            $this->form->addChecker($name["name"], $name["type"], $name["pregPattern"], $name["pregReplace"]);
     }
 
     public function getOutput() {
         $out = '<div class="editdiv">';
-        //$out .= $this->form->getHeaderBlock();
         $this->form->init();
         $out .= $this->form->form();
         $out .= $this->form->add("edit");
-        // скрытые в начало
+        $out .= "<table id=editformtable>";
         foreach ($this->fields as $field) {
-            if ($field->type == AJAXFORM_TYPE_HIDDEN) {
-                $out .= "" . $this->form->add($field->name) . "";
-            }
-        }
-        // остальные в таблице
-        $out .= "<table>";
-        foreach ($this->fields as $field) {
-            if ($field->type != AJAXFORM_TYPE_HIDDEN) {
-                $out .= "<tr><td><label>$field->label</label>";
-                $out .= "<td>" . $this->form->add($field->name) . "";
-            }
+            $out .= $this->getFieldOut($field);
         }
         $out .= "</table>";
-//        $out .= '<div >'.$this->form->add("confirm").'</div>';
         //$out .= '<div style="display:none" >' . $this->form->add("submit") . '</div>';
         $out .= $this->form->end();
         $out .= $this->form->destroy();
@@ -118,10 +91,22 @@ class ajaxform_edit {
             $out .= "<script>\$('[fieldid=" . $unid . "]').keyboard('enter',function(){\$('[fieldid='+\$(this).attr('fieldnext')+']').focus();});</script>";
             $lastunid = $unid;
         }
-        if (!empty ($lastunid))
+        if (!empty($lastunid))
             $out .= "<script>\$('[fieldid={$lastunid}]').keyboard('enter',function(){\$('[fieldid={$this->unidfirst}]').focus();});</script>";
         return $out;
     }
 
+    public function getFieldOut($field) {
+        $out = '';
+        if ($field->type != AJAXFORM_TYPE_HIDDEN) {
+            $out .= "<tr><td><label>$field->label</label>";
+            $out .= "<td>" . $this->form->add($field->name);
+        } else {
+            $out .= "<tr><td colspan=2 class='hidden'>" . $this->form->add($field->name);
+        }
+        return $out;
+    }
+
 }
+
 ?>

@@ -238,6 +238,10 @@ class sqltable extends lego_abstract {
         $data = $this->model->getBlocks($customerid);
         return $this->view->getSelect($data);
     }
+    
+    public function action_AddFieldToForm() {
+        
+    }
 
 }
 
