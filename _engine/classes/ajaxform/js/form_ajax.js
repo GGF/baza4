@@ -95,7 +95,8 @@ var ajaxform = {
 			
         if (obj.attr("rel")) { // объект привязки может перенаправлять действия
 				
-            cmsConsole_warning("Перенаправление ошибки по REL с объекта ID:" + id + " на ID:" + obj.attr("rel"));
+//            cmsConsole_warning("Перенаправление ошибки по REL с объекта ID:" + id + " на ID:" + obj.attr("rel"));
+            log("Перенаправление ошибки по REL с объекта ID:" + id + " на ID:" + obj.attr("rel"));
             obj = $("#" + obj.attr("rel"));
 				
         }
@@ -129,7 +130,8 @@ var ajaxform = {
             this.updater.add(id, obj.attr("id"));
             obj.addClass("cmsForm_errorField");
 				
-        } else cmsConsole_error("Невозможно найти объект с ID «" + id + "» для вывода ошибки.\nТекст ошибки: «" + html + "»");
+        } else //cmsConsole_error("Невозможно найти объект с ID «" + id + "» для вывода ошибки.\nТекст ошибки: «" + html + "»");
+            log("Невозможно найти объект с ID «" + id + "» для вывода ошибки.\nТекст ошибки: «" + html + "»");
 			
     },
 		
@@ -255,18 +257,21 @@ var ajaxform = {
 										
                                     self.errorHTML(res.errors[i].id, res.errors[i].html, res.errors[i].text);
 										
-                                } else cmsConsole_error("Для вывода ошибки не найдено поле «" + res.errors[i].id + "»");
+                                } else //cmsConsole_error("Для вывода ошибки не найдено поле «" + res.errors[i].id + "»");
+                                    log("Для вывода ошибки не найдено поле «" + res.errors[i].id + "»");
 									
                             } else {
 									
                                 // Также будут алерты, которые генерятся бакендом
-                                cmsConsole_error("Критическая ошибка формы «" + formName + "»: " + res.errors[i].text);
+                                //cmsConsole_error("Критическая ошибка формы «" + formName + "»: " + res.errors[i].text);
+                                log("Критическая ошибка формы «" + formName + "»: " + res.errors[i].text);
 									
                             }
 								
                         }
 							
-                    } else cmsConsole_notice("Отправка данных формы «" + formName + "» успешна. Ошибок не обнаружено.");
+                    } else //cmsConsole_notice("Отправка данных формы «" + formName + "» успешна. Ошибок не обнаружено.");
+                            log("Отправка данных формы «" + formName + "» успешна. Ошибок не обнаружено.");
 						
                     // Принудительно обновляем размеры подчеркиваний
                     self.updater.resize();
@@ -477,18 +482,21 @@ var ajaxform = {
 								
                             self.errorHTML(res.errors[i].id, res.errors[i].html, res.errors[i].text);
 								
-                        } else cmsConsole_error("No field for error write \"" + res.errors[i].id + "\"");
+                        } else //cmsConsole_error("No field for error write \"" + res.errors[i].id + "\"");
+                            log("No field for error write \"" + res.errors[i].id + "\"");
 							
                     } else {
 							
                         // Также будут алерты, которые генерятся бакендом
-                        cmsConsole_error("Critical error for form \"" + formName + "\": " + res.errors[i].text);
+                        //cmsConsole_error("Critical error for form \"" + formName + "\": " + res.errors[i].text);
+                        log("Critical error for form \"" + formName + "\": " + res.errors[i].text);
 							
                     }
 						
                 }
 					
-            } else cmsConsole_notice("Form data for  \"" + formName + "\" success. No errors.");
+            } else //cmsConsole_notice("Form data for  \"" + formName + "\" success. No errors.");
+                log("Form data for  \"" + formName + "\" success. No errors.");
 				
             // Принудительно обновляем размеры подчеркиваний
             self.updater.resize();

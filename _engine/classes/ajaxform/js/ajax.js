@@ -36,12 +36,17 @@
 						
 						var date2 = new Date();
 						
-						cmsConsole_warning("<b>cmsAJAX[" + count + "]</b>: Запрос к <b>" + url + "</b> успешно выполнен (<b>" + (date2.getTime() - date1.getTime()) + " мс</b>)");
-						
-						if (data.text) cmsConsole_notice(
+						//cmsConsole_warning();
+						log("<b>cmsAJAX[" + count + "]</b>: Запрос к <b>" + url + "</b> успешно выполнен (<b>" + (date2.getTime() - date1.getTime()) + " мс</b>)");
+						if (data.text) 
+                                                    /*cmsConsole_notice(
 							"<div><b>cmsAJAX[" + count + "]</b>: Ответ скрипта: <a href='#' onclick='$(\"#cmsAjax_report_" + count + "\").toggle()'>Показать/скрыть</a></div>" + 
 							"<div id='cmsAjax_report_" + count + "' style='display: none'>" + data.text + "</div>" //.replace(/<.*?>/ig, "")
-						);
+                                                    
+						);*/
+                                                    log("<div><b>cmsAJAX[" + count + "]</b>: Ответ скрипта: <a href='#' onclick='$(\"#cmsAjax_report_" + count + "\").toggle()'>Показать/скрыть</a></div>" +
+                                                        "<div id='cmsAjax_report_" + count + "' style='display: none'>" + data.text + "</div>" 
+                                                    );
 						
 						if (callback) callback(data.js);
 						
@@ -49,7 +54,12 @@
 					
 				} catch(e) { 
 					
-					cmsConsole_error(
+//					cmsConsole_error(
+//						"<div><b>cmsAJAX[" + count + "]</b>: Не удалось интерпретировать ответ от скрипта <b>" + url + "</b> (Ошибка JS: " + e + "): <a href='#' onclick='$(\"#cmsAjax_report_" + count + "_error\").toggle()'>Показать/скрыть</a></div>" + 
+//						//"<div>" + data.replace(/<.*?>/ig, "").replace(/\n/, "<br>") + "</div>"
+//						"<div id='cmsAjax_report_" + count + "_error' style='display: none'>" + data + "</div>"
+//					);
+					log(
 						"<div><b>cmsAJAX[" + count + "]</b>: Не удалось интерпретировать ответ от скрипта <b>" + url + "</b> (Ошибка JS: " + e + "): <a href='#' onclick='$(\"#cmsAjax_report_" + count + "_error\").toggle()'>Показать/скрыть</a></div>" + 
 						//"<div>" + data.replace(/<.*?>/ig, "").replace(/\n/, "<br>") + "</div>"
 						"<div id='cmsAjax_report_" + count + "_error' style='display: none'>" + data + "</div>"
@@ -60,7 +70,11 @@
 			},
 			error: function(data, textStatus, errorThrown) {
 				
-				cmsConsole_error(
+//				cmsConsole_error(
+//					"<div><b>cmsAJAX[" + count + "]</b>: Критическая ошибка в Backend <b>" + url + "</b>:</div>" + 
+//					"<div>" + data.responseText + "</div>"
+//				); //.replace(/<.*?>/ig, ""));
+				log(
 					"<div><b>cmsAJAX[" + count + "]</b>: Критическая ошибка в Backend <b>" + url + "</b>:</div>" + 
 					"<div>" + data.responseText + "</div>"
 				); //.replace(/<.*?>/ig, ""));
