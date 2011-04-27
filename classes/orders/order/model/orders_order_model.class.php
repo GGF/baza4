@@ -101,8 +101,6 @@ class orders_order_model extends sqltable_model {
 
     public function setRecord($data) {
         extract($data);
-        $orderdate = sql::datepicker2date($orderdate);
-
         if ($edit) {
             // редактирование
             $sql = "UPDATE orders

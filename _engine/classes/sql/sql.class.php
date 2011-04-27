@@ -125,15 +125,6 @@ class sql {
         return call_user_func_array(array(&sql::$lang, "insertUpdate"), $args);
     }
 
-// 2 функции преобразования даты для пикера и базы
-    static public function date2datepicker($date) {
-        return!empty($date) ? date("d.m.Y", mktime(0, 0, 0, ceil(substr($date, 5, 2)), ceil(substr($date, 8, 2)), ceil(substr($date, 1, 4)))) : date("d.m.Y");
-    }
-
-    static public function datepicker2date($date) {
-        return substr($date, 6, 4) . "-" . substr($date, 3, 2) . "-" . substr($date, 0, 2);
-    }
-    
     static public function queryfile($file) {
         if (file_exists($file)) {
             $file = file_get_contents($file);

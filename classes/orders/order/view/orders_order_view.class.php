@@ -28,13 +28,10 @@ class orders_order_view extends sqltable_view {
         }
 
         array_push($fields, array(
-            "type" => AJAXFORM_TYPE_TEXT,
+            "type" => AJAXFORM_TYPE_DATE,
             "name" => "orderdate",
             "label" => 'Дата:',
-            "value" => sql::date2datepicker($rec[orderdate]),
-            "options" => array("html" => ' datepicker=1 '),
-            "check" => array("type" => AJAXFORM_CHECK_NUMERIC),
-            "format" => array("type" => AJAXFORM_FORMAT_CUSTOM, "pregPattern" => "/[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]/"),
+            "value" => $rec[orderdate],
             "obligatory" => true,
         ));
         array_push($fields, array(

@@ -70,11 +70,10 @@ class lanch_zad_view extends sqltable_view {
             //"options"	=>	array( "html" => "size=10", ),
             ));
             array_push($fields,array(
-                "type" => AJAXFORM_TYPE_TEXT,
+                "type" => AJAXFORM_TYPE_DATE,
                 "name" => "ldate",
                 "label" => 'Дата:',
-                "value" => sql::date2datepicker($rec[ldate]),
-                "options" => array("html" => ' datepicker=1 '),
+                "value" => $rec[ldate],
             ));
 
         $form->addFields($fields);

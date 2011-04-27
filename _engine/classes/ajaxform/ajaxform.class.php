@@ -190,6 +190,9 @@ class ajaxform extends JsCSS {
                     if (@isset($_REQUEST[$this->name][$field[name] . "|" . $k]))
                         $req[$field[name] . "|" . $k] = true;
             }
+            if ($field[type] == AJAXFORM_TYPE_DATE) {
+                $req[$field[name]] = $this->datepicker2date($_REQUEST[$this->name][$field[name]]);
+            }
         }
         //$req = $_REQUEST[$this->name];
         //$this->alert(print_r($req, true));
@@ -998,19 +1001,13 @@ class ajaxform extends JsCSS {
         $value = $this->getValue($name, $value);
         list($optionsHTML, $options) = $this->parseOptions($options);
 
-        $value += 0;
-
         if (!$value)
-            $xvalue = ""; else
+            $xvalue = ""; 
+        else
             $xvalue = $this->value($name, $value);
-        $options[date] = true;
-        $options[readonly] = true;
-        $options[html] .= " onclick='cmsCalendar_show(\"" . $this->getId($name) . "\")'";
+        $options[html] .= " datepicker=1 ";
 
-        echo $this->text($name . "_text", $xvalue, $options);
-        echo $this->hidden($name, $value, array(
-            "rel" => $this->getId($name) . "_text",
-        ));
+        echo $this->text($name, $xvalue, $options);
 
         return ob_get_clean();
     }
@@ -1502,8 +1499,7 @@ class ajaxform extends JsCSS {
                 // Дата
             } elseif ($field[type] == AJAXFORM_TYPE_DATE) {
 
-                $value = (int) $value;
-                return ($value > 0) ? cmsDate($value, $_SERVER[lang], CMSDATE_MOD_CUT) : null;
+                return $this->date2datepicker($value);
 
                 // Обычный текст
             } else {
@@ -1727,6 +1723,16 @@ class ajaxform extends JsCSS {
     function Lang_var($var) {
         return $var;
     }
+    
+    // 2 функции преобразования даты для пикера и базы
+    public function date2datepicker($date) {
+        return!empty($date) ? date("d.m.Y", mktime(0, 0, 0, ceil(substr($date, 5, 2)), ceil(substr($date, 8, 2)), ceil(substr($date, 1, 4)))) : date("d.m.Y");
+    }
+
+    public function datepicker2date($date) {
+        return substr($date, 6, 4) . "-" . substr($date, 3, 2) . "-" . substr($date, 0, 2);
+    }
+
 }
 
 if (!isset($_SERVER[modForm][cacheNoClean]))

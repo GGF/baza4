@@ -53,14 +53,13 @@ class lanch_zad_model extends sqltable_model {
 
     public function  setRecord($data) {
         extract($data);
-        $ldate = sql::datepicker2date($ldate);
         if (!empty($edit)) {
             $sql = "UPDATE zadel SET number = '{$number}', ldate='{$ldate}', niz='{$niz}' WHERE id='{$edit}'";
         } else {
             $sql = "INSERT INTO zadel (board_id,ldate,number,niz) VALUES('{$board_id}','{$ldate}','{$number}','{$niz}')";
         }
 	sql::query($sql);
-        return sql::affected();
+        return true;//sql::affected();
     }
 
 }

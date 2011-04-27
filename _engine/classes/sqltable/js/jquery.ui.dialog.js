@@ -315,7 +315,7 @@ $.widget("ui.dialog", {
 		self._position(options.position);
 		uiDialog.show(options.show);
 		self.moveToTop(true);
-
+/*
 		// prevent tabbing out of modal dialogs
 		if (options.modal) {
 			uiDialog.bind('keypress.ui-dialog', function(event) {
@@ -342,7 +342,7 @@ $.widget("ui.dialog", {
 		$(self.element.find(':tabbable').get().concat(
 			uiDialog.find('.ui-dialog-buttonpane :tabbable').get().concat(
 				uiDialog.get()))).eq(0).focus();
-
+*/
 		self._isOpen = true;
 		self._trigger('open');
 
