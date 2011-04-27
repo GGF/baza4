@@ -375,7 +375,7 @@ class lanch_nzap_model extends sqltable_model {
         }
         $rec[pio1] = $numpl1 == 0 ? $numbers : $numpl1; // позже возможно можно будет удалить если numpl будет из ТЗ заполнятся
         $rec[datez] = $rec[date];
-        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . trim(sprintf("%5.1f", $rec[tolsh]));
+        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . trim(sprintf("%5.3f", $rec[tolsh]));
         $rec[tolsh] = trim(sprintf("%5.1f", $rec[tolsh]));
         $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";
         $rec[zmask] = strstr($rec[mask], multibyte::UTF_encode('ЖМ')) ? "+" : "-";

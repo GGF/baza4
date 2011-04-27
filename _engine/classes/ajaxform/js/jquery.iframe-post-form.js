@@ -26,7 +26,7 @@
         // Add the iframe.
         if (!$('#' + options.iframeID).length)
         {
-            $('body').append('<iframe name="' + options.iframeID + '" id="' + options.iframeID + '" style="display:none"></iframe>');
+            $('body').append('<iframe name="' + options.iframeID + '" id="' + options.iframeID + '" style="display:none; position:absolute; top:0px; left:0px;"></iframe>');
         }
 		
 		

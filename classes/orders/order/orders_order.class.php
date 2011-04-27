@@ -15,12 +15,13 @@ class orders_order extends sqltable {
     }
 
     public function action_edit($id) {
-        if (!Auth::getInstance()->getRights($this->getName(),'edit'))
+        if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
             return $this->view->getMessage('Нет прав на редактирование');
         $rec = $this->model->getRecord($id);
         $rec[edit] = $id;
         $rec[customers] = $this->model->getCustomers();
         $rec[action] = $this->actUri('processingform')->ajaxurl($this->getName());
+        $rec[addfileaction] = $this->actUri('addfilefield')->ajaxurl($this->getName());
         $out = $this->view->showrec($rec);
         return $this->view->getForm($out);
     }
@@ -32,6 +33,20 @@ class orders_order extends sqltable {
         $_SESSION[tz_id] = '';
         //$_SESSION[customer] = $this->model->getCustomer($id);
         $this->_goto($this->uri()->clear()->set('orders', 'tz')->url());
+    }
+
+    public function action_addfilefield() {
+        $edit = new ajaxform_edit($this->getName());
+        $edit->restore();
+        $field =
+                array(
+                    "type" => AJAXFORM_TYPE_FILE,
+                    "name" => "order_file" . rand(),
+                    "label" => "",
+        );
+        $edit->addFieldAsArray($field);
+        $out = $edit->getFieldOut($edit->fields[$field[name]]);
+        return $out;
     }
 
 }

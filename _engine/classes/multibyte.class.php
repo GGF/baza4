@@ -49,6 +49,20 @@ class multibyte {
 
         return $json;
     }
+    // FROM JSON TO ARRAY
+    static public function Json_decode($json) {
+	
+	if ($_SERVER [cmsEncoding] != "UTF-8")
+		$json = self::UTF_encode ( $json );
+	
+	$var = json_decode ( $json, true );
+	
+	if ($_SERVER [cmsEncoding] != "UTF-8")
+		$var = self::UTF_decode ( $var );
+	
+	return $var;
+
+}
     static public function UTF_entityEncode($text) {
 
         $res = "";

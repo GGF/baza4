@@ -1,6 +1,6 @@
 <?
 
-class Field {
+class ajaxform_edit_field {
 
     public $name;
     public $label;
@@ -33,6 +33,14 @@ class ajaxform_edit {
     public function init($edit) {
 
         $this->form = new ajaxform($this->type, $this->actionurl);
+        $this->form->addFields(
+            array(
+                array(
+                    "type" => AJAXFORM_TYPE_SUBMIT,
+                    "name" => "submit",
+                    "value" => 'Послать',
+                )
+            ));
         $this->addFieldAsArray(
                 array(
                     "type" => AJAXFORM_TYPE_HIDDEN,
@@ -40,9 +48,14 @@ class ajaxform_edit {
                     "value" => $edit,
         ));
     }
+    
+    public function restore() {
+        $this->form = new ajaxform($this->type);
+        $this->form->init();
+    }
 
     public function addField($label, $name, $type) {
-        $this->fields[$name] = new Field($label, $name, $type);
+        $this->fields[$name] = new ajaxform_edit_field($label, $name, $type);
         return $this;
     }
 

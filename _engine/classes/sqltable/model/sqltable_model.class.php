@@ -123,6 +123,24 @@ class sqltable_model {
         return false; // TODO: Костыль
     }
 
+    public function getFilesForId($table, $id) {
+        $out[link]='';
+        $sql = "SELECT * FROM files WHERE `table`='{$table}' AND rec_id='{$id}'";
+        $files = sql::fetchAll($sql);
+        foreach ($files as $val) {
+            $sql = "SELECT * FROM filelinks WHERE id='{$val[fileid]}'";
+            $file = sql::fetchOne($sql);
+            $out[file][] = $file;
+            $filelink = str_ireplace($_SERVER['DOCUMENT_ROOT'], '', $file[file_link]);
+            //$pos = strrpos($file[file_link], '/') + 1;
+            $file = basename($file[file_link]);//substr($file[file_link], $pos);
+
+            $out[link] .= '&nbsp;<a target=_blank href="http://' . $_SERVER["HTTP_HOST"] . 
+                    "{$filelink}\">{$file}</a>";
+        }
+        return $out;
+    }
+
 }
 
 ?>

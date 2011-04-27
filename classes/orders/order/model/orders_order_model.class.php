@@ -8,15 +8,14 @@ class orders_order_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
+        $order = strstr($order, 'files') ? '' : $order; // не удается отсортировать по файлам
         if (empty($_SESSION[customer_id])) {
             $customer = "Выберите заказчика!!!";
             $sql = "SELECT *,
-                    CONCAT(\"<a target=_blank href='http://" . $_SERVER["HTTP_HOST"] .
-                    UPLOAD_FILES_DIR . "/customers/\",SUBSTRING_INDEX(filelinks.file_link,'/',-1),\"'>\",SUBSTRING_INDEX(filelinks.file_link,'/',-1),\"</a>\") AS filename,
                         orders.id
                         FROM orders
                         JOIN customers
-                        ON customers.id=customer_id LEFT JOIN filelinks ON orders.filelink=filelinks.id " .
+                        ON customers.id=customer_id " .
                     (!empty($find) ? "WHERE (number LIKE '%{$find}%' OR orderdate LIKE '%{$find}%' ) " : "") .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY orders.orderdate DESC ") .
                     ($all ? "LIMIT 50" : "LIMIT 20");
@@ -24,25 +23,21 @@ class orders_order_model extends sqltable_model {
             $cusid = $_SESSION[customer_id];
             $customer = $_SESSION[customer];
             // sql
-            $link = '<a target=_blank href="http://' . $_SERVER["HTTP_HOST"] . UPLOAD_FILES_DIR .
-                    '/customers/",SUBSTRING_INDEX(filelinks.file_link,"/",-1),">",SUBSTRING_INDEX(filelinks.file_link,"/",-1),"</a>"';
-            $sql = "SELECT *,CONCAT(\"<a target=_blank href='http://" .
-                    $_SERVER["HTTP_HOST"] . UPLOAD_FILES_DIR .
-                    "/customers/\",SUBSTRING_INDEX(filelinks.file_link,'/',-1),\"'>\",SUBSTRING_INDEX(filelinks.file_link,'/',-1),\"</a>\") AS filename,
-                            orders.id
+            $sql = "SELECT *, orders.id
                             FROM orders
-                            JOIN customers ON customers.id=customer_id
-                            LEFT JOIN filelinks
-                            ON orders.filelink=filelinks.id " .
+                            JOIN customers ON customers.id=customer_id " .
                     (!empty($find) ? "WHERE (number LIKE '%{$find}%' OR orderdate LIKE '%{$find}%' ) AND customer_id='{$cusid}' " : "WHERE customer_id='{$cusid}' ") .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY orders.orderdate DESC ") .
                     ($all ? "LIMIT 50" : "LIMIT 20");
         }
         $ret = sql::fetchAll($sql);
-        //$ret[title] = "Заказчик - {$ret[customer]} ";
+        foreach ($ret as &$value) {
+            $files = $this->getFilesForId('orders', $value[id]);
+            $value[files] = $files[link];
+        }
         if ($all) {
             $_SESSION[order_id] = '';
-            $_SESSION[tz_id]='';
+            $_SESSION[tz_id] = '';
             // todo: может вынести обнуление сессионных в orders? то есть на уровень выше
         }
         return $ret;
@@ -56,7 +51,7 @@ class orders_order_model extends sqltable_model {
         $cols[id] = "ID";
         $cols[number] = "Номер заказа";
         $cols[orderdate] = "Дата заказа";
-        $cols[filename] = "Файл";
+        $cols[files] = "Файлы";
         return $cols;
     }
 
@@ -66,6 +61,9 @@ class orders_order_model extends sqltable_model {
         sql::query($sql);
         $affected += sql::affected();
         // удаление связей
+        $sql = "DELETE FROM files WHERE `table`='orders' AND rec_id='{$delete}'";
+        sql::query($sql);
+        $affected += sql::affected();
         $sql = "SELECT * FROM tz WHERE order_id='{$delete}'";
         $res = sql::fetchAll($sql);
         foreach ($res as $rs) {
@@ -92,34 +90,33 @@ class orders_order_model extends sqltable_model {
             return array();
         $sql = "SELECT * FROM orders WHERE id='$edit'";
         $rec = sql::fetchOne($sql);
+        $rec[files] = $this->getFilesForId('orders', $edit);
         return $rec;
     }
 
-    public function  setRecord($data) {
+    public function setRecord($data) {
         extract($data);
         $orderdate = sql::datepicker2date($orderdate);
 
         // файл если есть сохраним
-        if (!empty($files["order_file"]["size"])) {
-            $filename = $_SERVER["DOCUMENT_ROOT"] . UPLOAD_FILES_DIR . "/customers/" . multibyte::UTF_encode($files["order_file"]["name"]);
-            $i = 0;
-            while (file_exists($filename)) {
-                $i++;
-                $filename = $_SERVER["DOCUMENT_ROOT"] . UPLOAD_FILES_DIR . "/customers/{$i}_" . multibyte::UTF_encode($files["order_file"]["name"]);
+        foreach ($files as $file) {
+            if (!empty($file[size])) {
+                $filename = $_SERVER["DOCUMENT_ROOT"] . UPLOAD_FILES_DIR . "/customers/" . multibyte::UTF_encode($file["name"]);
+                $i = 0;
+                while (file_exists($filename)) {
+                    $i++;
+                    $filename = $_SERVER["DOCUMENT_ROOT"] . UPLOAD_FILES_DIR . "/customers/{$i}_" . multibyte::UTF_encode($file["name"]);
+                }
+                if (@move_uploaded_file($file["tmp_name"], $filename)) {
+                    // переместилост удачно
+                    $filename = multibyte::UTF_decode($filename);
+                    $curfile[$this->getFileId($filename)] = 1; // сделаем структуру как уже существующие
+                } else {
+                    $ret[affected] = false;
+                    $ret[alert] = "Не удалось сохранить файл! Попробуйте еще.";
+                    return $ret;
+                }
             }
-            if (@move_uploaded_file($files["order_file"]["tmp_name"], $filename)) {
-                //$form->alert('перекинул');
-                $filename = multibyte::UTF_decode($filename);
-                $fileid = $this->getFileId($filename);
-            } else {
-                $ret[affected] = false;
-                $ret[alert] = "Не удалось сохранить файл! Попробуйте еще.";
-                return $ret;
-            }
-        } else {
-            // файл не менялся
-//            if ($curfile != 'None')
-//                $fileid = getFileId($_SERVER["DOCUMENT_ROOT"] . "/customers/ordersfile/" . $curfile);
         }
 
         if ($edit) {
@@ -130,6 +127,7 @@ class orders_order_model extends sqltable_model {
                     number='{$number}',
                     filelink='{$fileid}'
                     WHERE id='{$edit}'";
+            sql::query($sql);
 //            $ret[affected] = false;
 //            $ret[alert] = "update {$sql} " . print_r($data, true);
         } else {
@@ -138,9 +136,18 @@ class orders_order_model extends sqltable_model {
                     (customer_id,orderdate,number,filelink)
                     VALUES ('{$customerid}','{$orderdate}','{$number}','{$fileid}')";
             //$ret[alert] = 'insert';
+            sql::query($sql);
+            $edit = sql::lastId();
         }
+        $ret[affected] = true;
+
+        // заполним таблицу files
+        $sql = "DELETE FROM files WHERE `table`='orders' AND rec_id='{$edit}'";
         sql::query($sql);
-        $ret[affected] = sql::affected();
+        foreach ($curfile as $key => $value) {
+            $sql = "INSERT INTO files (`table`,rec_id,fileid) VALUES ('orders','{$edit}','{$key}')";
+            sql::query($sql);
+        }
 
         return $ret;
     }

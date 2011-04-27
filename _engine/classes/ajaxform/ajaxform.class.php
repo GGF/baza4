@@ -45,7 +45,7 @@ define("AJAXFORM_TEMP", "temp");
 define("AJAXFORM_CACHE", isset($_SERVER[modForm][cachePath]) ? $_SERVER[modForm][cachePath] : $_SERVER[CACHE] . "/form_ajax");
 define("AJAXFORM_CACHE_LIFETIME", isset($_SERVER[modForm][cacheLifetime]) ? $_SERVER[modForm][cacheLifetime] : 60 * 60 * 12); // half day
 
-class ajaxform extends lego_abstract {
+class ajaxform extends JsCSS {
 
     public static $captcha = array("width" => 90, "height" => 19);
     public static $registered = array();
@@ -274,7 +274,7 @@ class ajaxform extends lego_abstract {
                     // ÍÅ ÇÀÏÎËÍÅÍÍÎÅ ÏÎËÅ ÄËß ×ÅÊÅÐÀ ÍÅ ÂÀÆÍÎ — ÇÄÅÑÜ ÃËÀÂÍÎÅ, ×ÒÎÁÛ ÍÅ ×ÅÊÅÐ ÅÃÎ ÒÀÊÈÌ ÑÄÅËÀË
                     // åñëè ñòàëî ïóñòûì ïîñëå ÷åêåðîâ èëè íå íàøëîñü
                     if ($checker[type] != AJAXFORM_CHECK_DEFAULT)
-                        $this->error(AJAXFORM_ERROR_CHECK, $name, ($checker[type] == AJAXFORM_CHECK_CUSTOM) ? $checker[html] : cmsLang_var("cmsForm.error.checker." . $checker[type]));
+                        $this->error(AJAXFORM_ERROR_CHECK, $name, ($checker[type] == AJAXFORM_CHECK_CUSTOM) ? $checker[html] : $this->Lang_var("cmsForm.error.checker." . $checker[type]));
                     $errors[$name] = true;
                 }
             }
@@ -292,7 +292,7 @@ class ajaxform extends lego_abstract {
                 // ïîñëå îáðàáîòêè ÷åêåðîì çíà÷åíèå ñòàëî ïóñòûì, èëè â ìàññèâå ýëåìåíòà íå íàøëîñü ñîïîñòàâëåíèÿ çíà÷åíèþ
                 if ($this->value($name, $req[$name]) === null) {
 
-                    $html = ($field[type] == AJAXFORM_TYPE_CHECKBOX || $field[type] == AJAXFORM_TYPE_RADIO || $field[type] == AJAXFORM_TYPE_SELECT || $field[type] == AJAXFORM_TYPE_FILE) ? cmsLang_var("cmsForm.error.obligatory." . $field[type]) : cmsLang_var("cmsForm.error.obligatory.empty");
+                    $html = ($field[type] == AJAXFORM_TYPE_CHECKBOX || $field[type] == AJAXFORM_TYPE_RADIO || $field[type] == AJAXFORM_TYPE_SELECT || $field[type] == AJAXFORM_TYPE_FILE) ? $this->Lang_var("cmsForm.error.obligatory." . $field[type]) : $this->Lang_var("cmsForm.error.obligatory.empty");
 
                     $this->error(AJAXFORM_ERROR_OBLIGATORY, $name, $html);
                 }
@@ -312,7 +312,7 @@ class ajaxform extends lego_abstract {
 
             if ($req[confirm] != $this->fields[confirm][value]) {
 
-                $this->error(AJAXFORM_ERROR_CONFIRM, "confirm", cmsLang_var("cmsForm.error.code"));
+                $this->error(AJAXFORM_ERROR_CONFIRM, "confirm", $this->Lang_var("cmsForm.error.code"));
                 //$this->alert($req[confirm] . "|" . $this->fields[confirm][value]);
             }
         }
@@ -1173,7 +1173,7 @@ class ajaxform extends lego_abstract {
         ob_start();
 
         $value = $this->getValue($name, $value);
-        $value = (@!is_array($value)) ? cmsJSON_decode($value) : $value;
+        $value = (@!is_array($value)) ? multibyte::Json_decode($value) : $value;
 
         list($optionsHTML, $options) = $this->parseOptions($options);
         list($block, $line) = $this->getBlock($options[nobr], $this->getId($name));
@@ -1724,6 +1724,9 @@ class ajaxform extends lego_abstract {
         return $out;
     }
 
+    function Lang_var($var) {
+        return $var;
+    }
 }
 
 if (!isset($_SERVER[modForm][cacheNoClean]))

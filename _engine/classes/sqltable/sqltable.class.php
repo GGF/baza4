@@ -201,7 +201,7 @@ class sqltable extends lego_abstract {
         ajaxform_recieve::init();
         $form = new ajaxform($this->getName());
         $form->initBackend();
-        //echo var_dump($form);
+
         if (!$form->errors) {
             // сохранение
             $res = $this->model->setRecord(array_merge($form->request, array("files" => $form->files)));

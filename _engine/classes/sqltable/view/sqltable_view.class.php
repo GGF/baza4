@@ -44,7 +44,7 @@ class sqltable_view extends views {
                     $cord = ($this->owner->order == $key ? ($key . " DESC") : $key);
                     $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->url();
                     $ret .= "<th>" .
-                            (($key == 'check' or $key == "№") ? $val :
+                            (($key == 'check' or $key == "№" ) ? $val :
                                     "<a " .
                                     "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
                                     "href='{$url}' " .
@@ -140,9 +140,9 @@ class sqltable_view extends views {
                 $delstr = '';
                 reset($cols);
                 while (list($key, $val) = each($cols)) {
-                    $out .= "<td>" . $link .
+                    $out .= "<td>" . (strstr($rs["$key"],'href=')?"":$link) .
                             (empty($rs["$key"]) ? "&nbsp;" : $rs["$key"]) .
-                            $linkend;
+                            (strstr($rs["$key"],'href=')?"":$linkend);
                     $delstr .= $rs["$key"] . ' - ';
                 }
                 // вставим пустое поле 100% ширины

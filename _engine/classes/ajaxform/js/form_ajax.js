@@ -388,14 +388,13 @@ var ajaxform = {
 			
         send[self.clicked] = 1;
         self.clicked = "";
-			
         // Вызов кастомных callback'ов перед основной обработкой
-        if (self.callbacks.send[formName]) for (var i = 0; i < self.callbacks.send[formName].length; i++) {
+        if (self.callbacks.send[formName]) 
+            for (var i = 0; i < self.callbacks.send[formName].length; i++) {
+                send = self.callbacks.send[formName][i](send, formID);
+                if (send == null || send == false) return false; // Заваливаем отправку — раньше было просто break
 				
-            send = self.callbacks.send[formName][i](send, formID);
-            if (send == null || send == false) return false; // Заваливаем отправку — раньше было просто break
-				
-        }
+            }
 			
         //if (send == null || send == false) return false; // заваливаем отправку
 			
