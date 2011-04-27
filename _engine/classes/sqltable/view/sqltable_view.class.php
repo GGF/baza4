@@ -8,11 +8,35 @@ class sqltable_view extends views {
     }
 
     public function showrec($rec) {
-        if (empty($rec[fields])) return false; // заглушка для нерадактируемых
-        $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
-        $form->init($rec[edit]);
-        $form->addFields($rec[fields]);
-        return $form->getOutput();
+        if (empty($rec[fields]))
+            return false; // заглушка для нерадактируемых
+        extract($rec);
+        $form = new ajaxform_edit($this->owner->getName(), $action);
+        $form->init($edit);
+        if ($rec[files][file]) {
+            foreach ($rec[files][file] as $file) {
+                $values[$file[id]] = basename($file[file_link]);
+                $value[$file[id]] = 1;
+            }
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_CHECKBOXES,
+                "name" => "curfile",
+                "label" => 'Текущие файлы:',
+                "value" => $value,
+                "values" => $values,
+                    //"options" => array("html" => "readonly",),
+            ));
+        }
+        array_push($fields, array(
+            "type" => AJAXFORM_TYPE_FILE,
+            "name" => "file",
+            "label" => "Добавить файл:",
+        ));
+
+        $form->addFields($fields);
+        $out = $form->getOutput();
+        $out .= $this->addFileButton();
+        return $out;
     }
 
     public function show() {
@@ -135,14 +159,13 @@ class sqltable_view extends views {
                         "href='{$this->owner->actUri('open', $rs['id'])->url()}' " .
                         "id='showlink'><div class='fullwidth'>";
                 $linkend = "</div></a>";
-                $rs["file_link"] = substr($rs["file_link"],
-                                strrpos($rs["file_link"], "\\") + 1);
+                $rs["file_link"] = substr($rs["file_link"], strrpos($rs["file_link"], "\\") + 1);
                 $delstr = '';
                 reset($cols);
                 while (list($key, $val) = each($cols)) {
-                    $out .= "<td>" . (strstr($rs["$key"],'href=')?"":$link) .
+                    $out .= "<td>" . (strstr($rs["$key"], 'href=') ? "" : $link) .
                             (empty($rs["$key"]) ? "&nbsp;" : $rs["$key"]) .
-                            (strstr($rs["$key"],'href=')?"":$linkend);
+                            (strstr($rs["$key"], 'href=') ? "" : $linkend);
                     $delstr .= $rs["$key"] . ' - ';
                 }
                 // вставим пустое поле 100% ширины
@@ -196,13 +219,13 @@ class sqltable_view extends views {
         array_shift($params);
         array_shift($params);
         Output::assign('message', $message);
-        if ($cancelaction=='index') {
+        if ($cancelaction == 'index') {
             $params[0] = $this->owner->all;
             $params[1] = $this->owner->order;
             $params[2] = $this->owner->find;
             $params[3] = $this->owner->idstr;
         }
-        Output::assign('cancellink', $this->owner->actUri($cancelaction,$params)->url());
+        Output::assign('cancellink', $this->owner->actUri($cancelaction, $params)->url());
         Output::assign('oklink', $this->owner->actUri($action, $params)->url());
         $out = $this->fetch('confirm.tpl');
         return $out;
@@ -219,6 +242,13 @@ class sqltable_view extends views {
         foreach ($data as $key => $value) {
             $out .= "<option value={$key}>{$value}</option>";
         }
+        return $out;
+    }
+
+    public function addFileButton() {
+        $link = $this->owner->actUri('addfilefield')->ajaxurl($this->owner->getName());
+        $out = '<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="' . $link . '"><input type="button" id="sl{$party}" value="Добавить файлов" ></a>';
+        //$this->fetch('filebutton.tpl');
         return $out;
     }
 

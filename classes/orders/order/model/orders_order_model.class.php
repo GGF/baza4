@@ -5,6 +5,11 @@
  */
 
 class orders_order_model extends sqltable_model {
+    
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'orders';
+    }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
@@ -98,56 +103,27 @@ class orders_order_model extends sqltable_model {
         extract($data);
         $orderdate = sql::datepicker2date($orderdate);
 
-        // файл если есть сохраним
-        foreach ($files as $file) {
-            if (!empty($file[size])) {
-                $filename = $_SERVER["DOCUMENT_ROOT"] . UPLOAD_FILES_DIR . "/customers/" . multibyte::UTF_encode($file["name"]);
-                $i = 0;
-                while (file_exists($filename)) {
-                    $i++;
-                    $filename = $_SERVER["DOCUMENT_ROOT"] . UPLOAD_FILES_DIR . "/customers/{$i}_" . multibyte::UTF_encode($file["name"]);
-                }
-                if (@move_uploaded_file($file["tmp_name"], $filename)) {
-                    // переместилост удачно
-                    $filename = multibyte::UTF_decode($filename);
-                    $curfile[$this->getFileId($filename)] = 1; // сделаем структуру как уже существующие
-                } else {
-                    $ret[affected] = false;
-                    $ret[alert] = "Ќе удалось сохранить файл! ѕопробуйте еще.";
-                    return $ret;
-                }
-            }
-        }
-
         if ($edit) {
             // редактирование
             $sql = "UPDATE orders
                     SET customer_id='{$customerid}',
                     orderdate='{$orderdate}',
-                    number='{$number}',
-                    filelink='{$fileid}'
+                    number='{$number}'
                     WHERE id='{$edit}'";
             sql::query($sql);
-//            $ret[affected] = false;
-//            $ret[alert] = "update {$sql} " . print_r($data, true);
         } else {
             // добавление
             $sql = "INSERT INTO orders
-                    (customer_id,orderdate,number,filelink)
-                    VALUES ('{$customerid}','{$orderdate}','{$number}','{$fileid}')";
-            //$ret[alert] = 'insert';
+                    (customer_id,orderdate,number)
+                    VALUES ('{$customerid}','{$orderdate}','{$number}')";
             sql::query($sql);
             $edit = sql::lastId();
         }
         $ret[affected] = true;
 
-        // заполним таблицу files
-        $sql = "DELETE FROM files WHERE `table`='orders' AND rec_id='{$edit}'";
-        sql::query($sql);
-        foreach ($curfile as $key => $value) {
-            $sql = "INSERT INTO files (`table`,rec_id,fileid) VALUES ('orders','{$edit}','{$key}')";
-            sql::query($sql);
-        }
+        $curfile = !empty($curfile)?array_merge($curfile,$this->storeFiles($files, $this->maintable)):$this->storeFiles($files, $this->maintable);
+        $this->storeFilesInTable($curfile, $this->maintable, $edit);
+ 
 
         return $ret;
     }

@@ -239,8 +239,18 @@ class sqltable extends lego_abstract {
         return $this->view->getSelect($data);
     }
     
-    public function action_AddFieldToForm() {
-        
+    public function action_addfilefield() {
+        $edit = new ajaxform_edit($this->getName());
+        $edit->restore();
+        $field =
+                array(
+                    "type" => AJAXFORM_TYPE_FILE,
+                    "name" => "file" . rand(),
+                    "label" => "",
+        );
+        $edit->addFieldAsArray($field);
+        $out = $edit->getFieldOut($edit->fields[$field[name]]);
+        return $out;
     }
 
 }

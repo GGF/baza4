@@ -69,7 +69,7 @@ class ajaxform_edit {
         }
         $this->form->addFields(array($field));
         if ($field["obligatory"])
-            $this->form->addObligatory($field["obligatory"]);
+            $this->form->addObligatory($field["name"]);
         if ($field["format"])
             $this->form->addFormat($field["format"]["name"], $field["format"]["type"], $field["format"]["pregPattern"]);
         if ($field["check"])

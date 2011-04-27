@@ -22,6 +22,7 @@ class lanch extends secondlevel {
     }
     
     public function action_boards() {
+        $_SESSION[customer_id]='';
         $this->table = new orders_boards();
         $this->table->run();
         if (Ajax::isAjaxRequest()) {
@@ -34,6 +35,7 @@ class lanch extends secondlevel {
     }
     
     public function action_blocks() {
+        $_SESSION[customer_id]='';
         $this->table = new orders_blocks();
         $this->table->run();
         if (Ajax::isAjaxRequest()) {

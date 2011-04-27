@@ -5,13 +5,18 @@
  */
 
 class orders_boards_model extends sqltable_model {
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'boards';
+    }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
+        $order = strstr($order, 'files') ? '' : $order; // не удается отсортировать по файлам
         if (empty($_SESSION[customer_id])) {
             $customer = "Выберите заказчика!!!";
             $sql = "SELECT *, CONCAT(boards.sizex,'x',boards.sizey) AS size, 
-                    boards.id AS boardid
+                    boards.id AS boardid,boards.id
                     FROM boards
                     JOIN (customers)
                     ON (customers.id=boards.customer_id ) " .
@@ -23,7 +28,7 @@ class orders_boards_model extends sqltable_model {
             $customer = $_SESSION[customer];
             // sql
             $sql = "SELECT *, CONCAT(boards.sizex,'x',boards.sizey) AS size, 
-                    boards.id AS boardid
+                    boards.id AS boardid,boards.id
                     FROM boards
                     JOIN (customers)
                     ON (customers.id=boards.customer_id ) " .
@@ -32,6 +37,10 @@ class orders_boards_model extends sqltable_model {
                     ($all ? "LIMIT 50" : "LIMIT 20");
         }
         $ret = sql::fetchAll($sql);
+        foreach ($ret as &$value) {
+            $files = $this->getFilesForId('boards', $value[boardid]);
+            $value[files] = $files[link];
+        }
         return $ret;
     }
 
@@ -43,26 +52,8 @@ class orders_boards_model extends sqltable_model {
         $cols[boardid] = "ID";
         $cols[board_name] = "Название платы";
         $cols[size] = "Размер";
+        $cols[files] = "Файлы";
         return $cols;
-    }
-
-    public function delete($delete) {
-        $affected = 0;
-        return $affected;
-    }
-
-    public function getRecord($edit) {
-        if (empty($edit))
-            return array();
-        $sql = "SELECT * FROM blocks WHERE id='$edit'";
-        $rec = sql::fetchOne($sql);
-        return $rec;
-    }
-
-    public function setRecord($data) {
-        extract($data);
-
-        return $ret;
     }
 
 }

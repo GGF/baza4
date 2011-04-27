@@ -9,8 +9,6 @@ class orders_customers_view extends sqltable_view {
 
     public function showrec($rec) {
 
-        $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
-        $form->init($rec[edit]);
         $fields = array(
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
@@ -33,9 +31,9 @@ class orders_customers_view extends sqltable_view {
                 "value" => $rec["kdir"],
             ),
         );
-        $form->addFields($fields);
+        $rec[fields] = $fields;
 
-        return $form->getOutput();
+        return parent::showrec($rec);
     }
 
 }

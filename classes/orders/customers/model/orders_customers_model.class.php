@@ -6,6 +6,10 @@
 
 class orders_customers_model extends sqltable_model {
 
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'customers';
+    }
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
         $sql = "SELECT * FROM customers " .
@@ -14,6 +18,11 @@ class orders_customers_model extends sqltable_model {
                 (!empty($order) ? "ORDER BY {$order} " : "ORDER BY customers.customer ") .
                 ($all ? "" : "LIMIT 20");
         $ret = sql::fetchAll($sql);
+        foreach ($ret as &$value) {
+            $files = $this->getFilesForId($this->maintable, $value[id]);
+            $value[files] = $files[link];
+        }
+
         if($all) {
             $_SESSION[customer_id]='';
             $_SESSION[order_id]='';
@@ -28,6 +37,7 @@ class orders_customers_model extends sqltable_model {
         $cols[customer] = "Заказчик";
         $cols[fullname] = "Полное название";
         $cols[kdir] = "Сверловки";
+        $cols[files] = "Файлы";
         return $cols;
     }
 
@@ -77,14 +87,6 @@ class orders_customers_model extends sqltable_model {
         return $affected;
     }
 
-    public function getRecord($id) {
-        if (empty($id))
-            return array();
-        $sql = "SELECT * FROM customers WHERE id='{$id}'";
-        $rec = sql::fetchOne($sql);
-        return $rec;
-    }
-
     public function  setRecord($data) {
         extract($data);
         if (!empty($edit)) {
@@ -97,7 +99,7 @@ class orders_customers_model extends sqltable_model {
         }
         sql::query($sql);
 
-        return sql::affected();
+        return parent::setRecord($data);
     }
 
 }

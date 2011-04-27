@@ -6,16 +6,23 @@
 
 class orders_blocks_model extends sqltable_model {
 
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'blocks';
+    }
+
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
+        $order = strstr($order, 'files') ? '' : $order; // не удается отсортировать по файлам
         if (empty($_SESSION[customer_id])) {
             $customer = "Выберите заказчика!!!";
             $sql = "SELECT *, CONCAT(blocks.sizex,'x',blocks.sizey) AS size, 
-                    blocks.id AS blockid
+                    blocks.id AS blockid,blocks.id
                     FROM blocks
                     JOIN (customers,boards,blockpos)
                     ON (customers.id=blocks.customer_id AND blockpos.block_id=blocks.id AND blockpos.board_id=boards.id ) " .
                     (!empty($find) ? "WHERE blockname LIKE '%{$find}%' OR board_name LIKE '%{$find}%' " : "") .
+                    " GROUP BY blockid " .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY blockname  DESC ") .
                     ($all ? "LIMIT 50" : "LIMIT 20");
         } else {
@@ -23,15 +30,20 @@ class orders_blocks_model extends sqltable_model {
             $customer = $_SESSION[customer];
             // sql
             $sql = "SELECT *, CONCAT(blocks.sizex,'x',blocks.sizey) AS size, 
-                    blocks.id AS blockid
+                    blocks.id AS blockid,blocks.id
                     FROM blocks
                     JOIN (customers,boards,blockpos) 
                     ON (customers.id=blocks.customer_id AND blockpos.block_id=blocks.id AND blockpos.board_id=boards.id ) " .
                     (!empty($find) ? "WHERE (blockname LIKE '%{$find}%'  OR board_name LIKE '%{$find}%') AND customers.id='{$_SESSION[customer_id]}' " : " WHERE customers.id='{$_SESSION[customer_id]}' ") .
+                    " GROUP BY blockid " .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY blockname DESC ") .
                     ($all ? "LIMIT 50" : "LIMIT 20");
         }
         $ret = sql::fetchAll($sql);
+        foreach ($ret as &$value) {
+            $files = $this->getFilesForId($this->maintable, $value[blockid]);
+            $value[files] = $files[link];
+        }
         return $ret;
     }
 
@@ -45,26 +57,8 @@ class orders_blocks_model extends sqltable_model {
         $cols[size] = "Размер";
         $cols[scomp] = 'COMP';
         $cols[ssolder] = 'SOLDER';
+        $cols[files] = 'Файлы';
         return $cols;
-    }
-
-    public function delete($delete) {
-        $affected = 0;
-        return $affected;
-    }
-
-    public function getRecord($edit) {
-        if (empty($edit))
-            return array();
-        $sql = "SELECT * FROM blocks WHERE id='$edit'";
-        $rec = sql::fetchOne($sql);
-        return $rec;
-    }
-
-    public function setRecord($data) {
-        extract($data);
-
-        return $ret;
     }
 
 }

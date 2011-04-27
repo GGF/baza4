@@ -2,8 +2,10 @@
 
 class sqltable_model {
 
+    protected $maintable;
+
     public function __construct() {
-        
+        $this->maintable = '';
     }
 
     public function init() {
@@ -23,15 +25,26 @@ class sqltable_model {
     }
 
     public function getRecord($edit) {
-        if (is_numeric($edit))
-            return false;
-        $ret = sql::fetchOne($edit);
-        return $ret;
+        if (empty($edit))
+            return array();
+        if (is_numeric($edit)) {
+            $sql = "SELECT * FROM {$this->maintable} WHERE id='$edit'";
+            $rec = sql::fetchOne($sql);
+            $rec[files] = $this->getFilesForId($this->maintable, $edit);
+            return $rec;
+        } else {
+            $ret = sql::fetchOne($edit);
+            return $ret;
+        }
     }
 
     public function setRecord($data) {
         extract($data);
-        return true;
+        // файлы к таблице привязать
+        $curfile = !empty($curfile)?array_merge($curfile,$this->storeFiles($files, $this->maintable)):$this->storeFiles($files, $this->maintable);
+        $this->storeFilesInTable($curfile, $this->maintable, $edit);
+        $ret[affected] = true;
+        return $ret;
     }
 
     /*
@@ -124,7 +137,7 @@ class sqltable_model {
     }
 
     public function getFilesForId($table, $id) {
-        $out[link]='';
+        $out[link] = '';
         $sql = "SELECT * FROM files WHERE `table`='{$table}' AND rec_id='{$id}'";
         $files = sql::fetchAll($sql);
         foreach ($files as $val) {
@@ -132,13 +145,55 @@ class sqltable_model {
             $file = sql::fetchOne($sql);
             $out[file][] = $file;
             $filelink = str_ireplace($_SERVER['DOCUMENT_ROOT'], '', $file[file_link]);
-            //$pos = strrpos($file[file_link], '/') + 1;
-            $file = basename($file[file_link]);//substr($file[file_link], $pos);
+//$pos = strrpos($file[file_link], '/') + 1;
+            $file = basename($file[file_link]); //substr($file[file_link], $pos);
 
-            $out[link] .= '&nbsp;<a target=_blank href="http://' . $_SERVER["HTTP_HOST"] . 
+            $out[link] .= '&nbsp;<a target=_blank href="http://' . $_SERVER["HTTP_HOST"] .
                     "{$filelink}\">{$file}</a>";
         }
         return $out;
+    }
+
+    public function storeFiles($files=false, $dir='') {
+        if ($files) {// файл если есть сохраним
+            $curfile = array();
+            foreach ($files as $file) {
+                if (!empty($file[size])) {
+                    $pathname = $_SERVER["DOCUMENT_ROOT"] . UPLOAD_FILES_DIR . "/" . multibyte::UTF_encode($dir);
+                    if (!file_exists($pathname)) {
+// содать каталог
+                        @mkdir($pathname, 0777);
+                    }
+                    $filename = $pathname . "/" . multibyte::UTF_encode($file["name"]);
+                    $i = 0;
+                    while (file_exists($filename)) {
+                        $i++;
+                        $filename = $pathname . "/{$i}_" . multibyte::UTF_encode($file["name"]);
+                    }
+                    if (@move_uploaded_file($file["tmp_name"], $filename)) {
+// переместилось удачно
+                        $filename = multibyte::UTF_decode($filename);
+                        $curfile[$this->getFileId($filename)] = 1; // сделаем структуру как уже существующие
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            return $curfile;
+        } else
+            return false;
+    }
+
+    public function storeFilesInTable($files=false, $table='', $edit='') {
+        $sql = "DELETE FROM files WHERE `table`='{$table}' AND rec_id='{$edit}'";
+        sql::query($sql);
+        if ($files && !empty($files)) {
+// заполним таблицу files
+            foreach ($files as $key => $value) {
+                $sql = "INSERT INTO files (`table`,rec_id,fileid) VALUES ('{$table}','{$edit}','{$key}')";
+                sql::query($sql);
+            }
+        }
     }
 
 }

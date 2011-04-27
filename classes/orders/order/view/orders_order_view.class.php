@@ -26,20 +26,16 @@ class orders_order_view extends sqltable_view {
                 "value" => !empty($_SESSION[customer_id]) ? $_SESSION[customer_id] : $rec["customer_id"],
             ));
         }
-        array_push($fields, array(
-            "type" => AJAXFORM_TYPE_HIDDEN,
-            "name" => "fileid",
-            "value" => $rec["filelink"],
-        ));
+
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "orderdate",
             "label" => 'Дата:',
             "value" => sql::date2datepicker($rec[orderdate]),
             "options" => array("html" => ' datepicker=1 '),
-                //"check" => array("type" => AJAXFORM_CHECK_NUMERIC),
-                //"format" => array("type" => AJAXFORM_FORMAT_CUSTOM, "pregPattern" => "/[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]/"),
-                //"obligatory" => true,
+            "check" => array("type" => AJAXFORM_CHECK_NUMERIC),
+            "format" => array("type" => AJAXFORM_FORMAT_CUSTOM, "pregPattern" => "/[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]/"),
+            "obligatory" => true,
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
@@ -47,7 +43,7 @@ class orders_order_view extends sqltable_view {
             "label" => "Номер письма:",
             "value" => $rec["number"],
             "options" => array("html" => "size=30",),
-                //"obligatory" => true,
+            "obligatory" => true,
         ));
         if ($rec[files][file]) {
             foreach ($rec[files][file] as $file) {
@@ -71,8 +67,7 @@ class orders_order_view extends sqltable_view {
 
         $form->addFields($fields);
         $out = $form->getOutput();
-        Output::assign('link', $rec[addfileaction]);
-        $out .= $this->fetch('addfilebutton.tpl');
+        $out .= $this->addFileButton();
         return $out;
     }
 
