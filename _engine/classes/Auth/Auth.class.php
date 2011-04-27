@@ -134,6 +134,9 @@ class Auth extends lego_abstract {
         $this->gohome();
     }
 
+    public function logout() {
+        $this->action_logout();
+    }
     private function gohome() {
         if (Ajax::isAjaxRequest()) {
             echo "<script>";
