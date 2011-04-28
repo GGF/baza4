@@ -29,7 +29,7 @@ function dialog_modal(info)
             Ok: function() {
                 $(this).dialog('close');
                 $('#dialog').remove();
-                reload_table();
+                //reload_table();
             }
         };
     } else {
@@ -59,7 +59,7 @@ function dialog_modal(info)
         width: 'auto',
         modal: true,
         resizable: resizeble,
-        draggable: false,
+        draggable: true,
         buttons: Buttons
     });
 }

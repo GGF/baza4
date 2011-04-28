@@ -41,7 +41,8 @@ class lanch_nzap_model extends sqltable_model {
     }
 
     public function delete($id) {
-        $sql = "DELETE FROM posintz WHERE id='{$id}'";
+        //$sql = "DELETE FROM posintz WHERE id='{$id}'";
+        $sql="UPDATE posintz SET ldate=NOW(),luser_id='".Auth::getInstance()->getUser('id')."' WHERE id='{$id}'";
         sql::query($sql);
         return sql::affected();
     }
@@ -338,7 +339,7 @@ class lanch_nzap_model extends sqltable_model {
         }
         $rec = array_merge($rec, compact('platonblock', 'numlam', 'rmark', 'immer', 'mask', 'layers', 'class', 'mark', 'commentp'));
         // сделать собственно сопроводительный
-        $zagotinparty = 25;
+        $rec[zagotinparty]=$zagotinparty = 25;
         if ($dozap) {
             //
             $zagotovokvsego = ceil($dozapnumbers / $platonblock);
@@ -356,6 +357,7 @@ class lanch_nzap_model extends sqltable_model {
             $part = (ceil($zagotovokvsego / $zagotinparty) > 1) ?
                     $party . "(" . ceil($zagotovokvsego / $zagotinparty) . ")" : $party;
         }
+        $rec[last] = ceil($zagotovokvsego / $zagotinparty) <= $party;
         // реорганизуем для запонения сл одной строчкой
         $rec[type] = multibyte::UTF_encode($layers == '1' ? 'ОПП' : 'ДПП');
         $rec[number] = sprintf("%08d", $lanch_id);
@@ -375,8 +377,11 @@ class lanch_nzap_model extends sqltable_model {
         }
         $rec[pio1] = $numpl1 == 0 ? $numbers : $numpl1; // позже возможно можно будет удалить если numpl будет из ТЗ заполнятся
         $rec[datez] = $rec[date];
-        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . trim(sprintf("%5.3f", $rec[tolsh]));
-        $rec[tolsh] = trim(sprintf("%5.1f", $rec[tolsh]));
+        $tolsh = preg_split('/[\.±]/',$rec[tolsh]);
+        $tolsh = sprintf("%-d.%-d",$tolsh[0],$tolsh[1]);
+        $tolsh = trim(sprintf("%-5.3f",$rec[tolsh]),'0');
+        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . $tolsh;
+        $rec[tolsh] = $tolsh;
         $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";
         $rec[zmask] = strstr($rec[mask], multibyte::UTF_encode('ЖМ')) ? "+" : "-";
         $rec[aurum] = ($rec[immer] == '1' ? "+" : "-");
@@ -386,7 +391,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec[ssold] = sprintf("%3.2f", $rec[ssold] / 10000);
         $rec[lamel] = $rec[numlam] > 0 ? "+" : "-";
         $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
-                        ($rec[ppsimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh])))
+                        ($rec[ppsimat] . '-' . $tolsh)
                 ) . $rec[commentp];
         $rec[dozap] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
         $rec = array_merge($rec, compact('ppart', 'part'));
@@ -402,7 +407,6 @@ class lanch_nzap_model extends sqltable_model {
 
     public function lanchsl($rec) {
         extract($rec);
-        $last = ceil($zagotovokvsego / $zagotinparty) <= $party;
         $numbp = $zagotovokvsego <= $zagotinparty ? $numbers :
                 ($last ? ($numbers - ($party - 1) * $zagotinparty * $platonblock) : $zagotinparty * $platonblock);
         $sql = "UPDATE lanch

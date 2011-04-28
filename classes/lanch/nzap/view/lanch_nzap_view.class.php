@@ -22,10 +22,8 @@ class lanch_nzap_view extends sqltable_view {
             Output::assign('mplink', $rec[mp][mplink]);
             $out .= $this->fetch('mp.tpl');
         }
-        $i = 0;
         $out .= '<br>';
         foreach ($rec[party] as $party) {
-            $i++;
             foreach ($party as $key => $val) {
                 Output::assign($key, $val);
             }
@@ -36,7 +34,7 @@ class lanch_nzap_view extends sqltable_view {
                 $out .= $this->fetch('partybutton.tpl');
             }
             }
-            $out .= $i % 5 == 0 ? "<br>" : "";
+            $out .= $party[party] % 5 == 0 ? "<br>" : "";
         }
         //$out .= print_r($rec,true);
 
@@ -53,7 +51,7 @@ class lanch_nzap_view extends sqltable_view {
         if (fileserver::savefile($filename, $excel)) {
             Output::assign('sllink', fileserver::sharefilelink($filename));
             Output::assign('slid', $lanch_id);
-            $out = $this->fetch('partylink.tpl');
+            $out = $this->fetch('partylink.tpl').($last?'<script>reload_table();</script>':'');
         } else {
             $out = "Не удалось записать файл";
             $out = false;

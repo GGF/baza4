@@ -76,14 +76,14 @@ class sqltable extends lego_abstract {
         $this->tid = uniqid($this->type);
 
 
-//        if (!empty($_POST[find])) {
-//            $_GET[get_class($this)][index][2] = multibyte::UTF_decode($_POST[find]);
-//        }
+        if (!empty($_POST[find])) {
+            $_GET[$this->getName()][index][2] = multibyte::UTF_decode($_POST[find]);
+        }
 
         $param = $this->getLegoParam('index');
         $this->all = (bool) $param[0];
         $this->order = $param[1];
-        $this->find = empty($_REQUEST[find])?$param[2]:  multibyte::UTF_decode($_REQUEST[find]);
+        $this->find = $param[2];//empty($_REQUEST[find])?$param[2]:  multibyte::UTF_decode($_REQUEST[find]);
         $this->idstr = $param[3];
 
         $this->del = Auth::getInstance()->getRights($this->type,'del');
