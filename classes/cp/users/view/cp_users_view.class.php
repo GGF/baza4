@@ -58,7 +58,7 @@ class cp_users_view extends sqltable_view {
         $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
         $form->init($rec[edit]);
         foreach ($rec[types] as $key => $val) {
-            $label = sprintf("<span id='rrr' rtype='{$val["type"]}'>[%-10s]</span>:", $val["type"]);
+            $label = sprintf("<span id='rrr' rtype='{$val["type"]}'>[%-25s]</span>:", $val["type"]);
             $form->addFields(array(
                 array(
                     "type" => AJAXFORM_TYPE_CHECKBOXES,
@@ -85,7 +85,7 @@ class cp_users_view extends sqltable_view {
         ));
         $out = $form->getOutput();
         $out .= "<script>\$('#rrr').live('click',function(){\$(':checkbox[rtype='+\$(this).attr('rtype')+']').attr('checked',true);});</script>";
-        $out .= "<script>\$('#rrr').live('dblclick',function(){\$(':checkbox[rtype='+\$(this).attr('rtype')+']').attr('checked',false);});</script>";
+        $out .= "<script>\$('#rrr').live('contextmenu',function(){\$(':checkbox[rtype='+\$(this).attr('rtype')+']').attr('checked',false);return false;});</script>";
         return $out;
     }
 

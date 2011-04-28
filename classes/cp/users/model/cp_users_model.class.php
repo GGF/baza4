@@ -88,7 +88,7 @@ class cp_users_model extends sqltable_model {
                 $sql = "SELECT * FROM rights WHERE type_id='{$rs["id"]}' AND u_id='{$userid}' AND rtype_id='{$rs1["id"]}'";
                 $rs2 = sql::fetchOne($sql);
                 $value[$rs1["id"]] = ($rs2["right"] == 1 ? 1 : 0);
-                $values[$rs1["id"]] = '-';
+                $values[$rs1["id"]] = $rs1["rtype"];
             }
             $rec[value] = $value;
             $rec[values] = $values;

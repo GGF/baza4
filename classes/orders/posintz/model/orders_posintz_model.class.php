@@ -6,6 +6,11 @@
 
 class orders_posintz_model extends sqltable_model {
 
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'posintz';
+    }
+
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
         if (!empty($_SESSION[tz_id])) {

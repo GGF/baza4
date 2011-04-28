@@ -6,6 +6,10 @@
  * @author igor
  */
 class lanch_pt_model extends sqltable_model {
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'phototemplates';
+    }
     public function getData($all=false,$order='',$find='',$idstr='') {
         $ret = array();
 	$sql="SELECT *,unix_timestamp(ts) AS uts,phototemplates.id AS ptid,phototemplates.id 
@@ -28,7 +32,7 @@ class lanch_pt_model extends sqltable_model {
         return $cols;
     }
 
-    public function delete($id) {
+    public function delete($delete) {
         $sql = "DELETE FROM phototemplates WHERE id='${delete}'";
 	sql::query($sql);
         return sql::affected();

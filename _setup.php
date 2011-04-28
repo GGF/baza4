@@ -19,7 +19,7 @@ $_SERVER["debug"] = array(
 );
 $_SERVER['SYSCACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 $_SERVER[CACHE] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
-$_SERVER["debug"] = false;
+//$_SERVER["debug"] = false;
 
 // База данных
 $_SERVER["mysql"] = array(
