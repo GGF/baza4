@@ -19,7 +19,8 @@ $_SERVER["debug"] = array(
 );
 $_SERVER['SYSCACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 $_SERVER[CACHE] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
-//$_SERVER["debug"] = false;
+$_SERVER["debug"] = false;
+
 // База данных
 $_SERVER["mysql"] = array(
     "lang" => array(
@@ -39,9 +40,10 @@ $_SERVER["mysql"] = array(
 );
 
 // перехватим ошибки
-if ($_SERVER[debug][report])
+if ($_SERVER[debug][report]) {
     console::getInstance();
-profiler::add('Autoexec', 'Выполнение начальных установок');
+    profiler::add('Autoexec', 'Выполнение начальных установок');
+}
 
 
 // Временная зона

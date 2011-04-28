@@ -103,10 +103,26 @@ class Auth extends lego_abstract {
             $this->gohome();
             // показать начало чтоб не подменю показывать
         }
-        Output::assign('css', $this->getHeaderBlock());
+        Output::assign('css', $this->getAllHeaderBlock());
         Output::assign('mes', $mes);
         Output::assign('title', 'Авторизация');
         Output::assign('actionlink', $this->actUri('login')->url());
+        $scripts = "
+            document.location.hash = '';
+            currentState = document.location.hash
+            $('#dialog').dialog({
+                closeOnEscape: false,
+                title:'Авторизация',
+                width: 'auto',
+                modal: true,
+                resizable: false,
+                draggable: false
+            });
+            //$('#authform').submit(function(){alert($(this).serialize());})
+            //$('#ser').click(function(){alert($('#authform').serialize());});
+            //$('#password').keydown(function(ev){if (ev.keyCode == 13) $('#authform').submit()});
+        ";
+        Output::assign('scripts', $scripts);
         return $this->fetch('form.tpl');
     }
 
@@ -114,13 +130,14 @@ class Auth extends lego_abstract {
 
         // ------------------------------------
         $sql = "SELECT * FROM users " .
-                "WHERE password='{$_POST["password"]}'";
+                "WHERE password='{$_REQUEST["password"]}'";
         $res = sql::fetchOne($sql);
         if ($res) {
             $sql = "INSERT INTO session (session,u_id) " .
                     "VALUES ('" . session_id() . "','{$res[id]}')";
             sql::query($sql);
         }
+        //return print_r($_REQUEST,true);
         $this->gohome();
     }
 

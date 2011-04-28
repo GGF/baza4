@@ -52,9 +52,9 @@ abstract class JsCSS implements IJsCSS {
         $jses = $this->getJavascripts();
         $ret = "";
         foreach ($csses as $one)
-            $ret .= "<link media='all' rel='stylesheet' href='/{$one}?{$this->getVersion()}' type='text/css' media='screen' />\n";
+            $ret .= "<style media='all' type='text/css' >@import url({$one}?{$this->getVersion()});</style> \n";
         foreach ($jses as $one)
-            $ret .= "<script type='text/javascript' src='/{$one}?{$this->getVersion()}'></script>\n";
+            $ret .= "<script type='text/javascript' src='{$one}?{$this->getVersion()}'></script>\n";
         return $ret;
     }
 

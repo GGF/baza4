@@ -10,8 +10,11 @@
     font-family: Verdana, Arial, Helvetica, sans-serif; 
     font-size: 12pt; 
     font-weight: bold; 
-    color: #000000
+    color: #000000;
+    width:100%;
+    text-align:center;
 }
+
 .tekst {  
     font-family: Arial, Helvetica, sans-serif; 
     font-size: 10pt;
@@ -34,11 +37,14 @@ div.auth {
 
 .auth table {
     /*display: table-cell;*/
-    display: inline-block;
+    /*display: inline-block;*/
     width:500px;
     background-color: white;
     border:0px; 
     border-collapse: collapse;
+}
+.auth table tr {
+    width:100%;
 }
 
 td.underline {
