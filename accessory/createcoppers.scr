@@ -1,0 +1,76 @@
+if drillname$ <> "" then 
+	tempdrlname$=drillname$
+end if
+
+!INCLUDE "getpathandname.scr"
+
+!include "layersset.scr"
+
+Setlayer@ comp
+layer_alloff@ 0
+X# = vismaxx! - visminx!
+Y# = vismaxy! - visminy!
+
+setlayer@ comp
+layer_alloff@ 1
+util_copper@
+copper@ 0.1,161,0,1
+sc#=copperarea!
+if mpp =-1 then 
+	' двусторон€€ плата - вычесть лишнюю площадь
+	lc#=(2*X#+2*Y#)*2.5 ' периметр на 2.5 мм
+	sc# = sc#-lc#
+end if
+
+setlayer@ solder
+layer_alloff@ 1
+util_copper@
+copper@ 0.1,161,0,1
+ss#=copperarea!
+if mpp =-1 then 
+	' двусторон€€ плата - вычесть лишнюю площадь
+	lc#=(2*X#+2*Y#)*2.5 ' периметр на 2.5 мм
+	ss# = ss#-lc#
+end if
+
+'—охранение площадей в текстовом файле
+if tempdrlname$ <> "" then 
+	name$=tempdrlname$
+end if
+open path$+"copper.rpt" for output as #1
+print #1,name$
+print #1,"COMP - ",sc#
+print #1,"SOLDER - ",ss#
+print #1,X#
+print #1,Y#
+print #1,board$
+print #1,customer$
+print #1, USING "###.###"; zsizex#
+print #1, USING "###.###"; zsizey# 
+print #1, mpp
+print #1, count
+close #1
+
+' записать данные в базу
+encodestr$=customer$
+gosub URL_encode
+customer$=LTRIM$(RTRIM$(encodestr$))
+encodestr$=board$
+gosub URL_encode
+board$=LTRIM$(RTRIM$(encodestr$))
+
+url$="x:\tool\tear.exe "+chr$(34)+"http://baza.mpp/addcopper.php?customer="+customer$+"&board="+board$+"&comp="+str$(sc#)+"&solder="+str$(ss#)+"&drillname="+name$+"&sizex="+str$(X#)+"&sizey="+str$(Y#)+"&mpp="+str$(mpp)+chr$(34)+" > cx.bat"
+
+open path$+"dbq.bat" for output as #1
+	print #1,url$
+close #1
+
+s1$ = chr$(34)+path$+"dbq.bat"+chr$(34)
+WinCall s1$,MinimizedNoFocus,done%
+kill path$+"dbq.bat"
+
+goto cc_endscript
+
+!INCLUDE "urlencode.sub"
+
+cc_endscript:
