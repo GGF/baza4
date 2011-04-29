@@ -12,33 +12,17 @@ class orders_blocks_view extends sqltable_view {
     }
 
     public function showrec($rec) {
-        $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
-        $form->init($rec[edit]);
         $fields = array();
-        if ($rec[files][file]) {
-            foreach ($rec[files][file] as $file) {
-                $values[$file[id]] = basename($file[file_link]);
-                $value[$file[id]] = 1;
-            }
-            array_push($fields, array(
-                "type" => AJAXFORM_TYPE_CHECKBOXES,
-                "name" => "curfile",
-                "label" => 'Текущие файлы:',
-                "value" => $value,
-                "values" => $values,
-                    //"options" => array("html" => "readonly",),
-            ));
-        }
         array_push($fields, array(
-            "type" => AJAXFORM_TYPE_FILE,
-            "name" => "file",
-            "label" => "Добавить файл:",
+            "type" => AJAXFORM_TYPE_TEXT,
+            "name" => "blockname",
+            "label" => "Наименование блока",
+            "value" => $rec[blockname],
+            "options" => array( "readonly" => true ),
         ));
 
-        $form->addFields($fields);
-        $out = $form->getOutput();
-        $out .= $this->addFileButton();
-        return $out;
+        $rec[fields] = $fields;
+        return parent::showrec($rec);
     }
 
 }

@@ -51,7 +51,7 @@ class ajaxform_edit {
     
     public function restore() {
         $this->form = new ajaxform($this->type);
-        $this->form->init();
+        $this->form->initConfirm();
     }
 
     public function addField($label, $name, $type) {

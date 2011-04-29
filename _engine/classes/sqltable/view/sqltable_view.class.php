@@ -31,6 +31,7 @@ class sqltable_view extends views {
             "type" => AJAXFORM_TYPE_FILE,
             "name" => "file",
             "label" => "Добавить файл:",
+            //"option" => array( "html" => " onchange='alert($(this).val())' "),
         ));
 
         $form->addFields($fields);
@@ -248,7 +249,21 @@ class sqltable_view extends views {
     public function addFileButton() {
         $link = $this->owner->actUri('addfilefield')->ajaxurl($this->owner->getName());
         $out = '<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="' . $link . '"><input type="button" id="sl{$party}" value="Добавить файлов" ></a>';
-        //$this->fetch('filebutton.tpl');
+        $link = $this->owner->actUri('addfilelink')->ajaxurl($this->owner->getName());
+        $out .= '<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="' . $link . '" id=addfilelinkbutton><input type="button" id="sl{$party}" value="Добавить линки на файлы" ></a>';
+        $out .= "<script>
+                $('#addfilelinkbutton').click(function(){
+                    var filename=document.bazaapplet.addFile();
+                    if (filename=='nullnull') return false; // это иззатого что в апплете плюсуются путь и имя, а переписывать лень
+                    if(filename.substring(0,1).search(/[tzTZ]/)!= -1) {
+                        $(this).attr('href',$(this).attr('href')+'&filename='+filename);
+                        return true;
+                    } else {
+                        alert('Только на дисках Т и Z!!!');
+                        return false;
+                    }
+                });
+                </script>";
         return $out;
     }
 

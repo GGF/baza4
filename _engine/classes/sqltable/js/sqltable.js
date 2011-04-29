@@ -113,13 +113,18 @@ $(document).ready(function(){
 
     $("a.filelink").live("click", function(){
         var link = $(this).attr("href");
-        if (link.search("xml") != -1 || link.search("xls") != -1 ) {
             var re = new RegExp('/','gi');
             document.bazaapplet.openfile('\"'+link.split(':')[1].replace(re,'\\')+'\"');
             return false;
-        }
-        return true;
+//        if (link.search("xml") != -1 || link.search("xls") != -1 ) {
+//            var re = new RegExp('/','gi');
+//            document.bazaapplet.openfile('\"'+link.split(':')[1].replace(re,'\\')+'\"');
+//            return false;
+//        }
+//        return true;
     });
+    
+    //$('input[type=file]').live('change',function(){alert($(this).val())});
 });
 
 function table_set_keyboard()

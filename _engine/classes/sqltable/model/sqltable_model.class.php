@@ -41,7 +41,10 @@ class sqltable_model {
     public function setRecord($data) {
         extract($data);
         // файлы к таблице привязать
-        $curfile = !empty($curfile)?array_merge($curfile,$this->storeFiles($files, $this->maintable)):$this->storeFiles($files, $this->maintable);
+        $files = $this->storeFiles($files, $this->maintable);
+        if (!isset($curfile)) $curfile=array();
+        if (!isset($linkfile)) $linkfile=array();
+        $curfile = $curfile+$linkfile+$files; // в мерге перенумеровываются ключи!!!
         $this->storeFilesInTable($curfile, $this->maintable, $edit);
         $ret[affected] = true;
         return $ret;
@@ -111,6 +114,13 @@ class sqltable_model {
     }
 
     public function getFileId($filename) {
+//        // преобразовать в текущую страницу
+//        $filename = multibyte::UTF_decode($filename);
+//        // символы \ заменить
+//        $filename = str_replace('\\', '\\\\', $filename);
+//        // удалить парные
+//        $filename = str_replace('\\\\', '\\', $filename);
+        $filename = addslashes($filename);
         $sql = "SELECT id FROM filelinks WHERE file_link='{$filename}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
@@ -144,12 +154,15 @@ class sqltable_model {
             $sql = "SELECT * FROM filelinks WHERE id='{$val[fileid]}'";
             $file = sql::fetchOne($sql);
             $out[file][] = $file;
-            $filelink = str_ireplace($_SERVER['DOCUMENT_ROOT'], '', $file[file_link]);
-//$pos = strrpos($file[file_link], '/') + 1;
-            $file = basename($file[file_link]); //substr($file[file_link], $pos);
-
-            $out[link] .= '&nbsp;<a target=_blank href="http://' . $_SERVER["HTTP_HOST"] .
-                    "{$filelink}\">{$file}</a>";
+            if (!strstr($file[file_link],$_SERVER['DOCUMENT_ROOT'])) {
+                $filelink = fileserver::sharefilelink($file[file_link]);
+                $file = basename($filelink);
+                $out[link] .= "&nbsp;<a class='filelink' href='{$filelink}'>{$file}</a>";
+            } else {
+                $filelink = str_ireplace($_SERVER['DOCUMENT_ROOT'], '', $file[file_link]);
+                $file = basename($filelink);
+                $out[link] .= "&nbsp;<a href='http://{$_SERVER["HTTP_HOST"]}{$filelink}'>{$file}</a>";
+            }
         }
         return $out;
     }
@@ -172,6 +185,7 @@ class sqltable_model {
                     }
                     if (@move_uploaded_file($file["tmp_name"], $filename)) {
 // переместилось удачно
+                        @chmod($filename,0777);
                         $filename = multibyte::UTF_decode($filename);
                         $curfile[$this->getFileId($filename)] = 1; // сделаем структуру как уже существующие
                     } else {

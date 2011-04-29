@@ -83,13 +83,13 @@ class sqltable extends lego_abstract {
         $param = $this->getLegoParam('index');
         $this->all = (bool) $param[0];
         $this->order = $param[1];
-        $this->find = $param[2];//empty($_REQUEST[find])?$param[2]:  multibyte::UTF_decode($_REQUEST[find]);
+        $this->find = $param[2]; //empty($_REQUEST[find])?$param[2]:  multibyte::UTF_decode($_REQUEST[find]);
         $this->idstr = $param[3];
 
-        $this->del = Auth::getInstance()->getRights($this->type,'del');
-        $this->edit = Auth::getInstance()->getRights($this->type,'edit');
+        $this->del = Auth::getInstance()->getRights($this->type, 'del');
+        $this->edit = Auth::getInstance()->getRights($this->type, 'edit');
         $this->buttons = true;
-        $this->addbutton = Auth::getInstance()->getRights($this->type,'edit');
+        $this->addbutton = Auth::getInstance()->getRights($this->type, 'edit');
 
         try {
             profiler::add('Выполнение', $this->getName() . get_class($this) . ': Попытка создать модель');
@@ -145,8 +145,8 @@ class sqltable extends lego_abstract {
     public function action_index($all='', $order='', $find='', $idstr='') {
         $all = empty($all) ? $this->all : $all;
         $order = empty($order) ? $this->order : $order;
-        $find = empty($_REQUEST[find]) ? (empty($find) ? $this->find : $find) : multibyte::UTF_decode($_REQUEST[find]); 
-        
+        $find = empty($_REQUEST[find]) ? (empty($find) ? $this->find : $find) : multibyte::UTF_decode($_REQUEST[find]);
+
         $idstr = empty($idstr) ? $this->idstr : $idstr;
 
         $this->all = $all;
@@ -238,7 +238,7 @@ class sqltable extends lego_abstract {
         $data = $this->model->getBlocks($customerid);
         return $this->view->getSelect($data);
     }
-    
+
     public function action_addfilefield() {
         $edit = new ajaxform_edit($this->getName());
         $edit->restore();
@@ -249,6 +249,27 @@ class sqltable extends lego_abstract {
                     "label" => "",
         );
         $edit->addFieldAsArray($field);
+        $out = $edit->getFieldOut($edit->fields[$field[name]]);
+        return $out;
+    }
+
+    public function action_addfilelink() {
+        $edit = new ajaxform_edit($this->getName());
+        $edit->restore();
+        $filename = multibyte::UTF_decode($_REQUEST[filename]);
+        $id = $this->model->getFileId($filename);
+        $values[$id] = basename($this->model->getFileNameById($id));
+        $value[$id] = 1;
+        $field =
+                array(
+                    "type" => AJAXFORM_TYPE_CHECKBOXES,
+                    "name" => "linkfile",
+                    "label" => '',
+                    "value" => $value,
+                    "values" => $values,
+        );
+        $edit->addFieldAsArray($field);
+        $edit->form->SessionSet();
         $out = $edit->getFieldOut($edit->fields[$field[name]]);
         return $out;
     }
