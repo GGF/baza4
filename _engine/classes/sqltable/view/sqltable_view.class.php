@@ -31,7 +31,7 @@ class sqltable_view extends views {
             "type" => AJAXFORM_TYPE_FILE,
             "name" => "file",
             "label" => "Добавить файл:",
-            //"option" => array( "html" => " onchange='alert($(this).val())' "),
+                //"option" => array( "html" => " onchange='alert($(this).val())' "),
         ));
 
         $form->addFields($fields);
@@ -56,10 +56,9 @@ class sqltable_view extends views {
             $ret .= "<tr><th colspan=100 align=center>{$this->owner->title}";
         }
         $ret .= "<tr>";
-        $cfind = (Ajax::isAjaxRequest() ? urldecode($this->owner->find) : $this->owner->find);
         $cfind = urlencode($this->owner->find);
-        $cidstr = (Ajax::isAjaxRequest() ? urldecode($this->owner->idstr) : $this->owner->idstr);
-        $ccord = urldecode($this->owner->order);
+        $cidstr = urlencode($this->owner->idstr);
+        $ccord = urlencode($this->owner->order);
         $cols = $this->owner->cols;
         if (!empty($cols)) {
             reset($cols);
@@ -155,10 +154,13 @@ class sqltable_view extends views {
                             " prev='$prtrid' next='$netrid'>";
                 $rs["№"] = $i;
 
+                $cfind = urlencode($this->owner->find);
+                $cidstr = urlencode($this->owner->idstr);
+                $ccord = urlencode($this->owner->order);
+                $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->set($this->owner->getName(),'open', $rs['id'])->url();
                 $link = "<a alt='Раскрыть' title='Раскрыть' " .
                         "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
-                        "href='{$this->owner->actUri('open', $rs['id'])->url()}' " .
-                        "id='showlink'><div class='fullwidth'>";
+                        "href='{$url}' id='showlink'><div class='fullwidth'>";
                 $linkend = "</div></a>";
                 $rs["file_link"] = substr($rs["file_link"], strrpos($rs["file_link"], "\\") + 1);
                 $delstr = '';
