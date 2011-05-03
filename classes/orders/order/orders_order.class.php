@@ -8,30 +8,21 @@ class orders_order extends sqltable {
     }
 
     public function action_index($all = '', $order = '', $find = '', $idstr = '') {
-        $customer = $this->model->getCustomer($_SESSION[customer_id]);
+        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        $customer = $this->model->getCustomer($customer_id);
         $customer = $customer[customer];
-        $this->title = empty($_SESSION[customer_id]) ? "Âûáåğèòå çàêàç÷èêà" : "Çàêàç÷èê - {$customer}";
+        $this->title = empty($customer_id) ? "Âûáåğèòå çàêàç÷èêà" : "Çàêàç÷èê - {$customer} ";
         return parent::action_index($all, $order, $find, $idstr);
     }
 
-    public function action_edit($id) {
-        if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
-            return $this->view->getMessage('Íåò ïğàâ íà ğåäàêòèğîâàíèå');
-        $rec = $this->model->getRecord($id);
-        $rec[edit] = $id;
-        $rec[customers] = $this->model->getCustomers();
-        $rec[action] = $this->actUri('processingform')->ajaxurl($this->getName());
-        $out = $this->view->showrec($rec);
-        return $this->view->getForm($out);
-    }
-
     public function action_open($id) {
-        $_SESSION[order_id] = $id;
+        $order_id = $id;
         $order = $this->model->getOrder($id);
-        $_SESSION[customer_id] = $order[customer_id];
-        $_SESSION[tz_id] = '';
-        //$_SESSION[customer] = $this->model->getCustomer($id);
-        $this->_goto($this->uri()->clear()->set('orders', 'tz')->url());
+        $customer_id = $order[customer_id];
+        $tz_id = '';
+        $idstr = "{$customer_id}:{$order_id}:{$tz_id}:{$posintzid}";
+        $this->_goto($this->uri()->clear()->set('orders', 'tz')->
+                set('orders_tz','index', false,'','',$idstr)->url());
     }
 
 }

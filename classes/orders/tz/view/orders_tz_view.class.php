@@ -10,17 +10,19 @@ class orders_tz_view extends sqltable_view {
     public function showrec($rec) {
         Output::assign('tzlink', fileserver::sharefilelink($rec[tzlink]));
         Output::assign('tzid', $rec[id]);
-        return $this->fetch('tzlink.tpl');;
+        return $this->fetch('tzlink.tpl').'<script>reload_table()</script>';;
     }
 
     public function savefiletz($rec) {
         extract($rec);
         $excel = file_get_contents($this->getDir() .($typetz == "mpp" ? "/tzmpp.xls" : ($typetz == "dpp" ? "/tzdpp.xls" : "/tzdppm.xls")));
-        if ($file = @fopen($filename, "w")) {
+        $file = @fopen($filename, "w");
+        if ($file) {
             fwrite($file, $excel);
             fclose($file);
             @chmod($filename, 0777);
-            if ($file = @fopen($filename . ".txt", "w")) {
+            $file = @fopen($filename . ".txt", "w");
+            if ($file) {
                 fwrite($file, $cdate . "\n");
                 fwrite($file, $fullname . "\n");
                 fwrite($file, $order . "\n");

@@ -23,11 +23,6 @@ class orders_customers_model extends sqltable_model {
             $value[files] = $files[link];
         }
 
-        if($all) {
-            $_SESSION[customer_id]='';
-            $_SESSION[order_id]='';
-            $_SESSION[tz_id]='';
-        }
         return $ret;
     }
 

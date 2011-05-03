@@ -12,9 +12,10 @@ class orders_posintz_model extends sqltable_model {
     }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        $ret = array();
-        if (!empty($_SESSION[tz_id])) {
-            $tzid = $_SESSION[tz_id];
+        $ret = parent::getData($all, $order, $find, $idstr);
+        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        if (!empty($tz_id)) {
+            $tzid = $tz_id;
             $sql = "SELECT *,posintz.id as posid,posintz.id
                     FROM `posintz`
                     JOIN (blocks)
@@ -23,8 +24,8 @@ class orders_posintz_model extends sqltable_model {
                     (!empty($order) ? " ORDER BY {$order} " : " ORDER BY posintz.id DESC ") .
                     ($all ? "" : "LIMIT 20");
         } else {
-            if (!empty($_SESSION[customer_id])) {
-                if (empty($_SESSION[order_id])) {
+            if (!empty($customer_id)) {
+                if (empty($order_id)) {
 
                     $sql = "SELECT *,tz.id AS tzid,posintz.id as posid,posintz.id
                     FROM `posintz`
@@ -70,13 +71,14 @@ class orders_posintz_model extends sqltable_model {
 
     public function getCols() {
         $cols = array();
-        if (empty($_SESSION[customer_id])) {
+        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$this->idstr);
+        if (empty($customer_id)) {
             $cols[customer] = "Заказчик";
         }
-        if (empty($_SESSION[order_id])) {
+        if (empty($order_id)) {
             $cols[number] = "Заказ";
         }
-        if (empty($_SESSION[tz_id])) {
+        if (empty($tz_id)) {
             $cols[tzid] = "ТЗ";
         }
         $cols[posid] = "ID";

@@ -154,10 +154,11 @@ class sqltable extends lego_abstract {
         $this->find = $find;
         $this->idstr = $idstr;
         if ($this->model != null) {
-            if (empty($this->cols))
-                $this->cols = $this->model->getCols();
+            // порядок получения важен. в получении даты инициализируется idstr
             if (empty($this->data))
                 $this->data = $this->model->getData($all, $order, $find, $idstr);
+            if (empty($this->cols))
+                $this->cols = $this->model->getCols();
         }
 
         return $this->view == null ? "" : $this->view->show();
@@ -175,7 +176,10 @@ class sqltable extends lego_abstract {
     }
 
     public function action_edit($id) {
+        if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
+            return $this->view->getMessage('Нет прав на редактирование');
         $rec = $this->model->getRecord($id);
+        $rec[idstr] = $this->idstr;
         $rec[isnew] = empty($id);
         $rec[edit] = $id;
         $rec[action] = $this->actUri('processingform')->ajaxurl($this->getName());

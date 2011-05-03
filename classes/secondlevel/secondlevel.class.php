@@ -40,8 +40,7 @@ class secondlevel extends firstlevel {
     }
 
     public function action_back($parent='') {
-        $_SESSION[level] = $parent;
-        $this->_goto('/');
+        $this->_goto("/?level={$parent}");
     }
 
 }

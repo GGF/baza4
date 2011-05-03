@@ -7,21 +7,22 @@
 class orders_tz_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        $ret = array();
-        if (!empty($_SESSION[customer_id])) {
-            if (empty($_SESSION[order_id])) {
+        $ret = parent::getData($all, $order, $find, $idstr);
+        list($customer_id, $order_id, $tz_id, $posintzid) = explode(':', $idstr);
+        if (!empty($customer_id)) {
+            if (empty($order_id)) {
                 $sql = "SELECT *,IF(instr(file_link,'МПП')>0, 'МПП', IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
                             tz.id as tzid,tz.id
                         FROM `tz`
                         JOIN (orders, customers, users,filelinks)
                         ON ( tz.order_id = orders.id AND orders.customer_id = customers.id
                             AND tz.user_id = users.id AND filelinks.id=tz.file_link_id)
-                        WHERE customer_id='{$_SESSION[customer_id]}'" .
+                        WHERE customer_id='{$customer_id}'" .
                         (!empty($find) ? "WHERE (number LIKE '%{$find}%')" : "") .
                         (!empty($order) ? " ORDER BY {$order} " : " ORDER BY tz.id DESC ") .
                         ($all ? "LIMIT 50" : "LIMIT 20");
             } else {
-                $orderid = $_SESSION[order_id];
+                $orderid = $order_id;
                 $sql = "SELECT *,IF(instr(file_link,'МПП')>0, 'МПП', IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
                         tz.id as tzid,tz.id FROM `tz`
                         JOIN (orders, customers, users,filelinks)
@@ -42,18 +43,17 @@ class orders_tz_model extends sqltable_model {
                     (!empty($order) ? " ORDER BY {$order} " : " ORDER BY tz.id DESC ") .
                     ($all ? "LIMIT 50" : "LIMIT 20");
         }
-        if ($all)
-            $_SESSION[tz_id] = '';
         $ret = sql::fetchAll($sql);
         return $ret;
     }
 
     public function getCols() {
         $cols = array();
-        if (empty($_SESSION[customer_id])) {
+        list($customer_id, $order_id, $tz_id, $posintzid) = explode(':', $this->idstr);
+        if (empty($customer_id)) {
             $cols[customer] = "Заказчик";
         }
-        if (empty($_SESSION[order_id])) {
+        if (empty($order_id)) {
             $cols[number] = "Заказ";
         }
         $cols[tzid] = "ID";
@@ -89,18 +89,20 @@ class orders_tz_model extends sqltable_model {
         return $rec;
     }
 
-    public function  setRecord($data) {
-        extract($data);
+//    public function setRecord($data) {
+//        extract($data);
+//
+//        sql::query($sql);
+//
+//        return sql::affected();
+//    }
 
-        sql::query($sql);
-
-        return sql::affected();
-    }
-
-    public function createTZ($typetz) {
+    public function createTZ($rec) {
+        extract($rec);
         // np не надо редактировать - только добавлять с текущей датой и пользователем
         // определим позицию в письме
-        $orderid = $_SESSION[order_id];
+        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        $orderid = $order_id;
         $sql = "SELECT COUNT(*)+1 AS next FROM tz WHERE order_id='{$orderid}'";
         $rs = sql::fetchOne($sql);
         $pos_in_order = $rs[next];
@@ -121,7 +123,7 @@ class orders_tz_model extends sqltable_model {
         $odate = $rs["orderdate"];
         $cdate = date("m-d-Y");
 
-        $sql = "INSERT INTO tz (order_id,tz_date,user_id) VALUES ('{$orderid}',NOW(),'".Auth::getInstance()->getUser('id')."')";
+        $sql = "INSERT INTO tz (order_id,tz_date,user_id) VALUES ('{$orderid}',NOW(),'" . Auth::getInstance()->getUser('id') . "')";
         sql::query($sql);
 
         $tzid = sql::lastId();
@@ -142,7 +144,7 @@ class orders_tz_model extends sqltable_model {
         sql::query($sql);
 
         $rec = array('id' => $tzid, 'tzlink' => $file_link, 'success' => true);
-        $rec = array_merge($rec,  compact('cdate','filename','order','odate','typetz','fullname','tzid'));
+        $rec = array_merge($rec, compact('cdate', 'filename', 'order', 'odate', 'typetz', 'fullname', 'tzid'));
         return $rec;
     }
 

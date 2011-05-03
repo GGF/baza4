@@ -12,11 +12,12 @@ class orders_order_model extends sqltable_model {
     }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        $ret = array();
+        $ret = parent::getData($all, $order, $find, $idstr);
         $order = strstr($order, 'files') ? '' : $order; // не удается отсортировать по файлам
-        if (empty($_SESSION[customer_id])) {
+        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        if (empty($customer_id)) {
             $customer = "Выберите заказчика!!!";
-            $sql = "SELECT *,
+            $sql = "SELECT *, orders.id AS oid,
                         orders.id
                         FROM orders
                         JOIN customers
@@ -25,10 +26,9 @@ class orders_order_model extends sqltable_model {
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY orders.orderdate DESC ") .
                     ($all ? "LIMIT 50" : "LIMIT 20");
         } else {
-            $cusid = $_SESSION[customer_id];
-            $customer = $_SESSION[customer];
+            $cusid = $customer_id;
             // sql
-            $sql = "SELECT *, orders.id
+            $sql = "SELECT *, orders.id AS oid, orders.id
                             FROM orders
                             JOIN customers ON customers.id=customer_id " .
                     (!empty($find) ? "WHERE (number LIKE '%{$find}%' OR orderdate LIKE '%{$find}%' ) AND customer_id='{$cusid}' " : "WHERE customer_id='{$cusid}' ") .
@@ -40,20 +40,16 @@ class orders_order_model extends sqltable_model {
             $files = $this->getFilesForId('orders', $value[id]);
             $value[files] = $files[link];
         }
-        if ($all) {
-            $_SESSION[order_id] = '';
-            $_SESSION[tz_id] = '';
-            // todo: может вынести обнуление сессионных в orders? то есть на уровень выше
-        }
         return $ret;
     }
 
     public function getCols() {
         $cols = array();
-        if (empty($_SESSION[customer_id])) {
+        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$this->idstr);
+        if (empty($customer_id)) {
             $cols[customer] = "Заказчик";
         }
-        $cols[id] = "ID";
+        $cols[oid] = "ID";
         $cols[number] = "Номер заказа";
         $cols[orderdate] = "Дата заказа";
         $cols[files] = "Файлы";
@@ -91,8 +87,10 @@ class orders_order_model extends sqltable_model {
     }
 
     public function getRecord($edit) {
-        if (empty($edit))
-            return array();
+        if (empty($edit)) {
+            $rec[customers] = $this->getCustomers();
+            return $rec;
+        }
         $sql = "SELECT * FROM orders WHERE id='$edit'";
         $rec = sql::fetchOne($sql);
         $rec[files] = $this->getFilesForId('orders', $edit);

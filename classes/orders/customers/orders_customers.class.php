@@ -18,10 +18,8 @@ class orders_customers extends sqltable {
     }
 
     public function action_open($id) {
-        $_SESSION[customer_id] = $id;
-        $_SESSION[order_id] = '';
-        $_SESSION[tz_id] = '';
-        $this->_goto($this->uri()->clear()->set('orders', 'order')->url());
+        $this->_goto($this->uri()->clear()->set('orders', 'order')->
+                set('orders_order','index', false,'','',"$id:::")->url());// idstr задаем
     }
 
 }

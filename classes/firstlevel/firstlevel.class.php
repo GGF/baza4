@@ -22,9 +22,8 @@ class firstlevel extends lego_abstract {
     public function __call($name, $arguments) {
         $act = str_replace('action_', '', $name);
         if (class_exists($act)) {
-            $_SESSION[level] = $act;
+            return $this->_goto("/?level={$act}");
         }
-        return $this->_goto('/');
     }
 
     // todo: не знаю надо ли
@@ -83,7 +82,6 @@ class firstlevel extends lego_abstract {
     }
 
     public function action_home() {
-        $_SESSION[level] = '';
         $this->_goto('/');
     }
 

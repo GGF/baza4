@@ -132,6 +132,10 @@ class sqltable_view extends views {
         $cols = $this->owner->cols;
 
         if (!empty($data)) {
+            $cfind = urlencode($this->owner->find);
+            $cidstr = urlencode($this->owner->idstr);
+            $ccord = urlencode($this->owner->order);
+            $urli = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr);
             foreach ($data as $rs) {
                 $curr++;
                 if ($curr == count($data)) {
@@ -154,10 +158,7 @@ class sqltable_view extends views {
                             " prev='$prtrid' next='$netrid'>";
                 $rs["¹"] = $i;
 
-                $cfind = urlencode($this->owner->find);
-                $cidstr = urlencode($this->owner->idstr);
-                $ccord = urlencode($this->owner->order);
-                $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->set($this->owner->getName(),'open', $rs['id'])->url();
+                $url = $urli->set($this->owner->getName(), 'open', $rs['id'])->url();
                 $link = "<a alt='Ğàñêğûòü' title='Ğàñêğûòü' " .
                         "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
                         "href='{$url}' id='showlink'><div class='fullwidth'>";

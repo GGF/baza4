@@ -3,9 +3,11 @@
 class sqltable_model {
 
     protected $maintable;
+    protected $idstr;
 
     public function __construct() {
         $this->maintable = '';
+        $this->idstr = '';
     }
 
     public function init() {
@@ -13,6 +15,7 @@ class sqltable_model {
     }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
+        $this->idstr = $idstr;
         return array();
     }
 
@@ -42,9 +45,11 @@ class sqltable_model {
         extract($data);
         // файлы к таблице привязать
         $files = $this->storeFiles($files, $this->maintable);
-        if (!isset($curfile)) $curfile=array();
-        if (!isset($linkfile)) $linkfile=array();
-        $curfile = $curfile+$linkfile+$files; // в мерге перенумеровываются ключи!!!
+        if (!isset($curfile))
+            $curfile = array();
+        if (!isset($linkfile))
+            $linkfile = array();
+        $curfile = $curfile + $linkfile + $files; // в мерге перенумеровываются ключи!!!
         $this->storeFilesInTable($curfile, $this->maintable, $edit);
         $ret[affected] = true;
         return $ret;
@@ -154,7 +159,7 @@ class sqltable_model {
             $sql = "SELECT * FROM filelinks WHERE id='{$val[fileid]}'";
             $file = sql::fetchOne($sql);
             $out[file][] = $file;
-            if (!strstr($file[file_link],$_SERVER['DOCUMENT_ROOT'])) {
+            if (!strstr($file[file_link], $_SERVER['DOCUMENT_ROOT'])) {
                 $filelink = fileserver::sharefilelink($file[file_link]);
                 $file = basename($filelink);
                 $out[link] .= "&nbsp;<a class='filelink' href='{$filelink}'>{$file}</a>";
@@ -185,7 +190,7 @@ class sqltable_model {
                     }
                     if (@move_uploaded_file($file["tmp_name"], $filename)) {
 // переместилось удачно
-                        @chmod($filename,0777);
+                        @chmod($filename, 0777);
                         $filename = multibyte::UTF_decode($filename);
                         $curfile[$this->getFileId($filename)] = 1; // сделаем структуру как уже существующие
                     } else {

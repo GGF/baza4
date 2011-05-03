@@ -9,10 +9,10 @@ class orders_order_view extends sqltable_view {
 
     public function showrec($rec) {
 
-        $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
-        $form->init($rec[edit]);
+        extract($rec);
+        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
         $fields = array();
-        if (empty($rec[edit]) && empty($_SESSION[customer_id])) {
+        if (empty($rec[edit]) && empty($customer_id)) {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_SELECT,
                 "name" => "customerid",
@@ -23,7 +23,7 @@ class orders_order_view extends sqltable_view {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_HIDDEN,
                 "name" => "customerid",
-                "value" => !empty($_SESSION[customer_id]) ? $_SESSION[customer_id] : $rec["customer_id"],
+                "value" => !empty($customer_id) ? $customer_id : $rec["customer_id"],
             ));
         }
 
@@ -42,30 +42,9 @@ class orders_order_view extends sqltable_view {
             "options" => array("html" => "size=30",),
             "obligatory" => true,
         ));
-        if ($rec[files][file]) {
-            foreach ($rec[files][file] as $file) {
-                $values[$file[id]] = basename($file[file_link]);
-                $value[$file[id]] = 1;
-            }
-            array_push($fields, array(
-                "type" => AJAXFORM_TYPE_CHECKBOXES,
-                "name" => "curfile",
-                "label" => 'Текущие файлы:',
-                "value" => $value,
-                "values" => $values,
-                    //"options" => array("html" => "readonly",),
-            ));
-        }
-        array_push($fields, array(
-            "type" => AJAXFORM_TYPE_FILE,
-            "name" => "order_file",
-            "label" => "Добавить файл:",
-        ));
+        $rec[fields] = $fields;
 
-        $form->addFields($fields);
-        $out = $form->getOutput();
-        $out .= $this->addFileButton();
-        return $out;
+        return parent::showrec($rec);
     }
 
 }

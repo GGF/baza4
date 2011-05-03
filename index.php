@@ -4,15 +4,13 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-if (empty($_SESSION["level"]))
-    $_SESSION["level"] = 'baza';
-//TODO: костыль
-$_REQUEST["level"] = $_SESSION["level"]; // для правильного кэша
+if (empty($_REQUEST["level"]))
+    $_REQUEST["level"] = 'baza';
 
 include "_setup.php";
 
 
-$classname = $_SESSION["level"];
+$classname = $_REQUEST["level"];
 $m = new $classname();
 $m->run();
 echo $m->getOutput();

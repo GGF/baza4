@@ -8,24 +8,27 @@ class orders_tz extends sqltable {
     }
 
     public function action_index($all = '', $order = '', $find = '', $idstr = '') {
-        $customer = $this->model->getCustomer($_SESSION[customer_id]);
+        list($customer_id, $order_id, $tzid, $posintzid) = explode(':', $idstr);
+        $customer = $this->model->getCustomer($customer_id);
         $customer = $customer[customer];
-        $orderarr = $this->model->getOrder($_SESSION[order_id]);
+        $orderarr = $this->model->getOrder($order_id);
         $date = $orderarr[orderdate];
         $orderstr = $orderarr[number];
-        $this->title = empty($_SESSION[customer_id]) ? "" : "Заказчик - {$customer} ";
-        $this->title .= empty($_SESSION[order_id]) ? "" : "Заказ - {$orderstr} от {$date} ";
+        $this->title = empty($customer_id) ? "" : "Заказчик - {$customer} ";
+        $this->title .= empty($order_id) ? "" : "Заказ - {$orderstr} от {$date} ";
         return parent::action_index($all, $order, $find, $idstr);
     }
 
     public function action_edit($id) {
-        if (!Auth::getInstance()->getRights($this->getName(),'edit'))
+        if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
             return $this->view->getMessage('Нет прав на редактирование');
+        list($customer_id, $order_id, $tzid, $posintzid) = explode(':', $this->idstr);
         if (empty($id)) {
-            if (empty($_SESSION[order_id])) {
+            if (empty($order_id)) {
                 return $this->getMessage("Не известно куда добавлять. Выбери заказ!");
             } else {
                 //не известен тип задания - спросим
+                $data[idstr] = $this->idstr;
                 $data[mpplink] = $this->actUri('addtz', 'mpp')->url();
                 $data[dpplink] = $this->actUri('addtz', 'dpp')->url();
                 $data[dppblink] = $this->actUri('addtz', 'dppb')->url();
@@ -38,17 +41,20 @@ class orders_tz extends sqltable {
     }
 
     public function action_open($id) {
-        $_SESSION[tz_id] = $id;
+        $tz_id = $id;
         $tz = $this->model->getTZ($id);
-        $_SESSION[order_id] = $tz[order_id];
-        $order = $this->model->getOrder($tz[order_id]);
-        $_SESSION[customer_id] = $order[customer_id];
-        //$_SESSION[customer] = $this->model->getCustomer($id);
-        $this->_goto($this->uri()->clear()->set('orders', 'posintz')->url());
+        $order_id = $tz[order_id];
+        $order = $this->model->getOrder($order_id);
+        $customer_id = $order[customer_id];
+        $idstr = "{$customer_id}:{$order_id}:{$tz_id}:{$posintzid}";
+        $this->_goto($this->uri()->clear()->set('orders', 'posintz')->
+                        set('orders_posintz', 'index', false, '', '', $idstr)->url());
     }
 
     public function action_addtz($type) {
-        $rec = $this->model->createTZ($type);
+        $rec[idstr] = $this->idstr;
+        $rec[typetz] = $type;
+        $rec = $this->model->createTZ($rec);
         if ($rec[success])
             return $this->view->savefiletz($rec);
         else
