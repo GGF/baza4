@@ -20,6 +20,10 @@ $_SERVER["debug"] = array(
 $_SERVER['SYSCACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 $_SERVER[CACHE] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 //$_SERVER["debug"] = false;
+if ($_REQUEST[level]=='update') { //update лучше не выводить отладочный текст. как нить так отлажу
+    $_SERVER["debug"]["noCache"]["php"] = true;
+    $_SERVER["debug"]["report"] = false;
+}
 
 // База данных
 $_SERVER["mysql"] = array(
@@ -64,10 +68,11 @@ define("UPLOAD_FILES_DIR","/files");
 
 header("Content-Type: text/html; charset={$_SERVER[cmsEncoding]}");
 
-if (!Auth::getInstance()->run()->success){
-       echo Auth::getInstance()->getOutput();
-       echo console::getInstance()->run()->getOutput();
-       exit;
+if ($_REQUEST[level]!='update') { // update делается без авторизации
+    if (!Auth::getInstance()->run()->success){
+           echo Auth::getInstance()->getOutput();
+           echo console::getInstance()->run()->getOutput();
+           exit;
+    }
 }
-
 ?>
