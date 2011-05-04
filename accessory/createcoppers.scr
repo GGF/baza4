@@ -59,7 +59,7 @@ encodestr$=board$
 gosub URL_encode
 board$=LTRIM$(RTRIM$(encodestr$))
 
-url$="x:\tool\tear.exe "+chr$(34)+"http://baza.mpp/addcopper.php?customer="+customer$+"&board="+board$+"&comp="+str$(sc#)+"&solder="+str$(ss#)+"&drillname="+name$+"&sizex="+str$(X#)+"&sizey="+str$(Y#)+"&mpp="+str$(mpp)+chr$(34)+" > cx.bat"
+url$="x:\tool\tear.exe "+chr$(34)+"http://baza4/?level=update&update[act]=copper&customer="+customer$+"&board="+board$+"&comp="+str$(sc#)+"&solder="+str$(ss#)+"&drillname="+name$+"&sizex="+str$(X#)+"&sizey="+str$(Y#)+"&mpp="+str$(mpp)+chr$(34)+" > cx.bat"
 
 open path$+"dbq.bat" for output as #1
 	print #1,url$
