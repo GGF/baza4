@@ -28,14 +28,14 @@ class lanch_zad_view extends sqltable_view {
                 "name" => "customer",
                 "label" => "Заказчик:",
                 "value" => $rec["customer"],
-                "options" => array("html" => " readonly ",),
+                "options" => array("readonly" => true,),
             ));
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "plate",
                 "label" => "Плата:",
                 "value" => $rec["board_name"],
-                "options" => array("html" => " readonly ",),
+                "options" => array("readonly" => true,),
             ));
         } else {
             array_push($fields,array(

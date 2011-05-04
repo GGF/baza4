@@ -222,24 +222,14 @@ class lanch_nzap_model extends sqltable_model {
 // Определим идентификатор файловой ссылки
         $rec["l_date"] = $l_date = date("Y-m-d");
         $rec[file_link] = $file_link =
-                "z:\\\\Заказчики\\\\{$customer}\\\\{$blockname}\\\\запуски\\\\" .
+                "z:\\Заказчики\\{$customer}\\{$blockname}\\запуски\\" .
                 "СЛ-{$l_date}-{$lanch_id}.xml";
-        $sql = "SELECT id FROM filelinks WHERE file_link='{$file_link}'";
-        $rs = sql::fetchOne($sql);
-        if (!empty($rs)) {
-            $file_id = $rs["id"];
-        } else {
-            $sql = "INSERT INTO filelinks (file_link) VALUES ('{$file_link}')";
-            sql::query($sql);
-            sql::error(true);
-            $file_id = sql::lastId();
-        }
-
+        $rec[filename] = fileserver::createdironserver($file_link);
+        $rec[file_id]=$file_id = $this->getFileId($file_link);
         $sql = "UPDATE lanch
                 SET file_link_id='{$file_id}', comment_id='{$comment_id}'
                 WHERE id='{$lanch_id}'";
         sql::query($sql);
-        $rec[filename] = fileserver::createdironserver($rec[file_link]);
         return $rec;
     }
 

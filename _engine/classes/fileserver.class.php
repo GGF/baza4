@@ -7,26 +7,37 @@
 
 class fileserver {
 
-    static function sharefilelink($filelink) {
-        $filelink = str_replace(SHARE_ROOT_DIR, "", $filelink);
-        $filelink = str_replace(":", "", str_replace("\\", "/", $filelink));
-        $filelink = multibyte::UTF_decode("file://" . NETBIOS_SERVERNAME . "/{$filelink}");
-        return $filelink;
+    static public function normalizefile($filename) {
+        $count=0;
+        do {
+            $filename = str_replace("\\\\", "\\", $filename, $count);
+        } while ($count!=0);
+        $count=0;
+        do {
+            $filename = str_replace("//", "/", $filename, $count);
+        } while ($count!=0);
+        return $filename;
+    }
+    static public function sharefilelink($filename) {
+        $filename = str_replace(SHARE_ROOT_DIR, "", $filename);
+        $filename = self::normalizefile(str_replace(":", "", str_replace("\\", "/", $filename)));
+        $filename = multibyte::UTF_decode("file://" . NETBIOS_SERVERNAME . "/{$filename}");
+        return $filename;
     }
 
-    static function serverfilelink($filelink) {
-        return multibyte::UTF_encode(SHARE_ROOT_DIR . str_replace(":", "", str_replace("\\", "/", $filelink)));
+    static public function serverfilelink($filename) {
+        return multibyte::UTF_encode(self::normalizefile(SHARE_ROOT_DIR . str_replace(":", "", str_replace("\\", "/", $filename))));
     }
 
-    static function removeOSsimbols($filename) {
+    static public function removeOSsimbols($filename) {
         // для удаления из имен заказов спецсимволов ОС
         return str_replace("'", "-", str_replace("`", "-", str_replace("?", "-", str_replace(":", "-", str_replace("\'", "-", str_replace("\"", "-", str_replace("*", "-", str_replace("/", "-", str_replace("\\", "-", $filename)))))))));
     }
 
-    static function createdironserver($filelink) {
+    static public function createdironserver($filelink) {
+        $filelink = self::normalizefile($filelink);
         list($disk, $path) = explode(":", $filelink);
         $serpath = SHARE_ROOT_DIR . strtolower($disk) . "/";
-        $path = str_replace("\\\\", "\\", $path);
         $dirs = explode("\\", $path);
         $filename = $dirs[count($dirs) - 1];
         unset($dirs[count($dirs) - 1]);
@@ -45,7 +56,7 @@ class fileserver {
         return $dir . multibyte::UTF_encode($filename);
     }
 
-    public function savefile($filename, $content) {
+    static public function savefile($filename, $content) {
         // записать файл
         $file = @fopen($filename, "w");
         if ($file) {

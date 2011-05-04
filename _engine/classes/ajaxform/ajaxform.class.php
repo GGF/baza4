@@ -1026,6 +1026,7 @@ class ajaxform extends JsCSS {
         $type = ($options[password]) ? AJAXFORM_TYPE_PASSWORD : AJAXFORM_TYPE_TEXT;
         $type = ($options[date]) ? AJAXFORM_TYPE_TEXT : $type;
         $cls = ($options[date]) ? " date" : $cls;
+        $cls = ($options[readonly]) ? "{$cls} readonly" : $cls;
 
         echo "<input type='{$type}' class='text{$cls}' name='" . $this->getName($name) . "' id='" . $this->getId($name) . "' value='{$value}'{$optionsHTML}>";
 

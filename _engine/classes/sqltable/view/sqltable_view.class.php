@@ -27,12 +27,12 @@ class sqltable_view extends views {
                     //"options" => array("html" => "readonly",),
             ));
         }
-        array_push($fields, array(
-            "type" => AJAXFORM_TYPE_FILE,
-            "name" => "file",
-            "label" => "Добавить файл:",
-                //"option" => array( "html" => " onchange='alert($(this).val())' "),
-        ));
+//        array_push($fields, array(
+//            "type" => AJAXFORM_TYPE_FILE,
+//            "name" => "file",
+//            "label" => "Добавить файл:",
+//                //"option" => array( "html" => " onchange='alert($(this).val())' "),
+//        ));
 
         $form->addFields($fields);
         $out = $form->getOutput();

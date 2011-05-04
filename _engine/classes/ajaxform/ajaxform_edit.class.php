@@ -60,7 +60,10 @@ class ajaxform_edit {
     }
 
     public function addFieldAsArray($field, $unid=false) {
-        $this->addField($field["label"], $field["name"], $field["type"]);
+        if ($field[type]==AJAXFORM_TYPE_CHECKBOX)
+            $this->addField('', $field["name"], $field["type"]);
+        else 
+            $this->addField($field["label"], $field["name"], $field["type"]);
         $nunid = $unid;
         if ($field["type"] == AJAXFORM_TYPE_TEXT or $field["type"] == AJAXFORM_TYPE_SELECT) {
             $nunid = uniqid('fld');

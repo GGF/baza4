@@ -10,3 +10,9 @@ td.hidden {
 .nobreak {
     white-space:nowrap;
 }
+
+.readonly {
+    background-color: gray;
+    color: white;
+    font-weight: bold;
+}

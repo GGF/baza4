@@ -6,6 +6,7 @@ class lanch_nzap_view extends sqltable_view {
     public function getDir() {
         return __DIR__;
     }
+
     public function showrec($rec) {
 
         foreach ($rec[block] as $key => $block) {
@@ -27,12 +28,12 @@ class lanch_nzap_view extends sqltable_view {
             foreach ($party as $key => $val) {
                 Output::assign($key, $val);
             }
-            if (Auth::getInstance()->getRights('lanch_nzap','edit')) {
-            if ($party[slid]) {
-                $out .= $this->fetch('partylink.tpl');
-            } else {
-                $out .= $this->fetch('partybutton.tpl');
-            }
+            if (Auth::getInstance()->getRights('lanch_nzap', 'edit')) {
+                if ($party[slid]) {
+                    $out .= $this->fetch('partylink.tpl');
+                } else {
+                    $out .= $this->fetch('partybutton.tpl');
+                }
             }
             $out .= $party[party] % 5 == 0 ? "<br>" : "";
         }
@@ -40,18 +41,19 @@ class lanch_nzap_view extends sqltable_view {
 
         return $out;
     }
+
     public function createsl($rec) {
 
         extract($rec);
-        $excel = file_get_contents($this->getDir() . ($dpp?"/sl.xml":"/slmpp.xml"));
+        $excel = file_get_contents($this->getDir() . ($dpp ? "/sl.xml" : "/slmpp.xml"));
         preg_match_all('/_([0-9a-z]+)_/', $excel, $matchesarray);
-        for ($i=0; $i< count($matchesarray[0]); $i++) {
-            $excel = str_replace($matchesarray[0][$i],${$matchesarray[1][$i]},$excel);
+        for ($i = 0; $i < count($matchesarray[0]); $i++) {
+            $excel = str_replace($matchesarray[0][$i], ${$matchesarray[1][$i]}, $excel);
         }
         if (fileserver::savefile($filename, $excel)) {
             Output::assign('sllink', fileserver::sharefilelink($filename));
             Output::assign('slid', $lanch_id);
-            $out = $this->fetch('partylink.tpl').($last?'<script>reload_table();</script>':'');
+            $out = $this->fetch('partylink.tpl') . ($last ? '<script>reload_table();</script>' : '');
         } else {
             $out = "Не удалось записать файл";
             $out = false;
@@ -60,7 +62,8 @@ class lanch_nzap_view extends sqltable_view {
     }
 
     public function showmplink($rec) {
-        $filename = fileserver::createdironserver("z:\\\\Заказчики\\\\{$rec[customer]}\\\\{$rec[blockname]}\\\\Мастерплаты\\\\МП-{$rec[date]}-{$rec[mp_id]}.xml");
+        $filename = "z:\\Заказчики\\{$rec[customer]}\\{$rec[blockname]}\\Мастерплаты\\МП-{$rec[date]}-{$rec[mp_id]}.xml";
+        $filename = fileserver::createdironserver($filename);
         $date = date("d-m-Y");
         $excel = file_get_contents($this->getDir() . "/mp.xml");
         $excel = str_replace("_number_", sprintf("%08d", $rec[mp_id]), $excel);

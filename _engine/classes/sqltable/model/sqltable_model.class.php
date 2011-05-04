@@ -50,6 +50,7 @@ class sqltable_model {
         if (!isset($linkfile))
             $linkfile = array();
         $curfile = $curfile + $linkfile + $files; // в мерге перенумеровываются ключи!!!
+        console::getInstance()->out(print_r($curfile,true));
         $this->storeFilesInTable($curfile, $this->maintable, $edit);
         $ret[affected] = true;
         return $ret;
@@ -119,12 +120,7 @@ class sqltable_model {
     }
 
     public function getFileId($filename) {
-//        // преобразовать в текущую страницу
-//        $filename = multibyte::UTF_decode($filename);
-//        // символы \ заменить
-//        $filename = str_replace('\\', '\\\\', $filename);
-//        // удалить парные
-//        $filename = str_replace('\\\\', '\\', $filename);
+        $filename = fileserver::normalizefile($filename);
         $filename = addslashes($filename);
         $sql = "SELECT id FROM filelinks WHERE file_link='{$filename}'";
         $rs = sql::fetchOne($sql);
@@ -200,7 +196,7 @@ class sqltable_model {
             }
             return $curfile;
         } else
-            return false;
+            return array();
     }
 
     public function storeFilesInTable($files=false, $table='', $edit='') {
@@ -212,6 +208,24 @@ class sqltable_model {
                 $sql = "INSERT INTO files (`table`,rec_id,fileid) VALUES ('{$table}','{$edit}','{$key}')";
                 sql::query($sql);
             }
+        }
+    }
+    
+    public function getComment($id) {
+        $sql = "SELECT * FROM coments WHERE id='{$id}'";
+        $comment=sql::fetchOne($sql);
+        return $comment[comment];
+    }
+
+    public function getCommentId($comment) {
+        $sql = "SELECT * FROM coments WHERE comment='{$comment}'";
+        $rs = sql::fetchOne($sql);
+        if (empty ($rs)) {
+            $sql = "INSERT INTO coments (comment) VALUES ('{$comment}')";
+            sql::query($sql);
+            return sql::lastId();
+        } else {
+            return $rs[id];
         }
     }
 

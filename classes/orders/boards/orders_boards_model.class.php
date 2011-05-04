@@ -56,6 +56,21 @@ class orders_boards_model extends sqltable_model {
         return $cols;
     }
 
+    public function getRecord($edit) {
+        $rec = parent::getRecord($edit);
+        $rec[customer] = $this->getCustomer($rec[customer_id]);
+        $rec[customer] = $rec[customer][customer];
+        $rec[comment] = $this->getComment($rec[comment_id]);
+        return $rec;
+    }
+    
+    public function setRecord($data) {
+        extract($data);
+        $comment_id = $this->getCommentId($comment);
+        $sql="UPDATE boards SET comment_id='{$comment_id}' WHERE id='{$edit}'";
+        sql::query($sql);
+        return parent::setRecord($data);
+    }
 }
 
 ?>
