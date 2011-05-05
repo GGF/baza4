@@ -1,1 +1,1 @@
-<a class='filelink' href='{$tzlink}'>ÒÇ-{$tzid}</a><br>
+<a class='filelink' href='{$tzlink}'>Ð¢Ð—-{$tzid}</a><br>

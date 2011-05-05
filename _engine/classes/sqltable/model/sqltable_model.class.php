@@ -43,13 +43,13 @@ class sqltable_model {
 
     public function setRecord($data) {
         extract($data);
-        // ôàéëû ê òàáëèöå ïðèâÿçàòü
+        // Ñ„Ð°Ð¹Ð»Ñ‹ Ðº Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ðµ Ð¿Ñ€Ð¸Ð²ÑÐ·Ð°Ñ‚ÑŒ
         $files = $this->storeFiles($files, $this->maintable);
         if (!isset($curfile))
             $curfile = array();
         if (!isset($linkfile))
             $linkfile = array();
-        $curfile = $curfile + $linkfile + $files; // â ìåðãå ïåðåíóìåðîâûâàþòñÿ êëþ÷è!!!
+        $curfile = $curfile + $linkfile + $files; // Ð² Ð¼ÐµÑ€Ð³Ðµ Ð¿ÐµÑ€ÐµÐ½ÑƒÐ¼ÐµÑ€Ð¾Ð²Ñ‹Ð²Ð°ÑŽÑ‚ÑÑ ÐºÐ»ÑŽÑ‡Ð¸!!!
         console::getInstance()->out(print_r($curfile,true));
         $this->storeFilesInTable($curfile, $this->maintable, $edit);
         $ret[affected] = true;
@@ -57,7 +57,7 @@ class sqltable_model {
     }
 
     /*
-     * Âîçâðàùàåò ñïèñîê çàêàç÷èêîâ äëÿ ôîðì
+     * Ð’Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ ÑÐ¿Ð¸ÑÐ¾Ðº Ð·Ð°ÐºÐ°Ð·Ñ‡Ð¸ÐºÐ¾Ð² Ð´Ð»Ñ Ñ„Ð¾Ñ€Ð¼
      */
 
     public function getCustomers($type='array') {
@@ -70,7 +70,7 @@ class sqltable_model {
     }
 
     /*
-     * Âîçâðàùàåò áëîêè çàêàç÷èêà äëÿ ôîðì
+     * Ð’Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð±Ð»Ð¾ÐºÐ¸ Ð·Ð°ÐºÐ°Ð·Ñ‡Ð¸ÐºÐ° Ð´Ð»Ñ Ñ„Ð¾Ñ€Ð¼
      */
 
     public function getBlocks($customerid='', $type='array') {
@@ -87,7 +87,7 @@ class sqltable_model {
     }
 
     /*
-     * Âîçâðàùàåò ïëàòû çàêàç÷èêà äëÿ ôîðì
+     * Ð’Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð¿Ð»Ð°Ñ‚Ñ‹ Ð·Ð°ÐºÐ°Ð·Ñ‡Ð¸ÐºÐ° Ð´Ð»Ñ Ñ„Ð¾Ñ€Ð¼
      */
 
     public function getBoards($customerid='', $type='array') {
@@ -144,7 +144,7 @@ class sqltable_model {
     }
 
     public function getNeedArc() {
-        return false; // TODO: Êîñòûëü
+        return false; // TODO: ÐšÐ¾ÑÑ‚Ñ‹Ð»ÑŒ
     }
 
     public function getFilesForId($table, $id) {
@@ -169,13 +169,13 @@ class sqltable_model {
     }
 
     public function storeFiles($files=false, $dir='') {
-        if ($files) {// ôàéë åñëè åñòü ñîõðàíèì
+        if ($files) {// Ñ„Ð°Ð¹Ð» ÐµÑÐ»Ð¸ ÐµÑÑ‚ÑŒ ÑÐ¾Ñ…Ñ€Ð°Ð½Ð¸Ð¼
             $curfile = array();
             foreach ($files as $file) {
                 if (!empty($file[size])) {
                     $pathname = $_SERVER["DOCUMENT_ROOT"] . UPLOAD_FILES_DIR . "/" . multibyte::UTF_encode($dir);
                     if (!file_exists($pathname)) {
-// ñîäàòü êàòàëîã
+// ÑÐ¾Ð´Ð°Ñ‚ÑŒ ÐºÐ°Ñ‚Ð°Ð»Ð¾Ð³
                         @mkdir($pathname, 0777);
                     }
                     $filename = $pathname . "/" . multibyte::UTF_encode($file["name"]);
@@ -185,10 +185,10 @@ class sqltable_model {
                         $filename = $pathname . "/{$i}_" . multibyte::UTF_encode($file["name"]);
                     }
                     if (@move_uploaded_file($file["tmp_name"], $filename)) {
-// ïåðåìåñòèëîñü óäà÷íî
+// Ð¿ÐµÑ€ÐµÐ¼ÐµÑÑ‚Ð¸Ð»Ð¾ÑÑŒ ÑƒÐ´Ð°Ñ‡Ð½Ð¾
                         @chmod($filename, 0777);
                         $filename = multibyte::UTF_decode($filename);
-                        $curfile[$this->getFileId($filename)] = 1; // ñäåëàåì ñòðóêòóðó êàê óæå ñóùåñòâóþùèå
+                        $curfile[$this->getFileId($filename)] = 1; // ÑÐ´ÐµÐ»Ð°ÐµÐ¼ ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ñƒ ÐºÐ°Ðº ÑƒÐ¶Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÑŽÑ‰Ð¸Ðµ
                     } else {
                         return false;
                     }
@@ -203,7 +203,7 @@ class sqltable_model {
         $sql = "DELETE FROM files WHERE `table`='{$table}' AND rec_id='{$edit}'";
         sql::query($sql);
         if ($files && !empty($files)) {
-// çàïîëíèì òàáëèöó files
+// Ð·Ð°Ð¿Ð¾Ð»Ð½Ð¸Ð¼ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñƒ files
             foreach ($files as $key => $value) {
                 $sql = "INSERT INTO files (`table`,rec_id,fileid) VALUES ('{$table}','{$edit}','{$key}')";
                 sql::query($sql);

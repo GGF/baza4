@@ -65,7 +65,7 @@
 			
 			cmsConsole_show();
 			cmsConsole_tab(pane);
-			$("#cmsConsole_errors").html("<span class='error'>Œ¯Ë·ÍË: " + cmsConsole_errors + "</span>");
+			$("#cmsConsole_errors").html("<span class='error'>–û—à–∏–±–∫–∏: " + cmsConsole_errors + "</span>");
 			
 		}
 		

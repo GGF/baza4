@@ -25,26 +25,26 @@ class lanch_zap_model extends sqltable_model {
 
     public function getCols() {
         $cols = array();
-	$cols["№"]="№";
-	$cols[ldate]="Дата";
+	$cols["в„–"]="в„–";
+	$cols[ldate]="Р”Р°С‚Р°";
 	$cols[lanchid]="ID";
-	$cols[nik]="Запустил";
-	$cols[customer]="Заказчик";
-	$cols[number]="Заказ";
-	$cols[blockname]="Плата";
-	$cols[part]="Партия";
-	$cols[numbz]="Заг.";
-	$cols[numbp]="Плат";
+	$cols[nik]="Р—Р°РїСѓСЃС‚РёР»";
+	$cols[customer]="Р—Р°РєР°Р·С‡РёРє";
+	$cols[number]="Р—Р°РєР°Р·";
+	$cols[blockname]="РџР»Р°С‚Р°";
+	$cols[part]="РџР°СЂС‚РёСЏ";
+	$cols[numbz]="Р—Р°Рі.";
+	$cols[numbp]="РџР»Р°С‚";
         return $cols;
     }
 
     public function delete($id) {
 	$sql="SELECT pos_in_tz_id FROM lanch WHERE id='{$id}'";
-        // уберем признак запуска
+        // СѓР±РµСЂРµРј РїСЂРёР·РЅР°Рє Р·Р°РїСѓСЃРєР°
 	$rs=sql::fetchOne($sql);
 	$sql="UPDATE posintz SET ldate='0000-00-00' WHERE id='{$rs["pos_in_tz_id"]}'";
 	sql::query($sql);
-	// удаление
+	// СѓРґР°Р»РµРЅРёРµ
 	$sql = "DELETE FROM lanch WHERE id='{$id}'";
 	sql::query($sql);
     }

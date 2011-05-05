@@ -23,11 +23,11 @@ class lanch_conduct_model extends sqltable_model {
     public function getCols() {
         $cols = array();
         $cols[condid]="ID";
-        $cols[customer]="Заказчик";
-        $cols[board_name]="Плата";
-        $cols[side]="Сторона";
-        $cols[lays]="Пластин";
-        $cols[pib]="Плат в блоке";
+        $cols[customer]="Р—Р°РєР°Р·С‡РёРє";
+        $cols[board_name]="РџР»Р°С‚Р°";
+        $cols[side]="РЎС‚РѕСЂРѕРЅР°";
+        $cols[lays]="РџР»Р°СЃС‚РёРЅ";
+        $cols[pib]="РџР»Р°С‚ РІ Р±Р»РѕРєРµ";
         return $cols;
     }
     public function delete($id) {

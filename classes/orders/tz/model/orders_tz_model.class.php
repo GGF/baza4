@@ -11,7 +11,7 @@ class orders_tz_model extends sqltable_model {
         list($customer_id, $order_id, $tz_id, $posintzid) = explode(':', $idstr);
         if (!empty($customer_id)) {
             if (empty($order_id)) {
-                $sql = "SELECT *,IF(instr(file_link,'МПП')>0, 'МПП', IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
+                $sql = "SELECT *,IF(instr(file_link,'РњРџРџ')>0, 'РњРџРџ', IF(instr(file_link,'Р‘Р»РѕРє')>0,'Р”РџРџ(Р‘Р»РѕРє)','Р”РџРџ')) AS type,
                             tz.id as tzid,tz.id
                         FROM `tz`
                         JOIN (orders, customers, users,filelinks)
@@ -23,7 +23,7 @@ class orders_tz_model extends sqltable_model {
                         ($all ? "LIMIT 50" : "LIMIT 20");
             } else {
                 $orderid = $order_id;
-                $sql = "SELECT *,IF(instr(file_link,'МПП')>0, 'МПП', IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
+                $sql = "SELECT *,IF(instr(file_link,'РњРџРџ')>0, 'РњРџРџ', IF(instr(file_link,'Р‘Р»РѕРє')>0,'Р”РџРџ(Р‘Р»РѕРє)','Р”РџРџ')) AS type,
                         tz.id as tzid,tz.id FROM `tz`
                         JOIN (orders, customers, users,filelinks)
                         ON ( tz.order_id = orders.id AND orders.customer_id = customers.id
@@ -33,7 +33,7 @@ class orders_tz_model extends sqltable_model {
                         ($all ? "" : "LIMIT 20");
             }
         } else {
-            $sql = "SELECT *,IF(instr(file_link,'МПП')>0, 'МПП', IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
+            $sql = "SELECT *,IF(instr(file_link,'РњРџРџ')>0, 'РњРџРџ', IF(instr(file_link,'Р‘Р»РѕРє')>0,'Р”РџРџ(Р‘Р»РѕРє)','Р”РџРџ')) AS type,
                     tz.id as tzid,tz.id
                     FROM `tz`
                     JOIN (orders, customers, users,filelinks)
@@ -51,15 +51,15 @@ class orders_tz_model extends sqltable_model {
         $cols = array();
         list($customer_id, $order_id, $tz_id, $posintzid) = explode(':', $this->idstr);
         if (empty($customer_id)) {
-            $cols[customer] = "Заказчик";
+            $cols[customer] = "Р—Р°РєР°Р·С‡РёРє";
         }
         if (empty($order_id)) {
-            $cols[number] = "Заказ";
+            $cols[number] = "Р—Р°РєР°Р·";
         }
         $cols[tzid] = "ID";
-        $cols[type] = "Тип";
-        $cols[tz_date] = "Дата";
-        $cols[nik] = "Кто заполнил";
+        $cols[type] = "РўРёРї";
+        $cols[tz_date] = "Р”Р°С‚Р°";
+        $cols[nik] = "РљС‚Рѕ Р·Р°РїРѕР»РЅРёР»";
         return $cols;
     }
 
@@ -69,7 +69,7 @@ class orders_tz_model extends sqltable_model {
         $sql = "DELETE FROM tz WHERE id='$delete'";
         sql::query($sql);
         $affected += sql::affected();
-        // удаление связей
+        // СѓРґР°Р»РµРЅРёРµ СЃРІСЏР·РµР№
         $sql = "SELECT * FROM posintz WHERE tz_id='$delete'";
         $res = sql::fetchAll($sql);
         foreach ($res as $rs) {
@@ -99,17 +99,17 @@ class orders_tz_model extends sqltable_model {
 
     public function createTZ($rec) {
         extract($rec);
-        // np не надо редактировать - только добавлять с текущей датой и пользователем
-        // определим позицию в письме
+        // np РЅРµ РЅР°РґРѕ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ - С‚РѕР»СЊРєРѕ РґРѕР±Р°РІР»СЏС‚СЊ СЃ С‚РµРєСѓС‰РµР№ РґР°С‚РѕР№ Рё РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј
+        // РѕРїСЂРµРґРµР»РёРј РїРѕР·РёС†РёСЋ РІ РїРёСЃСЊРјРµ
         list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
         $orderid = $order_id;
         $sql = "SELECT COUNT(*)+1 AS next FROM tz WHERE order_id='{$orderid}'";
         $rs = sql::fetchOne($sql);
         $pos_in_order = $rs[next];
 
-        // добавление
-        // создать файл с табличкой
-        // определим заказчика
+        // РґРѕР±Р°РІР»РµРЅРёРµ
+        // СЃРѕР·РґР°С‚СЊ С„Р°Р№Р» СЃ С‚Р°Р±Р»РёС‡РєРѕР№
+        // РѕРїСЂРµРґРµР»РёРј Р·Р°РєР°Р·С‡РёРєР°
         $sql = "SELECT number,orderdate,customer, fullname
                 FROM orders
                 JOIN customers
@@ -129,17 +129,17 @@ class orders_tz_model extends sqltable_model {
         $tzid = sql::lastId();
 
         do {
-            $filetype = $typetz == "mpp" ? "МПП" : ($typetz == "dpp" ? "ДПП" : "ДПП-Блок");
+            $filetype = $typetz == "mpp" ? "РњРџРџ" : ($typetz == "dpp" ? "Р”РџРџ" : "Р”РџРџ-Р‘Р»РѕРє");
             $orderstring = fileserver::removeOSsimbols($rs["number"]);
-            $file_link = "t:\\\\Расчет стоимости плат\\\\ТехЗад\\\\{$customer}\\\\{$tzid}-{$filetype}-{$pos_in_order}-{$orderstring} от {$rs["orderdate"]}.xls";
+            $file_link = "t:\\\\Р Р°СЃС‡РµС‚ СЃС‚РѕРёРјРѕСЃС‚Рё РїР»Р°С‚\\\\РўРµС…Р—Р°Рґ\\\\{$customer}\\\\{$tzid}-{$filetype}-{$pos_in_order}-{$orderstring} РѕС‚ {$rs["orderdate"]}.xls";
             $filename = fileserver::createdironserver($file_link);
             $fe = file_exists($filename);
             if ($fe)
                 $pos_in_order++;
         } while ($fe);
-        // Определим идентификатор файловой ссылки
+        // РћРїСЂРµРґРµР»РёРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С„Р°Р№Р»РѕРІРѕР№ СЃСЃС‹Р»РєРё
         $file_id = $this->getFileId($file_link);
-        // добавить поля в
+        // РґРѕР±Р°РІРёС‚СЊ РїРѕР»СЏ РІ
         $sql = "UPDATE tz SET file_link_id='{$file_id}', pos_in_order='{$pos_in_order}' WHERE id='{$tzid}'";
         sql::query($sql);
 

@@ -10,7 +10,7 @@
     }
 	
     var $k = {
-        keyboardBinds : {}, // смотри коментарий к bind
+        keyboardBinds : {}, // СЃРјРѕС‚СЂРё РєРѕРјРµРЅС‚Р°СЂРёР№ Рє bind
         setup : {
             'strict' : true,
             'event'  : 'keydown',
@@ -38,8 +38,8 @@
                 for (var i = 0; i < $k.keys.cont.length; i++) {
                     if ($k.keys.cont[i].keyCode == e.keyCode) {
                         $k.keys.cont.splice(i,1); 
-                        // delete тут не проходит изза 
-                        // невозможности перевести в объект
+                        // delete С‚СѓС‚ РЅРµ РїСЂРѕС…РѕРґРёС‚ РёР·Р·Р° 
+                        // РЅРµРІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РїРµСЂРµРІРµСЃС‚Рё РІ РѕР±СЉРµРєС‚
                         $k.keys.dump('Remove ');
                         return;
                     }
@@ -179,7 +179,7 @@
                 if (isDelete) {
                     argsObj.isDelete = true;
                 } 
-                // тут было елсе, но событие тоже нужно
+                // С‚СѓС‚ Р±С‹Р»Рѕ РµР»СЃРµ, РЅРѕ СЃРѕР±С‹С‚РёРµ С‚РѕР¶Рµ РЅСѓР¶РЅРѕ
                 {
                     argsObj.func = secondIsFunc ? args[1] : args[2];
                     argsObj.cfg  = secondIsFunc ? args[2] : args[1];
@@ -200,7 +200,7 @@
             if ($k.keyCodes[index]) {
                 return $k.keyCodes[index];
             } else {
-                throw 'No such index: В«' + index + 'В»';
+                throw 'No such index: Р’В«' + index + 'Р’В»';
             }
         },
         getRange : function (title) {
@@ -230,7 +230,7 @@
                     f('allnum') .concat(
                         f('symbols')))
                 default         :
-                    throw 'No such range: В«' + title + 'В»';
+                    throw 'No such range: Р’В«' + title + 'Р’В»';
             }
         },
         stringGetCodes : function (str) {
@@ -274,7 +274,7 @@
                 } else if (typeof key == 'string') {
                     key = $k.stringGetCodes(key);
                 } else {
-                    throw 'Wrong key type: В«' + (typeof key) + 'В»';
+                    throw 'Wrong key type: Р’В«' + (typeof key) + 'Р’В»';
                 }
                 keycodes.push(key);
             }
@@ -302,8 +302,8 @@
             if (codes.length == 0) {
                 return false;
             }
-            keybdebug('нажаты'+':'+cont.join('; '));
-            keybdebug('Нужны'+':'+codes.join('; '));
+            keybdebug('РЅР°Р¶Р°С‚С‹'+':'+cont.join('; '));
+            keybdebug('РќСѓР¶РЅС‹'+':'+codes.join('; '));
             if (bind.keys.order == 'strict') 
             {
                 for (i = 0; i < cont.length; i++) {
@@ -363,21 +363,21 @@
             inArrayR (e.keyCode, bind.keys.codes);
         },
         checkBinds : function ($obj, e) {
-            var uid=$obj.attr('keyboardid'); // получим индекс в массиве - тут не может быть пустой потому, что если функция привязалась то и аттрибут тоже есть
-            // сверсии 1.4.3 не работает
+            var uid=$obj.attr('keyboardid'); // РїРѕР»СѓС‡РёРј РёРЅРґРµРєСЃ РІ РјР°СЃСЃРёРІРµ - С‚СѓС‚ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚РѕР№ РїРѕС‚РѕРјСѓ, С‡С‚Рѕ РµСЃР»Рё С„СѓРЅРєС†РёСЏ РїСЂРёРІСЏР·Р°Р»Р°СЃСЊ С‚Рѕ Рё Р°С‚С‚СЂРёР±СѓС‚ С‚РѕР¶Рµ РµСЃС‚СЊ
+            // СЃРІРµСЂСЃРёРё 1.4.3 РЅРµ СЂР°Р±РѕС‚Р°РµС‚
             if (!uid) uid=jQuery.expando;
             keybdebug('uid:'+uid);
             var ei;
-            var okb = $k.keyboardBinds[uid][e.originalEvent.type]; // окб по типу события
+            var okb = $k.keyboardBinds[uid][e.originalEvent.type]; // РѕРєР± РїРѕ С‚РёРїСѓ СЃРѕР±С‹С‚РёСЏ
 			
             if (e.originalEvent.type=='keydown') {
-                $k.keys.add(e); // нажата добавить в cont
+                $k.keys.add(e); // РЅР°Р¶Р°С‚Р° РґРѕР±Р°РІРёС‚СЊ РІ cont
             } else {
             //setTimeout(function () {$k.keys.rm(e)}, 0);
-            //$k.keys.rm(e); // иначе удалить, как быть с keypress не знаю
+            //$k.keys.rm(e); // РёРЅР°С‡Рµ СѓРґР°Р»РёС‚СЊ, РєР°Рє Р±С‹С‚СЊ СЃ keypress РЅРµ Р·РЅР°СЋ
             }
             //keybdebug(e.originalEvent.type+' => '+e.originalEvent.keyCode+' '+okb.length);
-            for (var i in okb) { // Экономия отработки - не проходит если приязано на отпускание а событие нажатие
+            for (var i in okb) { // Р­РєРѕРЅРѕРјРёСЏ РѕС‚СЂР°Р±РѕС‚РєРё - РЅРµ РїСЂРѕС…РѕРґРёС‚ РµСЃР»Рё РїСЂРёСЏР·Р°РЅРѕ РЅР° РѕС‚РїСѓСЃРєР°РЅРёРµ Р° СЃРѕР±С‹С‚РёРµ РЅР°Р¶Р°С‚РёРµ
                 var bind = okb[i];
                 ei = $k.match(bind);
                 if ( ei && $k.hasCurrent(bind, e) ) {
@@ -390,36 +390,36 @@
                     if (bind.cfg.preventDefault) {
                         e.preventDefault();
                     } 
-                    e.stopPropagation(); //отработали событие и хватит - остановим всплывание событий
-                    $k.keys.clear(); // почистим буфер нажатых, но тогда не будет отрабатывать 'm' и 'd m', а только одно из них
-                // можно положить в предыдущий if, ну в смысле в else от того if
+                    e.stopPropagation(); //РѕС‚СЂР°Р±РѕС‚Р°Р»Рё СЃРѕР±С‹С‚РёРµ Рё С…РІР°С‚РёС‚ - РѕСЃС‚Р°РЅРѕРІРёРј РІСЃРїР»С‹РІР°РЅРёРµ СЃРѕР±С‹С‚РёР№
+                    $k.keys.clear(); // РїРѕС‡РёСЃС‚РёРј Р±СѓС„РµСЂ РЅР°Р¶Р°С‚С‹С…, РЅРѕ С‚РѕРіРґР° РЅРµ Р±СѓРґРµС‚ РѕС‚СЂР°Р±Р°С‚С‹РІР°С‚СЊ 'm' Рё 'd m', Р° С‚РѕР»СЊРєРѕ РѕРґРЅРѕ РёР· РЅРёС…
+                // РјРѕР¶РЅРѕ РїРѕР»РѕР¶РёС‚СЊ РІ РїСЂРµРґС‹РґСѓС‰РёР№ if, РЅСѓ РІ СЃРјС‹СЃР»Рµ РІ else РѕС‚ С‚РѕРіРѕ if
                 }
             }
 
         },
         bind : function ($obj, args) {
-            // сюда объект передается по значению, поэтому вместо того чтобы хранить
-            // привязаные клавиши в объекте $obj.keyboardBinds храним всё это в $k
-            // смотри выше объявление keyboardBinds
-            // а привязку к объекту отмечаем аттрибутом keyboardid
+            // СЃСЋРґР° РѕР±СЉРµРєС‚ РїРµСЂРµРґР°РµС‚СЃСЏ РїРѕ Р·РЅР°С‡РµРЅРёСЋ, РїРѕСЌС‚РѕРјСѓ РІРјРµСЃС‚Рѕ С‚РѕРіРѕ С‡С‚РѕР±С‹ С…СЂР°РЅРёС‚СЊ
+            // РїСЂРёРІСЏР·Р°РЅС‹Рµ РєР»Р°РІРёС€Рё РІ РѕР±СЉРµРєС‚Рµ $obj.keyboardBinds С…СЂР°РЅРёРј РІСЃС‘ СЌС‚Рѕ РІ $k
+            // СЃРјРѕС‚СЂРё РІС‹С€Рµ РѕР±СЉСЏРІР»РµРЅРёРµ keyboardBinds
+            // Р° РїСЂРёРІСЏР·РєСѓ Рє РѕР±СЉРµРєС‚Сѓ РѕС‚РјРµС‡Р°РµРј Р°С‚С‚СЂРёР±СѓС‚РѕРј keyboardid
             keybdebug('expando:'+jQuery.expando);
             keybdebug("doc? = "+($(document)));
             args = $k.parseArgs(args);
             if (args.setup) {
                 $k.setup = $.extend($k.setup, args.setup);
             } else {
-                var uid = $obj.attr('keyboardid'); // получим индекс объекта в массиве
-                if (!uid | !$k.keyboardBinds[uid]) { // если нет - добавим
+                var uid = $obj.attr('keyboardid'); // РїРѕР»СѓС‡РёРј РёРЅРґРµРєСЃ РѕР±СЉРµРєС‚Р° РІ РјР°СЃСЃРёРІРµ
+                if (!uid | !$k.keyboardBinds[uid]) { // РµСЃР»Рё РЅРµС‚ - РґРѕР±Р°РІРёРј
                     var date = new Date();
-                    uid = String(date.getTime())+'_'+String(Math.ceil(Math.random()*100)); // uniqid - уникальный индекс в массиве
+                    uid = String(date.getTime())+'_'+String(Math.ceil(Math.random()*100)); // uniqid - СѓРЅРёРєР°Р»СЊРЅС‹Р№ РёРЅРґРµРєСЃ РІ РјР°СЃСЃРёРІРµ
                     keybdebug('set uid:'+uid);
-                    $obj.attr("keyboardid",uid); // сохраним в объекте
+                    $obj.attr("keyboardid",uid); // СЃРѕС…СЂР°РЅРёРј РІ РѕР±СЉРµРєС‚Рµ
                     keybdebug('seted uid:'+(uid==$obj.attr("keyboardid")));
                     if (uid != $obj.attr("keyboardid")) {
-                        // 1.4.3 не дает поставить аттрибут документу
+                        // 1.4.3 РЅРµ РґР°РµС‚ РїРѕСЃС‚Р°РІРёС‚СЊ Р°С‚С‚СЂРёР±СѓС‚ РґРѕРєСѓРјРµРЅС‚Сѓ
                         uid = jQuery.expando;
                     }
-                    $k.keyboardBinds[uid] = {}; // добавим пустой, в нем будет два подмассива для действий keydown и keyup, а захочется и keypress заработает
+                    $k.keyboardBinds[uid] = {}; // РґРѕР±Р°РІРёРј РїСѓСЃС‚РѕР№, РІ РЅРµРј Р±СѓРґРµС‚ РґРІР° РїРѕРґРјР°СЃСЃРёРІР° РґР»СЏ РґРµР№СЃС‚РІРёР№ keydown Рё keyup, Р° Р·Р°С…РѕС‡РµС‚СЃСЏ Рё keypress Р·Р°СЂР°Р±РѕС‚Р°РµС‚
                     $k.keyboardBinds[uid]['keyup'] = {};
                     $k.keyboardBinds[uid]['keydown'] = {};
                     $obj.keydown(function (e) {
@@ -433,16 +433,16 @@
                 // {keys, func, cfg}
                 var parts = $k.parseKeysString(args.keys);
                 for (var i = 0; i < parts.length; i++) {
-                    if (args.isDelete) { // тут раньше стояло args.keys.isDelete - оно никогда не было тру - не присваивалось правильнее args.isDelete и оставить остальные параметры, а то терялся и тип события тогда к массивам правильно не обратиться - смотри комментарий в parseArgs
-                        // undefind не очень нравится - лучше исключить из массива, delete вроде работает, но можно наверное и splice использовать, только индек долго искать. А так работает в IE, Opera, Safari, FF
+                    if (args.isDelete) { // С‚СѓС‚ СЂР°РЅСЊС€Рµ СЃС‚РѕСЏР»Рѕ args.keys.isDelete - РѕРЅРѕ РЅРёРєРѕРіРґР° РЅРµ Р±С‹Р»Рѕ С‚СЂСѓ - РЅРµ РїСЂРёСЃРІР°РёРІР°Р»РѕСЃСЊ РїСЂР°РІРёР»СЊРЅРµРµ args.isDelete Рё РѕСЃС‚Р°РІРёС‚СЊ РѕСЃС‚Р°Р»СЊРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹, Р° С‚Рѕ С‚РµСЂСЏР»СЃСЏ Рё С‚РёРї СЃРѕР±С‹С‚РёСЏ С‚РѕРіРґР° Рє РјР°СЃСЃРёРІР°Рј РїСЂР°РІРёР»СЊРЅРѕ РЅРµ РѕР±СЂР°С‚РёС‚СЊСЃСЏ - СЃРјРѕС‚СЂРё РєРѕРјРјРµРЅС‚Р°СЂРёР№ РІ parseArgs
+                        // undefind РЅРµ РѕС‡РµРЅСЊ РЅСЂР°РІРёС‚СЃСЏ - Р»СѓС‡С€Рµ РёСЃРєР»СЋС‡РёС‚СЊ РёР· РјР°СЃСЃРёРІР°, delete РІСЂРѕРґРµ СЂР°Р±РѕС‚Р°РµС‚, РЅРѕ РјРѕР¶РЅРѕ РЅР°РІРµСЂРЅРѕРµ Рё splice РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ, С‚РѕР»СЊРєРѕ РёРЅРґРµРє РґРѕР»РіРѕ РёСЃРєР°С‚СЊ. Рђ С‚Р°Рє СЂР°Р±РѕС‚Р°РµС‚ РІ IE, Opera, Safari, FF
                         delete $k.keyboardBinds[uid][args.cfg.event][parts[i].index];
                     } else {
                         $k.keyboardBinds[uid][args.cfg.event][parts[i].index] = clone(args);
                         $k.keyboardBinds[uid][args.cfg.event][parts[i].index].keys = parts[i];
                     }
                 }
-            // тут хорошо бы проверить на наличие событий и сделать unbind если пусто
-            // с $(document) не понятно делать unbind или нет
+            // С‚СѓС‚ С…РѕСЂРѕС€Рѕ Р±С‹ РїСЂРѕРІРµСЂРёС‚СЊ РЅР° РЅР°Р»РёС‡РёРµ СЃРѕР±С‹С‚РёР№ Рё СЃРґРµР»Р°С‚СЊ unbind РµСЃР»Рё РїСѓСЃС‚Рѕ
+            // СЃ $(document) РЅРµ РїРѕРЅСЏС‚РЅРѕ РґРµР»Р°С‚СЊ unbind РёР»Рё РЅРµС‚
             // if (empty($k.keyboardBinds[uid][args.cfg.event])) {
             // 	$obj.unbind(args.cfg.event);
             // }
@@ -456,7 +456,7 @@
                     $k.keys.rm(e)
                 }, 0);
             })
-            .blur ( $k.keys.clear );// работает только в FF
+            .blur ( $k.keys.clear );// СЂР°Р±РѕС‚Р°РµС‚ С‚РѕР»СЊРєРѕ РІ FF
         }
     }
 
@@ -504,7 +504,7 @@
     };
 	
     var empty = function (mixed_var) {
-        // проверка на пустоту переменнтой - универсальная
+        // РїСЂРѕРІРµСЂРєР° РЅР° РїСѓСЃС‚РѕС‚Сѓ РїРµСЂРµРјРµРЅРЅС‚РѕР№ - СѓРЅРёРІРµСЂСЃР°Р»СЊРЅР°СЏ
         var key;
 
         if (mixed_var === "" ||

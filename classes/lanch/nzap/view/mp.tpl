@@ -1,1 +1,1 @@
-<br><a data-silent="self" legotarget="lanch_nzap" href="{$mplink}"><input type="button" class="partybutton" id="mp" value="Ìàñòåðïëàòà" ></a>
+<br><a data-silent="self" legotarget="lanch_nzap" href="{$mplink}"><input type="button" class="partybutton" id="mp" value="ÐœÐ°ÑÑ‚ÐµÑ€Ð¿Ð»Ð°Ñ‚Ð°" ></a>

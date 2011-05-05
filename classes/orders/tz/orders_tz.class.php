@@ -2,7 +2,7 @@
 
 class orders_tz extends sqltable {
 
-    // îáÿçàòåëüíî îïğåäåëÿòü äëÿ ìîäóëÿ
+    // Ğ¾Ğ±ÑĞ·Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ Ğ¾Ğ¿Ñ€ĞµĞ´ĞµĞ»ÑÑ‚ÑŒ Ğ´Ğ»Ñ Ğ¼Ğ¾Ğ´ÑƒĞ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -14,20 +14,20 @@ class orders_tz extends sqltable {
         $orderarr = $this->model->getOrder($order_id);
         $date = $orderarr[orderdate];
         $orderstr = $orderarr[number];
-        $this->title = empty($customer_id) ? "" : "Çàêàç÷èê - {$customer} ";
-        $this->title .= empty($order_id) ? "" : "Çàêàç - {$orderstr} îò {$date} ";
+        $this->title = empty($customer_id) ? "" : "Ğ—Ğ°ĞºĞ°Ğ·Ñ‡Ğ¸Ğº - {$customer} ";
+        $this->title .= empty($order_id) ? "" : "Ğ—Ğ°ĞºĞ°Ğ· - {$orderstr} Ğ¾Ñ‚ {$date} ";
         return parent::action_index($all, $order, $find, $idstr);
     }
 
     public function action_edit($id) {
         if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
-            return $this->view->getMessage('Íåò ïğàâ íà ğåäàêòèğîâàíèå');
+            return $this->view->getMessage('ĞĞµÑ‚ Ğ¿Ñ€Ğ°Ğ² Ğ½Ğ° Ñ€ĞµĞ´Ğ°ĞºÑ‚Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ¸Ğµ');
         list($customer_id, $order_id, $tzid, $posintzid) = explode(':', $this->idstr);
         if (empty($id)) {
             if (empty($order_id)) {
-                return $this->getMessage("Íå èçâåñòíî êóäà äîáàâëÿòü. Âûáåğè çàêàç!");
+                return $this->getMessage("ĞĞµ Ğ¸Ğ·Ğ²ĞµÑÑ‚Ğ½Ğ¾ ĞºÑƒĞ´Ğ° Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ÑÑ‚ÑŒ. Ğ’Ñ‹Ğ±ĞµÑ€Ğ¸ Ğ·Ğ°ĞºĞ°Ğ·!");
             } else {
-                //íå èçâåñòåí òèï çàäàíèÿ - ñïğîñèì
+                //Ğ½Ğµ Ğ¸Ğ·Ğ²ĞµÑÑ‚ĞµĞ½ Ñ‚Ğ¸Ğ¿ Ğ·Ğ°Ğ´Ğ°Ğ½Ğ¸Ñ - ÑĞ¿Ñ€Ğ¾ÑĞ¸Ğ¼
                 $data[idstr] = $this->idstr;
                 $data[mpplink] = $this->actUri('addtz', 'mpp')->url();
                 $data[dpplink] = $this->actUri('addtz', 'dpp')->url();

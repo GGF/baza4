@@ -2,18 +2,18 @@
 
 class lanch_zap_view extends sqltable_view {
 
-    // îáÿçàòåëüíî îïğåäåëÿòü äëÿ ìîäóëÿ
+    // Ğ¾Ğ±ÑĞ·Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ Ğ¾Ğ¿Ñ€ĞµĞ´ĞµĞ»ÑÑ‚ÑŒ Ğ´Ğ»Ñ Ğ¼Ğ¾Ğ´ÑƒĞ»Ñ
     public function getDir() {
         return __DIR__;
     }
 
     public function showrec($rec) {
-        Output::assign('type', 'ÑË');
+        Output::assign('type', 'Ğ¡Ğ›');
         Output::assign('sllink', $rec[sl][link]);
         Output::assign('slid', $rec[sl][id]);
         $out = $this->fetch('link.tpl');
         $out .= '<br>';
-        Output::assign('type', 'ÒÇ');
+        Output::assign('type', 'Ğ¢Ğ—');
         Output::assign('sllink', $rec[tz][link]);
         Output::assign('slid', $rec[tz][id]);
         $out .= $this->fetch('link.tpl');

@@ -30,13 +30,13 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getCols() {
         $cols = array();
-        $cols["№"] = "№";
+        $cols["в„–"] = "в„–";
         $cols["nzid"] = "ID";
-        $cols["customer"] = "Заказчик";
-        $cols["number"] = "Заказ";
-        $cols["blockname"] = "Плата";
-        $cols["numbers"] = "Кол-во";
-        $cols["lastdate"] = "Посл. зап";
+        $cols["customer"] = "Р—Р°РєР°Р·С‡РёРє";
+        $cols["number"] = "Р—Р°РєР°Р·";
+        $cols["blockname"] = "РџР»Р°С‚Р°";
+        $cols["numbers"] = "РљРѕР»-РІРѕ";
+        $cols["lastdate"] = "РџРѕСЃР». Р·Р°Рї";
         return $cols;
     }
 
@@ -73,10 +73,10 @@ class lanch_nzap_model extends sqltable_model {
             AND boards.id=board_id)
         WHERE block_id='{$rs["bid"]}'";
         $res = sql::fetchAll($sql);
-        $nz = 0; // максимальное количество заготовок по количеству плат в блоке
-        $nl = 0; // максимальное количество слоев на плате в блоке, хотя бред
-        $cl = 0; // класс платы, наибольший по позициям
-        $piz = 0; // число плат на заготовке (сумма по блоку)
+        $nz = 0; // РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РіРѕС‚РѕРІРѕРє РїРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ РїР»Р°С‚ РІ Р±Р»РѕРєРµ
+        $nl = 0; // РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃР»РѕРµРІ РЅР° РїР»Р°С‚Рµ РІ Р±Р»РѕРєРµ, С…РѕС‚СЏ Р±СЂРµРґ
+        $cl = 0; // РєР»Р°СЃСЃ РїР»Р°С‚С‹, РЅР°РёР±РѕР»СЊС€РёР№ РїРѕ РїРѕР·РёС†РёСЏРј
+        $piz = 0; // С‡РёСЃР»Рѕ РїР»Р°С‚ РЅР° Р·Р°РіРѕС‚РѕРІРєРµ (СЃСѓРјРјР° РїРѕ Р±Р»РѕРєСѓ)
         foreach ($res as $rs1) {
             $board[name] = $rs1["board_name"];
             $board[sizex] = $rs1["psizex"];
@@ -99,12 +99,12 @@ class lanch_nzap_model extends sqltable_model {
         }
         //if (Auth::getInstance()->getRights("nzap","edit")) {
         if ($nl > 2) {
-            // многослойку радара партии по одной
-            if ($rs["customer_id"] == '8') // радар
+            // РјРЅРѕРіРѕСЃР»РѕР№РєСѓ СЂР°РґР°СЂР° РїР°СЂС‚РёРё РїРѕ РѕРґРЅРѕР№
+            if ($rs["customer_id"] == '8') // СЂР°РґР°СЂ
                 $zip = 1;
             else
                 $zip = 5;
-            // если первичный запуск - мастерплата
+            // РµСЃР»Рё РїРµСЂРІРёС‡РЅС‹Р№ Р·Р°РїСѓСЃРє - РјР°СЃС‚РµСЂРїР»Р°С‚Р°
             if ($rs["first"] == '1' || $rs["template_make"] > 0) {
                 $sql = "SELECT * FROM masterplate WHERE posid='{$id}'";
                 $mp = sql::fetchOne($sql);
@@ -114,11 +114,11 @@ class lanch_nzap_model extends sqltable_model {
             }
             $dpp = false;
         } else {
-            // одно-двухстороняя
+            // РѕРґРЅРѕ-РґРІСѓС…СЃС‚РѕСЂРѕРЅСЏСЏ
             $zip = 25;
             $dpp = true;
-            // если больше пяти заготовок - мастерплата,
-            // хотя обойдутся без соповодительного листа
+            // РµСЃР»Рё Р±РѕР»СЊС€Рµ РїСЏС‚Рё Р·Р°РіРѕС‚РѕРІРѕРє - РјР°СЃС‚РµСЂРїР»Р°С‚Р°,
+            // С…РѕС‚СЏ РѕР±РѕР№РґСѓС‚СЃСЏ Р±РµР· СЃРѕРїРѕРІРѕРґРёС‚РµР»СЊРЅРѕРіРѕ Р»РёСЃС‚Р°
         }
         if (0 == $nz) {
             $nz = $rs[numbl];
@@ -189,7 +189,7 @@ class lanch_nzap_model extends sqltable_model {
                 WHERE pos_in_tz_id='{$posid}' ";
             $rs = sql::fetchOne($sql);
             sql::error(true);
-            $rec[dozapnumbers] = $party; // тут было записано сколько при дозапуске
+            $rec[dozapnumbers] = $party; // С‚СѓС‚ Р±С‹Р»Рѕ Р·Р°РїРёСЃР°РЅРѕ СЃРєРѕР»СЊРєРѕ РїСЂРё РґРѕР·Р°РїСѓСЃРєРµ
             $rec[party] = $party = $rs[party];
             $rec[posid] = $posid;
         }
@@ -205,9 +205,9 @@ class lanch_nzap_model extends sqltable_model {
         } else {
             $lanch_id = $rs["id"];
         }
-        // вернем вызывальщику
+        // РІРµСЂРЅРµРј РІС‹Р·С‹РІР°Р»СЊС‰РёРєСѓ
         $rec[lanch_id] = $lanch_id;
-        // заказчик и имя блока
+        // Р·Р°РєР°Р·С‡РёРє Рё РёРјСЏ Р±Р»РѕРєР°
         $sql = "SELECT * 
                 FROM posintz
                 JOIN (blocks,customers)
@@ -217,13 +217,13 @@ class lanch_nzap_model extends sqltable_model {
         $rec[customer] = $customer = $rs[customer];
         $rec[blockname] = $blockname = $rs[blockname];
         $rec[block_id] = $rs[block_id];
-// Определим идентификатор коментария
-        $comment_id = 1; //пустой
-// Определим идентификатор файловой ссылки
+// РћРїСЂРµРґРµР»РёРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєРѕРјРµРЅС‚Р°СЂРёСЏ
+        $comment_id = 1; //РїСѓСЃС‚РѕР№
+// РћРїСЂРµРґРµР»РёРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С„Р°Р№Р»РѕРІРѕР№ СЃСЃС‹Р»РєРё
         $rec["l_date"] = $l_date = date("Y-m-d");
         $rec[file_link] = $file_link =
-                "z:\\Заказчики\\{$customer}\\{$blockname}\\запуски\\" .
-                "СЛ-{$l_date}-{$lanch_id}.xml";
+                "z:\\Р—Р°РєР°Р·С‡РёРєРё\\{$customer}\\{$blockname}\\Р·Р°РїСѓСЃРєРё\\" .
+                "РЎР›-{$l_date}-{$lanch_id}.xml";
         $rec[filename] = fileserver::createdironserver($file_link);
         $rec[file_id]=$file_id = $this->getFileId($file_link);
         $sql = "UPDATE lanch
@@ -236,7 +236,7 @@ class lanch_nzap_model extends sqltable_model {
     public function getParty($rec) {
         extract($rec);
         $rec = $this->getPartyfile($rec);
-        // определимся с типом ДПП или МПП
+        // РѕРїСЂРµРґРµР»РёРјСЃСЏ СЃ С‚РёРїРѕРј Р”РџРџ РёР»Рё РњРџРџ
         $sql = "SELECT * FROM blockpos WHERE block_id='{$rec[block_id]}'";
         $res = sql::fetchOne($sql);
         $sql = "SELECT * FROM boards WHERE id='{$res[board_id]}'";
@@ -260,7 +260,7 @@ class lanch_nzap_model extends sqltable_model {
                 $nib1 = $nib2 = $nib3 = $nib4 = $nib5 = $nib6 =
                 $psizex1 = $niz1 = $pio1 = $ppart1 = $psizex2 = $niz2 = $pio2 = $ppart2 = $psizex3 = $niz3 = $pio3 = $ppart3 =
                 $psizex4 = $niz4 = $pio4 = $ppart4 = $psizex5 = $niz5 = $pio5 = $ppart5 = $psizex6 = $niz6 = $pio6 = $ppart6 = '';
-// получить данные в переменные
+// РїРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ РІ РїРµСЂРµРјРµРЅРЅС‹Рµ
         $sql = "SELECT
         orderdate AS ldate,
         orders.number AS letter,
@@ -300,15 +300,15 @@ class lanch_nzap_model extends sqltable_model {
         $sql = "SELECT comment FROM coments WHERE id='{$comment_id2}'";
         $res = sql::fetchOne($sql);
         $rec[comment2] = empty($res["comment"]) ? '' : multibyte::UTF_encode($res["comment"]);
-// собрать данные о платах в блоке
+// СЃРѕР±СЂР°С‚СЊ РґР°РЅРЅС‹Рµ Рѕ РїР»Р°С‚Р°С… РІ Р±Р»РѕРєРµ
         $sql = "SELECT *, board_name AS boardname, sizex AS psizex, sizey AS psizey 
                 FROM blockpos 
                 JOIN (boards) 
                 ON (boards.id=blockpos.board_id) 
                 WHERE blockpos.block_id='{$block_id}' 
-                ORDER BY blockpos.id"; // для правильного количества в запуске
+                ORDER BY blockpos.id"; // РґР»СЏ РїСЂР°РІРёР»СЊРЅРѕРіРѕ РєРѕР»РёС‡РµСЃС‚РІР° РІ Р·Р°РїСѓСЃРєРµ
         $res = sql::fetchAll($sql);
-        $i = 0; // счетчик
+        $i = 0; // СЃС‡РµС‚С‡РёРє
         $platonblock = $numlam = $rmark = $immer = 0;
         $commentp = $mask = $layers = $class = $mark = '';
         foreach ($res as $rs) {
@@ -328,7 +328,7 @@ class lanch_nzap_model extends sqltable_model {
             $mark = $rec["mark{$i}"];
         }
         $rec = array_merge($rec, compact('platonblock', 'numlam', 'rmark', 'immer', 'mask', 'layers', 'class', 'mark', 'commentp'));
-        // сделать собственно сопроводительный
+        // СЃРґРµР»Р°С‚СЊ СЃРѕР±СЃС‚РІРµРЅРЅРѕ СЃРѕРїСЂРѕРІРѕРґРёС‚РµР»СЊРЅС‹Р№
         $rec[zagotinparty]=$zagotinparty = 25;
         if ($dozap) {
             //
@@ -339,17 +339,17 @@ class lanch_nzap_model extends sqltable_model {
             $numpl1 = $numbers = $dozapnumbers;
             $part = $party;
         } else {
-            $zagotovokvsego = $numbl != 0 ? $numbl : ceil($numbers / $platonblock); // общее количество заготовок
-            $zag = ($party * $zagotinparty >= $zagotovokvsego) ? ($zagotovokvsego - ($party - 1) * $zagotinparty) : $zagotinparty; //заготовок в партии
-            /* плат в партии */
+            $zagotovokvsego = $numbl != 0 ? $numbl : ceil($numbers / $platonblock); // РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РіРѕС‚РѕРІРѕРє
+            $zag = ($party * $zagotinparty >= $zagotovokvsego) ? ($zagotovokvsego - ($party - 1) * $zagotinparty) : $zagotinparty; //Р·Р°РіРѕС‚РѕРІРѕРє РІ РїР°СЂС‚РёРё
+            /* РїР»Р°С‚ РІ РїР°СЂС‚РёРё */
             $ppart = $zag * $platonblock;
-            /* партия */
+            /* РїР°СЂС‚РёСЏ */
             $part = (ceil($zagotovokvsego / $zagotinparty) > 1) ?
                     $party . "(" . ceil($zagotovokvsego / $zagotinparty) . ")" : $party;
         }
         $rec[last] = ceil($zagotovokvsego / $zagotinparty) <= $party;
-        // реорганизуем для запонения сл одной строчкой
-        $rec[type] = multibyte::UTF_encode($layers == '1' ? 'ОПП' : 'ДПП');
+        // СЂРµРѕСЂРіР°РЅРёР·СѓРµРј РґР»СЏ Р·Р°РїРѕРЅРµРЅРёСЏ СЃР» РѕРґРЅРѕР№ СЃС‚СЂРѕС‡РєРѕР№
+        $rec[type] = multibyte::UTF_encode($layers == '1' ? 'РћРџРџ' : 'Р”РџРџ');
         $rec[number] = sprintf("%08d", $lanch_id);
         $rec[zagotovokvsego] = $rec[zzak] = $zagotovokvsego;
         $rec[zag] = $rec[zppart] = $zag;
@@ -365,25 +365,25 @@ class lanch_nzap_model extends sqltable_model {
             $rec["niz{$i}"] = $rec["nib{$i}"];
             $rec["boardname{$i}"] = $rec["boardname{$i}"];
         }
-        $rec[pio1] = $numpl1 == 0 ? $numbers : $numpl1; // позже возможно можно будет удалить если numpl будет из ТЗ заполнятся
+        $rec[pio1] = $numpl1 == 0 ? $numbers : $numpl1; // РїРѕР·Р¶Рµ РІРѕР·РјРѕР¶РЅРѕ РјРѕР¶РЅРѕ Р±СѓРґРµС‚ СѓРґР°Р»РёС‚СЊ РµСЃР»Рё numpl Р±СѓРґРµС‚ РёР· РўР— Р·Р°РїРѕР»РЅСЏС‚СЃСЏ
         $rec[datez] = $rec[date];
-        $tolsh = preg_split('/[\.±]/',$rec[tolsh]);
+        $tolsh = preg_split('/[\.В±]/',$rec[tolsh]);
         $tolsh = sprintf("%-d.%-d",$tolsh[0],$tolsh[1]);
         $tolsh = trim(sprintf("%-5.3f",$rec[tolsh]),'0');
         $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . $tolsh;
         $rec[tolsh] = $tolsh;
-        $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";
-        $rec[zmask] = strstr($rec[mask], multibyte::UTF_encode('ЖМ')) ? "+" : "-";
+        $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('РљРњ')) ? "+" : "-";
+        $rec[zmask] = strstr($rec[mask], multibyte::UTF_encode('Р–Рњ')) ? "+" : "-";
         $rec[aurum] = ($rec[immer] == '1' ? "+" : "-");
-        $rec[priemz] = strstr($priem, multibyte::UTF_encode('ПЗ')) ? "+" : "-";
-        $rec[priemotk] = '+'; // всегда
+        $rec[priemz] = strstr($priem, multibyte::UTF_encode('РџР—')) ? "+" : "-";
+        $rec[priemotk] = '+'; // РІСЃРµРіРґР°
         $rec[scomp] = sprintf("%3.2f", $rec[scomp] / 10000);
         $rec[ssold] = sprintf("%3.2f", $rec[ssold] / 10000);
         $rec[lamel] = $rec[numlam] > 0 ? "+" : "-";
         $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
                         ($rec[ppsimat] . '-' . $tolsh)
                 ) . $rec[commentp];
-        $rec[dozap] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
+        $rec[dozap] = $rec[dozap] ? multibyte::UTF_encode('Р”РћР—РђРџРЈРЎРљ') : '';
         $rec = array_merge($rec, compact('ppart', 'part'));
         return $rec;
     }
@@ -407,9 +407,9 @@ class lanch_nzap_model extends sqltable_model {
         WHERE id='{$lanch_id}'";
         sql::query($sql);
 
-        // если все запущены - исключить из запуска
+        // РµСЃР»Рё РІСЃРµ Р·Р°РїСѓС‰РµРЅС‹ - РёСЃРєР»СЋС‡РёС‚СЊ РёР· Р·Р°РїСѓСЃРєР°
         if (!$dozap) {
-            // обновим таблицу запусков
+            // РѕР±РЅРѕРІРёРј С‚Р°Р±Р»РёС†Сѓ Р·Р°РїСѓСЃРєРѕРІ
 
             $sql = "DELETE FROM lanched WHERE block_id='{$block_id}'";
             sql::query($sql);

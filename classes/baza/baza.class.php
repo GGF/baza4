@@ -3,14 +3,14 @@
 class baza extends firstlevel {
 
     public function getIndexMenu() {
-        $this->menu->add('lanch', 'Çàïóñêè');
-        $this->menu->add('orders', 'Çàêàçû');
-        $this->menu->add('storages', 'Ñêëàäû');
-        $this->menu->add('cp', 'ÏÓ');
-        $this->menu->add('wiki', 'Áàçà çíàíèé',false);
-        $this->menu->add('docs', 'Äîêóìåíòû',false);
-        $this->menu->add('help', 'Ïîìîùü',false);
-        $this->menu->add('back', 'Âûõîä',false);
+        $this->menu->add('lanch', 'Ð—Ð°Ð¿ÑƒÑÐºÐ¸');
+        $this->menu->add('orders', 'Ð—Ð°ÐºÐ°Ð·Ñ‹');
+        $this->menu->add('storages', 'Ð¡ÐºÐ»Ð°Ð´Ñ‹');
+        $this->menu->add('cp', 'ÐŸÐ£');
+        $this->menu->add('wiki', 'Ð‘Ð°Ð·Ð° Ð·Ð½Ð°Ð½Ð¸Ð¹',false);
+        $this->menu->add('docs', 'Ð”Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ñ‹',false);
+        $this->menu->add('help', 'ÐŸÐ¾Ð¼Ð¾Ñ‰ÑŒ',false);
+        $this->menu->add('back', 'Ð’Ñ‹Ñ…Ð¾Ð´',false);
         $this->menu->run();
         return $this->menu->getOutput();
     }

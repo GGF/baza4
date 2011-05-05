@@ -2,7 +2,7 @@
 
 class lanch_conduct_view extends sqltable_view {
 
-    // îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -27,22 +27,22 @@ class lanch_conduct_view extends sqltable_view {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "customer",
-                "label" => "Çàêàç÷èê:",
+                "label" => "Ð—Ð°ÐºÐ°Ð·Ñ‡Ð¸Ðº:",
                 "value" => $rec["customer"],
-                "options" => array("html" => " readonly ",),
+                "options" => array("readonly"=>true,),
             ));
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "plate",
-                "label" => "Ïëàòà:",
+                "label" => "ÐŸÐ»Ð°Ñ‚Ð°:",
                 "value" => $rec["board_name"],
-                "options" => array("html" => " readonly ",),
+                "options" => array("readonly"=>true,),
             ));
         } else {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_SELECT,
                 "name" => "customer_id",
-                "label" => "Çàêàç÷èê:",
+                "label" => "Ð—Ð°ÐºÐ°Ð·Ñ‡Ð¸Ðº:",
                 "values" => $customers,
                 "value" => '',
                 "options" => array("html" => " customerid "),
@@ -50,7 +50,7 @@ class lanch_conduct_view extends sqltable_view {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_SELECT,
                 "name" => "board_id",
-                "label" => "Ïëàòà:",
+                "label" => "ÐŸÐ»Ð°Ñ‚Ð°:",
                 "values" => '',
                 "value" => '',
                 "options" => array("html" => " autoupdate-link='{$rec[boardlink]}' autoupdate=customerid ",),
@@ -59,14 +59,14 @@ class lanch_conduct_view extends sqltable_view {
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "pib",
-            "label" => "Ïëàò â áëîêå",
+            "label" => "ÐŸÐ»Ð°Ñ‚ Ð² Ð±Ð»Ð¾ÐºÐµ",
             "value" => $rec["pib"],
                 //"options"	=>	array( "html" => "size=10", ),
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_SELECT,
             "name" => "lays",
-            "label" => "Ïëàñòèí",
+            "label" => "ÐŸÐ»Ð°ÑÑ‚Ð¸Ð½",
             "values" => array("3" => "3", "5" => "5"),
             "value" => $rec["lays"],
                 //"options"	=>	array( "html" => "size=10", ),
@@ -74,7 +74,7 @@ class lanch_conduct_view extends sqltable_view {
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_SELECT,
             "name" => "side",
-            "label" => "Ñòîðîíà:",
+            "label" => "Ð¡Ñ‚Ð¾Ñ€Ð¾Ð½Ð°:",
             "values" => array(
                 "TOP" => "TOP",
                 "BOT" => "BOT",

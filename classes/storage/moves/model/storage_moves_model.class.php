@@ -8,7 +8,7 @@ class storage_moves_model extends storage_rest_model {
         if (empty($spr_id))
             return array();
         if ($all) {
-            $sql = "(SELECT *,if(type='1','Ïðèõîä','Ðàñõîä') AS prras,
+            $sql = "(SELECT *,if(type='1','ÐŸÑ€Ð¸Ñ…Ð¾Ð´','Ð Ð°ÑÑ…Ð¾Ð´') AS prras,
                         sk_{$this->sklad}_dvizh.id
                      FROM {$this->db}sk_{$this->sklad}_dvizh
                      JOIN ({$this->db}sk_{$this->sklad}_postav,{$this->db}coments)
@@ -16,7 +16,7 @@ class storage_moves_model extends storage_rest_model {
                         AND coments.id=sk_{$this->sklad}_dvizh.comment_id) WHERE spr_id='{$spr_id}' " .
                     (!empty($find) ? "AND comment LIKE '%{$find}%' OR supply LIKE '%{$find}%' OR numd LIKE '%{$find}%' " : "") .
                     ") UNION (
-                    SELECT *,if(type='1','Ïðèõîä','Ðàñõîä') AS prras, sk_{$this->sklad}_dvizh_arc.id
+                    SELECT *,if(type='1','ÐŸÑ€Ð¸Ñ…Ð¾Ð´','Ð Ð°ÑÑ…Ð¾Ð´') AS prras, sk_{$this->sklad}_dvizh_arc.id
                     FROM {$this->db}sk_{$this->sklad}_dvizh_arc
                     JOIN ({$this->db}sk_{$this->sklad}_postav,{$this->db}coments)
                     ON (sk_{$this->sklad}_postav.id=sk_{$this->sklad}_dvizh_arc.post_id
@@ -25,7 +25,7 @@ class storage_moves_model extends storage_rest_model {
                     ") " .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY ddate ");
         } else {
-            $sql = "SELECT *,if(type='1','Ïðèõîä','Ðàñõîä') AS prras, sk_{$this->sklad}_dvizh.id 
+            $sql = "SELECT *,if(type='1','ÐŸÑ€Ð¸Ñ…Ð¾Ð´','Ð Ð°ÑÑ…Ð¾Ð´') AS prras, sk_{$this->sklad}_dvizh.id 
                     FROM {$this->db}sk_{$this->sklad}_dvizh
                     JOIN ({$this->db}sk_{$this->sklad}_postav,{$this->db}coments)
                     ON (sk_{$this->sklad}_postav.id=sk_{$this->sklad}_dvizh.post_id
@@ -41,13 +41,13 @@ class storage_moves_model extends storage_rest_model {
     public function getCols() {
         $cols = array();
         $cols[id] = "ID";
-        $cols[ddate] = "Äàòà";
+        $cols[ddate] = "Ð”Ð°Ñ‚Ð°";
         $cols[prras] = "+/-";
-        $cols[numd] = "¹ äîê.";
-        $cols[supply] = "Ïîñòàâùèê";
-        $cols[quant] = "Êîë-âî";
-        $cols[comment] = "Ïðèìå÷àíèå";
-        $cols[price] = "Öåíà";
+        $cols[numd] = "â„– Ð´Ð¾Ðº.";
+        $cols[supply] = "ÐŸÐ¾ÑÑ‚Ð°Ð²Ñ‰Ð¸Ðº";
+        $cols[quant] = "ÐšÐ¾Ð»-Ð²Ð¾";
+        $cols[comment] = "ÐŸÑ€Ð¸Ð¼ÐµÑ‡Ð°Ð½Ð¸Ðµ";
+        $cols[price] = "Ð¦ÐµÐ½Ð°";
         return $cols;
     }
 
@@ -69,8 +69,8 @@ class storage_moves_model extends storage_rest_model {
     }
 
     public function getRecord($edit) {
-        // ïîñòàâùèêè ñïèñîê äëÿ âûáîðà
-        $supply["0"] = "Íîâûé";
+        // Ð¿Ð¾ÑÑ‚Ð°Ð²Ñ‰Ð¸ÐºÐ¸ ÑÐ¿Ð¸ÑÐ¾Ðº Ð´Ð»Ñ Ð²Ñ‹Ð±Ð¾Ñ€Ð°
+        $supply["0"] = "ÐÐ¾Ð²Ñ‹Ð¹";
         $sql = "SELECT * FROM {$this->db}sk_{$this->sklad}_postav";
         $res = sql::fetchAll($sql);
         foreach ($res as $rs) {
@@ -91,8 +91,8 @@ class storage_moves_model extends storage_rest_model {
 
     public function setRecord($data) {
         extract($data);
-        // îòðåäàêòèðîâàíî
-        // íàéäåì ïîñòàâùèêà
+        // Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¾
+        // Ð½Ð°Ð¹Ð´ÐµÐ¼ Ð¿Ð¾ÑÑ‚Ð°Ð²Ñ‰Ð¸ÐºÐ°
         if (!empty($supply_id)) {
             $post_id = $supply_id;
         } else {
@@ -108,7 +108,7 @@ class storage_moves_model extends storage_rest_model {
                 $post_id = sql::lastId();
             }
         }
-        // Îïðåäåëèì èäåíòèôèêàòîð êîìåíòàðèÿ
+        // ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»Ð¸Ð¼ Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ ÐºÐ¾Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ñ
         $sql = "SELECT id FROM {$this->db}coments WHERE comment='$comment'";
         $rs = sql::fetchOne($sql);
         if (!empty ($rs)) {
@@ -121,7 +121,7 @@ class storage_moves_model extends storage_rest_model {
         }
         list($numdf, $numyr) = explode("/", $numd);
         if (empty($edit)) {
-            //äîáàâëåíèå íîâîãî
+            //Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð½Ð¾Ð²Ð¾Ð³Ð¾
             $ddate = date("Y-m-d", mktime(0, 0, 0, substr($ddate, 3, 2), substr($ddate, 0, 2), substr($ddate, 6, 4))); //$dyear."-".$dmonth."-".$dday;
             $sql = "INSERT INTO {$this->db}sk_{$this->sklad}_dvizh (type,numd,numdf,docyr,spr_id,quant,ddate,post_id,comment_id,price) VALUES ('$type','$numd','$numdf','$numyr','$spr_id','$quant','$ddate','$post_id','$comment_id','$price')";
             sql::query($sql);
@@ -130,7 +130,7 @@ class storage_moves_model extends storage_rest_model {
             sql::query($sql);
             sql::error(true);
         } else {
-            // óäàëèòü  ñòàðîå äâèæåíåè
+            // ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ  ÑÑ‚Ð°Ñ€Ð¾Ðµ Ð´Ð²Ð¸Ð¶ÐµÐ½ÐµÐ¸
             $sql = "SELECT * FROM {$this->db}sk_{$this->sklad}_dvizh WHERE id='$edit'";
             $rs = sql::fetchOne($sql);
             $sql = "UPDATE {$this->db}sk_{$this->sklad}_ost SET ost=ost" . ($rs["type"] ? "-" : "+") . abs($rs["quant"]) . " WHERE spr_id='" . $rs["spr_id"] . "'";

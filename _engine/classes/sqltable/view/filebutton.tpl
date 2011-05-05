@@ -1,1 +1,1 @@
-<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="{$link}"><input type="button" id="sl{$party}" value="Äîáàâèòü ôàéëîâ" ></a>
+<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="{$link}"><input type="button" id="sl{$party}" value="Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ñ„Ð°Ð¹Ð»Ð¾Ð²" ></a>

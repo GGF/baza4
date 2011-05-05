@@ -2,7 +2,7 @@
 
 class storage_archivemoves extends sqltable {
 
-    // обязательно определять для модуля
+    // РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РѕРїСЂРµРґРµР»СЏС‚СЊ РґР»СЏ РјРѕРґСѓР»СЏ
     public function getDir() {
         return __DIR__;
     }
@@ -13,7 +13,7 @@ class storage_archivemoves extends sqltable {
         $ost=$ost[ost];
         $edizm = $tovar[edizm];
         $nazv = $tovar[nazv];
-        $this->title = empty($_SESSION[arc_spr_id]) ? "" : "Движения - {$nazv} - остаток - {$ost} {$edizm}";
+        $this->title = empty($_SESSION[arc_spr_id]) ? "" : "Р”РІРёР¶РµРЅРёСЏ - {$nazv} - РѕСЃС‚Р°С‚РѕРє - {$ost} {$edizm}";
         return parent::action_index($all, $order, $find, $idstr);
     }
 

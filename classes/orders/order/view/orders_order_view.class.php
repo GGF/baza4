@@ -2,7 +2,7 @@
 
 class orders_order_view extends sqltable_view {
 
-    // îáÿçàòåëüíî îïğåäåëÿòü äëÿ ìîäóëÿ
+    // Ğ¾Ğ±ÑĞ·Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ Ğ¾Ğ¿Ñ€ĞµĞ´ĞµĞ»ÑÑ‚ÑŒ Ğ´Ğ»Ñ Ğ¼Ğ¾Ğ´ÑƒĞ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -16,7 +16,7 @@ class orders_order_view extends sqltable_view {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_SELECT,
                 "name" => "customerid",
-                "label" => "Çàêàç÷èê:",
+                "label" => "Ğ—Ğ°ĞºĞ°Ğ·Ñ‡Ğ¸Ğº:",
                 "values" => $rec[customers],
             ));
         } else {
@@ -30,14 +30,14 @@ class orders_order_view extends sqltable_view {
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_DATE,
             "name" => "orderdate",
-            "label" => 'Äàòà:',
+            "label" => 'Ğ”Ğ°Ñ‚Ğ°:',
             "value" => $rec[orderdate],
             "obligatory" => true,
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "number",
-            "label" => "Íîìåğ ïèñüìà:",
+            "label" => "ĞĞ¾Ğ¼ĞµÑ€ Ğ¿Ğ¸ÑÑŒĞ¼Ğ°:",
             "value" => $rec["number"],
             "options" => array("html" => "size=30",),
             "obligatory" => true,

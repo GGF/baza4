@@ -2,7 +2,7 @@
 
 class orders_posintz extends sqltable {
 
-    // îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -13,9 +13,9 @@ class orders_posintz extends sqltable {
         $orderarr = $this->model->getOrder($order_id);
         $date = $orderarr[orderdate];
         $orderstr = $orderarr[number];
-        $this->title = 'Ïîçèöèè â ';
-        $this->title .= empty($customer_id)?" Âûáåðèòå çàêàç÷èêà":" Çàêàç÷èê - {$customer}";
-        $this->title .= empty($order_id) ? "" : " Çàêàç - {$orderstr} îò {$date} ";
+        $this->title = 'ÐŸÐ¾Ð·Ð¸Ñ†Ð¸Ð¸ Ð² ';
+        $this->title .= empty($customer_id)?" Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð·Ð°ÐºÐ°Ð·Ñ‡Ð¸ÐºÐ°":" Ð—Ð°ÐºÐ°Ð·Ñ‡Ð¸Ðº - {$customer}";
+        $this->title .= empty($order_id) ? "" : " Ð—Ð°ÐºÐ°Ð· - {$orderstr} Ð¾Ñ‚ {$date} ";
         $this->title .= empty($tz_id) ? "" : " #{$tz_id}";
         return parent::action_index($all, $order, $find, $idstr);
     }

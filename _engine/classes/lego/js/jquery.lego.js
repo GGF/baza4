@@ -1,7 +1,7 @@
 var currentState;// = document.location.hash;;
 
 $(function(){
-    // Обработка ссылок вида <a data-confirm=... для отображения запроса подтверждения
+    // РћР±СЂР°Р±РѕС‚РєР° СЃСЃС‹Р»РѕРє РІРёРґР° <a data-confirm=... РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ Р·Р°РїСЂРѕСЃР° РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ
     $("a[data-confirm]").live("click.myConfirmEvent", function(){
         var text = $(this).attr("data-confirm");
         if(confirm(text)) {
@@ -20,7 +20,7 @@ $(function(){
         return false;
     });
 
-    // Обработка молчаливых ссылок вида <a data-silent=...
+    // РћР±СЂР°Р±РѕС‚РєР° РјРѕР»С‡Р°Р»РёРІС‹С… СЃСЃС‹Р»РѕРє РІРёРґР° <a data-silent=...
     $("a[data-silent], input[data-silent]").live("click.mySilentEvent", function(){
         var a = this;
         var target_element = $(this).attr("data-silent");
@@ -38,7 +38,7 @@ $(function(){
         if(target_element == "self")
             $(this).hide();
         if(action==null)
-            action = 'html'; //вставить внутрь элемента
+            action = 'html'; //РІСЃС‚Р°РІРёС‚СЊ РІРЅСѓС‚СЂСЊ СЌР»РµРјРµРЅС‚Р°
         //load.insertAfter($(this));
         load.show();
         $.ajax({
@@ -84,7 +84,7 @@ $(function(){
         return false;
     });
 	
-    // Обработка молчаливых чекбоксов <input data-silent=...
+    // РћР±СЂР°Р±РѕС‚РєР° РјРѕР»С‡Р°Р»РёРІС‹С… С‡РµРєР±РѕРєСЃРѕРІ <input data-silent=...
     $("input[data-silent]").live("change.mySilentEvent", function(){
         var target = $(this).attr("data-silent");
         var url = jQuery.fn.lego.getAjaxUrl($(this).attr("href"), $(this).lego().attr("name"));
@@ -132,7 +132,7 @@ $(function(){
         var path = url.indexOf("?") == -1 ? url : url.substring(0, url.indexOf("?"));
         var query = url.substring(url.indexOf("?")+1);
         parse_str(query, arr);
-        arr.ajax = legotarget; // добавляем магический параметр ajax в гет
+        arr.ajax = legotarget; // РґРѕР±Р°РІР»СЏРµРј РјР°РіРёС‡РµСЃРєРёР№ РїР°СЂР°РјРµС‚СЂ ajax РІ РіРµС‚
         if(legotarget == null) delete arr.ajax;
         return path+"?"+urldecode(http_build_query(arr));
     }
@@ -145,9 +145,9 @@ $(function(){
         return typeof (arr.ajax) == 'undefined' ? "" : arr.ajax;
     }
 
-// КЭШ
+// РљР­РЁ
 var LegoCache = {
-    enabled: false, // пока отключен
+    enabled: false, // РїРѕРєР° РѕС‚РєР»СЋС‡РµРЅ
     cache: {},
     put: function(lego_name, url, data){
         if(!this.enabled) return;
@@ -158,7 +158,7 @@ var LegoCache = {
         if(typeof this.cache[lego_name+url] != 'undefined'){
             var ret = $(this.cache[lego_name+url]);
             var reload_block = $("<a href='javascript:void(0)' onclick='jQuery.fn.lego.reload(this)' />");
-            reload_block.html("блок загружен из кэша, обновить");
+            reload_block.html("Р±Р»РѕРє Р·Р°РіСЂСѓР¶РµРЅ РёР· РєСЌС€Р°, РѕР±РЅРѕРІРёС‚СЊ");
             reload_block.css("display","block");
             reload_block.css("font-size","8px");
             reload_block.css("text-align","center");
@@ -171,7 +171,7 @@ var LegoCache = {
     }
 }
 
-    // ОБНОВЛЕНИЕ ТЕКУЩЕГО ЛЕГО БЕЗ КЭША
+    // РћР‘РќРћР’Р›Р•РќРР• РўР•РљРЈР©Р•Р“Рћ Р›Р•Р“Рћ Р‘Р•Р— РљР­РЁРђ
     jQuery.fn.lego.reload = function(e){
         var current_lego_name = $(e).lego().attr("name");
         $().lego.log('current_lego_name - ' + current_lego_name);
@@ -182,11 +182,11 @@ var LegoCache = {
     }
 
     jQuery.fn.lego.load = function(lego_name, url, data, nocache){
-        $().lego.log("Загрузка адреса "+url+" в лего "+lego_name+"...");
+        $().lego.log("Р—Р°РіСЂСѓР·РєР° Р°РґСЂРµСЃР° "+url+" РІ Р»РµРіРѕ "+lego_name+"...");
         jQuery.fn.lego.loadedUrls[lego_name] = urldecode(url);
         var lego = $("div.lego[name="+lego_name+"]");
         lego.addClass("loading");
-        var pellicle = $("<div>"); // БЕЛАЯ ПЛЕВА
+        var pellicle = $("<div>"); // Р‘Р•Р›РђРЇ РџР›Р•Р’Рђ
         pellicle.css("position", "absolute");
         pellicle.css("width", lego.width());
         pellicle.css("height", lego.height());
@@ -199,23 +199,23 @@ var LegoCache = {
 
         url = $().lego.getAjaxUrl(url,lego_name);
         var no_ajax_url = jQuery.fn.lego.getNoAjaxUrl(url);
-        // если что-то пошло не так, то грузим страницу обычным способом
+        // РµСЃР»Рё С‡С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє, С‚Рѕ РіСЂСѓР·РёРј СЃС‚СЂР°РЅРёС†Сѓ РѕР±С‹С‡РЅС‹Рј СЃРїРѕСЃРѕР±РѕРј
         $().lego.log('count('+lego_name+')='+$(".lego[name="+lego_name+"]").length);
         if($(".lego[name="+lego_name+"]").length != 1){
             document.location = no_ajax_url+'&'+data;
-            $().lego.log("Не обнаружен лего "+lego_name+", либо их много");
+            $().lego.log("РќРµ РѕР±РЅР°СЂСѓР¶РµРЅ Р»РµРіРѕ "+lego_name+", Р»РёР±Рѕ РёС… РјРЅРѕРіРѕ");
             return true;
         }
         
-        //сохраняем загруженный УРЛ в переменную:
+        //СЃРѕС…СЂР°РЅСЏРµРј Р·Р°РіСЂСѓР¶РµРЅРЅС‹Р№ РЈР Р› РІ РїРµСЂРµРјРµРЅРЅСѓСЋ:
         jQuery.fn.lego.lastLoadedUrl = urldecode(url);
-        location.hash = url+'&'+data; //сохраняем загруженный УРЛ в адресную строку
+        location.hash = url+'&'+data; //СЃРѕС…СЂР°РЅСЏРµРј Р·Р°РіСЂСѓР¶РµРЅРЅС‹Р№ РЈР Р› РІ Р°РґСЂРµСЃРЅСѓСЋ СЃС‚СЂРѕРєСѓ
         currentState = document.location.hash;
         
-        //БЕРЕМ ИЗ КЭША
+        //Р‘Р•Р Р•Рњ РР— РљР­РЁРђ
         var from_cache = LegoCache.get(lego_name, url);
         if(from_cache && data == null && !nocache){
-            $().lego.log("Взято из кэша в лего "+lego_name+"...");
+            $().lego.log("Р’Р·СЏС‚Рѕ РёР· РєСЌС€Р° РІ Р»РµРіРѕ "+lego_name+"...");
             $(".lego[name="+lego_name+"]").replaceWith(from_cache);
             return true;
         } 
@@ -226,20 +226,20 @@ var LegoCache = {
             url: url,
             data: data,
             success: function(received){
-                $().lego.log("ОК, загружено: "+received.length+" байт в лего "+lego_name+"...");
+                $().lego.log("РћРљ, Р·Р°РіСЂСѓР¶РµРЅРѕ: "+received.length+" Р±Р°Р№С‚ РІ Р»РµРіРѕ "+lego_name+"...");
                 $().lego.log(received.substr(0,20));
                 if($(received).hasClass('lego')){
                     $(".lego[name="+lego_name+"]").replaceWith(received);
-                    //Кладем в кэш
+                    //РљР»Р°РґРµРј РІ РєСЌС€
                     LegoCache.put(lego_name, url, received);
                 }
                 else{
-                    $().lego.log(lego_name+": Сервер не вернул требуемое Lego: "+url);
+                    $().lego.log(lego_name+": РЎРµСЂРІРµСЂ РЅРµ РІРµСЂРЅСѓР» С‚СЂРµР±СѓРµРјРѕРµ Lego: "+url);
                     document.location = no_ajax_url;
                 }
             },
             error: function(x){
-                $().lego.log("Не удалось загрузить url: "+url);
+                $().lego.log("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ url: "+url);
             },
             complete: function() {
                 $('.ajaxloading').hide();
@@ -259,8 +259,8 @@ var LegoCache = {
     jQuery.fn.lego.processHash = function(){
         if(location.hash.length <= 1) return;
         var hash_url = urldecode(location.hash).substring(1);
-        if(jQuery.fn.lego.lastLoadedUrl != hash_url){ //если загруженный урл не такой как HASH в адресной строке
-            $().lego.log("Обработка hash_url="+hash_url+" lastLoadedUrl пуст");
+        if(jQuery.fn.lego.lastLoadedUrl != hash_url){ //РµСЃР»Рё Р·Р°РіСЂСѓР¶РµРЅРЅС‹Р№ СѓСЂР» РЅРµ С‚Р°РєРѕР№ РєР°Рє HASH РІ Р°РґСЂРµСЃРЅРѕР№ СЃС‚СЂРѕРєРµ
+            $().lego.log("РћР±СЂР°Р±РѕС‚РєР° hash_url="+hash_url+" lastLoadedUrl РїСѓСЃС‚");
             var lego_target = jQuery.fn.lego.getLegoTargetFromUrl(hash_url);
             jQuery.fn.lego.load(lego_target, hash_url);
             jQuery.fn.lego.lastLoadedUrl = hash_url;
@@ -271,7 +271,7 @@ var LegoCache = {
         jQuery.fn.lego.startProcessHash();
     
 
-        // Обработка всех ссылок
+        // РћР±СЂР°Р±РѕС‚РєР° РІСЃРµС… СЃСЃС‹Р»РѕРє
         if(!selector) selector = "";
         $(selector+"*:not(.noajax) a:not(.noajax)").live("click.myEvent", function(e){
             if($(this).closest(".noajax").length > 0) return true;
@@ -288,7 +288,7 @@ var LegoCache = {
             return false;
         });
     
-        // Обработка форм
+        // РћР±СЂР°Р±РѕС‚РєР° С„РѕСЂРј
         $("form:not(.noajax)").livequery("submit", function(e){
             var name = $(this).lego().attr("name");
             var legotarget = $(this).attr("legotarget");

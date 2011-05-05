@@ -7,7 +7,7 @@
  */
 class lanch_zap extends sqltable {
 
-    // обязательно определять для модуля
+    // РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РѕРїСЂРµРґРµР»СЏС‚СЊ РґР»СЏ РјРѕРґСѓР»СЏ
     public function getDir() {
         return __DIR__;
     }

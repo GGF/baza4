@@ -4,7 +4,7 @@ class storage_archive_model extends storage_rest_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $sql = "SELECT *,if((krost>ost),'<span style=\'color:red\'><b>мало</b></span>','') as malo,sk_arc_{$this->sklad}_spr.id
+        $sql = "SELECT *,if((krost>ost),'<span style=\'color:red\'><b>РјР°Р»Рѕ</b></span>','') as malo,sk_arc_{$this->sklad}_spr.id
                 FROM {$this->db}`sk_arc_{$this->sklad}_spr`
                 JOIN {$this->db}sk_arc_{$this->sklad}_ost
                 ON sk_arc_{$this->sklad}_ost.spr_id=sk_arc_{$this->sklad}_spr.id
@@ -18,11 +18,11 @@ class storage_archive_model extends storage_rest_model {
 
     public function getCols() {
         $cols = array();
-        $cols[nazv] = "Название";
-        $cols[edizm] = "Ед.Изм.";
-        $cols[ost] = "Остаток на складе";
-        $cols[krost] = "Крит. кол-во";
-        $cols[malo] = "Внимание";
+        $cols[nazv] = "РќР°Р·РІР°РЅРёРµ";
+        $cols[edizm] = "Р•Рґ.РР·Рј.";
+        $cols[ost] = "РћСЃС‚Р°С‚РѕРє РЅР° СЃРєР»Р°РґРµ";
+        $cols[krost] = "РљСЂРёС‚. РєРѕР»-РІРѕ";
+        $cols[malo] = "Р’РЅРёРјР°РЅРёРµ";
         return $cols;
     }
 

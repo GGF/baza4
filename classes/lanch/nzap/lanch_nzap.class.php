@@ -2,7 +2,7 @@
 
 class lanch_nzap extends sqltable {
 
-    // îáÿçàòåëüíî îïğåäåëÿòü äëÿ ìîäóëÿ
+    // Ğ¾Ğ±ÑĞ·Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ Ğ¾Ğ¿Ñ€ĞµĞ´ĞµĞ»ÑÑ‚ÑŒ Ğ´Ğ»Ñ Ğ¼Ğ¾Ğ´ÑƒĞ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -13,8 +13,8 @@ class lanch_nzap extends sqltable {
     }
 
     public function action_edit($id) {
-        if (!Auth::getInstance()->getRights($this->getName(),'view')) // òóò ìîæíî ñìîòğåòü, íî ğåäàêòèğîâàíèå(çàïóñê) ïğîâåğÿåòñÿ â âèäå(view)
-            return $this->view->getMessage('Íåò ïğàâ íà ğåäàêòèğîâàíèå');
+        if (!Auth::getInstance()->getRights($this->getName(),'view')) // Ñ‚ÑƒÑ‚ Ğ¼Ğ¾Ğ¶Ğ½Ğ¾ ÑĞ¼Ğ¾Ñ‚Ñ€ĞµÑ‚ÑŒ, Ğ½Ğ¾ Ñ€ĞµĞ´Ğ°ĞºÑ‚Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ¸Ğµ(Ğ·Ğ°Ğ¿ÑƒÑĞº) Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ÑĞµÑ‚ÑÑ Ğ² Ğ²Ğ¸Ğ´Ğµ(view)
+            return $this->view->getMessage('ĞĞµÑ‚ Ğ¿Ñ€Ğ°Ğ² Ğ½Ğ° Ñ€ĞµĞ´Ğ°ĞºÑ‚Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ¸Ğµ');
         $rec = $this->model->getRecord($id);
         if ($rec[mp]) {
             $rec[mp][mplink] = $this->actUri('masterplate', $id)->url();

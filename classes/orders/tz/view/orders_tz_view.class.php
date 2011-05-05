@@ -2,7 +2,7 @@
 
 class orders_tz_view extends sqltable_view {
 
-    // îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -31,10 +31,10 @@ class orders_tz_view extends sqltable_view {
                 fclose($file);
                 @chmod($filename . ".txt", 0777);
             } else {
-                return "Íå óäàëîñü ñîçäàòü ôàéë txt";
+                return "ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ ÑÐ¾Ð·Ð´Ð°Ñ‚ÑŒ Ñ„Ð°Ð¹Ð» txt";
             }
         } else {
-            return "Íå óäàëîñü ñîçäàòü ôàéë xls" . print_r($rec,true);
+            return "ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ ÑÐ¾Ð·Ð´Ð°Ñ‚ÑŒ Ñ„Ð°Ð¹Ð» xls" . print_r($rec,true);
         }
         return $this->showrec($rec);
     }

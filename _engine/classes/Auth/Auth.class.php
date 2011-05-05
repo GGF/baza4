@@ -13,9 +13,9 @@ class Auth extends lego_abstract {
     }
     public function __construct($name=false, $directCall = true) {
         if ($directCall) {
-            trigger_error("Нельзя использовать конструктор для" .
-                    "создания класса console." .
-                    "Используйте статический метод getInstance()", E_USER_ERROR);
+            trigger_error("РќРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ" .
+                    "СЃРѕР·РґР°РЅРёСЏ РєР»Р°СЃСЃР° console." .
+                    "РСЃРїРѕР»СЊР·СѓР№С‚Рµ СЃС‚Р°С‚РёС‡РµСЃРєРёР№ РјРµС‚РѕРґ getInstance()", E_USER_ERROR);
         }
         parent::__construct($name);
     }
@@ -28,13 +28,13 @@ class Auth extends lego_abstract {
     
     public function init() {
         parent::init();
-        // проверка на существование
+        // РїСЂРѕРІРµСЂРєР° РЅР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ
         $this->success = false;
-        // Почистим устаревшие сессии
+        // РџРѕС‡РёСЃС‚РёРј СѓСЃС‚Р°СЂРµРІС€РёРµ СЃРµСЃСЃРёРё
         $sql = "DELETE FROM session " .
                 "WHERE UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(ts) > 3600*8";
         if (sql::query($sql) === false) {
-            // неправильный запрос - видимо изза отсутствия таблиц
+            // РЅРµРїСЂР°РІРёР»СЊРЅС‹Р№ Р·Р°РїСЂРѕСЃ - РІРёРґРёРјРѕ РёР·Р·Р° РѕС‚СЃСѓС‚СЃС‚РІРёСЏ С‚Р°Р±Р»РёС†
             $this->install();
         }
     }
@@ -90,29 +90,29 @@ class Auth extends lego_abstract {
                     $this->success = true;
                     return true;
                 } else {
-                    $mes .= "Не могу найти пользователя по сессии." .
-                            "Обратитесь к разработчику!";
+                    $mes .= "РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ СЃРµСЃСЃРёРё." .
+                            "РћР±СЂР°С‚РёС‚РµСЃСЊ Рє СЂР°Р·СЂР°Р±РѕС‚С‡РёРєСѓ!";
                 }
             } else {
-                $mes .= "Сессия не верна или устарела!";
+                $mes .= "РЎРµСЃСЃРёСЏ РЅРµ РІРµСЂРЅР° РёР»Рё СѓСЃС‚Р°СЂРµР»Р°!";
             }
         }
 
-        // пустая сессия, не восстановлена о базе, не найден пользователь
+        // РїСѓСЃС‚Р°СЏ СЃРµСЃСЃРёСЏ, РЅРµ РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅР° Рѕ Р±Р°Р·Рµ, РЅРµ РЅР°Р№РґРµРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ
         if ($_SERVER["SCRIPT_NAME"] != '/index.php') {
             $this->gohome();
-            // показать начало чтоб не подменю показывать
+            // РїРѕРєР°Р·Р°С‚СЊ РЅР°С‡Р°Р»Рѕ С‡С‚РѕР± РЅРµ РїРѕРґРјРµРЅСЋ РїРѕРєР°Р·С‹РІР°С‚СЊ
         }
         Output::assign('css', $this->getAllHeaderBlock());
         Output::assign('mes', $mes);
-        Output::assign('title', 'Авторизация');
+        Output::assign('title', 'РђРІС‚РѕСЂРёР·Р°С†РёСЏ');
         Output::assign('actionlink', $this->actUri('login')->url());
         $scripts = "
             document.location.hash = '';
             currentState = document.location.hash
             $('#dialog').dialog({
                 closeOnEscape: false,
-                title:'Авторизация',
+                title:'РђРІС‚РѕСЂРёР·Р°С†РёСЏ',
                 width: 'auto',
                 modal: true,
                 resizable: false,

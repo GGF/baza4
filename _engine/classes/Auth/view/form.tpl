@@ -6,9 +6,9 @@
 <div id='dialog'>
 <div class="auth"> 
 <table>
-<tr><td colspan=2 class=zag>Необходимо авторизоваться для работы с базой</td></tr>
+<tr><td colspan=2 class=zag>РќРµРѕР±С…РѕРґРёРјРѕ Р°РІС‚РѕСЂРёР·РѕРІР°С‚СЊСЃСЏ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ Р±Р°Р·РѕР№</td></tr>
 <tr><td colspan=2 class=zag>{$mes}&nbsp;</td></tr>
-<tr class=tekst ><td>Пароль <span class=podtekst>(именно пароль и только пароль)</td>
+<tr class=tekst ><td>РџР°СЂРѕР»СЊ <span class=podtekst>(РёРјРµРЅРЅРѕ РїР°СЂРѕР»СЊ Рё С‚РѕР»СЊРєРѕ РїР°СЂРѕР»СЊ)</td>
 <td>
 <form action='{$actionlink}' method='POST' id="authform">
 <input type=password name='password' id=password >

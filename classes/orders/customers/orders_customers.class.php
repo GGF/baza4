@@ -2,14 +2,14 @@
 
 class orders_customers extends sqltable {
 
-    // îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     public function getDir() {
         return __DIR__;
     }
 
     public function action_edit($id) {
         if (!Auth::getInstance()->getRights($this->getName(),'edit'))
-            return $this->view->getMessage('Íåò ïðàâ íà ðåäàêòèðîâàíèå');
+            return $this->view->getMessage('ÐÐµÑ‚ Ð¿Ñ€Ð°Ð² Ð½Ð° Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ');
         $rec = $this->model->getRecord($id);
         $rec[edit] = $id;
         $rec[action] = $this->actUri('processingform')->ajaxurl($this->getName());
@@ -19,7 +19,7 @@ class orders_customers extends sqltable {
 
     public function action_open($id) {
         $this->_goto($this->uri()->clear()->set('orders', 'order')->
-                set('orders_order','index', false,'','',"$id:::")->url());// idstr çàäàåì
+                set('orders_order','index', false,'','',"$id:::")->url());// idstr Ð·Ð°Ð´Ð°ÐµÐ¼
     }
 
 }

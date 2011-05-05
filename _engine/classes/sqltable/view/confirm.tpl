@@ -1,7 +1,7 @@
 <div class="ui-widget-overlay" style="width: 100%; height: 100%; "></div>
 <div style="outline-width: 0px; outline-style: none; height: auto; width: auto; top: 40%; left: 20%; display: block; " class="ui-dialog ui-widget ui-widget-content ui-corner-all " tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog">
 <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
-<span class="ui-dialog-title" id="ui-dialog-title-dialog">Подтвердите</span>
+<span class="ui-dialog-title" id="ui-dialog-title-dialog">РџРѕРґС‚РІРµСЂРґРёС‚Рµ</span>
 <a href="{$cancellink}" class="ui-dialog-titlebar-close ui-corner-all" role="button">
 <span class="ui-icon ui-icon-closethick">close</span>
 </a>

@@ -44,7 +44,7 @@ class cp_users_model extends sqltable_model {
         extract($data);
         if ($action == "users") {
             if (!empty($edit)) {
-                // редактирование
+                // СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ
                 $sql = "UPDATE users
                             SET nik='{$nik}',
                                 fullname='{$fullname}',
@@ -52,7 +52,7 @@ class cp_users_model extends sqltable_model {
                                 password='{$password1}'
                             WHERE id='{$edit}'";
             } else {
-                // добавление
+                // РґРѕР±Р°РІР»РµРЅРёРµ
                 $sql = "INSERT INTO users (nik,fullname,position,password)
                             VALUES ('$nik','$fullname','$position','$password1')";
             }
@@ -68,7 +68,7 @@ class cp_users_model extends sqltable_model {
                     }
                 }
             }
-            // почистить сессию для того чтоб вступили права пользователь должен перезайти
+            // РїРѕС‡РёСЃС‚РёС‚СЊ СЃРµСЃСЃРёСЋ РґР»СЏ С‚РѕРіРѕ С‡С‚РѕР± РІСЃС‚СѓРїРёР»Рё РїСЂР°РІР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РґРѕР»Р¶РµРЅ РїРµСЂРµР·Р°Р№С‚Рё
             //$sql = "DELETE FROM session WHERE u_id='{$userid}'";
             //sql::query($sql);
         }

@@ -25,10 +25,10 @@ class cp_todo_model extends sqltable_model {
     public function getCols() {
         $cols = array();
         $cols[id] = "ID";
-        $cols[nik] = "Кто";
-        $cols[cts] = "Задан";
-        $cols[rts] = "Закончен";
-        $cols[what] = "Что сделать";
+        $cols[nik] = "РљС‚Рѕ";
+        $cols[cts] = "Р—Р°РґР°РЅ";
+        $cols[rts] = "Р—Р°РєРѕРЅС‡РµРЅ";
+        $cols[what] = "Р§С‚Рѕ СЃРґРµР»Р°С‚СЊ";
         return $cols;
     }
 

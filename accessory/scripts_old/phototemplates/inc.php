@@ -1,20 +1,20 @@
 <?
-// Добавляет b отображает фотошаблоны отправленые на рисование
-// Параметры
-// action - команда добавления =add, без нее отображает таблицу
-// user - имя заполнителя тз - короткое по имени компа
-// filenames - количество файлов и путь откуда отправлены
+// Р”РѕР±Р°РІР»СЏРµС‚ b РѕС‚РѕР±СЂР°Р¶Р°РµС‚ С„РѕС‚РѕС€Р°Р±Р»РѕРЅС‹ РѕС‚РїСЂР°РІР»РµРЅС‹Рµ РЅР° СЂРёСЃРѕРІР°РЅРёРµ
+// РџР°СЂР°РјРµС‚СЂС‹
+// action - РєРѕРјР°РЅРґР° РґРѕР±Р°РІР»РµРЅРёСЏ =add, Р±РµР· РЅРµРµ РѕС‚РѕР±СЂР°Р¶Р°РµС‚ С‚Р°Р±Р»РёС†Сѓ
+// user - РёРјСЏ Р·Р°РїРѕР»РЅРёС‚РµР»СЏ С‚Р· - РєРѕСЂРѕС‚РєРѕРµ РїРѕ РёРјРµРЅРё РєРѕРјРїР°
+// filenames - РєРѕР»РёС‡РµСЃС‚РІРѕ С„Р°Р№Р»РѕРІ Рё РїСѓС‚СЊ РѕС‚РєСѓРґР° РѕС‚РїСЂР°РІР»РµРЅС‹
 //
-// Возвращает либо таблицу либо пустую строку
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ Р»РёР±Рѕ С‚Р°Р±Р»РёС†Сѓ Р»РёР±Рѕ РїСѓСЃС‚СѓСЋ СЃС‚СЂРѕРєСѓ
 $GLOBALS["debugAPI"] = false;
 
 if ($action=='add') 
 	{
-	include_once $GLOBALS["DOCUMENT_ROOT"]."/lib/sql.php"; // это нужно при добавлении так как не вызывается заголовк html
-	// найдем номер заказчика
+	include_once $GLOBALS["DOCUMENT_ROOT"]."/lib/sql.php"; // СЌС‚Рѕ РЅСѓР¶РЅРѕ РїСЂРё РґРѕР±Р°РІР»РµРЅРёРё С‚Р°Рє РєР°Рє РЅРµ РІС‹Р·С‹РІР°РµС‚СЃСЏ Р·Р°РіРѕР»РѕРІРє html
+	// РЅР°Р№РґРµРј РЅРѕРјРµСЂ Р·Р°РєР°Р·С‡РёРєР°
 	$files = addslashes($file_link);
 	debug ($file_link);
-	// Определим идентификатор пользователя
+	// РћРїСЂРµРґРµР»РёРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	$sql="SELECT id FROM users WHERE nik='$user'";
 	debug($sql);
 	$res = mysql_query($sql);
@@ -27,7 +27,7 @@ if ($action=='add')
 		$user_id = mysql_insert_id();
 		if (!$user_id) my_error();
 	}
-	// добавим
+	// РґРѕР±Р°РІРёРј
 	if (!isset($ts))
 		$ts='NOW()';
 	else
@@ -42,12 +42,12 @@ if ($action=='add')
 } 
 else
 {
-// вывести таблицу
-	print "<center><a href='?action=".($action=='all'?"'>Последние 20":"all'>Все")."</a></center><br><form method=post action=''><input type=hidden name=action value='find'>Поиск:<input type=text name='ssrt' size=10></form>";
+// РІС‹РІРµСЃС‚Рё С‚Р°Р±Р»РёС†Сѓ
+	print "<center><a href='?action=".($action=='all'?"'>РџРѕСЃР»РµРґРЅРёРµ 20":"all'>Р’СЃРµ")."</a></center><br><form method=post action=''><input type=hidden name=action value='find'>РџРѕРёСЃРє:<input type=text name='ssrt' size=10></form>";
 	print "<table class='listtable' cellspacing=0 cellpadding=0>";
 	print "<thead>";
 	print "<tr>";
-	print "<td>Дата - время</td><td>Кто добавил</td><td>Количество шаблонов и каталог</td>";
+	print "<td>Р”Р°С‚Р° - РІСЂРµРјСЏ</td><td>РљС‚Рѕ РґРѕР±Р°РІРёР»</td><td>РљРѕР»РёС‡РµСЃС‚РІРѕ С€Р°Р±Р»РѕРЅРѕРІ Рё РєР°С‚Р°Р»РѕРі</td>";
 	print "</tr>";
 	print "<tbody>";
 	$sql="SELECT *,unix_timestamp(ts) AS uts FROM phototemplates JOIN users ON phototemplates.user_id=users.id ".($action=='find'?"WHERE filenames LIKE '%$ssrt%'":"")."ORDER BY ts DESC ".($action=='all'?"":"LIMIT 20");

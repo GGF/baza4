@@ -2,7 +2,7 @@
 
 class orders_boards extends sqltable {
 
-    // îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -10,7 +10,7 @@ class orders_boards extends sqltable {
     public function action_index($all = '', $order = '', $find = '', $idstr = '') {
 //        $customer = $this->model->getCustomer($_SESSION[customer_id]);
 //        $customer = $customer[customer];
-//        $this->title = empty($_SESSION[customer_id]) ? "Âûáåðèòå çàêàç÷èêà" : "Çàêàç÷èê - {$customer}";
+//        $this->title = empty($_SESSION[customer_id]) ? "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð·Ð°ÐºÐ°Ð·Ñ‡Ð¸ÐºÐ°" : "Ð—Ð°ÐºÐ°Ð·Ñ‡Ð¸Ðº - {$customer}";
         return parent::action_index($all, $order, $find, $idstr);
     }
 

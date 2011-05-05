@@ -2,7 +2,7 @@
 
 class storage_moves_view extends sqltable_view {
 
-    // îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -20,55 +20,55 @@ class storage_moves_view extends sqltable_view {
                 array(
                     "type" => AJAXFORM_TYPE_TEXT,
                     "name" => "ddate",
-                    "label" => 'Äàòà:',
+                    "label" => 'Ð”Ð°Ñ‚Ð°:',
                     "value" => $date,
                     "options" => array("html" => ' datepicker=1 '),
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_SELECT,
                     "name" => "type",
-                    "label" => "Òèï äîêóìåíòà:",
+                    "label" => "Ð¢Ð¸Ð¿ Ð´Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ð°:",
                     "values" => array(
-                        "1" => "Ïðèõîä",
-                        "0" => "Ðàñõîä",
+                        "1" => "ÐŸÑ€Ð¸Ñ…Ð¾Ð´",
+                        "0" => "Ð Ð°ÑÑ…Ð¾Ð´",
                     ),
                     "value" => $rec["type"],
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_TEXT,
                     "name" => "numd",
-                    "label" => 'Íîìåð äîêóìåíòà:',
+                    "label" => 'ÐÐ¾Ð¼ÐµÑ€ Ð´Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ð°:',
                     "value" => $rec["numd"],
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_TEXT,
                     "name" => "quant",
-                    "label" => 'Êîëè÷åñòâî:',
+                    "label" => 'ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾:',
                     "value" => $rec["quant"],
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_SELECT,
                     "name" => "supply_id",
-                    "label" => "Ïîñòàâùèê:",
+                    "label" => "ÐŸÐ¾ÑÑ‚Ð°Ð²Ñ‰Ð¸Ðº:",
                     "values" => $rec[supply],
                     "value" => $rec["supply_id"],
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_TEXT,
                     "name" => "supply",
-                    "label" => 'Íîâûé:',
+                    "label" => 'ÐÐ¾Ð²Ñ‹Ð¹:',
                     "value" => "",
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_TEXT,
                     "name" => "price",
-                    "label" => 'Ñòîèìîñòü:',
+                    "label" => 'Ð¡Ñ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ:',
                     "value" => $rec["price"],
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_TEXTAREA,
                     "name" => "comment",
-                    "label" => 'Êîììåíòàðèé:',
+                    "label" => 'ÐšÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¹:',
                     "value" => $rec["comment"],
                 //"options"	=>	array( "html" => "size=70", ),
                 )

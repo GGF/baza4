@@ -2,7 +2,7 @@
 
 class lanch_nzap_view extends sqltable_view {
 
-    // обязательно определять для модуля
+    // РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РѕРїСЂРµРґРµР»СЏС‚СЊ РґР»СЏ РјРѕРґСѓР»СЏ
     public function getDir() {
         return __DIR__;
     }
@@ -55,14 +55,14 @@ class lanch_nzap_view extends sqltable_view {
             Output::assign('slid', $lanch_id);
             $out = $this->fetch('partylink.tpl') . ($last ? '<script>reload_table();</script>' : '');
         } else {
-            $out = "Не удалось записать файл";
+            $out = "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РїРёСЃР°С‚СЊ С„Р°Р№Р»";
             $out = false;
         }
         return $out;
     }
 
     public function showmplink($rec) {
-        $filename = "z:\\Заказчики\\{$rec[customer]}\\{$rec[blockname]}\\Мастерплаты\\МП-{$rec[date]}-{$rec[mp_id]}.xml";
+        $filename = "z:\\Р—Р°РєР°Р·С‡РёРєРё\\{$rec[customer]}\\{$rec[blockname]}\\РњР°СЃС‚РµСЂРїР»Р°С‚С‹\\РњРџ-{$rec[date]}-{$rec[mp_id]}.xml";
         $filename = fileserver::createdironserver($filename);
         $date = date("d-m-Y");
         $excel = file_get_contents($this->getDir() . "/mp.xml");
@@ -81,7 +81,7 @@ class lanch_nzap_view extends sqltable_view {
             Output::assign('mpid', $rec[mp_id]);
             $out = $this->fetch('mplink.tpl');
         } else {
-            $out = "Не удалось записать файл";
+            $out = "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РїРёСЃР°С‚СЊ С„Р°Р№Р»";
         }
         return $out;
     }

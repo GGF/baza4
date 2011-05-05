@@ -12,9 +12,9 @@ class orders_boards_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $order = strstr($order, 'files') ? '' : $order; // не удается отсортировать по файлам
+        $order = strstr($order, 'files') ? '' : $order; // РЅРµ СѓРґР°РµС‚СЃСЏ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ РїРѕ С„Р°Р№Р»Р°Рј
         if (empty($_SESSION[customer_id])) {
-            $customer = "Выберите заказчика!!!";
+            $customer = "Р’С‹Р±РµСЂРёС‚Рµ Р·Р°РєР°Р·С‡РёРєР°!!!";
             $sql = "SELECT *, CONCAT(boards.sizex,'x',boards.sizey) AS size, 
                     boards.id AS boardid,boards.id
                     FROM boards
@@ -47,12 +47,12 @@ class orders_boards_model extends sqltable_model {
     public function getCols() {
         $cols = array();
         if (empty($_SESSION[customer_id])) {
-            $cols[customer] = "Заказчик";
+            $cols[customer] = "Р—Р°РєР°Р·С‡РёРє";
         }
         $cols[boardid] = "ID";
-        $cols[board_name] = "Название платы";
-        $cols[size] = "Размер";
-        $cols[files] = "Файлы";
+        $cols[board_name] = "РќР°Р·РІР°РЅРёРµ РїР»Р°С‚С‹";
+        $cols[size] = "Р Р°Р·РјРµСЂ";
+        $cols[files] = "Р¤Р°Р№Р»С‹";
         return $cols;
     }
 

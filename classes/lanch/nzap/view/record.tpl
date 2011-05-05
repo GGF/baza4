@@ -1,3 +1,3 @@
-<a class="filelink" href="{$filelink}">Тех.Задание</a>
+<a class="filelink" href="{$filelink}">РўРµС….Р—Р°РґР°РЅРёРµ</a>
 <br>
-<strong>{$blockname} {$boardinorder}шт.   {$blocksizex}x{$blocksizey}   {$phtemplates}шаб.</strong>
+<strong>{$blockname} {$boardinorder}С€С‚.В В В {$blocksizex}x{$blocksizey}   {$phtemplates}С€Р°Р±.</strong>

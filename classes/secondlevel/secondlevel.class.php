@@ -6,7 +6,7 @@ class secondlevel extends firstlevel {
 
     public function init() {
         parent::init();
-        new sqltable(); // äëÿ âêëş÷åíèÿ css è ñêğèïòîâ
+        new sqltable(); // Ğ´Ğ»Ñ Ğ²ĞºĞ»ÑÑ‡ĞµĞ½Ğ¸Ñ css Ğ¸ ÑĞºÑ€Ğ¸Ğ¿Ñ‚Ğ¾Ğ²
     }
 
     public function  __call($name, $arguments) {
@@ -14,7 +14,7 @@ class secondlevel extends firstlevel {
         try {
             $replaced = 0;
             $act = str_replace('action_', '',$name,$replaced);
-            if ($replaced==0) throw new Exception("Íåò òàêîãî ìåòîäà {$name}");
+            if ($replaced==0) throw new Exception("ĞĞµÑ‚ Ñ‚Ğ°ĞºĞ¾Ğ³Ğ¾ Ğ¼ĞµÑ‚Ğ¾Ğ´Ğ° {$name}");
             $act = $this->getName() . "_" . $act;
             if (class_exists($act)) {
                 $this->table = new $act();
@@ -23,7 +23,7 @@ class secondlevel extends firstlevel {
             }
             
             if ($this->table==null) {
-                throw new Exception("Íå âîçìîæíî ñîçäàòü òàêóş òàáëèöó {$act}");
+                throw new Exception("ĞĞµ Ğ²Ğ¾Ğ·Ğ¼Ğ¾Ğ¶Ğ½Ğ¾ ÑĞ¾Ğ·Ğ´Ğ°Ñ‚ÑŒ Ñ‚Ğ°ĞºÑƒÑ Ñ‚Ğ°Ğ±Ğ»Ğ¸Ñ†Ñƒ {$act}");
             }
         } catch (Exception $e) {
             return $this->_404("[class=" . get_class($this) . "] : " . $e->getMessage());

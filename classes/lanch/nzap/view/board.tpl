@@ -1,1 +1,1 @@
-<br>&nbsp;&nbsp;&nbsp;{$name}  {$sizex}x{$sizey} {$numberinblock}-{$numberinblockx}x{$numberinblocky} {$layers}ñë [{$mask}]mask [{$mark}]mark
+<br>&nbsp;&nbsp;&nbsp;{$name}Â Â {$sizex}x{$sizey}Â {$numberinblock}-{$numberinblockx}x{$numberinblocky}Â {$layers}ÑĞ» [{$mask}]mask [{$mark}]mark

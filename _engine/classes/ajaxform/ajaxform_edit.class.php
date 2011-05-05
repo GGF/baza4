@@ -38,7 +38,7 @@ class ajaxform_edit {
                 array(
                     "type" => AJAXFORM_TYPE_SUBMIT,
                     "name" => "submit",
-                    "value" => 'Послать',
+                    "value" => 'РџРѕСЃР»Р°С‚СЊ',
                 )
             ));
         $this->addFieldAsArray(
@@ -100,7 +100,7 @@ class ajaxform_edit {
         //$out .= '<div style="display:none" >' . $this->form->add("submit") . '</div>';
         $out .= $this->form->end();
         $out .= $this->form->destroy();
-        $out .= '</div>'; //для прокрутки
+        $out .= '</div>'; //РґР»СЏ РїСЂРѕРєСЂСѓС‚РєРё
         $out .= "<script>\$('select').combobox();</script>";
         $lastunid = '';
         foreach ($this->unids as $unid) {

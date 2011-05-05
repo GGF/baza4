@@ -5,7 +5,7 @@ class birthdays_model {
 		$rs = sql::fetchAll($sql);
 		$dr = "";
 		foreach ($rs as $res) {
-			$dr .= "<div>День рождения - {$res["fio"]} - {$res["dr"]} - {$res["let"]} лет</div>";
+			$dr .= "<div>Р”РµРЅСЊ СЂРѕР¶РґРµРЅРёСЏ - {$res["fio"]} - {$res["dr"]} - {$res["let"]} Р»РµС‚</div>";
 		}
 		return $dr;
 	}

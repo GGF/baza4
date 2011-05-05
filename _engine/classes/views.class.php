@@ -15,12 +15,12 @@ abstract class views {
     abstract public function getDir();
 
     public function fetch($template) {
-        profiler::add("Выполнение", $this->name . ": начало отрисовки");
+        profiler::add("Р’С‹РїРѕР»РЅРµРЅРёРµ", $this->name . ": РЅР°С‡Р°Р»Рѕ РѕС‚СЂРёСЃРѕРІРєРё");
         $templatedir = Output::getTemplateCompiler()->getTemplateDir();
         Output::getTemplateCompiler()->setTemplateDir($this->dir);
         $content = Output::fetch($template);
         Output::getTemplateCompiler()->setTemplateDir($templatedir);
-        profiler::add("Выполнение", $this->name . ": конец отрисовки");
+        profiler::add("Р’С‹РїРѕР»РЅРµРЅРёРµ", $this->name . ": РєРѕРЅРµС† РѕС‚СЂРёСЃРѕРІРєРё");
         return $content;
     }
 }

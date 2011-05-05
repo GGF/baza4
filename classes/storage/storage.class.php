@@ -9,57 +9,57 @@ class storage extends secondlevel {
         $storages = array(
             himiya => array(
                 sklad => 'him_',
-                title => 'Ìàòåðèàëû'
+                title => 'ÐœÐ°Ñ‚ÐµÑ€Ð¸Ð°Ð»Ñ‹'
             ),
             materials => array(
                 sklad => 'mat_',
-                title => 'Òåêñòîëèò'
+                title => 'Ð¢ÐµÐºÑÑ‚Ð¾Ð»Ð¸Ñ‚'
             ),
             himiya2 => array(
                 sklad => 'him1_',
-                title => 'Ëàáîðàòîðèÿ'
+                title => 'Ð›Ð°Ð±Ð¾Ñ€Ð°Ñ‚Ð¾Ñ€Ð¸Ñ'
             ),
             sverla => array(
                 sklad => 'sver_',
-                title => 'Ñâåðëà 3.0'
+                title => 'Ð¡Ð²ÐµÑ€Ð»Ð° 3.0'
             ),
             halaty => array(
                 sklad => 'hal_',
-                title => 'Ñïåöîäåæäà'
+                title => 'Ð¡Ð¿ÐµÑ†Ð¾Ð´ÐµÐ¶Ð´Ð°'
             ),
             instr => array(
                 sklad => 'inst_',
-                title => 'Îñíîâíûå ñðåäñòâà'
+                title => 'ÐžÑÐ½Ð¾Ð²Ð½Ñ‹Ðµ ÑÑ€ÐµÐ´ÑÑ‚Ð²Ð°'
             ),
             himiya => array(
                 sklad => 'him_',
-                title => 'Ìàòåðèàëû'
+                title => 'ÐœÐ°Ñ‚ÐµÑ€Ð¸Ð°Ð»Ñ‹'
             ),
             nepon => array(
                 sklad => 'nepon_',
-                title => 'Ñâåðëà 3.175'
+                title => 'Ð¡Ð²ÐµÑ€Ð»Ð° 3.175'
             ),
             maloc => array(
                 sklad => 'maloc_',
-                title => 'Ìàëîöåíêà'
+                title => 'ÐœÐ°Ð»Ð¾Ñ†ÐµÐ½ÐºÐ°'
             ),
             stroy => array(
                 sklad => 'stroy_',
-                title => 'Ñòðîéìàòåðèàëû'
+                title => 'Ð¡Ñ‚Ñ€Ð¾Ð¹Ð¼Ð°Ñ‚ÐµÑ€Ð¸Ð°Ð»Ñ‹'
             ),
             zap => array(
                 sklad => 'zap_',
-                title => 'Çàï÷àñòè'
+                title => 'Ð—Ð°Ð¿Ñ‡Ð°ÑÑ‚Ð¸'
             ),
             test => array(
                 sklad => 'test_',
-                title => 'Ñêëàä äëÿ îòëàäêè'
+                title => 'Ð¡ÐºÐ»Ð°Ð´ Ð´Ð»Ñ Ð¾Ñ‚Ð»Ð°Ð´ÐºÐ¸'
             ),
         );
         parent::init();
         $this->type = $storages[$_SESSION[storagetype]];
-        CTitle::addSection("Ñêëàäû | {$this->type[title]}");
-        $this->table = new storage_rest(); // äëÿ ñêðèïòîâ
+        CTitle::addSection("Ð¡ÐºÐ»Ð°Ð´Ñ‹ | {$this->type[title]}");
+        $this->table = new storage_rest(); // Ð´Ð»Ñ ÑÐºÑ€Ð¸Ð¿Ñ‚Ð¾Ð²
     }
 
     public function __call($name, $arguments) {
@@ -80,15 +80,15 @@ class storage extends secondlevel {
     }
 
     public function getIndexMenu() {
-        $this->menu->add('rest', 'Ñêëàä', false);
-        $this->menu->add('moves', 'Äâèæåíèÿ', false);
-        $this->menu->add('archive', 'Àðõèâ', false);
-        $this->menu->add('archivemoves', 'Äâèæåíèÿ Àðõèâ', false);
-        $this->menu->add('movereport', 'Äâèæåíèå îò÷åò', false);
-        $this->menu->add('request', 'Òðåáîâàíèå', false);
+        $this->menu->add('rest', 'Ð¡ÐºÐ»Ð°Ð´', false);
+        $this->menu->add('moves', 'Ð”Ð²Ð¸Ð¶ÐµÐ½Ð¸Ñ', false);
+        $this->menu->add('archive', 'ÐÑ€Ñ…Ð¸Ð²', false);
+        $this->menu->add('archivemoves', 'Ð”Ð²Ð¸Ð¶ÐµÐ½Ð¸Ñ ÐÑ€Ñ…Ð¸Ð²', false);
+        $this->menu->add('movereport', 'Ð”Ð²Ð¸Ð¶ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ñ‡ÐµÑ‚', false);
+        $this->menu->add('request', 'Ð¢Ñ€ÐµÐ±Ð¾Ð²Ð°Ð½Ð¸Ðµ', false);
         if ($this->need_yaer_arc)
-            $this->menu->add('year', 'Ãîäîâàÿ àðõèâàöèÿ', false);
-        $this->menu->add('back', 'íàçàä', false);
+            $this->menu->add('year', 'Ð“Ð¾Ð´Ð¾Ð²Ð°Ñ Ð°Ñ€Ñ…Ð¸Ð²Ð°Ñ†Ð¸Ñ', false);
+        $this->menu->add('back', 'Ð½Ð°Ð·Ð°Ð´', false);
         $this->menu->run();
         return $this->menu->getOutput();
     }

@@ -8,8 +8,8 @@
 class storage_year_model extends storage_rest_model {
 
     public function arc() {
-        // „Ó‰Ó‚‡ˇ ‡ıË‚‡ˆËˇ
-        // ÔÂÂÌÂÒÚË ‰‚ËÊÂÌËˇ
+        // –≥–æ–¥–æ–≤–∞—è –∞—Ä—Ö–∏–≤–∞—Ü–∏—è
+        // –ø–µ—Ä–µ–Ω–µ—Å—Ç–∏ –¥–≤–∏–∂–µ–Ω–∏—è
         $sql = "INSERT INTO {$this->db}sk_{$this->sklad}_dvizh_arc
                 (type,numd,numdf,docyr,spr_id,quant,ddate,post_id,comment_id,price)
                 SELECT sk_{$this->sklad}_dvizh.type,sk_{$this->sklad}_dvizh.numd,sk_{$this->sklad}_dvizh.numdf,sk_{$this->sklad}_dvizh.docyr,sk_{$this->sklad}_dvizh.spr_id,sk_{$this->sklad}_dvizh.quant,sk_{$this->sklad}_dvizh.ddate,sk_{$this->sklad}_dvizh.post_id,sk_{$this->sklad}_dvizh.comment_id,sk_{$this->sklad}_dvizh.price
@@ -17,7 +17,7 @@ class storage_year_model extends storage_rest_model {
         if (!sql::query($sql))
             return false;
 
-        // Ó˜ËÒÚËÚ¸ ‰‚ËÊÂÌËˇ
+        // –æ—á–∏—Å—Ç–∏—Ç—å –¥–≤–∏–∂–µ–Ω–∏—è
         $sql = "TRUNCATE TABLE {$this->db}sk_{$this->sklad}_dvizh";
         if (!sql::query($sql))
             return false;
@@ -27,24 +27,24 @@ class storage_year_model extends storage_rest_model {
         $res = sql::fetchAll($sql);
         foreach ($res as $rs) {
             $id = $rs["id"];
-            // ÔÓÎÛ˜ËÚ¸ ÓÒÚ‡ÚÍË
+            // –ø–æ–ª—É—á–∏—Ç—å –æ—Å—Ç–∞—Ç–∫–∏
             $sql = "SELECT * FROM {$this->db}sk_{$this->sklad}_ost WHERE sk_{$this->sklad}_ost.spr_id='$id'";
             $ost = mysql_fetch_array(mysql_query($sql));
             $ost = $ost["ost"];
-            // ÒÓÁ‰‡Ú¸ ‡ıË‚ÌÓÂ ‰‚ËÊÂÌËÂ
-            // ÔÓÒÚ‡‚˘ËÍ
+            // —Å–æ–∑–¥–∞—Ç—å –∞—Ä—Ö–∏–≤–Ω–æ–µ –¥–≤–∏–∂–µ–Ω–∏–µ
+            // –ø–æ—Å—Ç–∞–≤—â–∏–∫
             $sql = "SELECT id FROM {$this->db}sk_{$this->sklad}_postav WHERE supply=''";
             $rs1 = sql::fetchOne($sql);
             if (!empty($rs1)) {
                 $post_id = $rs1["id"];
             }
-            // ÍÓÏÂÌÚ‡ËÈ
-            $sql = "SELECT id FROM {$this->db}coments WHERE comment='œÂÂ‰‡˜‡ ÓÒÚ‡ÚÍ‡'";
+            // –∫–æ–º–µ–Ω—Ç–∞—Ä–∏–π
+            $sql = "SELECT id FROM {$this->db}coments WHERE comment='–ü–µ—Ä–µ–¥–∞—á–∞ –æ—Å—Ç–∞—Ç–∫–∞'";
             $rs1 = sql::fetchOne($sql);
             if (!empty($rs1)) {
                 $comment_id = $rs1["id"];
             } else {
-                $sql = "INSERT INTO {$this->db}coments (comment) VALUES ('œÂÂ‰‡˜‡ ÓÒÚ‡ÚÍ‡')";
+                $sql = "INSERT INTO {$this->db}coments (comment) VALUES ('–ü–µ—Ä–µ–¥–∞—á–∞ –æ—Å—Ç–∞—Ç–∫–∞')";
                 sql::query($sql) or die(sql::error(true));
                 $comment_id = sql::lastId();
             }
@@ -57,14 +57,14 @@ class storage_year_model extends storage_rest_model {
             echo $sql . "<br>";
             if (!sql::query($sql))
                 return false;
-            // ÒÓÁ‰‡‰ËÏ ÔÂ‚ÓÂ ‰‚ËÊÂÌËÂ „Ó‰‡
-            // ÍÓÏÂÌÚ‡ËÈ
-            $sql = "SELECT id FROM {$this->db}coments WHERE comment='ŒÒÚ‡ÚÓÍ Ì‡ 31.12.$docyr'";
+            // —Å–æ–∑–¥–∞–¥–∏–º –ø–µ—Ä–≤–æ–µ –¥–≤–∏–∂–µ–Ω–∏–µ –≥–æ–¥–∞
+            // –∫–æ–º–µ–Ω—Ç–∞—Ä–∏–π
+            $sql = "SELECT id FROM {$this->db}coments WHERE comment='–û—Å—Ç–∞—Ç–æ–∫ –Ω–∞ 31.12.$docyr'";
             $rs1 = sql::fetchOne($sql);
             if (!empty($rs1)) {
                 $comment_id = $rs1["id"];
             } else {
-                $sql = "INSERT INTO {$this->db}coments (comment) VALUES ('ŒÒÚ‡ÚÓÍ Ì‡ 31.12.$docyr')";
+                $sql = "INSERT INTO {$this->db}coments (comment) VALUES ('–û—Å—Ç–∞—Ç–æ–∫ –Ω–∞ 31.12.$docyr')";
                 sql::query($sql) or die(sql::error(true));
                 $comment_id = sql::lastId();
             }

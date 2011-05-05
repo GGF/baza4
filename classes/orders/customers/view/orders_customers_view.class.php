@@ -2,7 +2,7 @@
 
 class orders_customers_view extends sqltable_view {
 
-    // îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -13,21 +13,21 @@ class orders_customers_view extends sqltable_view {
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "customer",
-                "label" => "Êðàòêîå íàçâàíèå (èìÿ êàòàëîãà):",
+                "label" => "ÐšÑ€Ð°Ñ‚ÐºÐ¾Ðµ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ (Ð¸Ð¼Ñ ÐºÐ°Ñ‚Ð°Ð»Ð¾Ð³Ð°):",
                 "value" => $rec["customer"],
             //"options"	=>	array( "html" => "size=10", ),
             ),
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "fullname",
-                "label" => "Ïîëíîå íàçâàíèå (äëÿ òåççàäàíèé):",
+                "label" => "ÐŸÐ¾Ð»Ð½Ð¾Ðµ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ (Ð´Ð»Ñ Ñ‚ÐµÐ·Ð·Ð°Ð´Ð°Ð½Ð¸Ð¹):",
                 "value" => $rec["fullname"],
                 "options" => array("html" => "size=60",),
             ),
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "kdir",
-                "label" => "Êàòàëîã íà äèñêå Ê (äëÿ ñâåðëîâîê):",
+                "label" => "ÐšÐ°Ñ‚Ð°Ð»Ð¾Ð³ Ð½Ð° Ð´Ð¸ÑÐºÐµ Ðš (Ð´Ð»Ñ ÑÐ²ÐµÑ€Ð»Ð¾Ð²Ð¾Ðº):",
                 "value" => $rec["kdir"],
             ),
         );

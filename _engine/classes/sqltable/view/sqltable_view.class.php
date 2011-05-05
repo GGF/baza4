@@ -2,14 +2,14 @@
 
 class sqltable_view extends views {
 
-    // обязательно определять для модуля
+    // РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РѕРїСЂРµРґРµР»СЏС‚СЊ РґР»СЏ РјРѕРґСѓР»СЏ
     public function getDir() {
         return __DIR__;
     }
 
     public function showrec($rec) {
         if (empty($rec[fields]))
-            return false; // заглушка для нерадактируемых
+            return false; // Р·Р°РіР»СѓС€РєР° РґР»СЏ РЅРµСЂР°РґР°РєС‚РёСЂСѓРµРјС‹С…
         extract($rec);
         $form = new ajaxform_edit($this->owner->getName(), $action);
         $form->init($edit);
@@ -21,7 +21,7 @@ class sqltable_view extends views {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_CHECKBOXES,
                 "name" => "curfile",
-                "label" => 'Текущие файлы:',
+                "label" => 'РўРµРєСѓС‰РёРµ С„Р°Р№Р»С‹:',
                 "value" => $value,
                 "values" => $values,
                     //"options" => array("html" => "readonly",),
@@ -30,7 +30,7 @@ class sqltable_view extends views {
 //        array_push($fields, array(
 //            "type" => AJAXFORM_TYPE_FILE,
 //            "name" => "file",
-//            "label" => "Добавить файл:",
+//            "label" => "Р”РѕР±Р°РІРёС‚СЊ С„Р°Р№Р»:",
 //                //"option" => array( "html" => " onchange='alert($(this).val())' "),
 //        ));
 
@@ -68,21 +68,21 @@ class sqltable_view extends views {
                     $cord = ($this->owner->order == $key ? ($key . " DESC") : $key);
                     $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->url();
                     $ret .= "<th>" .
-                            (($key == 'check' or $key == "№" ) ? $val :
+                            (($key == 'check' or $key == "в„–" ) ? $val :
                                     "<a " .
                                     "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
                                     "href='{$url}' " .
                                     ">" .
                                     $val .
-                                    (($key == 'check' or $key == "№") ? "" : ($this->owner->order == $key ? "&darr;" : (($this->owner->order == $key . ' DESC') ? "&uarr;" : ""))) .
+                                    (($key == 'check' or $key == "в„–") ? "" : ($this->owner->order == $key ? "&darr;" : (($this->owner->order == $key . ' DESC') ? "&uarr;" : ""))) .
                                     "</a>");
                 } else {
                     $ret .= "<th>" . $val;
                 }
             }
         }
-        // пустое поле см.ниже)
-        //echo "<th width='100%' >&nbsp;"; //получилось интересно, но нафиг
+        // РїСѓСЃС‚РѕРµ РїРѕР»Рµ СЃРј.РЅРёР¶Рµ)
+        //echo "<th width='100%' >&nbsp;"; //РїРѕР»СѓС‡РёР»РѕСЃСЊ РёРЅС‚РµСЂРµСЃРЅРѕ, РЅРѕ РЅР°С„РёРі
         if ($this->owner->edit) {
             $ret .= "<th>&nbsp;";
         }
@@ -98,20 +98,20 @@ class sqltable_view extends views {
                     "button' type=button " .
                     "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
                     "href='{$url}' " .
-                    "value='" . ($this->owner->all ? "Последние 20" : "Все") . "' " .
-                    "title='" . ($this->owner->all ? "Последние 20" : "Все") . "' " .
+                    "value='" . ($this->owner->all ? "РџРѕСЃР»РµРґРЅРёРµ 20" : "Р’СЃРµ") . "' " .
+                    "title='" . ($this->owner->all ? "РџРѕСЃР»РµРґРЅРёРµ 20" : "Р’СЃРµ") . "' " .
                     "id=allbutton>";
 
             if ($this->owner->addbutton && $this->owner->edit)
                 $ret .= "<input hotkey='Ctrl + e' class='halfbutton' type='button' " .
                         "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
                         "href='{$this->owner->actUri('add')->url()}' " .
-                        "value='Добавить' title='Добавить' id=addbutton>";
+                        "value='Р”РѕР±Р°РІРёС‚СЊ' title='Р”РѕР±Р°РІРёС‚СЊ' id=addbutton>";
             $findurl = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr)->url();
             $ret .= "<tr><td colspan=100 class='search'>" .
                     "<form name='find' method='post' action='{$findurl}'>" .
                     "<input type=text class='find' " .
-                    "placeholder='" . (!empty($this->owner->find) ? $this->owner->find : "Искать...") . "' " .
+                    "placeholder='" . (!empty($this->owner->find) ? $this->owner->find : "РСЃРєР°С‚СЊ...") . "' " .
                     "name='find' id='findtext{$this->owner->tid}' " .
                     "></form>";
         }
@@ -139,12 +139,12 @@ class sqltable_view extends views {
             foreach ($data as $rs) {
                 $curr++;
                 if ($curr == count($data)) {
-                    // последний
+                    // РїРѕСЃР»РµРґРЅРёР№
                     $prtrid = $trid;
                     $trid = $netrid;
                     //$netrid = $netrid;
                 } else {
-                    // остальные проходы
+                    // РѕСЃС‚Р°Р»СЊРЅС‹Рµ РїСЂРѕС…РѕРґС‹
                     $prtrid = $trid;
                     $trid = $netrid;
                     $netrid = uniqid('tr');
@@ -156,10 +156,10 @@ class sqltable_view extends views {
                 else
                     $out .= "<tr class='nechettr' parent='{$this->owner->tid}' id='{$trid}'" .
                             " prev='$prtrid' next='$netrid'>";
-                $rs["№"] = $i;
+                $rs["в„–"] = $i;
 
                 $url = $urli->set($this->owner->getName(), 'open', $rs['id'])->url();
-                $link = "<a alt='Раскрыть' title='Раскрыть' " .
+                $link = "<a alt='Р Р°СЃРєСЂС‹С‚СЊ' title='Р Р°СЃРєСЂС‹С‚СЊ' " .
                         "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
                         "href='{$url}' id='showlink'><div class='fullwidth'>";
                 $linkend = "</div></a>";
@@ -172,17 +172,17 @@ class sqltable_view extends views {
                             (strstr($rs["$key"], 'href=') ? "" : $linkend);
                     $delstr .= $rs["$key"] . ' - ';
                 }
-                // вставим пустое поле 100% ширины
-                //echo "<td width='100%' >&nbsp;"; //получилось интересно, но нафиг
+                // РІСЃС‚Р°РІРёРј РїСѓСЃС‚РѕРµ РїРѕР»Рµ 100% С€РёСЂРёРЅС‹
+                //echo "<td width='100%' >&nbsp;"; //РїРѕР»СѓС‡РёР»РѕСЃСЊ РёРЅС‚РµСЂРµСЃРЅРѕ, РЅРѕ РЅР°С„РёРі
                 if ($this->owner->edit) {
-                    $out .= "<td class='edit'><a title='Редактировать'" .
+                    $out .= "<td class='edit'><a title='Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ'" .
                             "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
                             "href='{$this->owner->actUri('edit', $rs['id'])->url()}' " .
                             "id=editlink><div>&nbsp;</div></a>";
                 }
                 if ($this->owner->del) {
-                    $out .= "<td class='del'><a title='Удалить' " .
-                            "data-need-confirm='Удалить " . addslashes(htmlspecialchars($delstr)) . "' " .
+                    $out .= "<td class='del'><a title='РЈРґР°Р»РёС‚СЊ' " .
+                            "data-need-confirm='РЈРґР°Р»РёС‚СЊ " . addslashes(htmlspecialchars($delstr)) . "' " .
                             "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
                             "href='{$this->owner->actUri('delete', $rs['id'], false, addslashes(htmlspecialchars($delstr)))->url()}' " .
                             "id=dellink><div>&nbsp;</div></a>";
@@ -251,18 +251,18 @@ class sqltable_view extends views {
 
     public function addFileButton() {
         $link = $this->owner->actUri('addfilefield')->ajaxurl($this->owner->getName());
-        $out = '<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="' . $link . '"><input type="button" id="sl{$party}" value="Добавить файлов" ></a>';
+        $out = '<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="' . $link . '"><input type="button" id="sl{$party}" value="Р”РѕР±Р°РІРёС‚СЊ С„Р°Р№Р»РѕРІ" ></a>';
         $link = $this->owner->actUri('addfilelink')->ajaxurl($this->owner->getName());
-        $out .= '<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="' . $link . '" id=addfilelinkbutton><input type="button" id="sl{$party}" value="Добавить линки на файлы" ></a>';
+        $out .= '<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="' . $link . '" id=addfilelinkbutton><input type="button" id="sl{$party}" value="Р”РѕР±Р°РІРёС‚СЊ Р»РёРЅРєРё РЅР° С„Р°Р№Р»С‹" ></a>';
         $out .= "<script>
                 $('#addfilelinkbutton').click(function(){
                     var filename=document.bazaapplet.addFile();
-                    if (filename=='nullnull') return false; // это иззатого что в апплете плюсуются путь и имя, а переписывать лень
+                    if (filename=='nullnull') return false; // СЌС‚Рѕ РёР·Р·Р°С‚РѕРіРѕ С‡С‚Рѕ РІ Р°РїРїР»РµС‚Рµ РїР»СЋСЃСѓСЋС‚СЃСЏ РїСѓС‚СЊ Рё РёРјСЏ, Р° РїРµСЂРµРїРёСЃС‹РІР°С‚СЊ Р»РµРЅСЊ
                     if(filename.substring(0,1).search(/[tzTZ]/)!= -1) {
                         $(this).attr('href',$(this).attr('href')+'&filename='+filename);
                         return true;
                     } else {
-                        alert('Только на дисках Т и Z!!!');
+                        alert('РўРѕР»СЊРєРѕ РЅР° РґРёСЃРєР°С… Рў Рё Z!!!');
                         return false;
                     }
                 });

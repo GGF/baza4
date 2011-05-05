@@ -1,1 +1,1 @@
-<a class='filelink' href='{$sllink}'>ÑË-{$slid}</a><br>
+<a class='filelink' href='{$sllink}'>Ð¡Ð›-{$slid}</a><br>

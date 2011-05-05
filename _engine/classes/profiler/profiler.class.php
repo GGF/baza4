@@ -36,7 +36,7 @@ class profiler {
 
     static function export() {
 
-        $html = "<table class='frame cmsConsole_table'><thead><tr><th nowrap>Действие</th><th nowrap>Время, мс</th><th nowrap>Память, МБ</th><th width='100%'>&nbsp;</th></tr></thead><tbody>\n";
+        $html = "<table class='frame cmsConsole_table'><thead><tr><th nowrap>Р”РµР№СЃС‚РІРёРµ</th><th nowrap>Р’СЂРµРјСЏ, РјСЃ</th><th nowrap>РџР°РјСЏС‚СЊ, РњР‘</th><th width='100%'>&nbsp;</th></tr></thead><tbody>\n";
 
         foreach (self::$time as $type => $times) {
 
@@ -51,11 +51,11 @@ class profiler {
                 $html .= "	<tr><td nowrap>{$name}</td><td nowrap>" . round($time * 1000, 2) . "</td><td nowrap>{$mem}</td><td><div class='progress' style='width: " . (round($time * 1000 * 3) + 1) . "px'><div style='width: 100%'></div></div></td></tr>\n";
             }
 
-            $html .= "	<tr><th nowrap>Время выполнения {$type}</th><th nowrap>" . round(array_sum(self::$time[$type]) * 1000, 2) . "</th><th colspan='2'>&nbsp;</th></tr>\n";
+            $html .= "	<tr><th nowrap>Р’СЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ {$type}</th><th nowrap>" . round(array_sum(self::$time[$type]) * 1000, 2) . "</th><th colspan='2'>&nbsp;</th></tr>\n";
         }
 
         $html .= "	<tr><th colspan='4'>{$type}</th></tr>\n";
-        $html .= "<tr><th nowrap><big>Полное время выполнения</big></th><th nowrap><big>" . round(self::$full * 1000, 2) . "</big></th><th nowrap><big>" . self::formatMemory(memory_get_peak_usage()) . "</big> <small>(" . self::formatMemory(memory_get_peak_usage(true)) . ")</small></th><th>&nbsp;</th></tr></tbody></table>";
+        $html .= "<tr><th nowrap><big>РџРѕР»РЅРѕРµ РІСЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ</big></th><th nowrap><big>" . round(self::$full * 1000, 2) . "</big></th><th nowrap><big>" . self::formatMemory(memory_get_peak_usage()) . "</big> <small>(" . self::formatMemory(memory_get_peak_usage(true)) . ")</small></th><th>&nbsp;</th></tr></tbody></table>";
 
         return $html;
     }

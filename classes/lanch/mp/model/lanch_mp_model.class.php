@@ -31,10 +31,10 @@ class lanch_mp_model extends sqltable_model {
     public function getCols() {
         $cols = array();
 	$cols[mpid]="ID";
-	$cols[mpdate]="Дата";
-	$cols[nik]="Кто запустил";
-	$cols[customer]="Заказчик";
-	$cols[blockname]="Плата";
+	$cols[mpdate]="Р”Р°С‚Р°";
+	$cols[nik]="РљС‚Рѕ Р·Р°РїСѓСЃС‚РёР»";
+	$cols[customer]="Р—Р°РєР°Р·С‡РёРє";
+	$cols[blockname]="РџР»Р°С‚Р°";
         return $cols;
     }
 

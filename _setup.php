@@ -1,11 +1,11 @@
 <?php
 
-include __DIR__ . '/_engine/autoload.php'; // èíêëóäèì àâòîçàãðóçêó ìîäóëåé
-//òàêæå òóò âñÿêèå íàñòðîéêè áàçû äàííûõ, è âîîáùå ëþáûå íàñòðîéêè ïðîåêòà
+include __DIR__ . '/_engine/autoload.php'; // Ð¸Ð½ÐºÐ»ÑƒÐ´Ð¸Ð¼ Ð°Ð²Ñ‚Ð¾Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÑƒ Ð¼Ð¾Ð´ÑƒÐ»ÐµÐ¹
+//Ñ‚Ð°ÐºÐ¶Ðµ Ñ‚ÑƒÑ‚ Ð²ÑÑÐºÐ¸Ðµ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ…, Ð¸ Ð²Ð¾Ð¾Ð±Ñ‰Ðµ Ð»ÑŽÐ±Ñ‹Ðµ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ð¿Ñ€Ð¾ÐµÐºÑ‚Ð°
 
 Error_Reporting(E_ALL & ~E_NOTICE);
 
-// ÊÎÍÔÈÃÓÐÀÖÈß DEBUG ÐÅÆÈÌÀ
+// ÐšÐžÐÐ¤Ð˜Ð“Ð£Ð ÐÐ¦Ð˜Ð¯ DEBUG Ð Ð•Ð–Ð˜ÐœÐ
 
 $_SERVER["debug"] = array(
     "report" => true,
@@ -20,16 +20,17 @@ $_SERVER["debug"] = array(
 $_SERVER['SYSCACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 $_SERVER[CACHE] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 //$_SERVER["debug"] = false;
-if ($_REQUEST[level]=='update') { //update ëó÷øå íå âûâîäèòü îòëàäî÷íûé òåêñò. êàê íèòü òàê îòëàæó
+if ($_REQUEST[level]=='update') { //update Ð»ÑƒÑ‡ÑˆÐµ Ð½Ðµ Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ñ‚ÑŒ Ð¾Ñ‚Ð»Ð°Ð´Ð¾Ñ‡Ð½Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚. ÐºÐ°Ðº Ð½Ð¸Ñ‚ÑŒ Ñ‚Ð°Ðº Ð¾Ñ‚Ð»Ð°Ð¶Ñƒ
     $_SERVER["debug"]["noCache"]["php"] = true;
     $_SERVER["debug"]["report"] = false;
 }
 
-// Áàçà äàííûõ
+// Ð‘Ð°Ð·Ð° Ð´Ð°Ð½Ð½Ñ‹Ñ…
 $_SERVER["mysql"] = array(
     "lang" => array(
         "host" => "servermpp.mpp",
-        "base" => "zaompp",
+        "base" => "zaommpp2",
+//        "base" => "zaompp",
         "name" => "root",
         "pass" => "MMnnHs",
         "log" => array(
@@ -43,32 +44,32 @@ $_SERVER["mysql"] = array(
     ),
 );
 
-// ïåðåõâàòèì îøèáêè
+// Ð¿ÐµÑ€ÐµÑ…Ð²Ð°Ñ‚Ð¸Ð¼ Ð¾ÑˆÐ¸Ð±ÐºÐ¸
 if ($_SERVER[debug][report]) {
     console::getInstance();
-    profiler::add('Autoexec', 'Âûïîëíåíèå íà÷àëüíûõ óñòàíîâîê');
+    profiler::add('Autoexec', 'Ð’Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ðµ Ð½Ð°Ñ‡Ð°Ð»ÑŒÐ½Ñ‹Ñ… ÑƒÑÑ‚Ð°Ð½Ð¾Ð²Ð¾Ðº');
 }
 
 
-// Âðåìåííàÿ çîíà
+// Ð’Ñ€ÐµÐ¼ÐµÐ½Ð½Ð°Ñ Ð·Ð¾Ð½Ð°
 date_default_timezone_set("Europe/Moscow");
 
-$_SERVER[cmsEncoding] = "windows-1251";
-$_SERVER[cmsEncodingSQL] = 'CP1251';
-$_SERVER[cmsEncodingCP] = 'CP1251';
+$_SERVER[cmsEncoding] = "UTF-8";
+$_SERVER[cmsEncodingSQL] = 'utf8';
+$_SERVER[cmsEncodingCP] = 'UTF-8';
 $_SERVER[cmsEncodingFS] = "UTF-8";   // File system
 
-// íàñòðîéêè ôàéëîâîãî ñåðâåðà
-// íà êàêîì ñåðâåðå ôàéëû øàðÿòñÿ
+// Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ñ„Ð°Ð¹Ð»Ð¾Ð²Ð¾Ð³Ð¾ ÑÐµÑ€Ð²ÐµÑ€Ð°
+// Ð½Ð° ÐºÐ°ÐºÐ¾Ð¼ ÑÐµÑ€Ð²ÐµÑ€Ðµ Ñ„Ð°Ð¹Ð»Ñ‹ ÑˆÐ°Ñ€ÑÑ‚ÑÑ
 define("NETBIOS_SERVERNAME","servermpp"); 
-// êîðåíâîé êàòëîã  äëÿ share [z] è [t]
+// ÐºÐ¾Ñ€ÐµÐ½Ð²Ð¾Ð¹ ÐºÐ°Ñ‚Ð»Ð¾Ð³  Ð´Ð»Ñ share [z] Ð¸ [t]
 define("SHARE_ROOT_DIR","/home/common/"); 
-// êàòàëîã ñîõðàíåíèÿ ôàéëîâ îòíîñèòåëüíî DOCUMENT_ROOT
+// ÐºÐ°Ñ‚Ð°Ð»Ð¾Ð³ ÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ð¸Ñ Ñ„Ð°Ð¹Ð»Ð¾Ð² Ð¾Ñ‚Ð½Ð¾ÑÐ¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ DOCUMENT_ROOT
 define("UPLOAD_FILES_DIR","/files"); 
 
 header("Content-Type: text/html; charset={$_SERVER[cmsEncoding]}");
 
-if ($_REQUEST[level]!='update') { // update äåëàåòñÿ áåç àâòîðèçàöèè
+if ($_REQUEST[level]!='update') { // update Ð´ÐµÐ»Ð°ÐµÑ‚ÑÑ Ð±ÐµÐ· Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸
     if (!Auth::getInstance()->run()->success){
            echo Auth::getInstance()->getOutput();
            echo console::getInstance()->run()->getOutput();

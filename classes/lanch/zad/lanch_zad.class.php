@@ -2,14 +2,14 @@
 
 class lanch_zad extends sqltable {
 
-    // обязательно определять для модуля
+    // РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РѕРїСЂРµРґРµР»СЏС‚СЊ РґР»СЏ РјРѕРґСѓР»СЏ
     public function getDir() {
         return __DIR__;
     }
 
     public function action_edit($id) {
         if (!Auth::getInstance()->getRights($this->getName(),'edit'))
-            return $this->view->getMessage('Нет прав на редактирование');
+            return $this->view->getMessage('РќРµС‚ РїСЂР°РІ РЅР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ');
 
         $rec[isnew] = true;
         if (!empty($id)) {

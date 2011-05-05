@@ -3,7 +3,7 @@
 // Auth
 //
 
-// Функция получения случайного парол
+// Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ СЃР»СѓС‡Р°Р№РЅРѕРіРѕ РїР°СЂРѕР»
 
 $GLOBALS["astore"] = array("Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","Z","X","C","V","B","N","M","1","2","3","4","5","6","7","8","9","0","q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","z","x","c","v","b","n","m");
 mt_srand((double)microtime()*1000000);
@@ -17,12 +17,12 @@ function passwdGen($len)
 	}
 	return $ret;
 }
-// функция авторизации
+// С„СѓРЅРєС†РёСЏ Р°РІС‚РѕСЂРёР·Р°С†РёРё
 function authorize()
 {
 	global $sessionid,$user,$userid,$HTTP_POST_VARS,$_COOKIE,$dbname;
 	$sessionid = $_COOKIE["sessionid"];
-	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("Не удалось выбрать таблицу zaompp");
+	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ zaompp");
 	mysql_query("set names cp1251");
 	mysql_query("DELETE FROM session WHERE UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(ts) > 3600*8");
 	
@@ -43,13 +43,13 @@ function authorize()
 				setcookie("user","",time() - 3600,'/');unset($user);
 				setcookie("userid","",time() - 3600,'/');unset($userid);
 				setcookie("sessionid","",time() - 3600,'/');unset($sessionid);
-				$mes = "Не могу найти пользователя по сессии. Обратитесь к разработчику!";
+				$mes = "РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ СЃРµСЃСЃРёРё. РћР±СЂР°С‚РёС‚РµСЃСЊ Рє СЂР°Р·СЂР°Р±РѕС‚С‡РёРєСѓ!";
 			}
 		}else{
 			setcookie("user","",time() - 3600,'/');unset($user);
 			setcookie("userid","",time() - 3600,'/');unset($userid);
 			setcookie("sessionid","",time() - 3600,'/');unset($sessionid);
-			$mes = "Сессия не верна или устарела!";
+			$mes = "РЎРµСЃСЃРёСЏ РЅРµ РІРµСЂРЅР° РёР»Рё СѓСЃС‚Р°СЂРµР»Р°!";
 		}
 	} 
 	if($HTTP_POST_VARS["password"] && !$user)
@@ -68,12 +68,12 @@ function authorize()
 			$user = $user["nik"];
 			header('Location: http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'');
 		}else{
-			$mes = "Логин или пароль указаны не верно. Авторизация не удалась. Попробуйте ещё раз.";
+			$mes = "Р›РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ СѓРєР°Р·Р°РЅС‹ РЅРµ РІРµСЂРЅРѕ. РђРІС‚РѕСЂРёР·Р°С†РёСЏ РЅРµ СѓРґР°Р»Р°СЃСЊ. РџРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰С‘ СЂР°Р·.";
 		}
 	}
 	if(!$user)
 	{
-		echo "<html><head>	<title>База данных ЗАО МПП. Вход.</title>";
+		echo "<html><head>	<title>Р‘Р°Р·Р° РґР°РЅРЅС‹С… Р—РђРћ РњРџРџ. Р’С…РѕРґ.</title>";
 		echo "<META HTTP-EQUIV=Content-Type CONTENT=text/html; charset=windows-1251>";
 		echo "<style>";
 		echo ".zag {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12pt; font-weight: bold; color: #000000} \n";
@@ -85,12 +85,12 @@ function authorize()
 		echo "<table width=309 border=0 cellspacing=0 cellpadding=0 bgcolor='#FFFFFF'>";
 		echo "<tr>  <td rowspan=6 width=3>&nbsp;</td>";
 		echo "<td colspan=2 class=zag align=center>&nbsp;</td><td>&nbsp;</td>";
-		echo "</tr> <tr><td colspan=2 class=zag align=center>Необходимо авторизоваться для работы с базой</td><td>&nbsp;</td> </tr>";
+		echo "</tr> <tr><td colspan=2 class=zag align=center>РќРµРѕР±С…РѕРґРёРјРѕ Р°РІС‚РѕСЂРёР·РѕРІР°С‚СЊСЃСЏ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ Р±Р°Р·РѕР№</td><td>&nbsp;</td> </tr>";
 		echo "<tr><td colspan=2 class=zag align=center>$mes &nbsp;</td> <td>&nbsp;</td> </tr>";
-		//echo "<tr><td class=tekst align=right>Логин</td>";
+		//echo "<tr><td class=tekst align=right>Р›РѕРіРёРЅ</td>";
 		//echo "<td align=center><input type=text name='login'></td><td>&nbsp;</td></tr>";
 		//echo "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-		echo "<tr><td class=tekst align=right>Пароль <span class=podtekst>(именно пароль и только пароль)</td>";
+		echo "<tr><td class=tekst align=right>РџР°СЂРѕР»СЊ <span class=podtekst>(РёРјРµРЅРЅРѕ РїР°СЂРѕР»СЊ Рё С‚РѕР»СЊРєРѕ РїР°СЂРѕР»СЊ)</td>";
 		echo "<td align=center><input type=password name='password'></td>";
 		echo "<td width=40><input type=image src='/picture/sl_enter.gif' width=26 height=25/></td>";
 		echo "</tr><tr><td width='10'>&nbsp;</td><td class=tekst>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
@@ -101,18 +101,18 @@ function authorize()
 		exit;
 	} 
 	
-	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("Не удалось выбрать таблицу $dbname");
+	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ $dbname");
 }
 
 
 function isadminhere() {
 
-	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("Не удалось выбрать таблицу zaompp");
+	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ zaompp");
 	$sql="SELECT (UNIX_TIMESTAMP()-UNIX_TIMESTAMP(ts))<180 FROM session WHERE u_id='1' ORDER BY ts DESC LIMIT 1";
 	$res=mysql_query($sql);
 	if ($res) {
 		$rs=mysql_fetch_array($res);
-		if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("Не удалось выбрать таблицу $dbname");
+		if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ $dbname");
 		if ($rs[0]=='1') {
 			return true;//echo "<LINK REL='STYLESHEET' TYPE='text/css' HREF='/style/styleggf.css'>";
 		} else {
@@ -128,7 +128,7 @@ function isadminhere() {
 
 function getright($nik) {
 	global $dbname;
-	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("Не удалось выбрать таблицу zaompp");
+	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ zaompp");
 	//$sql="SELECT * FROM rtypes LEFT JOIN rrtypes ON 1 LEFT JOIN users ON 1 LEFT JOIN rights ON ( rtypes.id = type_id AND rrtypes.id = rtype_id AND users.id=u_id ) WHERE nik='".$nik."'";
 	//echo $sql;
 	
@@ -142,7 +142,7 @@ function getright($nik) {
 	//		setcookie("r[".$rs["type"]."][".$rs["rtype"]."]","false",time() + 60*60*24,"/","baza");
 		}
 	}
-	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("Не удалось выбрать таблицу $dbname");
+	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ $dbname");
 	return $r;
 }
 
@@ -211,26 +211,26 @@ function mylog1($sql) {
 	global $dbname,$userid ;
 	
 	$wordarr = explode(" ",$sql);
-	// определим действие
+	// РѕРїСЂРµРґРµР»РёРј РґРµР№СЃС‚РІРёРµ
 	$action = strtoupper($wordarr[0]);
 	if ($action=="INSERT") {
-		// определим таблицу
+		// РѕРїСЂРµРґРµР»РёРј С‚Р°Р±Р»РёС†Сѓ
 		$table = strtolower($wordarr[2]); // INSERT INTO table
 	}
 	elseif ($action=="DELETE") {
-		// определим таблицу
+		// РѕРїСЂРµРґРµР»РёРј С‚Р°Р±Р»РёС†Сѓ
 		$table = strtolower($wordarr[2]); // DELETE FROM table
 	}
 	elseif ($action=="UPDATE") {
-		// определим таблицу
+		// РѕРїСЂРµРґРµР»РёРј С‚Р°Р±Р»РёС†Сѓ
 		$table = strtolower($wordarr[1]); // UPDATE table
 	} 
 	else {
-		// если селект возвращаемся ничего не делая
-		// DROP или TRUNCATE надеюсь не бедет
+		// РµСЃР»Рё СЃРµР»РµРєС‚ РІРѕР·РІСЂР°С‰Р°РµРјСЃСЏ РЅРёС‡РµРіРѕ РЅРµ РґРµР»Р°СЏ
+		// DROP РёР»Рё TRUNCATE РЅР°РґРµСЋСЃСЊ РЅРµ Р±РµРґРµС‚
 		return 0;
 	}
-	// определим идентификатор
+	// РѕРїСЂРµРґРµР»РёРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ
 	if (eregi("where (.*)",$sql,$wordarr)) {
 		$id = $wordarr[1];
 	} else {
@@ -257,7 +257,7 @@ function mylog1($sql) {
 	}
 	
 	//echo "$dbname ___ $userid ___ $id <br>";
-	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("Не удалось выбрать таблицу zaompp");
+	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ zaompp");
 	$sql = "INSERT INTO logs (logdate,user_id,sqltext,action) VALUES (NOW(),'$userid','".addslashes($sql)."','$action')";
 	//echo $sql."<br>";
 	if (!mysql_query($sql)) echo mysql_error();
@@ -267,11 +267,11 @@ function mylog1($sql) {
 		//echo $sql."<br>";
 		if (!mysql_query($sql)) echo mysql_error();
 	}
-	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("Не удалось выбрать таблицу $dbname");
+	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ $dbname");
 	return 1;
 }
 
-// функции для хидера и футера
+// С„СѓРЅРєС†РёРё РґР»СЏ С…РёРґРµСЂР° Рё С„СѓС‚РµСЂР°
 function showheader($subtitle='') {
 	global $dbname;
 	echo '
@@ -283,8 +283,8 @@ function showheader($subtitle='') {
 	<link type="text/css" href="/style/jquery.wysiwyg.css" rel="stylesheet" />
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
 	<meta http-equiv="Content-Script-Type" content="text/javascript; charset=windows-1251">
-	<meta name="Author" content="Игорь Федоров">
-	<meta name="Description" content="ЗАО МПП">
+	<meta name="Author" content="РРіРѕСЂСЊ Р¤РµРґРѕСЂРѕРІ">
+	<meta name="Description" content="Р—РђРћ РњРџРџ">
 	<script type="text/javascript" src="/lib/jquery-1.4.min.js"></script>
 	<script type="text/javascript" src="/lib/jquery.wysiwyg.js"></script>
 	<script type="text/javascript" src="/lib/jquery.keyboard.js"></script>
@@ -322,29 +322,29 @@ function showheader($subtitle='') {
 	});
 	</script>
 <title>
-База данных ЗАО МПП - $subtitle 
+Р‘Р°Р·Р° РґР°РЅРЅС‹С… Р—РђРћ РњРџРџ - $subtitle 
 </title>
 </head>
 <body >";
-echo "<div class=sun id=sun><img onclick=showuserswin() title='Admin здесь' src=/picture/sun.gif></div>";
-echo '<div class="glavmenu" onclick="window.location=\'http://'.$_SERVER['HTTP_HOST'].'/\';">Главное меню</div>';
+echo "<div class=sun id=sun><img onclick=showuserswin() title='Admin Р·РґРµСЃСЊ' src=/picture/sun.gif></div>";
+echo '<div class="glavmenu" onclick="window.location=\'http://'.$_SERVER['HTTP_HOST'].'/\';">Р“Р»Р°РІРЅРѕРµ РјРµРЅСЋ</div>';
 
-//дни рождения
+//РґРЅРё СЂРѕР¶РґРµРЅРёСЏ
 {
 $mes = "<div class='soob'>";
-if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("Не удалось выбрать таблицу zaompp");
+if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ zaompp");
 $sqlquery = "SELECT *, (YEAR(NOW())-YEAR(dr)) as let FROM workers WHERE DAYOFYEAR(dr)>= DAYOFYEAR(CURRENT_DATE()) AND DAYOFYEAR(dr)<= (DAYOFYEAR(CURRENT_DATE())+4) ORDER BY DAYOFYEAR(dr)";
 $res = mysql_query($sqlquery);
 while ($rs=mysql_fetch_array($res)) {
 	$dr = true;
-	$mes .= "<div>День рождения - ".$rs["fio"]." - ".$rs["dr"]." - ".$rs["let"]." лет</div>";
+	$mes .= "<div>Р”РµРЅСЊ СЂРѕР¶РґРµРЅРёСЏ - ".$rs["fio"]." - ".$rs["dr"]." - ".$rs["let"]." Р»РµС‚</div>";
 }
-if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("Не удалось выбрать таблицу $dbname");
+if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ $dbname");
 $mes .= "</div>";
 if (isset($dr)) print $mes;
 }
 
-// цитаты баша
+// С†РёС‚Р°С‚С‹ Р±Р°С€Р°
 //echo file_get_contents("http://".$_SERVER["HTTP_HOST"]."/getbashlocal.php?$bash");
 include_once $GLOBALS["DOCUMENT_ROOT"]."/getbashlocal.php";
 }
@@ -355,12 +355,12 @@ function showfooter() {
 
 
 function mysql_query1($sql) {
-	// логирование вставить
+	// Р»РѕРіРёСЂРѕРІР°РЅРёРµ РІСЃС‚Р°РІРёС‚СЊ
 	mylog1($sql);
 	return mysql_query($sql);
 }
 
-// импортировать дополнительные модули
+// РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РјРѕРґСѓР»Рё
 function importmodules()
 {
 	$dir = dirname(__FILE__)."/modules/";
@@ -369,9 +369,9 @@ function importmodules()
 		while(false !== ($file=readdir($ls)))
 		{
 			$file = trim($file);
-			if($file == basename(__FILE__) ||  $file == "sql.php") continue; // самого себя и главный файл библиотеки не брать, хотя библиотека в другом каталоге
-			$a = explode(".",$file); // $a[0] = имяфайла без расширения
-			if(!empty($a[0])) // потом добавить словие по которому не импортировать, пока все
+			if($file == basename(__FILE__) ||  $file == "sql.php") continue; // СЃР°РјРѕРіРѕ СЃРµР±СЏ Рё РіР»Р°РІРЅС‹Р№ С„Р°Р№Р» Р±РёР±Р»РёРѕС‚РµРєРё РЅРµ Р±СЂР°С‚СЊ, С…РѕС‚СЏ Р±РёР±Р»РёРѕС‚РµРєР° РІ РґСЂСѓРіРѕРј РєР°С‚Р°Р»РѕРіРµ
+			$a = explode(".",$file); // $a[0] = РёРјСЏС„Р°Р№Р»Р° Р±РµР· СЂР°СЃС€РёСЂРµРЅРёСЏ
+			if(!empty($a[0])) // РїРѕС‚РѕРј РґРѕР±Р°РІРёС‚СЊ СЃР»РѕРІРёРµ РїРѕ РєРѕС‚РѕСЂРѕРјСѓ РЅРµ РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ, РїРѕРєР° РІСЃРµ
 			{
 				include_once($dir."/".$file);
 			}
@@ -382,10 +382,10 @@ function importmodules()
 
 function logout() {
 	global $dbname;
-	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("Не удалось выбрать таблицу zaompp");
+	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db("zaompp") ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ zaompp");
 	$sql="DELETE FROM session WHERE session='".$sessionid."'";
 	mysql_query($sql);
-	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("Не удалось выбрать таблицу $dbname");
+	if (isset($dbname) && $dbname!="zaompp" && !mysql_select_db($dbname) ) my_error("РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ $dbname");
 	setcookie("sessionid","",time() - 3600,'/');
 	//echo $sql;
 	//header('Location: http://'.$_SERVER['HTTP_HOST'].'');
@@ -397,7 +397,7 @@ function is_utf($t) { if (@preg_match ('/.+/u', $t)) return true; else return fa
 function utf8_to_cp1251($t) { return iconv("UTF-8", "CP1251", $t);}
 function cp1251_to_utf8($t) { return iconv( "CP1251","UTF-8", $t);}
 
-// запускается - не функция
+// Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ - РЅРµ С„СѓРЅРєС†РёСЏ
 if(!headers_sent()  && !isset($print)) {
 	header('Content-type: text/html; charset=windows-1251');
 }

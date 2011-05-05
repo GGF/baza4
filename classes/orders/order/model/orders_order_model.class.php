@@ -13,10 +13,10 @@ class orders_order_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = parent::getData($all, $order, $find, $idstr);
-        $order = strstr($order, 'files') ? '' : $order; // не удается отсортировать по файлам
+        $order = strstr($order, 'files') ? '' : $order; // РЅРµ СѓРґР°РµС‚СЃСЏ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ РїРѕ С„Р°Р№Р»Р°Рј
         list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
         if (empty($customer_id)) {
-            $customer = "Выберите заказчика!!!";
+            $customer = "Р’С‹Р±РµСЂРёС‚Рµ Р·Р°РєР°Р·С‡РёРєР°!!!";
             $sql = "SELECT *, orders.id AS oid,
                         orders.id
                         FROM orders
@@ -47,12 +47,12 @@ class orders_order_model extends sqltable_model {
         $cols = array();
         list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$this->idstr);
         if (empty($customer_id)) {
-            $cols[customer] = "Заказчик";
+            $cols[customer] = "Р—Р°РєР°Р·С‡РёРє";
         }
         $cols[oid] = "ID";
-        $cols[number] = "Номер заказа";
-        $cols[orderdate] = "Дата заказа";
-        $cols[files] = "Файлы";
+        $cols[number] = "РќРѕРјРµСЂ Р·Р°РєР°Р·Р°";
+        $cols[orderdate] = "Р”Р°С‚Р° Р·Р°РєР°Р·Р°";
+        $cols[files] = "Р¤Р°Р№Р»С‹";
         return $cols;
     }
 
@@ -61,19 +61,19 @@ class orders_order_model extends sqltable_model {
         $sql = "DELETE FROM orders WHERE id='{$delete}'";
         sql::query($sql);
         $affected += sql::affected();
-        // удаление связей
+        // СѓРґР°Р»РµРЅРёРµ СЃРІСЏР·РµР№
         $sql = "DELETE FROM files WHERE `table`='orders' AND rec_id='{$delete}'";
         sql::query($sql);
         $affected += sql::affected();
         $sql = "SELECT * FROM tz WHERE order_id='{$delete}'";
         $res = sql::fetchAll($sql);
         foreach ($res as $rs) {
-            // удаление
+            // СѓРґР°Р»РµРЅРёРµ
             $delete = $rs["id"];
             $sql = "DELETE FROM tz WHERE id='{$delete}'";
             sql::query($sql);
             $affected += sql::affected();
-            // удаление связей
+            // СѓРґР°Р»РµРЅРёРµ СЃРІСЏР·РµР№
             $sql = "SELECT * FROM posintz WHERE tz_id='{$delete}'";
             $res1 = sql::fetchAll($sql);
             foreach ($res1 as $rs1) {
@@ -100,7 +100,7 @@ class orders_order_model extends sqltable_model {
     public function setRecord($data) {
         extract($data);
         if ($edit) {
-            // редактирование
+            // СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ
             $sql = "UPDATE orders
                     SET customer_id='{$customerid}',
                     orderdate='{$orderdate}',
@@ -108,7 +108,7 @@ class orders_order_model extends sqltable_model {
                     WHERE id='{$edit}'";
             sql::query($sql);
         } else {
-            // добавление
+            // РґРѕР±Р°РІР»РµРЅРёРµ
             $sql = "INSERT INTO orders
                     (customer_id,orderdate,number)
                     VALUES ('{$customerid}','{$orderdate}','{$number}')";

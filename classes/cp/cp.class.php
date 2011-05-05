@@ -4,13 +4,13 @@ class cp extends secondlevel {
 
     public function init() {
         parent::init();
-        CTitle::addSection('Ïàíåëü óïðàâëåíèÿ');
+        CTitle::addSection('ÐŸÐ°Ð½ÐµÐ»ÑŒ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ');
     }
 
     public function getIndexMenu() {
         $this->menu->add('users', 'Users');
         $this->menu->add('todo', 'TODO');
-        $this->menu->add('back', 'Íàçàä', false);
+        $this->menu->add('back', 'ÐÐ°Ð·Ð°Ð´', false);
         $this->menu->run();
         return $this->menu->getOutput();
     }

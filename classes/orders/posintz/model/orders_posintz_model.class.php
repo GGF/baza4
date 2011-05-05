@@ -73,17 +73,17 @@ class orders_posintz_model extends sqltable_model {
         $cols = array();
         list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$this->idstr);
         if (empty($customer_id)) {
-            $cols[customer] = "Заказчик";
+            $cols[customer] = "Р—Р°РєР°Р·С‡РёРє";
         }
         if (empty($order_id)) {
-            $cols[number] = "Заказ";
+            $cols[number] = "Р—Р°РєР°Р·";
         }
         if (empty($tz_id)) {
-            $cols[tzid] = "ТЗ";
+            $cols[tzid] = "РўР—";
         }
         $cols[posid] = "ID";
-        $cols[blockname] = "Плата";
-        $cols[numbers] = "Количество";
+        $cols[blockname] = "РџР»Р°С‚Р°";
+        $cols[numbers] = "РљРѕР»РёС‡РµСЃС‚РІРѕ";
         return $cols;
     }
 

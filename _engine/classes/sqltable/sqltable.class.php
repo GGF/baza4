@@ -1,46 +1,46 @@
 <?php
 
 /*
- *  Êëàññ Òàáëèöà äëÿ âûâîäà äàííûõ èç áàçû
+ *  ĞšĞ»Ğ°ÑÑ Ğ¢Ğ°Ğ±Ğ»Ğ¸Ñ†Ğ° Ğ´Ğ»Ñ Ğ²Ñ‹Ğ²Ğ¾Ğ´Ğ° Ğ´Ğ°Ğ½Ğ½Ñ‹Ñ… Ğ¸Ğ· Ğ±Ğ°Ğ·Ñ‹
  */
 
 class sqltable extends lego_abstract {
     /*
-     * @var $type string òèï òàáëèöû, òî åñòü òèï îòîáğàæàåìûõ äàííûõ
+     * @var $type string Ñ‚Ğ¸Ğ¿ Ñ‚Ğ°Ğ±Ğ»Ğ¸Ñ†Ñ‹, Ñ‚Ğ¾ ĞµÑÑ‚ÑŒ Ñ‚Ğ¸Ğ¿ Ğ¾Ñ‚Ğ¾Ğ±Ñ€Ğ°Ğ¶Ğ°ĞµĞ¼Ñ‹Ñ… Ğ´Ğ°Ğ½Ğ½Ñ‹Ñ…
      */
 
     public $type;
     /*
-     * @var $tid string óíèêàëüíûé èäåíòèôèêàòîğ äëÿ çàìåíû AJAX
+     * @var $tid string ÑƒĞ½Ğ¸ĞºĞ°Ğ»ÑŒĞ½Ñ‹Ğ¹ Ğ¸Ğ´ĞµĞ½Ñ‚Ğ¸Ñ„Ğ¸ĞºĞ°Ñ‚Ğ¾Ñ€ Ğ´Ğ»Ñ Ğ·Ğ°Ğ¼ĞµĞ½Ñ‹ AJAX
      */
     public $tid;
 
     /*
-     * @var $data array ìàññèâ äàííûõ, êëş÷ - êîëîíêà, çíà÷åíèå êëåòêà
+     * @var $data array Ğ¼Ğ°ÑÑĞ¸Ğ² Ğ´Ğ°Ğ½Ğ½Ñ‹Ñ…, ĞºĞ»ÑÑ‡ - ĞºĞ¾Ğ»Ğ¾Ğ½ĞºĞ°, Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ ĞºĞ»ĞµÑ‚ĞºĞ°
      */
     protected $data;
     /*
-     * @var string Çàãîëîâîê òàáëèöû
+     * @var string Ğ—Ğ°Ğ³Ğ¾Ğ»Ğ¾Ğ²Ğ¾Ğº Ñ‚Ğ°Ğ±Ğ»Ğ¸Ñ†Ñ‹
      */
     protected $title;
     /*
-     * @var bool ìîæíî ëè óäàëÿòü çàïèñè
+     * @var bool Ğ¼Ğ¾Ğ¶Ğ½Ğ¾ Ğ»Ğ¸ ÑƒĞ´Ğ°Ğ»ÑÑ‚ÑŒ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸
      */
     protected $del;
     /*
-     * @var bool ìîæíî ëè ğåäàêòèğîâàòü çàïèñè
+     * @var bool Ğ¼Ğ¾Ğ¶Ğ½Ğ¾ Ğ»Ğ¸ Ñ€ĞµĞ´Ğ°ĞºÑ‚Ğ¸Ñ€Ğ¾Ğ²Ğ°Ñ‚ÑŒ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸
      */
     protected $edit;
     /*
-     * @var bool Åñòü ëè êíîïêè, äåëàòü ëè ñîğòèğîâêó â çàãîëîâêàõ
+     * @var bool Ğ•ÑÑ‚ÑŒ Ğ»Ğ¸ ĞºĞ½Ğ¾Ğ¿ĞºĞ¸, Ğ´ĞµĞ»Ğ°Ñ‚ÑŒ Ğ»Ğ¸ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºÑƒ Ğ² Ğ·Ğ°Ğ³Ğ¾Ğ»Ğ¾Ğ²ĞºĞ°Ñ…
      */
     protected $buttons;
     /*
-     * @var bool íóæíà ëè êíîïêà äîáàâëåíèÿ çàïèñè
+     * @var bool Ğ½ÑƒĞ¶Ğ½Ğ° Ğ»Ğ¸ ĞºĞ½Ğ¾Ğ¿ĞºĞ° Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ĞµĞ½Ğ¸Ñ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸
      */
     protected $addbutton;
     /*
-     * @var array ìàññèâ íàçâàíèé êîëîíîê èìÿ - èìÿ ïîëÿ, çíà÷åíèå - çàããîëîâîê
+     * @var array Ğ¼Ğ°ÑÑĞ¸Ğ² Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ğ¹ ĞºĞ¾Ğ»Ğ¾Ğ½Ğ¾Ğº Ğ¸Ğ¼Ñ - Ğ¸Ğ¼Ñ Ğ¿Ğ¾Ğ»Ñ, Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ - Ğ·Ğ°Ğ³Ğ³Ğ¾Ğ»Ğ¾Ğ²Ğ¾Ğº
      */
     protected $cols;
     public $firsttrid;
@@ -62,7 +62,7 @@ class sqltable extends lego_abstract {
      * Initialization
      */
 
-    // îáÿçàòåëüíî îïğåäåëÿòü äëÿ ìîäóëÿ
+    // Ğ¾Ğ±ÑĞ·Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ Ğ¾Ğ¿Ñ€ĞµĞ´ĞµĞ»ÑÑ‚ÑŒ Ğ´Ğ»Ñ Ğ¼Ğ¾Ğ´ÑƒĞ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -92,21 +92,21 @@ class sqltable extends lego_abstract {
         $this->addbutton = Auth::getInstance()->getRights($this->type, 'edit');
 
         try {
-            profiler::add('Âûïîëíåíèå', $this->getName() . get_class($this) . ': Ïîïûòêà ñîçäàòü ìîäåëü');
+            profiler::add('Ğ’Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¸Ğµ', $this->getName() . get_class($this) . ': ĞŸĞ¾Ğ¿Ñ‹Ñ‚ĞºĞ° ÑĞ¾Ğ·Ğ´Ğ°Ñ‚ÑŒ Ğ¼Ğ¾Ğ´ĞµĞ»ÑŒ');
             $classname = "{$this->getName()}_model";
             if (!class_exists($classname)) {
                 $classname = get_class($this) . "_model";
             }
             if (!class_exists($classname))
-                throw new Exception("Íåò êëàññà {$classname}");
+                throw new Exception("ĞĞµÑ‚ ĞºĞ»Ğ°ÑÑĞ° {$classname}");
             $this->model = new $classname();
             $this->model->init();
-            profiler::add('Âûïîëíåíèå', $this->getName() . ': Ïîïûòêà ñîçäàòü ìîäåëü óäàëàñü');
+            profiler::add('Ğ’Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¸Ğµ', $this->getName() . ': ĞŸĞ¾Ğ¿Ñ‹Ñ‚ĞºĞ° ÑĞ¾Ğ·Ğ´Ğ°Ñ‚ÑŒ Ğ¼Ğ¾Ğ´ĞµĞ»ÑŒ ÑƒĞ´Ğ°Ğ»Ğ°ÑÑŒ');
         } catch (Exception $e) {
             console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
         }
         try {
-            profiler::add('Âûïîëíåíèå', $this->getName() . ': Ïîïûòêà ñîçäàòü âèä');
+            profiler::add('Ğ’Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¸Ğµ', $this->getName() . ': ĞŸĞ¾Ğ¿Ñ‹Ñ‚ĞºĞ° ÑĞ¾Ğ·Ğ´Ğ°Ñ‚ÑŒ Ğ²Ğ¸Ğ´');
             $classname = "{$this->getName()}_view";
             if (!class_exists($classname)) {
                 $classname = get_class($this) . "_view";
@@ -115,16 +115,16 @@ class sqltable extends lego_abstract {
                 $classname = "sqltable_view";
             }
             if (!class_exists($classname))
-                throw new Exception("Íåò êëàññà {$classname}");
+                throw new Exception("ĞĞµÑ‚ ĞºĞ»Ğ°ÑÑĞ° {$classname}");
             $this->view = new $classname($this);
-            profiler::add('Âûïîëíåíèå', $this->getName() . ': Ïîïûòêà ñîçäàòü âèä óäàëàñü');
+            profiler::add('Ğ’Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¸Ğµ', $this->getName() . ': ĞŸĞ¾Ğ¿Ñ‹Ñ‚ĞºĞ° ÑĞ¾Ğ·Ğ´Ğ°Ñ‚ÑŒ Ğ²Ğ¸Ğ´ ÑƒĞ´Ğ°Ğ»Ğ°ÑÑŒ');
         } catch (Exception $e) {
             console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
         }
         try {
-            profiler::add('Âûïîëíåíèå', $this->getName() . ': Ïîïûòêà ñîçäàòü ôîğìó');
-            $this->form = new ajaxform(''); // äëÿ ïîäêëş÷åíèÿ ñêğèïòîâ
-            profiler::add('Âûïîëíåíèå', $this->getName() . ': Ïîïûòêà ñîçäàòü ôîğìó óäàëàñü');
+            profiler::add('Ğ’Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¸Ğµ', $this->getName() . ': ĞŸĞ¾Ğ¿Ñ‹Ñ‚ĞºĞ° ÑĞ¾Ğ·Ğ´Ğ°Ñ‚ÑŒ Ñ„Ğ¾Ñ€Ğ¼Ñƒ');
+            $this->form = new ajaxform(''); // Ğ´Ğ»Ñ Ğ¿Ğ¾Ğ´ĞºĞ»ÑÑ‡ĞµĞ½Ğ¸Ñ ÑĞºÑ€Ğ¸Ğ¿Ñ‚Ğ¾Ğ²
+            profiler::add('Ğ’Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¸Ğµ', $this->getName() . ': ĞŸĞ¾Ğ¿Ñ‹Ñ‚ĞºĞ° ÑĞ¾Ğ·Ğ´Ğ°Ñ‚ÑŒ Ñ„Ğ¾Ñ€Ğ¼Ñƒ ÑƒĞ´Ğ°Ğ»Ğ°ÑÑŒ');
         } catch (Exception $e) {
             console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
         }
@@ -154,7 +154,7 @@ class sqltable extends lego_abstract {
         $this->find = $find;
         $this->idstr = $idstr;
         if ($this->model != null) {
-            // ïîğÿäîê ïîëó÷åíèÿ âàæåí. â ïîëó÷åíèè äàòû èíèöèàëèçèğóåòñÿ idstr
+            // Ğ¿Ğ¾Ñ€ÑĞ´Ğ¾Ğº Ğ¿Ğ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ñ Ğ²Ğ°Ğ¶ĞµĞ½. Ğ² Ğ¿Ğ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğ¸ Ğ´Ğ°Ñ‚Ñ‹ Ğ¸Ğ½Ğ¸Ñ†Ğ¸Ğ°Ğ»Ğ¸Ğ·Ğ¸Ñ€ÑƒĞµÑ‚ÑÑ idstr
             if (empty($this->data))
                 $this->data = $this->model->getData($all, $order, $find, $idstr);
             if (empty($this->cols))
@@ -166,9 +166,9 @@ class sqltable extends lego_abstract {
 
     public function action_delete($id, $confirmed=false, $delstr='') {
         if (Ajax::isAjaxRequest() || $confirmed) {
-            // â ıòîì ñëó÷àå óæå ïîäòâåğæäåíî èíà÷å íàäî ïğîâåğèòü
+            // Ğ² ÑÑ‚Ğ¾Ğ¼ ÑĞ»ÑƒÑ‡Ğ°Ğµ ÑƒĞ¶Ğµ Ğ¿Ğ¾Ğ´Ñ‚Ğ²ĞµÑ€Ğ¶Ğ´ĞµĞ½Ğ¾ Ğ¸Ğ½Ğ°Ñ‡Ğµ Ğ½Ğ°Ğ´Ğ¾ Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€Ğ¸Ñ‚ÑŒ
         } else {
-            $out = empty($delstr) ? "Óäàëèòü {$id}?" : "Óäàëèòü {$delstr}?";
+            $out = empty($delstr) ? "Ğ£Ğ´Ğ°Ğ»Ğ¸Ñ‚ÑŒ {$id}?" : "Ğ£Ğ´Ğ°Ğ»Ğ¸Ñ‚ÑŒ {$delstr}?";
             return $this->view->getConfirm($out, 'delete', $id, true);
         }
         $this->model->delete($id);
@@ -177,7 +177,7 @@ class sqltable extends lego_abstract {
 
     public function action_edit($id) {
         if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
-            return $this->view->getMessage('Íåò ïğàâ íà ğåäàêòèğîâàíèå');
+            return $this->view->getMessage('ĞĞµÑ‚ Ğ¿Ñ€Ğ°Ğ² Ğ½Ğ° Ñ€ĞµĞ´Ğ°ĞºÑ‚Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ¸Ğµ');
         $rec = $this->model->getRecord($id);
         $rec[idstr] = $this->idstr;
         $rec[isnew] = empty($id);
@@ -187,7 +187,7 @@ class sqltable extends lego_abstract {
         if ($out)
             return $this->view->getForm($out);
         else {
-            $out = "Íå ğàäàêòèğóåòñÿ!";
+            $out = "ĞĞµ Ñ€Ğ°Ğ´Ğ°ĞºÑ‚Ğ¸Ñ€ÑƒĞµÑ‚ÑÑ!";
             return $this->view->getMessage($out);
         }
     }
@@ -201,27 +201,27 @@ class sqltable extends lego_abstract {
     }
 
     public function action_processingform() {
-        // õèäåğ ïåğåêëş÷èì
+        // Ñ…Ğ¸Ğ´ĞµÑ€ Ğ¿ĞµÑ€ĞµĞºĞ»ÑÑ‡Ğ¸Ğ¼
         ajaxform_recieve::init();
         $form = new ajaxform($this->getName());
         $form->initBackend();
 
         if (!$form->errors) {
-            // ñîõğàíåíèå
+            // ÑĞ¾Ñ…Ñ€Ğ°Ğ½ĞµĞ½Ğ¸Ğµ
             $res = $this->model->setRecord(array_merge($form->request, array("files" => $form->files)));
             if ((!is_array($res) && $res == 0) || (is_array($res) && !$res[affected])) {
-                $alert = empty($res[alert]) ? "Íå îáğàáîòàíî íè îäíîé çàïèñè" : $res[alert];
+                $alert = empty($res[alert]) ? "ĞĞµ Ğ¾Ğ±Ñ€Ğ°Ğ±Ğ¾Ñ‚Ğ°Ğ½Ğ¾ Ğ½Ğ¸ Ğ¾Ğ´Ğ½Ğ¾Ğ¹ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸" : $res[alert];
                 $form->alert($alert);
                 $form->processed();
             } else {
-                // óäà÷íîå çàâåğíåíèå ñ çàêğûòèåì äèàëîãà
+                // ÑƒĞ´Ğ°Ñ‡Ğ½Ğ¾Ğµ Ğ·Ğ°Ğ²ĞµÑ€Ğ½ĞµĞ½Ğ¸Ğµ Ñ Ğ·Ğ°ĞºÑ€Ñ‹Ñ‚Ğ¸ĞµĞ¼ Ğ´Ğ¸Ğ°Ğ»Ğ¾Ğ³Ğ°
                 $form->processed("$('#dialog').dialog('close').remove();reload_table();");
             }
         } else {
             foreach ($form->errors as $err) {
                 $form->alert(print_r($err, true));
             }
-            // â ñëó÷àå îøèáîê îáğàáîòêà áåç çàêğûòèÿ
+            // Ğ² ÑĞ»ÑƒÑ‡Ğ°Ğµ Ğ¾ÑˆĞ¸Ğ±Ğ¾Ğº Ğ¾Ğ±Ñ€Ğ°Ğ±Ğ¾Ñ‚ĞºĞ° Ğ±ĞµĞ· Ğ·Ğ°ĞºÑ€Ñ‹Ñ‚Ğ¸Ñ
             $form->processed();
         }
         return '';

@@ -2,7 +2,7 @@
 
 class cp_users_view extends sqltable_view {
 
-    // обязательно определять для модуля
+    // РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РѕРїСЂРµРґРµР»СЏС‚СЊ РґР»СЏ РјРѕРґСѓР»СЏ
     public function getDir() {
         return __DIR__;
     }
@@ -15,31 +15,31 @@ class cp_users_view extends sqltable_view {
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "nik",
-                "label" => "Ник:",
+                "label" => "РќРёРє:",
                 "value" => $rec["nik"],
             ),
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "fullname",
-                "label" => "Полное имя:",
+                "label" => "РџРѕР»РЅРѕРµ РёРјСЏ:",
                 "value" => $rec["fullname"],
             ),
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "position",
-                "label" => "Должность:",
+                "label" => "Р”РѕР»Р¶РЅРѕСЃС‚СЊ:",
                 "value" => $rec["position"],
             ),
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "password1",
-                "label" => "Пароль:",
+                "label" => "РџР°СЂРѕР»СЊ:",
                 "value" => $rec["password"],
             ),
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "password2",
-                "label" => "Повтор пароля",
+                "label" => "РџРѕРІС‚РѕСЂ РїР°СЂРѕР»СЏ",
                 "value" => $rec["password"],
             ),
             array(

@@ -6,7 +6,7 @@ define("CMSCONSOLE_WARNING", "warning");
 define("CMSCONSOLE_NOTICE", "notice");
 define("CMSCONSOLE_PLAIN", "plain");
 
-// сделаем консоль синглтоном
+// СЃРґРµР»Р°РµРј РєРѕРЅСЃРѕР»СЊ СЃРёРЅРіР»С‚РѕРЅРѕРј
 
 class console extends lego_abstract {
 
@@ -19,9 +19,9 @@ class console extends lego_abstract {
 
     public function __construct($name=false, $directCall = true) {
         if ($directCall) {
-            trigger_error("Нельзя использовать конструктор для" .
-                    "создания класса console." .
-                    "Используйте статический метод getInstance()", E_USER_ERROR);
+            trigger_error("РќРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ" .
+                    "СЃРѕР·РґР°РЅРёСЏ РєР»Р°СЃСЃР° console." .
+                    "РСЃРїРѕР»СЊР·СѓР№С‚Рµ СЃС‚Р°С‚РёС‡РµСЃРєРёР№ РјРµС‚РѕРґ getInstance()", E_USER_ERROR);
         }
         parent::__construct($name);
         $this->html = '';
@@ -77,17 +77,17 @@ class console extends lego_abstract {
     public function action_index() {
         if ($_SERVER[debug][report]) {
 
-            profiler::add("Завершение", "Вывод кешированной страницы");
+            profiler::add("Р—Р°РІРµСЂС€РµРЅРёРµ", "Р’С‹РІРѕРґ РєРµС€РёСЂРѕРІР°РЅРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹");
 
             $this->out(profiler::export(), "time");
 
             foreach (sql::$lang->logOut(CMSSQL_REPORT_ARRAY) as $line)
                 $this->out($line[0], "mysql", $line[1]);
 
-            $this->out("Сжатие <b>отключено</b>.", "", "notice");
-            $this->out("<b>Полное время выполнения: <u>" .
+            $this->out("РЎР¶Р°С‚РёРµ <b>РѕС‚РєР»СЋС‡РµРЅРѕ</b>.", "", "notice");
+            $this->out("<b>РџРѕР»РЅРѕРµ РІСЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ: <u>" .
                     floor(profiler::$full * 1000) .
-                    " мс</u>.</b>", "", "notice");
+                    " РјСЃ</u>.</b>", "", "notice");
             $this->out("");
             Output::assign('scripts', $this->instanse->html);
             return $this->fetch('console.tpl');
@@ -99,17 +99,17 @@ class console extends lego_abstract {
     public function getScripts() {
         if ($_SERVER[debug][report]) {
 
-            profiler::add("Завершение", "Вывод кешированной страницы");
+            profiler::add("Р—Р°РІРµСЂС€РµРЅРёРµ", "Р’С‹РІРѕРґ РєРµС€РёСЂРѕРІР°РЅРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹");
 
             $this->out(profiler::export(), "time");
 
             foreach (sql::$lang->logOut(CMSSQL_REPORT_ARRAY) as $line)
                 $this->out($line[0], "mysql", $line[1]);
 
-            $this->out("Сжатие <b>отключено</b>.", "", "notice");
-            $this->out("<b>Полное время выполнения: <u>" .
+            $this->out("РЎР¶Р°С‚РёРµ <b>РѕС‚РєР»СЋС‡РµРЅРѕ</b>.", "", "notice");
+            $this->out("<b>РџРѕР»РЅРѕРµ РІСЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ: <u>" .
                     floor(profiler::$full * 1000) .
-                    " мс</u>.</b>", "", "notice");
+                    " РјСЃ</u>.</b>", "", "notice");
             $this->out("");
             return $this->instanse->html;
         } else {
@@ -226,8 +226,8 @@ if ($_SERVER[debug][report]) {
 
             $cls = ($type == "NOTICE") ? "cmsNotice" : "cmsError";
 
-            // Гарантированный флаш буфера
-            // Его нельзя делать, иначе в случае AJAX бакенда он завалит обработчик
+            // Р“Р°СЂР°РЅС‚РёСЂРѕРІР°РЅРЅС‹Р№ С„Р»Р°С€ Р±СѓС„РµСЂР°
+            // Р•РіРѕ РЅРµР»СЊР·СЏ РґРµР»Р°С‚СЊ, РёРЅР°С‡Рµ РІ СЃР»СѓС‡Р°Рµ AJAX Р±Р°РєРµРЅРґР° РѕРЅ Р·Р°РІР°Р»РёС‚ РѕР±СЂР°Р±РѕС‚С‡РёРє
             //while (ob_get_level() > 0) { ob_end_flush(); }
             if (is_callable("cmsBacktrace")) {
                 $backtrace = cmsBacktrace(CMSBACKTRACE_PLAIN);

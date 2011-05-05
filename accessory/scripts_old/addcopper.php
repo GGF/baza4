@@ -1,6 +1,6 @@
 <?
 $GLOBALS["debugAPI"] = false;
-include_once $GLOBALS["DOCUMENT_ROOT"]."/lib/sql.php"; // ýòî íóæíî ïðè äîáàâëåíèè òàê êàê íå âûçûâàåòñÿ çàãîëîâê html
+include_once $GLOBALS["DOCUMENT_ROOT"]."/lib/sql.php"; // ÑÑ‚Ð¾ Ð½ÑƒÐ¶Ð½Ð¾ Ð¿Ñ€Ð¸ Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ð¸ Ñ‚Ð°Ðº ÐºÐ°Ðº Ð½Ðµ Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÐµÑ‚ÑÑ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²Ðº html
 
 if (empty($customer)) return;
 if (empty($board)) return;
@@ -40,7 +40,7 @@ if (mysql_num_rows($res) == 0){
 	debug("rem ".$sql);
 	mysql_query($sql);
 }
-// èçìåíåíèÿ â áëîêè
+// Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ Ð² Ð±Ð»Ð¾ÐºÐ¸
 $sql="SELECT id FROM blocks WHERE customer_id='$customer_id' AND blockname='$board'";
 debug("rem ".$sql);
 $res = mysql_query($sql);
@@ -55,12 +55,12 @@ if (!($rs=mysql_fetch_array($res))){
 	mysql_query($sql);
 }
 
-// à òåïðåðü ñîçàäèäèì ôàë êîïèðîâàíèÿ ñâåðëîâîê
+// Ð° Ñ‚ÐµÐ¿Ñ€ÐµÑ€ÑŒ ÑÐ¾Ð·Ð°Ð´Ð¸Ð´Ð¸Ð¼ Ñ„Ð°Ð» ÐºÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ ÑÐ²ÐµÑ€Ð»Ð¾Ð²Ð¾Ðº
 $sql="SELECT kdir FROM customers WHERE id='$customer_id'";
 debug("rem ".$sql);
 $res = mysql_query($sql);
 if($rs=mysql_fetch_array($res)) {
-	if ($customer == "Èìïóëüñ" ) { $rs[0].="\\$drillname"; $mpp=-1;}
+	if ($customer == "Ð˜Ð¼Ð¿ÑƒÐ»ÑŒÑ" ) { $rs[0].="\\$drillname"; $mpp=-1;}
 	echo "mkdir k:\\".$rs[0].($mpp!=-1?"\\MPP":"")."\\\n";
 	echo "copy /Y .\\$drillname.mk2 k:\\".$rs[0].($mpp!=-1?"\\MPP":"")."\\\n";
 	echo "copy /Y .\\$drillname.mk4 k:\\".$rs[0].($mpp!=-1?"\\MPP":"")."\\\n";

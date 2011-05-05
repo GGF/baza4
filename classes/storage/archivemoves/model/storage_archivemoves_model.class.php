@@ -21,13 +21,13 @@ class storage_archivemoves_model extends storage_rest_model {
 
     public function getCols() {
         $cols = array();
-        $cols[ddate] = "Дата";
+        $cols[ddate] = "Р”Р°С‚Р°";
         $cols[prras] = "+/-";
-        $cols[numd] = "№ док.";
-        $cols[supply] = "Поставщик";
-        $cols[quant] = "Кол-во";
-        $cols[comment] = "Примечание";
-        $cols[price] = "Цена";
+        $cols[numd] = "в„– РґРѕРє.";
+        $cols[supply] = "РџРѕСЃС‚Р°РІС‰РёРє";
+        $cols[quant] = "РљРѕР»-РІРѕ";
+        $cols[comment] = "РџСЂРёРјРµС‡Р°РЅРёРµ";
+        $cols[price] = "Р¦РµРЅР°";
         return $cols;
     }
 

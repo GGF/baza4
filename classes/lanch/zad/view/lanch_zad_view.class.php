@@ -2,7 +2,7 @@
 
 class lanch_zad_view extends sqltable_view {
 
-    // îáÿçàòåëüíî îïğåäåëÿòü äëÿ ìîäóëÿ
+    // Ğ¾Ğ±ÑĞ·Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ Ğ¾Ğ¿Ñ€ĞµĞ´ĞµĞ»ÑÑ‚ÑŒ Ğ´Ğ»Ñ Ğ¼Ğ¾Ğ´ÑƒĞ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -26,14 +26,14 @@ class lanch_zad_view extends sqltable_view {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "customer",
-                "label" => "Çàêàç÷èê:",
+                "label" => "Ğ—Ğ°ĞºĞ°Ğ·Ñ‡Ğ¸Ğº:",
                 "value" => $rec["customer"],
                 "options" => array("readonly" => true,),
             ));
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "plate",
-                "label" => "Ïëàòà:",
+                "label" => "ĞŸĞ»Ğ°Ñ‚Ğ°:",
                 "value" => $rec["board_name"],
                 "options" => array("readonly" => true,),
             ));
@@ -41,7 +41,7 @@ class lanch_zad_view extends sqltable_view {
             array_push($fields,array(
                 "type" => AJAXFORM_TYPE_SELECT,
                 "name" => "customer_id",
-                "label" => "Çàêàç÷èê:",
+                "label" => "Ğ—Ğ°ĞºĞ°Ğ·Ñ‡Ğ¸Ğº:",
                 "values" => $rec[customers],
                 "value" => '',
                 "options" => array("html" => " customerid "),
@@ -49,7 +49,7 @@ class lanch_zad_view extends sqltable_view {
             array_push($fields,array(
                 "type" => AJAXFORM_TYPE_SELECT,
                 "name" => "board_id",
-                "label" => "Ïëàòà:",
+                "label" => "ĞŸĞ»Ğ°Ñ‚Ğ°:",
                 "values" => $rec[boards],
                 "value" => '',
                 "options" => array("html" => " autoupdate-link='{$rec[boardlink]}' autoupdate=customerid ",),
@@ -58,21 +58,21 @@ class lanch_zad_view extends sqltable_view {
             array_push($fields,array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "number",
-                "label" => 'Êîëè÷åñòâî:',
+                "label" => 'ĞšĞ¾Ğ»Ğ¸Ñ‡ĞµÑÑ‚Ğ²Ğ¾:',
                 "value" => $rec["number"],
             //"options"	=>	array( "html" => "size=10", ),
             ));
             array_push($fields,array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "niz",
-                "label" => '¹ èçâåùåíèÿ:',
+                "label" => 'â„– Ğ¸Ğ·Ğ²ĞµÑ‰ĞµĞ½Ğ¸Ñ:',
                 "value" => $rec["niz"],
             //"options"	=>	array( "html" => "size=10", ),
             ));
             array_push($fields,array(
                 "type" => AJAXFORM_TYPE_DATE,
                 "name" => "ldate",
-                "label" => 'Äàòà:',
+                "label" => 'Ğ”Ğ°Ñ‚Ğ°:',
                 "value" => $rec[ldate],
             ));
 

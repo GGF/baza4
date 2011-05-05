@@ -1,8 +1,8 @@
 {$bashcite}
 <div>
-<a data-silent="#bashcite" legotarget="bashcite" href="{$linkhidebash}">Скрыть</a>
+<a data-silent="#bashcite" legotarget="bashcite" href="{$linkhidebash}">РЎРєСЂС‹С‚СЊ</a>
 &nbsp;&nbsp;&nbsp;
-<a data-silent="#bashcite" legotarget="bashcite" href="{$linkshowbash}">ЕЩЁ</a>
+<a data-silent="#bashcite" legotarget="bashcite" href="{$linkshowbash}">Р•Р©РЃ</a>
 &nbsp;&nbsp;&nbsp;
 <a data-silent="#bashcite" legotarget="bashcite" href="{$linkminusbash}">---</a>
 &nbsp;&nbsp;&nbsp;

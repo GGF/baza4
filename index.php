@@ -18,8 +18,8 @@ echo $m->getOutput();
 if ($_SERVER[debug][report]) {
     echo console::getInstance()->run()->getOutput();
 }
-// ñîõðàíèòü êýø àâòîâñòàâêè
-if (!$_SERVER[debug][noCache][php] && !file_exists($_SERVER['SYSCACHE'] . '/autoexec_' . md5(implode($_REQUEST, '')) . '.php')) {
+// ÑÐ¾Ñ…Ñ€Ð°Ð½Ð¸Ñ‚ÑŒ ÐºÑÑˆ Ð°Ð²Ñ‚Ð¾Ð²ÑÑ‚Ð°Ð²ÐºÐ¸
+if (!$_SERVER["debug"]["noCache"]["php"] && !file_exists($_SERVER['SYSCACHE'] . '/autoexec_' . md5(implode($_REQUEST, '')) . '.php')) {
     cache::buildPHP(md5(implode($_REQUEST, '')), array_unique($_SESSION[cache]));
 }
 ?>

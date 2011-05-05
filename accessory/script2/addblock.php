@@ -4,20 +4,20 @@ $_SERVER["debug"] = false;
 require $_SERVER["DOCUMENT_ROOT"] . "/lib/core.php";
 
 
-// перекодируем полученые данные 
-// (используются функции из multibyte.php, потому 
-// здесь, а не в encoding.php вызываем)
-// TODO: А нужно ли здесь? Запретил регистрацию глобальных,
-//  а пост и гет тут всё равно регистрирую
+// РїРµСЂРµРєРѕРґРёСЂСѓРµРј РїРѕР»СѓС‡РµРЅС‹Рµ РґР°РЅРЅС‹Рµ 
+// (РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ С„СѓРЅРєС†РёРё РёР· multibyte.php, РїРѕС‚РѕРјСѓ 
+// Р·РґРµСЃСЊ, Р° РЅРµ РІ encoding.php РІС‹Р·С‹РІР°РµРј)
+// TODO: Рђ РЅСѓР¶РЅРѕ Р»Рё Р·РґРµСЃСЊ? Р—Р°РїСЂРµС‚РёР» СЂРµРіРёСЃС‚СЂР°С†РёСЋ РіР»РѕР±Р°Р»СЊРЅС‹С…,
+//  Р° РїРѕСЃС‚ Рё РіРµС‚ С‚СѓС‚ РІСЃС‘ СЂР°РІРЅРѕ СЂРµРіРёСЃС‚СЂРёСЂСѓСЋ
 foreach ($_GET as $key => $val) {
     ${$key} = cmsUTF_decode($val); 
-    // она сама и массивы перекодирует и проверяет на utf
+    // РѕРЅР° СЃР°РјР° Рё РјР°СЃСЃРёРІС‹ РїРµСЂРµРєРѕРґРёСЂСѓРµС‚ Рё РїСЂРѕРІРµСЂСЏРµС‚ РЅР° utf
 }
 foreach ($_POST as $key => $val) {
     ${$key} = cmsUTF_decode($val); 
-    // она сама и массивы перекодирует и проверяет на utf
+    // РѕРЅР° СЃР°РјР° Рё РјР°СЃСЃРёРІС‹ РїРµСЂРµРєРѕРґРёСЂСѓРµС‚ Рё РїСЂРѕРІРµСЂСЏРµС‚ РЅР° utf
 }
-// заказчик по tzid
+// Р·Р°РєР°Р·С‡РёРє РїРѕ tzid
 $sql = "SELECT orders.customer_id AS id FROM tz JOIN (orders) ON (tz.order_id=orders.id) WHERE tz.id='{$tznumber}'";
 $rs = sql::fetchOne($sql);
 if (empty($rs)) {
@@ -25,7 +25,7 @@ if (empty($rs)) {
 	exit;
 }
 $customer_id = $rs[id];
-// добавление блока
+// РґРѕР±Р°РІР»РµРЅРёРµ Р±Р»РѕРєР°
 $sql = "SELECT id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$blockname}'";
 $rs = sql::fetchOne($sql);
 if (empty($rs)) {
@@ -37,7 +37,7 @@ if (empty($rs)) {
 	$sql="UPDATE blocks SET customer_id='$customer_id',blockname='$blockname',sizex='$bsizex',sizey='$bsizey',thickness='$thickness' WHERE id='$block_id'";
 	sql::query ($sql) or die(sql::error(true));
 }
-// удалим позиции с блока потому что они будут добавляться из ТЗ
+// СѓРґР°Р»РёРј РїРѕР·РёС†РёРё СЃ Р±Р»РѕРєР° РїРѕС‚РѕРјСѓ С‡С‚Рѕ РѕРЅРё Р±СѓРґСѓС‚ РґРѕР±Р°РІР»СЏС‚СЊСЃСЏ РёР· РўР—
 $sql = "DELETE FROM blockpos WHERE block_id='{$block_id}'";
 sql::query($sql);
 

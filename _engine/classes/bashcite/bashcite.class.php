@@ -1,7 +1,7 @@
 <?
 class bashcite extends lego_abstract {
 	private $bash;
-	// обязательно определять для модуля
+	// РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РѕРїСЂРµРґРµР»СЏС‚СЊ РґР»СЏ РјРѕРґСѓР»СЏ
 	public function getDir(){ return __DIR__; }
 	public function __construct($name=false) {
 		parent::__construct($name);

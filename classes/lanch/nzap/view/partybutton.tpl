@@ -1,1 +1,1 @@
-<a  data-silent="self" legotarget="lanch_nzap" href="{$sllink}"><input type="button" class="partybutton" id="sl{$party}" value="{$party} ïàðòèÿ" ></a>
+<a  data-silent="self" legotarget="lanch_nzap" href="{$sllink}"><input type="button" class="partybutton" id="sl{$party}" value="{$party} Ð¿Ð°Ñ€Ñ‚Ð¸Ñ" ></a>

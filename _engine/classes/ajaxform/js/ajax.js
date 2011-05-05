@@ -14,7 +14,7 @@
 		
 		self.count++;
 		
-		var count = self.count + 0; // переназываем, т.к. в процессе значение может поменяться…
+		var count = self.count + 0; // РїРµСЂРµРЅР°Р·С‹РІР°РµРј, С‚.Рє. РІ РїСЂРѕС†РµСЃСЃРµ Р·РЅР°С‡РµРЅРёРµ РјРѕР¶РµС‚ РїРѕРјРµРЅСЏС‚СЊСЃСЏвЂ¦
 		
 		self.show();
 		
@@ -37,14 +37,14 @@
 						var date2 = new Date();
 						
 						//cmsConsole_warning();
-						log("<b>cmsAJAX[" + count + "]</b>: Запрос к <b>" + url + "</b> успешно выполнен (<b>" + (date2.getTime() - date1.getTime()) + " мс</b>)");
+						log("<b>cmsAJAX[" + count + "]</b>: Р—Р°РїСЂРѕСЃ Рє <b>" + url + "</b> СѓСЃРїРµС€РЅРѕ РІС‹РїРѕР»РЅРµРЅ (<b>" + (date2.getTime() - date1.getTime()) + " РјСЃ</b>)");
 						if (data.text) 
                                                     /*cmsConsole_notice(
-							"<div><b>cmsAJAX[" + count + "]</b>: Ответ скрипта: <a href='#' onclick='$(\"#cmsAjax_report_" + count + "\").toggle()'>Показать/скрыть</a></div>" + 
+							"<div><b>cmsAJAX[" + count + "]</b>: РћС‚РІРµС‚ СЃРєСЂРёРїС‚Р°: <a href='#' onclick='$(\"#cmsAjax_report_" + count + "\").toggle()'>РџРѕРєР°Р·Р°С‚СЊ/СЃРєСЂС‹С‚СЊ</a></div>" + 
 							"<div id='cmsAjax_report_" + count + "' style='display: none'>" + data.text + "</div>" //.replace(/<.*?>/ig, "")
                                                     
 						);*/
-                                                    log("<div><b>cmsAJAX[" + count + "]</b>: Ответ скрипта: <a href='#' onclick='$(\"#cmsAjax_report_" + count + "\").toggle()'>Показать/скрыть</a></div>" +
+                                                    log("<div><b>cmsAJAX[" + count + "]</b>: РћС‚РІРµС‚ СЃРєСЂРёРїС‚Р°: <a href='#' onclick='$(\"#cmsAjax_report_" + count + "\").toggle()'>РџРѕРєР°Р·Р°С‚СЊ/СЃРєСЂС‹С‚СЊ</a></div>" +
                                                         "<div id='cmsAjax_report_" + count + "' style='display: none'>" + data.text + "</div>" 
                                                     );
 						
@@ -55,12 +55,12 @@
 				} catch(e) { 
 					
 //					cmsConsole_error(
-//						"<div><b>cmsAJAX[" + count + "]</b>: Не удалось интерпретировать ответ от скрипта <b>" + url + "</b> (Ошибка JS: " + e + "): <a href='#' onclick='$(\"#cmsAjax_report_" + count + "_error\").toggle()'>Показать/скрыть</a></div>" + 
+//						"<div><b>cmsAJAX[" + count + "]</b>: РќРµ СѓРґР°Р»РѕСЃСЊ РёРЅС‚РµСЂРїСЂРµС‚РёСЂРѕРІР°С‚СЊ РѕС‚РІРµС‚ РѕС‚ СЃРєСЂРёРїС‚Р° <b>" + url + "</b> (РћС€РёР±РєР° JS: " + e + "): <a href='#' onclick='$(\"#cmsAjax_report_" + count + "_error\").toggle()'>РџРѕРєР°Р·Р°С‚СЊ/СЃРєСЂС‹С‚СЊ</a></div>" + 
 //						//"<div>" + data.replace(/<.*?>/ig, "").replace(/\n/, "<br>") + "</div>"
 //						"<div id='cmsAjax_report_" + count + "_error' style='display: none'>" + data + "</div>"
 //					);
 					log(
-						"<div><b>cmsAJAX[" + count + "]</b>: Не удалось интерпретировать ответ от скрипта <b>" + url + "</b> (Ошибка JS: " + e + "): <a href='#' onclick='$(\"#cmsAjax_report_" + count + "_error\").toggle()'>Показать/скрыть</a></div>" + 
+						"<div><b>cmsAJAX[" + count + "]</b>: РќРµ СѓРґР°Р»РѕСЃСЊ РёРЅС‚РµСЂРїСЂРµС‚РёСЂРѕРІР°С‚СЊ РѕС‚РІРµС‚ РѕС‚ СЃРєСЂРёРїС‚Р° <b>" + url + "</b> (РћС€РёР±РєР° JS: " + e + "): <a href='#' onclick='$(\"#cmsAjax_report_" + count + "_error\").toggle()'>РџРѕРєР°Р·Р°С‚СЊ/СЃРєСЂС‹С‚СЊ</a></div>" + 
 						//"<div>" + data.replace(/<.*?>/ig, "").replace(/\n/, "<br>") + "</div>"
 						"<div id='cmsAjax_report_" + count + "_error' style='display: none'>" + data + "</div>"
 					);
@@ -71,11 +71,11 @@
 			error: function(data, textStatus, errorThrown) {
 				
 //				cmsConsole_error(
-//					"<div><b>cmsAJAX[" + count + "]</b>: Критическая ошибка в Backend <b>" + url + "</b>:</div>" + 
+//					"<div><b>cmsAJAX[" + count + "]</b>: РљСЂРёС‚РёС‡РµСЃРєР°СЏ РѕС€РёР±РєР° РІ Backend <b>" + url + "</b>:</div>" + 
 //					"<div>" + data.responseText + "</div>"
 //				); //.replace(/<.*?>/ig, ""));
 				log(
-					"<div><b>cmsAJAX[" + count + "]</b>: Критическая ошибка в Backend <b>" + url + "</b>:</div>" + 
+					"<div><b>cmsAJAX[" + count + "]</b>: РљСЂРёС‚РёС‡РµСЃРєР°СЏ РѕС€РёР±РєР° РІ Backend <b>" + url + "</b>:</div>" + 
 					"<div>" + data.responseText + "</div>"
 				); //.replace(/<.*?>/ig, ""));
 				
@@ -94,11 +94,11 @@
 	cmsAjax.count = 0;
 	cmsAjax.progress = 0;
 	cmsAjax.loader = "#cmsAjax_loader";
-	cmsAjax.loading = "<div class='iconLoading'>Загрузка, ждите…</div>";
+	cmsAjax.loading = "<div class='iconLoading'>Р—Р°РіСЂСѓР·РєР°, Р¶РґРёС‚РµвЂ¦</div>";
 	
 	/**
-	 *	Выставить кастомный лоадер
-	 *	@param	id	Селектор лоадера
+	 *	Р’С‹СЃС‚Р°РІРёС‚СЊ РєР°СЃС‚РѕРјРЅС‹Р№ Р»РѕР°РґРµСЂ
+	 *	@param	id	РЎРµР»РµРєС‚РѕСЂ Р»РѕР°РґРµСЂР°
 	 */
 	cmsAjax.setLoader = function(id) {
 		

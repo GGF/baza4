@@ -5,22 +5,22 @@ class storages extends firstlevel {
 
     public function init() {
         parent::init();
-        CTitle::addSection('Ñêëàäû');
+        CTitle::addSection('Ð¡ÐºÐ»Ð°Ð´Ñ‹');
     }
     public function getIndexMenu() {
-        $this->menu->add('himiya', 'Ìàòåðèàëû',false);
-        $this->menu->add('materials', 'Òåêñòîëèò',false);
-        $this->menu->add('himiya2', 'Ëàáîðàòîðèÿ',false);
-        $this->menu->add('sverla', 'Ñâåðëà 3.0',false);
-        $this->menu->add('halaty', 'Ñïåöîäåæäà',false);
+        $this->menu->add('himiya', 'ÐœÐ°Ñ‚ÐµÑ€Ð¸Ð°Ð»Ñ‹',false);
+        $this->menu->add('materials', 'Ð¢ÐµÐºÑÑ‚Ð¾Ð»Ð¸Ñ‚',false);
+        $this->menu->add('himiya2', 'Ð›Ð°Ð±Ð¾Ñ€Ð°Ñ‚Ð¾Ñ€Ð¸Ñ',false);
+        $this->menu->add('sverla', 'Ð¡Ð²ÐµÑ€Ð»Ð° 3.0',false);
+        $this->menu->add('halaty', 'Ð¡Ð¿ÐµÑ†Ð¾Ð´ÐµÐ¶Ð´Ð°',false);
         $this->menu->add_newline();
-        $this->menu->add('instr', 'Îñí.Ñðåäñòâà',false);
-        $this->menu->add('nepon', 'Ñâåðëà 3.175',false);
-        $this->menu->add('maloc', 'Ìàëîöåíêà',false);
-        $this->menu->add('stroy', 'Ñòðîéìàòåðèàëû',false);
-        $this->menu->add('zap', 'Çàï÷àñòè èíñòðóìåíòû',false);
-        $this->menu->add('test', 'Îòëàäêà',false);
-        $this->menu->add('back', 'íàçàä',false);
+        $this->menu->add('instr', 'ÐžÑÐ½.Ð¡Ñ€ÐµÐ´ÑÑ‚Ð²Ð°',false);
+        $this->menu->add('nepon', 'Ð¡Ð²ÐµÑ€Ð»Ð° 3.175',false);
+        $this->menu->add('maloc', 'ÐœÐ°Ð»Ð¾Ñ†ÐµÐ½ÐºÐ°',false);
+        $this->menu->add('stroy', 'Ð¡Ñ‚Ñ€Ð¾Ð¹Ð¼Ð°Ñ‚ÐµÑ€Ð¸Ð°Ð»Ñ‹',false);
+        $this->menu->add('zap', 'Ð—Ð°Ð¿Ñ‡Ð°ÑÑ‚Ð¸ Ð¸Ð½ÑÑ‚Ñ€ÑƒÐ¼ÐµÐ½Ñ‚Ñ‹',false);
+        $this->menu->add('test', 'ÐžÑ‚Ð»Ð°Ð´ÐºÐ°',false);
+        $this->menu->add('back', 'Ð½Ð°Ð·Ð°Ð´',false);
         $this->menu->run();
         return $this->menu->getOutput();        
     }

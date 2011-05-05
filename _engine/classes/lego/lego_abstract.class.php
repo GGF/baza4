@@ -96,7 +96,7 @@ abstract class lego_abstract extends JsCSS {
 
     private function beforeRun() {
         /* if(self::isLegoRunned($this->getName()))
-          throw new Exception("Лего с именем '{$this->getName()}' запущено дважды"); */
+          throw new Exception("Р›РµРіРѕ СЃ РёРјРµРЅРµРј '{$this->getName()}' Р·Р°РїСѓС‰РµРЅРѕ РґРІР°Р¶РґС‹"); */
         //console::getInstance()->out($this->getName());
     }
 
@@ -303,12 +303,12 @@ abstract class lego_abstract extends JsCSS {
     }
 
     public function fetch($template) {
-        profiler::add("����������", $this->name . ": ������ ���������");
+        profiler::add("Выполнение", $this->name . ": начало отрисовки");
         $templatedir = Output::getTemplateCompiler()->getTemplateDir();
         Output::getTemplateCompiler()->setTemplateDir($this->getViewDir());
         $content = Output::fetch($template);
         Output::getTemplateCompiler()->setTemplateDir($templatedir);
-        profiler::add("����������", $this->name . ": ����� ���������");
+        profiler::add("Выполнение", $this->name . ": конец отрисовки");
         return $content;
     }
 

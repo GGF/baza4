@@ -2,25 +2,25 @@
 
 class storage_year extends storage_rest {
 
-    // обязательно определять для модуля
+    // РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РѕРїСЂРµРґРµР»СЏС‚СЊ РґР»СЏ РјРѕРґСѓР»СЏ
     public function getDir() {
         return __DIR__;
     }
 
     public function  action_index($all = '', $order = '', $find = '', $idstr = '') {
         //parent::action_index();
-        $out='Точно хотите архивировать?';
+        $out='РўРѕС‡РЅРѕ С…РѕС‚РёС‚Рµ Р°СЂС…РёРІРёСЂРѕРІР°С‚СЊ?';
         return $this->view->getConfirm($out,'arc','noarc');
     }
 
     public function action_noarc(){
-        return 'Вот и славно, трам-пам-пам';
+        return 'Р’РѕС‚ Рё СЃР»Р°РІРЅРѕ, С‚СЂР°Рј-РїР°Рј-РїР°Рј';
     }
     public function action_arc(){
         if ($this->model->arc())
-            return 'Заархивировано';
+            return 'Р—Р°Р°СЂС…РёРІРёСЂРѕРІР°РЅРѕ';
         else
-            return 'Фигня какая-то. Не заррхивировалось';
+            return 'Р¤РёРіРЅСЏ РєР°РєР°СЏ-С‚Рѕ. РќРµ Р·Р°СЂСЂС…РёРІРёСЂРѕРІР°Р»РѕСЃСЊ';
     }
 }
 

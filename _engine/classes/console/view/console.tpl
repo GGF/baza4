@@ -7,10 +7,10 @@
 						<tr>
 							<td class='cmsTabs_first' nowrap></td>
 							<td class='cmsTabs_norm1 cmsTabs_sel1' id='tab_console1' nowrap></td>
-							<td class='cmsTabs_norm2 cmsTabs_sel2' id='tab_console2' nowrap><a href='javascript:cmsConsole_tab("console");' class='tab' onMouseOver='cmsTab_over("_console")' onMouseOut='cmsTab_out("_console")'>Консоль</a></td>
+							<td class='cmsTabs_norm2 cmsTabs_sel2' id='tab_console2' nowrap><a href='javascript:cmsConsole_tab("console");' class='tab' onMouseOver='cmsTab_over("_console")' onMouseOut='cmsTab_out("_console")'>РљРѕРЅСЃРѕР»СЊ</a></td>
 							<td class='cmsTabs_norm3 cmsTabs_sel3' id='tab_console3' nowrap></td>
 							<td class='cmsTabs_norm1' id='tab_time1' nowrap></td>
-							<td class='cmsTabs_norm2' id='tab_time2' nowrap><a href='javascript:cmsConsole_tab("time");' class='tab' onMouseOver='cmsTab_over("_time")' onMouseOut='cmsTab_out("_time")'>Время</a></td>
+							<td class='cmsTabs_norm2' id='tab_time2' nowrap><a href='javascript:cmsConsole_tab("time");' class='tab' onMouseOver='cmsTab_over("_time")' onMouseOut='cmsTab_out("_time")'>Р’СЂРµРјСЏ</a></td>
 							<td class='cmsTabs_norm3' id='tab_time3' nowrap></td>
 							<td class='cmsTabs_norm1' id='tab_mysql1' nowrap></td>
 							<td class='cmsTabs_norm2' id='tab_mysql2' nowrap><a href='javascript:cmsConsole_tab("mysql");' class='tab' onMouseOver='cmsTab_over("_mysql")' onMouseOut='cmsTab_out("_mysql")'>MySQL</a></td>
@@ -31,8 +31,8 @@
 	
 		</td></tr>
 		<tr onclick='cmsConsole_main_toggle()'>
-			<td class='cmsConsole_text' width='100%'>Отчет Osmio CMS <small>(щелкните для открытия)</small></td>
-			<td class='cmsConsole_text' id='cmsConsole_errors' nowrap>Нет ошибок</td>
+			<td class='cmsConsole_text' width='100%'>РћС‚С‡РµС‚ Osmio CMS <small>(С‰РµР»РєРЅРёС‚Рµ РґР»СЏ РѕС‚РєСЂС‹С‚РёСЏ)</small></td>
+			<td class='cmsConsole_text' id='cmsConsole_errors' nowrap>РќРµС‚ РѕС€РёР±РѕРє</td>
 		</tr>
 	</table>
 </div>

@@ -13,9 +13,9 @@ class orders_blocks_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $order = strstr($order, 'files') ? '' : $order; // не удается отсортировать по файлам
+        $order = strstr($order, 'files') ? '' : $order; // РЅРµ СѓРґР°РµС‚СЃСЏ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ РїРѕ С„Р°Р№Р»Р°Рј
         if (empty($_SESSION[customer_id])) {
-            $customer = "Выберите заказчика!!!";
+            $customer = "Р’С‹Р±РµСЂРёС‚Рµ Р·Р°РєР°Р·С‡РёРєР°!!!";
             $sql = "SELECT *, CONCAT(blocks.sizex,'x',blocks.sizey) AS size, 
                     blocks.id AS blockid,blocks.id
                     FROM blocks
@@ -50,14 +50,14 @@ class orders_blocks_model extends sqltable_model {
     public function getCols() {
         $cols = array();
         if (empty($_SESSION[customer_id])) {
-            $cols[customer] = "Заказчик";
+            $cols[customer] = "Р—Р°РєР°Р·С‡РёРє";
         }
         $cols[blockid] = "ID";
-        $cols[blockname] = "Название блока";
-        $cols[size] = "Размер";
+        $cols[blockname] = "РќР°Р·РІР°РЅРёРµ Р±Р»РѕРєР°";
+        $cols[size] = "Р Р°Р·РјРµСЂ";
         $cols[scomp] = 'COMP';
         $cols[ssolder] = 'SOLDER';
-        $cols[files] = 'Файлы';
+        $cols[files] = 'Р¤Р°Р№Р»С‹';
         return $cols;
     }
 

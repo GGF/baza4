@@ -1,15 +1,15 @@
 <?
 /*
-Добавляет позицию ТЗ в базу в базу
- Параметры
- tz - идентификатор ТЗ
- posintz - номер позиции в ТЗ
- customer - заказчик
- board - имя платы
- numbers - количество
- zap - запущена или нет (0/1)
- user - кто добавил
- Возвращает id 
+Р”РѕР±Р°РІР»СЏРµС‚ РїРѕР·РёС†РёСЋ РўР— РІ Р±Р°Р·Сѓ РІ Р±Р°Р·Сѓ
+ РџР°СЂР°РјРµС‚СЂС‹
+ tz - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РўР—
+ posintz - РЅРѕРјРµСЂ РїРѕР·РёС†РёРё РІ РўР—
+ customer - Р·Р°РєР°Р·С‡РёРє
+ board - РёРјСЏ РїР»Р°С‚С‹
+ numbers - РєРѕР»РёС‡РµСЃС‚РІРѕ
+ zap - Р·Р°РїСѓС‰РµРЅР° РёР»Рё РЅРµС‚ (0/1)
+ user - РєС‚Рѕ РґРѕР±Р°РІРёР»
+ Р’РѕР·РІСЂР°С‰Р°РµС‚ id 
 */
 
 require $_SERVER["DOCUMENT_ROOT"] . "/lib/config.php";
@@ -17,22 +17,22 @@ $_SERVER["debug"] = false;
 require $_SERVER["DOCUMENT_ROOT"] . "/lib/core.php";
 
 
-// перекодируем полученые данные 
-// (используются функции из multibyte.php, потому 
-// здесь, а не в encoding.php вызываем)
-// TODO: А нужно ли здесь? Запретил регистрацию глобальных,
-//  а пост и гет тут всё равно регистрирую
+// РїРµСЂРµРєРѕРґРёСЂСѓРµРј РїРѕР»СѓС‡РµРЅС‹Рµ РґР°РЅРЅС‹Рµ 
+// (РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ С„СѓРЅРєС†РёРё РёР· multibyte.php, РїРѕС‚РѕРјСѓ 
+// Р·РґРµСЃСЊ, Р° РЅРµ РІ encoding.php РІС‹Р·С‹РІР°РµРј)
+// TODO: Рђ РЅСѓР¶РЅРѕ Р»Рё Р·РґРµСЃСЊ? Р—Р°РїСЂРµС‚РёР» СЂРµРіРёСЃС‚СЂР°С†РёСЋ РіР»РѕР±Р°Р»СЊРЅС‹С…,
+//  Р° РїРѕСЃС‚ Рё РіРµС‚ С‚СѓС‚ РІСЃС‘ СЂР°РІРЅРѕ СЂРµРіРёСЃС‚СЂРёСЂСѓСЋ
 foreach ($_GET as $key => $val) {
     ${$key} = cmsUTF_decode($val); 
-    // она сама и массивы перекодирует и проверяет на utf
+    // РѕРЅР° СЃР°РјР° Рё РјР°СЃСЃРёРІС‹ РїРµСЂРµРєРѕРґРёСЂСѓРµС‚ Рё РїСЂРѕРІРµСЂСЏРµС‚ РЅР° utf
 }
 foreach ($_POST as $key => $val) {
     ${$key} = cmsUTF_decode($val); 
-    // она сама и массивы перекодирует и проверяет на utf
+    // РѕРЅР° СЃР°РјР° Рё РјР°СЃСЃРёРІС‹ РїРµСЂРµРєРѕРґРёСЂСѓРµС‚ Рё РїСЂРѕРІРµСЂСЏРµС‚ РЅР° utf
 }
 
 $file_link = addslashes($file_link);
-// заказчик по tzid
+// Р·Р°РєР°Р·С‡РёРє РїРѕ tzid
 $sql = "SELECT orders.customer_id AS id FROM tz JOIN (orders) ON (tz.order_id=orders.id) WHERE tz.id='{$tznumber}'";
 $rs = sql::fetchOne($sql);
 if (empty($rs)) {
@@ -41,7 +41,7 @@ if (empty($rs)) {
 }
 $customer_id = $rs[id];
 
-// Определим идентификатор пользователя
+// РћРїСЂРµРґРµР»РёРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 $sql="SELECT id FROM users WHERE nik='$user'";
 $rs = sql::fetchOne($sql);
 if (!empty($rs)) {
@@ -52,7 +52,7 @@ if (!empty($rs)) {
 	$user_id = sql::lastId();
 }
 
-// определим плату
+// РѕРїСЂРµРґРµР»РёРј РїР»Р°С‚Сѓ
 $sql="SELECT id FROM plates WHERE customer_id='$customer_id' AND plate='$board'";
 $rs = sql::fetchOne($sql);
 if (!empty($rs)) {
@@ -62,15 +62,15 @@ if (!empty($rs)) {
 	sql::query ($sql) or die(sql::error(true));
 	$plate_id = sql::lastId();
 }
-// определим плату
+// РѕРїСЂРµРґРµР»РёРј РїР»Р°С‚Сѓ
 $sql="SELECT id FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
 $rs = sql::fetchOne($sql);
 if (!empty($rs)) {
 	$board_id = $rs["id"];
 } else {
-	// не буду добавлять - данных нет и это делается в другом месте
+	// РЅРµ Р±СѓРґСѓ РґРѕР±Р°РІР»СЏС‚СЊ - РґР°РЅРЅС‹С… РЅРµС‚ Рё СЌС‚Рѕ РґРµР»Р°РµС‚СЃСЏ РІ РґСЂСѓРіРѕРј РјРµСЃС‚Рµ
 }
-// коментарий
+// РєРѕРјРµРЅС‚Р°СЂРёР№
 $sql = "SELECT * FROM coments WHERE comment='{$comment}'";
 $com = sql::fetchOne($sql);
 if (empty($com)) {
@@ -81,7 +81,7 @@ if (empty($com)) {
 	$comment_id = $com[id];
 }
 
-// добавим МП если есть такое исправим
+// РґРѕР±Р°РІРёРј РњРџ РµСЃР»Рё РµСЃС‚СЊ С‚Р°РєРѕРµ РёСЃРїСЂР°РІРёРј
 $sql="SELECT * FROM posintz WHERE tz_id='$tznumber' AND posintz='$posintz'";
 $rs = sql::fetchOne($sql);
 if (empty($rs)) {
@@ -94,7 +94,7 @@ if (empty($rs)) {
 	$pit_id = $rs["id"];
 }
 
-// обновить запуски если некоторые позиции уже запускались
+// РѕР±РЅРѕРІРёС‚СЊ Р·Р°РїСѓСЃРєРё РµСЃР»Рё РЅРµРєРѕС‚РѕСЂС‹Рµ РїРѕР·РёС†РёРё СѓР¶Рµ Р·Р°РїСѓСЃРєР°Р»РёСЃСЊ
 $sql="SELECT * FROM lanch WHERE tz_id='$tznumber' AND pos_in_tz='$posintz'";
 $rs = sql::fetchOne($sql);
 if (empty($rs)) {

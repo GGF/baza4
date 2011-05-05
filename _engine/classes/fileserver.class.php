@@ -1,8 +1,8 @@
 <?
 
 /*
- * Ïåðåêîäèðóåò ôàéëîâûå ññûëêè â íóæíûå
- * $filelink èìååò âèä z:\dir\file.ext
+ * ÐŸÐµÑ€ÐµÐºÐ¾Ð´Ð¸Ñ€ÑƒÐµÑ‚ Ñ„Ð°Ð¹Ð»Ð¾Ð²Ñ‹Ðµ ÑÑÑ‹Ð»ÐºÐ¸ Ð² Ð½ÑƒÐ¶Ð½Ñ‹Ðµ
+ * $filelink Ð¸Ð¼ÐµÐµÑ‚ Ð²Ð¸Ð´ z:\dir\file.ext
  */
 
 class fileserver {
@@ -30,7 +30,7 @@ class fileserver {
     }
 
     static public function removeOSsimbols($filename) {
-        // äëÿ óäàëåíèÿ èç èìåí çàêàçîâ ñïåöñèìâîëîâ ÎÑ
+        // Ð´Ð»Ñ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð¸Ð· Ð¸Ð¼ÐµÐ½ Ð·Ð°ÐºÐ°Ð·Ð¾Ð² ÑÐ¿ÐµÑ†ÑÐ¸Ð¼Ð²Ð¾Ð»Ð¾Ð² ÐžÐ¡
         return str_replace("'", "-", str_replace("`", "-", str_replace("?", "-", str_replace(":", "-", str_replace("\'", "-", str_replace("\"", "-", str_replace("*", "-", str_replace("/", "-", str_replace("\\", "-", $filename)))))))));
     }
 
@@ -57,7 +57,7 @@ class fileserver {
     }
 
     static public function savefile($filename, $content) {
-        // çàïèñàòü ôàéë
+        // Ð·Ð°Ð¿Ð¸ÑÐ°Ñ‚ÑŒ Ñ„Ð°Ð¹Ð»
         $file = @fopen($filename, "w");
         if ($file) {
             fwrite($file, $content);

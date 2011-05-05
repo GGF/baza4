@@ -2,7 +2,7 @@
 
 class firstlevel extends lego_abstract {
 
-    // îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -26,11 +26,11 @@ class firstlevel extends lego_abstract {
         }
     }
 
-    // todo: íå çíàþ íàäî ëè
+    // todo: Ð½Ðµ Ð·Ð½Ð°ÑŽ Ð½Ð°Ð´Ð¾ Ð»Ð¸
     public function getMainTarget() {
         return $this->maintarget;
     }
-    // todo: íå çíàþ íàäî ëè
+    // todo: Ð½Ðµ Ð·Ð½Ð°ÑŽ Ð½Ð°Ð´Ð¾ Ð»Ð¸
     public function getMainContent() {
         return $this->maincontent;
     }
@@ -38,7 +38,7 @@ class firstlevel extends lego_abstract {
     public function init() {
         if ($_SERVER[debug][report])
             $this->console = console::getInstance();
-        CTitle::setTitle("Áàçà äàííûõ ÇÀÎ ÌÏÏ");
+        CTitle::setTitle("Ð‘Ð°Ð·Ð° Ð´Ð°Ð½Ð½Ñ‹Ñ… Ð—ÐÐž ÐœÐŸÐŸ");
         $this->bashcite = new bashcite();
         $this->birthdays = new birthdays();
         $this->adminhere = new adminhere();
@@ -61,7 +61,7 @@ class firstlevel extends lego_abstract {
     public function action_index() {
         $this->setOutputAssigns();
         Output::assign('menu', $this->getIndexMenu());
-        Output::setContent("Íàæìè ÷òîíèòü!");
+        Output::setContent("ÐÐ°Ð¶Ð¼Ð¸ Ñ‡Ñ‚Ð¾Ð½Ð¸Ñ‚ÑŒ!");
         return $this->fetch("body_base.tpl");
     }
 
@@ -69,7 +69,7 @@ class firstlevel extends lego_abstract {
         if (Ajax::isAjaxRequest()) {
             return $this->fetch("help.tpl");
         } else {
-            CTitle::addSection('Ïîìîùü');
+            CTitle::addSection('ÐŸÐ¾Ð¼Ð¾Ñ‰ÑŒ');
             $this->setOutputAssigns();
             Output::assign('menu', $this->getIndexMenu());
             Output::setContent($this->fetch("help.tpl"));

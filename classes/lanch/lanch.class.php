@@ -4,19 +4,19 @@ class lanch extends secondlevel {
 
     public function init() {
         parent::init();
-        CTitle::addSection('Çàïóñêè');
+        CTitle::addSection('Ð—Ð°Ð¿ÑƒÑÐºÐ¸');
     }
 
     public function getIndexMenu() {
-        $this->menu->add('nzap', 'Íå çàïóùåííûå');
-        $this->menu->add('zap', 'Â ïðîèçâîäñòâå');
-        $this->menu->add('conduct', 'Êîíäóêòîðû');
-        $this->menu->add('mp', 'Ìàñòåðïëàòû');
-        $this->menu->add('zad', 'Çàäåë');
-        $this->menu->add('pt', 'Øàáëîíû');
-        $this->menu->add('boards', 'Ïëàòû',false);
-        $this->menu->add('blocks', 'Çàãîòîâêè',false);
-        $this->menu->add('back', 'Íàçàä', false);
+        $this->menu->add('nzap', 'ÐÐµ Ð·Ð°Ð¿ÑƒÑ‰ÐµÐ½Ð½Ñ‹Ðµ');
+        $this->menu->add('zap', 'Ð’ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´ÑÑ‚Ð²Ðµ');
+        $this->menu->add('conduct', 'ÐšÐ¾Ð½Ð´ÑƒÐºÑ‚Ð¾Ñ€Ñ‹');
+        $this->menu->add('mp', 'ÐœÐ°ÑÑ‚ÐµÑ€Ð¿Ð»Ð°Ñ‚Ñ‹');
+        $this->menu->add('zad', 'Ð—Ð°Ð´ÐµÐ»');
+        $this->menu->add('pt', 'Ð¨Ð°Ð±Ð»Ð¾Ð½Ñ‹');
+        $this->menu->add('boards', 'ÐŸÐ»Ð°Ñ‚Ñ‹',false);
+        $this->menu->add('blocks', 'Ð—Ð°Ð³Ð¾Ñ‚Ð¾Ð²ÐºÐ¸',false);
+        $this->menu->add('back', 'ÐÐ°Ð·Ð°Ð´', false);
         $this->menu->run();
         return $this->menu->getOutput();
     }

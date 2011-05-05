@@ -2,7 +2,7 @@
 {$divstyle}
 </style>
 <a data-silent="self" legotarget="adminhere" href="{$adminlink}">
-<div class="sun" id="sun" title='Admin çäåñü'>&nbsp;</div>
+<div class="sun" id="sun" title='Admin Ð·Ð´ÐµÑÑŒ'>&nbsp;</div>
 <div id="userswin" class="sun" >{$users}</div>
 </a>
 

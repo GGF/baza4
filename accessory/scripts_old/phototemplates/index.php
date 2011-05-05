@@ -2,7 +2,7 @@
 include_once $GLOBALS["DOCUMENT_ROOT"]."/lib/sql.php";
 
 if ($action!='add') {
-	showheader("Фотошаблоны запуск");
+	showheader("Р¤РѕС‚РѕС€Р°Р±Р»РѕРЅС‹ Р·Р°РїСѓСЃРє");
 }
 	include "inc.php";
 if ($action!='add') {

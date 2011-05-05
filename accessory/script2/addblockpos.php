@@ -5,21 +5,21 @@ $_SERVER["debug"] = false;
 require $_SERVER["DOCUMENT_ROOT"] . "/lib/core.php";
 
 
-// перекодируем полученые данные 
-// (используются функции из multibyte.php, потому 
-// здесь, а не в encoding.php вызываем)
-// TODO: А нужно ли здесь? Запретил регистрацию глобальных,
-//  а пост и гет тут всё равно регистрирую
+// РїРµСЂРµРєРѕРґРёСЂСѓРµРј РїРѕР»СѓС‡РµРЅС‹Рµ РґР°РЅРЅС‹Рµ 
+// (РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ С„СѓРЅРєС†РёРё РёР· multibyte.php, РїРѕС‚РѕРјСѓ 
+// Р·РґРµСЃСЊ, Р° РЅРµ РІ encoding.php РІС‹Р·С‹РІР°РµРј)
+// TODO: Рђ РЅСѓР¶РЅРѕ Р»Рё Р·РґРµСЃСЊ? Р—Р°РїСЂРµС‚РёР» СЂРµРіРёСЃС‚СЂР°С†РёСЋ РіР»РѕР±Р°Р»СЊРЅС‹С…,
+//  Р° РїРѕСЃС‚ Рё РіРµС‚ С‚СѓС‚ РІСЃС‘ СЂР°РІРЅРѕ СЂРµРіРёСЃС‚СЂРёСЂСѓСЋ
 foreach ($_GET as $key => $val) {
     ${$key} = cmsUTF_decode($val);
-    // она сама и массивы перекодирует и проверяет на utf
+    // РѕРЅР° СЃР°РјР° Рё РјР°СЃСЃРёРІС‹ РїРµСЂРµРєРѕРґРёСЂСѓРµС‚ Рё РїСЂРѕРІРµСЂСЏРµС‚ РЅР° utf
 }
 foreach ($_POST as $key => $val) {
     ${$key} = cmsUTF_decode($val);
-    // она сама и массивы перекодирует и проверяет на utf
+    // РѕРЅР° СЃР°РјР° Рё РјР°СЃСЃРёРІС‹ РїРµСЂРµРєРѕРґРёСЂСѓРµС‚ Рё РїСЂРѕРІРµСЂСЏРµС‚ РЅР° utf
 }
 
-// заказчик по tzid
+// Р·Р°РєР°Р·С‡РёРє РїРѕ tzid
 $sql = "SELECT orders.customer_id AS id FROM tz JOIN (orders) ON (tz.order_id=orders.id) WHERE tz.id='{$tznumber}'";
 $rs = sql::fetchOne($sql);
 if (empty($rs)) {
@@ -27,8 +27,8 @@ if (empty($rs)) {
     exit;
 }
 $customer_id = $rs[id];
-// плату
-// коментарий
+// РїР»Р°С‚Сѓ
+// РєРѕРјРµРЅС‚Р°СЂРёР№
 $sql = "SELECT id FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
 $rs = sql::fetchOne($sql);
 if (empty($comment)) {
@@ -46,7 +46,7 @@ if (empty($comment)) {
 }
 $sql = "REPLACE INTO boards 
         (id,board_name,customer_id,sizex,sizey,thickness,
-        texеolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
+        texРµolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
         pallad,immer,aurum,numlam,lsizex,lsizey,mask,mark,glasscloth,
         class,complexity_factor,frez_factor,comment_id)
         VALUES ('{$rs["id"]}' , '{$board}' ,'{$customer_id}' ,'{$sizex}' ,'{$sizey}' ,
@@ -58,7 +58,7 @@ sql::query($sql);
 
 $plate_id = sql::lastId();
 
-// позицию к блоку
+// РїРѕР·РёС†РёСЋ Рє Р±Р»РѕРєСѓ
 $sql = "INSERT INTO blockpos (block_id,board_id,nib,nx,ny) VALUES ('$block_id','$plate_id','$num','$bnx','$bny')";
 sql::query($sql);
 

@@ -26,13 +26,13 @@ class lanch_zad_model extends sqltable_model {
     }
     public function getCols() {
         $cols = array(
-            "π" => "π",
+            "‚Ññ" => "‚Ññ",
             "zid" => "ID",
-            "customer" => "«‡Í‡Á˜ËÍ",
-            "plate" => "œÎ‡Ú‡",
-            "niz" => "π ËÁ‚.",
-            "ldate" => "ƒ‡Ú‡ Á‡ÔÛÒÍ‡",
-            "number" => " ÓÎ-‚Ó",
+            "customer" => "–ó–∞–∫–∞–∑—á–∏–∫",
+            "plate" => "–ü–ª–∞—Ç–∞",
+            "niz" => "‚Ññ –∏–∑–≤.",
+            "ldate" => "–î–∞—Ç–∞ –∑–∞–ø—É—Å–∫–∞",
+            "number" => "–ö–æ–ª-–≤–æ",
         );
         return $cols;
     }

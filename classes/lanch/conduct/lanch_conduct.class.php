@@ -2,14 +2,14 @@
 
 class lanch_conduct extends sqltable {
 
-    // îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     public function getDir() {
         return __DIR__;
     }
 
     public function action_edit($id) {
         if (!Auth::getInstance()->getRights($this->getName(),'edit'))
-            return $this->view->getMessage('Íåò ïðàâ íà ðåäàêòèðîâàíèå');
+            return $this->view->getMessage('ÐÐµÑ‚ Ð¿Ñ€Ð°Ð² Ð½Ð° Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ');
         $rec[isnew] = true;
         $rec[customers] = $this->model->getCustomers();
         if (!empty($id)) {

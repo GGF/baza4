@@ -1,15 +1,15 @@
-<!--   Copyright 2011 Igor Fedoroff   |  g_g_f@mail.ru  -->
+п»ї<!--   Copyright 2011 Igor Fedoroff   |  g_g_f@mail.ru  -->
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="Author" content="Игорь Федоров">
-	<meta name="Description" content="ЗАО МПП">
+    <meta name="Author" content="РРіРѕСЂСЊ Р¤РµРґРѕСЂРѕРІ">
+	<meta name="Description" content="Р—РђРћ РњРџРџ">
     <title>{$title}</title>
     {$lego->getAllHeaderblock()}
   </head>
   <body>
   {$adminhere}
-  <a href="{$linkbase}" class="glavmenu" title="Домой"><div class="glavmenu">Главное меню</div></a>
+  <a href="{$linkbase}" class="glavmenu" title="Р”РѕРјРѕР№"><div class="glavmenu">Р“Р»Р°РІРЅРѕРµ РјРµРЅСЋ</div></a>
   {$birthdays}
   {$bashcite}
   {$menu}

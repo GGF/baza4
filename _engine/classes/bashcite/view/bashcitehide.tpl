@@ -1,1 +1,1 @@
-<a data-silent="#bashcite" legotarget="bashcite" href="{$linkshowbash}">Показать цитаты (может содержать нецензурную лексику)</a>
+<a data-silent="#bashcite" legotarget="bashcite" href="{$linkshowbash}">РџРѕРєР°Р·Р°С‚СЊ С†РёС‚Р°С‚С‹ (РјРѕР¶РµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ РЅРµС†РµРЅР·СѓСЂРЅСѓСЋ Р»РµРєСЃРёРєСѓ)</a>

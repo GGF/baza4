@@ -4,16 +4,16 @@ class orders extends secondlevel {
 
     public function init() {
         parent::init();
-        CTitle::addSection('Çàêàçû');
+        CTitle::addSection('Ð—Ð°ÐºÐ°Ð·Ñ‹');
     }
     public function getIndexMenu() {
-        $this->menu->add('customers', 'Çàêàç÷èêè');
-        $this->menu->add('order', 'Çàêàçû');
-        $this->menu->add('tz', 'ÒÇ');
-        $this->menu->add('posintz', 'Ïîçèöèè ÒÇ');
-        $this->menu->add('blocks', 'Çàãîòîâêè', false);
-        $this->menu->add('boards', 'Ïëàòû',false);
-        $this->menu->add('back', 'Íàçàä',false);
+        $this->menu->add('customers', 'Ð—Ð°ÐºÐ°Ð·Ñ‡Ð¸ÐºÐ¸');
+        $this->menu->add('order', 'Ð—Ð°ÐºÐ°Ð·Ñ‹');
+        $this->menu->add('tz', 'Ð¢Ð—');
+        $this->menu->add('posintz', 'ÐŸÐ¾Ð·Ð¸Ñ†Ð¸Ð¸ Ð¢Ð—');
+        $this->menu->add('blocks', 'Ð—Ð°Ð³Ð¾Ñ‚Ð¾Ð²ÐºÐ¸', false);
+        $this->menu->add('boards', 'ÐŸÐ»Ð°Ñ‚Ñ‹',false);
+        $this->menu->add('back', 'ÐÐ°Ð·Ð°Ð´',false);
         $this->menu->run();
         return $this->menu->getOutput();        
     }

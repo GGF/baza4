@@ -26,9 +26,9 @@ class lanch_pt_model extends sqltable_model {
     public function getCols() {
         $cols = array();
 	$cols[ptid]="ID";
-	$cols[ts]="Дата";
-	$cols[nik]="Кто запустил";
-	$cols[filenames]="Колво и Каталог";
+	$cols[ts]="Р”Р°С‚Р°";
+	$cols[nik]="РљС‚Рѕ Р·Р°РїСѓСЃС‚РёР»";
+	$cols[filenames]="РљРѕР»РІРѕ Рё РљР°С‚Р°Р»РѕРі";
         return $cols;
     }
 

@@ -2,7 +2,7 @@
 
 class storage_rest_view extends sqltable_view {
 
-    // îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
     public function getDir() {
         return __DIR__;
     }
@@ -14,21 +14,21 @@ class storage_rest_view extends sqltable_view {
 			array(
 				"type"		=> AJAXFORM_TYPE_TEXT,
 				"name"		=> "nazv",
-				"label"			=>'Íàèìåíîâàíèå:',
+				"label"			=>'ÐÐ°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ:',
 				"value"		=> $rec["nazv"],
 				"options"	=>	array( "html" => "size=70", ),
 			),
 			array(
 				"type"		=> AJAXFORM_TYPE_TEXT,
 				"name"		=> "edizm",
-				"label"			=>'Åäèíèöà èçìåðåíèÿ:',
+				"label"			=>'Ð•Ð´Ð¸Ð½Ð¸Ñ†Ð° Ð¸Ð·Ð¼ÐµÑ€ÐµÐ½Ð¸Ñ:',
 				"value"		=> $rec["edizm"],
 				"options"	=>	array( "html" => "size=10", ),
 			),
 			array(
 				"type"		=> AJAXFORM_TYPE_TEXT,
 				"name"		=> "krost",
-				"label"			=>'Êðèòè÷åñêèé îñòàòîê:',
+				"label"			=>'ÐšÑ€Ð¸Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸Ð¹ Ð¾ÑÑ‚Ð°Ñ‚Ð¾Ðº:',
 				"value"		=> $rec["krost"],
 				"options"	=>	array( "html" => "size=10", ),
 			)

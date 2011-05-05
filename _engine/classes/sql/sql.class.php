@@ -21,7 +21,7 @@ class sql {
 
     static function init() {
 
-        profiler::add("Autoexec", "MySQL: Выполнение скриптов до подключения");
+        profiler::add("Autoexec", "MySQL: Р’С‹РїРѕР»РЅРµРЅРёРµ СЃРєСЂРёРїС‚РѕРІ РґРѕ РїРѕРґРєР»СЋС‡РµРЅРёСЏ");
 
         self::$db = &self::$lang;
         self::$sh = &self::$shared;
@@ -33,7 +33,7 @@ class sql {
                         $_SERVER[mysql][lang]
         );
 
-        profiler::add("Autoexec", "MySQL: Подключение языковой БД");
+        profiler::add("Autoexec", "MySQL: РџРѕРґРєР»СЋС‡РµРЅРёРµ СЏР·С‹РєРѕРІРѕР№ Р‘Р”");
 
         // REVERSE
 
@@ -82,10 +82,10 @@ class sql {
     }
 
     static function query($sql='') {
-        profiler::add("Выполнение", "MySQL: Начало выполения запроса");
+        profiler::add("Р’С‹РїРѕР»РЅРµРЅРёРµ", "MySQL: РќР°С‡Р°Р»Рѕ РІС‹РїРѕР»РµРЅРёСЏ Р·Р°РїСЂРѕСЃР°");
         $args = func_get_args();
         $ret = call_user_func_array(array(&sql::$lang, "query"), $args);
-        profiler::add("Выполнение", "MySQL: Конец выполнения запроса");
+        profiler::add("Р’С‹РїРѕР»РЅРµРЅРёРµ", "MySQL: РљРѕРЅРµС† РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РїСЂРѕСЃР°");
         return $ret;
     }
 
@@ -95,18 +95,18 @@ class sql {
     }
 
     static function fetchAll($sql='') {
-        profiler::add("Выполнение", "MySQL(fetchAll): Начало выполения запроса");
+        profiler::add("Р’С‹РїРѕР»РЅРµРЅРёРµ", "MySQL(fetchAll): РќР°С‡Р°Р»Рѕ РІС‹РїРѕР»РµРЅРёСЏ Р·Р°РїСЂРѕСЃР°");
         $args = func_get_args();
         $ret = call_user_func_array(array(&sql::$lang, "fetchAll"), $args);
-        profiler::add("Выполнение", "MySQL(fetchAll): Конец выполения запроса");
+        profiler::add("Р’С‹РїРѕР»РЅРµРЅРёРµ", "MySQL(fetchAll): РљРѕРЅРµС† РІС‹РїРѕР»РµРЅРёСЏ Р·Р°РїСЂРѕСЃР°");
         return $ret;
     }
 
     static function fetchOne($sql='') {
-        profiler::add("Выполнение", "MySQL(fetchOne): Начало выполения запроса");
+        profiler::add("Р’С‹РїРѕР»РЅРµРЅРёРµ", "MySQL(fetchOne): РќР°С‡Р°Р»Рѕ РІС‹РїРѕР»РµРЅРёСЏ Р·Р°РїСЂРѕСЃР°");
         $args = func_get_args();
         $ret = call_user_func_array(array(&sql::$lang, "fetchOne"), $args);
-        profiler::add("Выполнение", "MySQL(fetchOne): Конец выполения запроса");
+        profiler::add("Р’С‹РїРѕР»РЅРµРЅРёРµ", "MySQL(fetchOne): РљРѕРЅРµС† РІС‹РїРѕР»РµРЅРёСЏ Р·Р°РїСЂРѕСЃР°");
         return $ret;
     }
 

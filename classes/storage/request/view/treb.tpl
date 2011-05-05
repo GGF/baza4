@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv=Content-Type content="text/html; charset=windows-1251">
 <meta name=Generator content="Microsoft Word 12 (filtered)">
-<title>Типовая межотраслевая форма № М-11</title>
+<title>РўРёРїРѕРІР°СЏ РјРµР¶РѕС‚СЂР°СЃР»РµРІР°СЏ С„РѕСЂРјР° в„– Рњ-11</title>
 <style>
 <!--
  /* Font Definitions */
@@ -18,7 +18,7 @@
 	font-size:10.0pt;
 	font-family:"Times New Roman","serif";}
 h1
-	{mso-style-link:"Заголовок 1 Знак";
+	{mso-style-link:"Р—Р°РіРѕР»РѕРІРѕРє 1 Р—РЅР°Рє";
 	margin:0cm;
 	margin-bottom:.0001pt;
 	page-break-after:avoid;
@@ -26,7 +26,7 @@ h1
 	font-size:9.0pt;
 	font-family:"Arial","sans-serif";}
 h2
-	{mso-style-link:"Заголовок 2 Знак";
+	{mso-style-link:"Р—Р°РіРѕР»РѕРІРѕРє 2 Р—РЅР°Рє";
 	margin-top:0cm;
 	margin-right:8.5pt;
 	margin-bottom:0cm;
@@ -38,36 +38,36 @@ h2
 	font-size:9.0pt;
 	font-family:"Arial","sans-serif";}
 p.MsoHeader, li.MsoHeader, div.MsoHeader
-	{mso-style-link:"Верхний колонтитул Знак";
+	{mso-style-link:"Р’РµСЂС…РЅРёР№ РєРѕР»РѕРЅС‚РёС‚СѓР» Р—РЅР°Рє";
 	margin:0cm;
 	margin-bottom:.0001pt;
 	text-autospace:none;
 	font-size:10.0pt;
 	font-family:"Times New Roman","serif";}
 p.MsoFooter, li.MsoFooter, div.MsoFooter
-	{mso-style-link:"Нижний колонтитул Знак";
+	{mso-style-link:"РќРёР¶РЅРёР№ РєРѕР»РѕРЅС‚РёС‚СѓР» Р—РЅР°Рє";
 	margin:0cm;
 	margin-bottom:.0001pt;
 	text-autospace:none;
 	font-size:10.0pt;
 	font-family:"Times New Roman","serif";}
 span.1
-	{mso-style-name:"Заголовок 1 Знак";
-	mso-style-link:"Заголовок 1";
+	{mso-style-name:"Р—Р°РіРѕР»РѕРІРѕРє 1 Р—РЅР°Рє";
+	mso-style-link:"Р—Р°РіРѕР»РѕРІРѕРє 1";
 	font-family:"Cambria","serif";
 	font-weight:bold;}
 span.2
-	{mso-style-name:"Заголовок 2 Знак";
-	mso-style-link:"Заголовок 2";
+	{mso-style-name:"Р—Р°РіРѕР»РѕРІРѕРє 2 Р—РЅР°Рє";
+	mso-style-link:"Р—Р°РіРѕР»РѕРІРѕРє 2";
 	font-family:"Cambria","serif";
 	font-weight:bold;
 	font-style:italic;}
 span.a
-	{mso-style-name:"Верхний колонтитул Знак";
-	mso-style-link:"Верхний колонтитул";}
+	{mso-style-name:"Р’РµСЂС…РЅРёР№ РєРѕР»РѕРЅС‚РёС‚СѓР» Р—РЅР°Рє";
+	mso-style-link:"Р’РµСЂС…РЅРёР№ РєРѕР»РѕРЅС‚РёС‚СѓР»";}
 span.a0
-	{mso-style-name:"Нижний колонтитул Знак";
-	mso-style-link:"Нижний колонтитул";}
+	{mso-style-name:"РќРёР¶РЅРёР№ РєРѕР»РѕРЅС‚РёС‚СѓР» Р—РЅР°Рє";
+	mso-style-link:"РќРёР¶РЅРёР№ РєРѕР»РѕРЅС‚РёС‚СѓР»";}
 .MsoChpDefault
 	{font-size:11.0pt;}
 .MsoPapDefault
@@ -89,14 +89,14 @@ div.Section1
 <div class=Section1>
 
 <p class=MsoNormal style='margin-left:333.15pt'><span style='font-size:7.0pt;
-font-family:"Arial","sans-serif"'>Типовая межотраслевая форма № М-11</span></p>
+font-family:"Arial","sans-serif"'>РўРёРїРѕРІР°СЏ РјРµР¶РѕС‚СЂР°СЃР»РµРІР°СЏ С„РѕСЂРјР° в„– Рњ-11</span></p>
 
 <p class=MsoNormal style='margin-left:333.15pt'><span style='font-size:7.0pt;
-font-family:"Arial","sans-serif"'>Утверждена постановлением Госкомстата России</span></p>
+font-family:"Arial","sans-serif"'>РЈС‚РІРµСЂР¶РґРµРЅР° РїРѕСЃС‚Р°РЅРѕРІР»РµРЅРёРµРј Р“РѕСЃРєРѕРјСЃС‚Р°С‚Р° Р РѕСЃСЃРёРё</span></p>
 
 <p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:6.0pt;
-margin-left:333.1pt'><span style='font-size:7.0pt;font-family:"Arial","sans-serif"'>от
-30.10.97 № 71а</span></p>
+margin-left:333.1pt'><span style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РѕС‚
+30.10.97 в„– 71Р°</span></p>
 
 <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
  style='margin-left:8.5pt;border-collapse:collapse'>
@@ -104,7 +104,7 @@ margin-left:333.1pt'><span style='font-size:7.0pt;font-family:"Arial","sans-seri
   <td style='border:none;padding:0cm 0cm 0cm 0cm' width=213 colspan=2><p class='MsoNormal'>&nbsp;</td>
   <td width=246 valign=bottom style='width:147.4pt;padding:0cm 1.4pt 0cm 1.4pt;
   height:12.0pt'>
-  <h1>ТРЕБОВАНИЕ-НАКЛАДНАЯ №</h1>
+  <h1>РўР Р•Р‘РћР’РђРќРР•-РќРђРљР›РђР”РќРђРЇ в„–</h1>
   </td>
   <td width=66 valign=bottom style='width:39.7pt;border:none;border-bottom:
   solid windowtext 1.0pt;padding:0cm 1.4pt 0cm 1.4pt;height:12.0pt'>
@@ -118,14 +118,14 @@ margin-left:333.1pt'><span style='font-size:7.0pt;font-family:"Arial","sans-seri
   <td width=116 style='width:69.45pt;border:solid windowtext 1.0pt;border-bottom:
   solid windowtext 1.5pt;padding:0cm 1.4pt 0cm 1.4pt;height:12.0pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:8.5pt;font-family:"Arial","sans-serif"'>Коды</span></p>
+  style='font-size:8.5pt;font-family:"Arial","sans-serif"'>РљРѕРґС‹</span></p>
   </td>
  </tr>
  <tr style='page-break-inside:avoid;height:12.0pt'>
   <td width=723 colspan=6 valign=bottom style='width:433.75pt;border:none;
   border-right:solid windowtext 1.5pt;padding:0cm 1.4pt 0cm 1.4pt;height:12.0pt'>
   <p class=MsoNormal align=right style='margin-right:2.85pt;text-align:right'><span
-  style='font-size:8.5pt;font-family:"Arial","sans-serif"'>Форма по ОКУД</span></p>
+  style='font-size:8.5pt;font-family:"Arial","sans-serif"'>Р¤РѕСЂРјР° РїРѕ РћРљРЈР”</span></p>
   </td>
   <td width=116 valign=top style='width:69.45pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.5pt;
@@ -137,17 +137,17 @@ margin-left:333.1pt'><span style='font-size:7.0pt;font-family:"Arial","sans-seri
  <tr style='height:12.0pt'>
   <td width=95 valign=bottom style='width:2.0cm;padding:0cm 1.4pt 0cm 1.4pt;
   height:12.0pt'>
-  <p class=MsoNormal><span style='font-size:8.5pt;font-family:"Arial","sans-serif"'>Организация</span></p>
+  <p class=MsoNormal><span style='font-size:8.5pt;font-family:"Arial","sans-serif"'>РћСЂРіР°РЅРёР·Р°С†РёСЏ</span></p>
   </td>
   <td width=546 colspan=4 valign=bottom style='width:327.45pt;border:none;
   border-bottom:solid windowtext 1.0pt;padding:0cm 1.4pt 0cm 1.4pt;height:12.0pt'>
   <p class=MsoNormal align=center style='text-align:center'><b><span
-  style='font-size:8.5pt;font-family:"Arial","sans-serif"'>ЗАО «Многослойные Печатные Платы»</span></b></p>
+  style='font-size:8.5pt;font-family:"Arial","sans-serif"'>Р—РђРћ В«РњРЅРѕРіРѕСЃР»РѕР№РЅС‹Рµ РџРµС‡Р°С‚РЅС‹Рµ РџР»Р°С‚С‹В»</span></b></p>
   </td>
   <td width=83 valign=bottom style='width:49.6pt;border:none;border-right:solid windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:12.0pt'>
   <p class=MsoNormal align=right style='margin-right:2.85pt;text-align:right'><span
-  style='font-size:8.5pt;font-family:"Arial","sans-serif"'>по ОКПО</span></p>
+  style='font-size:8.5pt;font-family:"Arial","sans-serif"'>РїРѕ РћРљРџРћ</span></p>
   </td>
   <td width=116 style='width:69.45pt;border-top:none;border-left:none;
   border-bottom:solid windowtext 1.5pt;border-right:solid windowtext 1.5pt;
@@ -175,43 +175,43 @@ margin-left:333.1pt'><span style='font-size:7.0pt;font-family:"Arial","sans-seri
   <td width=57 rowspan=2 valign=top style='width:34.0pt;border:double windowtext 1.5pt;
   border-bottom:solid windowtext 1.5pt;padding:0cm 1.4pt 0cm 1.4pt;height:18.0pt'>
   <p class=MsoNormal align=center style='margin-top:6.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Да­та<br>
-  сос­та­вле­ния</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Р”Р°В­С‚Р°<br>
+  СЃРѕСЃВ­С‚Р°В­РІР»РµВ­РЅРёСЏ</span></p>
   </td>
   <td width=57 rowspan=2 valign=top style='width:34.0pt;border-top:double windowtext 1.5pt;
   border-left:none;border-bottom:solid windowtext 1.5pt;border-right:none;
   padding:0cm 1.4pt 0cm 1.4pt;height:18.0pt'>
   <p class=MsoNormal align=center style='margin-top:6.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Код ви­да опе­ра­ции</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РљРѕРґ РІРёВ­РґР° РѕРїРµВ­СЂР°В­С†РёРё</span></p>
   </td>
   <td width=213 colspan=2 style='width:127.6pt;border:double windowtext 1.5pt;
   border-bottom:solid windowtext 1.0pt;padding:0cm 1.4pt 0cm 1.4pt;height:18.0pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:9.0pt;font-family:"Arial","sans-serif"'>От­пра­ви­тель</span></p>
+  style='font-size:9.0pt;font-family:"Arial","sans-serif"'>РћС‚В­РїСЂР°В­РІРёВ­С‚РµР»СЊ</span></p>
   </td>
   <td width=208 colspan=2 style='width:124.75pt;border-top:double windowtext 1.5pt;
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:18.0pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:9.0pt;font-family:"Arial","sans-serif"'>По­лу­ча­тель</span></p>
+  style='font-size:9.0pt;font-family:"Arial","sans-serif"'>РџРѕВ­Р»СѓВ­С‡Р°В­С‚РµР»СЊ</span></p>
   </td>
   <td width=146 colspan=2 style='width:87.85pt;border-top:double windowtext 1.5pt;
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:18.0pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Кор­рес­пон­ди­ру­ющий
-  счет</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РљРѕСЂВ­СЂРµСЃВ­РїРѕРЅВ­РґРёВ­СЂСѓВ­СЋС‰РёР№
+  СЃС‡РµС‚</span></p>
   </td>
   <td width=80 rowspan=2 style='width:48.2pt;border-top:double windowtext 1.5pt;
   border-left:none;border-bottom:solid windowtext 1.5pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:18.0pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Учет­ная <br>
-  еди­ни­ца <br>
-  вы­пус­ка <br>
-  про­дук­ции<br>
-  (ра­бот, <br>
-  ус­луг)</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РЈС‡РµС‚В­РЅР°СЏ <br>
+  РµРґРёВ­РЅРёВ­С†Р° <br>
+  РІС‹В­РїСѓСЃВ­РєР° <br>
+  РїСЂРѕВ­РґСѓРєВ­С†РёРё<br>
+  (СЂР°В­Р±РѕС‚, <br>
+  СѓСЃВ­Р»СѓРі)</span></p>
   </td>
  </tr>
  <tr style='page-break-inside:avoid;height:30.0pt'>
@@ -219,42 +219,42 @@ margin-left:333.1pt'><span style='font-size:7.0pt;font-family:"Arial","sans-seri
   double windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;border-right:
   solid windowtext 1.0pt;padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:6.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>струк­тур­ное <br>
-  под­раз­де­ле­ние</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>СЃС‚СЂСѓРєВ­С‚СѓСЂВ­РЅРѕРµ <br>
+  РїРѕРґВ­СЂР°Р·В­РґРµВ­Р»РµВ­РЅРёРµ</span></p>
   </td>
   <td width=99 valign=top style='width:59.55pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.5pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:6.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>вид <br>
-  де­ятель­нос­ти</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РІРёРґ <br>
+  РґРµВ­СЏС‚РµР»СЊВ­РЅРѕСЃВ­С‚Рё</span></p>
   </td>
   <td width=109 valign=top style='width:65.2pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.5pt;border-right:solid windowtext 1.0pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:6.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>струк­тур­ное <br>
-  под­раз­де­ле­ние</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>СЃС‚СЂСѓРєВ­С‚СѓСЂВ­РЅРѕРµ <br>
+  РїРѕРґВ­СЂР°Р·В­РґРµВ­Р»РµВ­РЅРёРµ</span></p>
   </td>
   <td width=99 valign=top style='width:59.55pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.5pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:6.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>вид <br>
-  де­ятель­нос­ти</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РІРёРґ <br>
+  РґРµВ­СЏС‚РµР»СЊВ­РЅРѕСЃВ­С‚Рё</span></p>
   </td>
   <td width=57 valign=top style='width:34.0pt;border-top:none;border-left:none;
   border-bottom:solid windowtext 1.5pt;border-right:solid windowtext 1.0pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:6.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>счет, суб­счет</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>СЃС‡РµС‚, СЃСѓР±В­СЃС‡РµС‚</span></p>
   </td>
   <td width=90 valign=top style='width:53.85pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.5pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:6.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>код ана­ли­ти­чес­ко­го
-  уче­та</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РєРѕРґ Р°РЅР°В­Р»РёВ­С‚РёВ­С‡РµСЃВ­РєРѕВ­РіРѕ
+  СѓС‡РµВ­С‚Р°</span></p>
   </td>
  </tr>
  <tr style='height:12.0pt'>
@@ -312,7 +312,7 @@ margin-left:333.1pt'><span style='font-size:7.0pt;font-family:"Arial","sans-seri
 </table>
 
 <p class=MsoNormal style='margin-left:7.1pt'><span style='font-size:8.5pt;
-font-family:"Arial","sans-serif"'>Через кого   </span><span lang=EN-US
+font-family:"Arial","sans-serif"'>Р§РµСЂРµР· РєРѕРіРѕВ В  </span><span lang=EN-US
 style='font-size:8.5pt;font-family:"Arial","sans-serif"'>_cherezkogo_</span></p>
 
 <div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm;
@@ -327,7 +327,7 @@ font-family:"Arial","sans-serif"'>&nbsp;</span></p>
  style='margin-left:8.5pt;border-collapse:collapse'>
  <tr>
   <td width=95 valign=bottom style='width:2.0cm;padding:0cm 1.4pt 0cm 1.4pt'>
-  <p class=MsoNormal><span style='font-size:8.5pt;font-family:"Arial","sans-serif"'>Затребовал</span></p>
+  <p class=MsoNormal><span style='font-size:8.5pt;font-family:"Arial","sans-serif"'>Р—Р°С‚СЂРµР±РѕРІР°Р»</span></p>
   </td>
   <td width=319 valign=bottom style='width:191.35pt;border:none;border-bottom:
   solid windowtext 1.0pt;padding:0cm 1.4pt 0cm 1.4pt'>
@@ -336,7 +336,7 @@ font-family:"Arial","sans-serif"'>&nbsp;</span></p>
   </td>
   <td width=83 valign=bottom style='width:49.65pt;padding:0cm 1.4pt 0cm 1.4pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:8.5pt;font-family:"Arial","sans-serif"'>Разрешил</span></p>
+  style='font-size:8.5pt;font-family:"Arial","sans-serif"'>Р Р°Р·СЂРµС€РёР»</span></p>
   </td>
   <td width=260 valign=bottom style='width:155.9pt;border:none;border-bottom:
   solid windowtext 1.0pt;padding:0cm 1.4pt 0cm 1.4pt'>
@@ -354,49 +354,49 @@ font-family:"Arial","sans-serif"'>&nbsp;</span></p>
   <td width=175 colspan=2 style='width:104.9pt;border:double windowtext 1.5pt;
   border-bottom:solid windowtext 1.0pt;padding:0cm 1.4pt 0cm 1.4pt;height:19.6pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Кор­рес­пон­ди­рую­щий
-  счет</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РљРѕСЂВ­СЂРµСЃВ­РїРѕРЅВ­РґРёВ­СЂСѓСЋВ­С‰РёР№
+  СЃС‡РµС‚</span></p>
   </td>
   <td width=184 colspan=2 style='width:110.55pt;border-top:double windowtext 1.5pt;
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:19.6pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Ма­те­ри­аль­ные цен­нос­ти</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РњР°В­С‚РµВ­СЂРёВ­Р°Р»СЊВ­РЅС‹Рµ С†РµРЅВ­РЅРѕСЃВ­С‚Рё</span></p>
   </td>
   <td width=147 colspan=2 style='width:87.9pt;border-top:double windowtext 1.5pt;
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:19.6pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Еди­ни­ца из­ме­ре­ния</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Р•РґРёВ­РЅРёВ­С†Р° РёР·В­РјРµВ­СЂРµВ­РЅРёСЏ</span></p>
   </td>
   <td width=104 colspan=2 style='width:62.4pt;border-top:double windowtext 1.5pt;
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:19.6pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Ко­ли­чес­тво</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РљРѕВ­Р»РёВ­С‡РµСЃВ­С‚РІРѕ</span></p>
   </td>
   <td width=52 rowspan=2 valign=top style='width:31.2pt;border-top:double windowtext 1.5pt;
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:19.6pt'>
   <p class=MsoNormal align=center style='margin-top:3.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Це­на, руб. <br>
-  коп.</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Р¦РµВ­РЅР°, СЂСѓР±. <br>
+  РєРѕРї.</span></p>
   </td>
   <td width=71 rowspan=2 valign=top style='width:42.45pt;border-top:double windowtext 1.5pt;
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:19.6pt'>
   <p class=MsoNormal align=center style='margin-top:3.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Сум­ма<br>
-  без уче­та НДС,<br>
-  руб. коп.</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РЎСѓРјВ­РјР°<br>
+  Р±РµР· СѓС‡РµВ­С‚Р° РќР”РЎ,<br>
+  СЂСѓР±. РєРѕРї.</span></p>
   </td>
   <td width=83 rowspan=2 valign=top style='width:49.65pt;border-top:double windowtext 1.5pt;
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:19.6pt'>
   <p class=MsoNormal align=center style='margin-top:3.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>По­ряд­ко­вый<br>
-  но­мер по склад­ской <br>
-  кар­то­те­ке</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РџРѕВ­СЂСЏРґВ­РєРѕВ­РІС‹Р№<br>
+  РЅРѕВ­РјРµСЂ РїРѕ СЃРєР»Р°РґВ­СЃРєРѕР№ <br>
+  РєР°СЂВ­С‚РѕВ­С‚РµВ­РєРµ</span></p>
   </td>
  </tr>
  <tr style='page-break-inside:avoid;height:30.0pt'>
@@ -404,55 +404,55 @@ font-family:"Arial","sans-serif"'>&nbsp;</span></p>
   double windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:
   solid windowtext 1.0pt;padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:2.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>счет, <br>
-  суб­счет</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>СЃС‡РµС‚, <br>
+  СЃСѓР±В­СЃС‡РµС‚</span></p>
   </td>
   <td width=99 valign=top style='width:59.55pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:2.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>код ана­ли­ти-<br>
-  чес­ко­го уче­та</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РєРѕРґ Р°РЅР°В­Р»РёВ­С‚Рё-<br>
+  С‡РµСЃВ­РєРѕВ­РіРѕ СѓС‡РµВ­С‚Р°</span></p>
   </td>
   <td width=109 valign=top style='width:65.2pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:2.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>на­име­но­ва­ние</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РЅР°В­РёРјРµВ­РЅРѕВ­РІР°В­РЅРёРµ</span></p>
   </td>
   <td width=76 valign=top style='width:45.35pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:2.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>но­менк-<br>
-  ла­тур­ный но­мер</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РЅРѕВ­РјРµРЅРє-<br>
+  Р»Р°В­С‚СѓСЂВ­РЅС‹Р№ РЅРѕВ­РјРµСЂ</span></p>
   </td>
   <td width=38 valign=top style='width:22.7pt;border-top:none;border-left:none;
   border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:2.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>код</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РєРѕРґ</span></p>
   </td>
   <td width=109 valign=top style='width:65.2pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:2.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>на­име­но­ва­ние</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РЅР°В­РёРјРµВ­РЅРѕВ­РІР°В­РЅРёРµ</span></p>
   </td>
   <td width=52 valign=top style='width:31.2pt;border-top:none;border-left:none;
   border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:2.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>зат­ре-<br>
-  бо­ва-<br>
-  но</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>Р·Р°С‚В­СЂРµ-<br>
+  Р±РѕВ­РІР°-<br>
+  РЅРѕ</span></p>
   </td>
   <td width=52 valign=top style='width:31.2pt;border-top:none;border-left:none;
   border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
   padding:0cm 1.4pt 0cm 1.4pt;height:30.0pt'>
   <p class=MsoNormal align=center style='margin-top:2.0pt;text-align:center'><span
-  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>от­пу-<br>
-  ще­но</span></p>
+  style='font-size:7.0pt;font-family:"Arial","sans-serif"'>РѕС‚В­РїСѓ-<br>
+  С‰РµВ­РЅРѕ</span></p>
   </td>
  </tr>
  <tr style='page-break-inside:avoid;height:16.0pt'>

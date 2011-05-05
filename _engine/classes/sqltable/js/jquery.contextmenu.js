@@ -37,7 +37,7 @@
 		shadowOpacity:.2,
 		shadowClass:'context-menu-shadow',
 		shadowColor:'black',
-                data : false,   //--- данные самой менюшки
+                data : false,   //--- РґР°РЅРЅС‹Рµ СЃР°РјРѕР№ РјРµРЅСЋС€РєРё
 
 		offsetX:0,
 		offsetY:0,

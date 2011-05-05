@@ -1,7 +1,7 @@
 /*
  *  TABLE
- *  Функции для использования класса Table
- *  Используют диалог jquery.dialog
+ *  Р¤СѓРЅРєС†РёРё РґР»СЏ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РєР»Р°СЃСЃР° Table
+ *  РСЃРїРѕР»СЊР·СѓСЋС‚ РґРёР°Р»РѕРі jquery.dialog
  */
 
 
@@ -21,7 +21,7 @@ function dialog_modal(info)
     formname=$('#dialog').find('form').attr('name');
     if (info)
     {
-        Title = 'Сообщение';
+        Title = 'РЎРѕРѕР±С‰РµРЅРёРµ';
         resizeble = false;
         onesc=true;
 		
@@ -33,17 +33,17 @@ function dialog_modal(info)
             }
         };
     } else {
-        Title='Редактирование';
+        Title='Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ';
         resizeble = true;
         onesc=false;
         Buttons={
-            Сохранить: function() {
-                // изза файловых поле тут надо все же делать посылку формы в класс form_ajax
+            РЎРѕС…СЂР°РЅРёС‚СЊ: function() {
+                // РёР·Р·Р° С„Р°Р№Р»РѕРІС‹С… РїРѕР»Рµ С‚СѓС‚ РЅР°РґРѕ РІСЃРµ Р¶Рµ РґРµР»Р°С‚СЊ РїРѕСЃС‹Р»РєСѓ С„РѕСЂРјС‹ РІ РєР»Р°СЃСЃ form_ajax
                 //$(this).dialog('close');
                 //editrecord(type,$('form[name=form_'+type+']').serialize());
                 $("form[name="+formname+"]").submit();
             },
-            Закрыть: function() {
+            Р—Р°РєСЂС‹С‚СЊ: function() {
                 $(this).dialog('close');
                 $('#dialog').remove();
             },
@@ -88,7 +88,7 @@ function dialog_modal(info)
 
 $(document).ready(function(){
 
-    // если скрипты работают удалим желтизну на ховере
+    // РµСЃР»Рё СЃРєСЂРёРїС‚С‹ СЂР°Р±РѕС‚Р°СЋС‚ СѓРґР°Р»РёРј Р¶РµР»С‚РёР·РЅСѓ РЅР° С…РѕРІРµСЂРµ
     $('body').append('<style>.chettr:hover, .nechettr:hover  {background-color: lightyellow;}</style>');
     $('.nechettr, .chettr').live('hover',function(){
         curtr=$(this).attr('id');
@@ -104,8 +104,8 @@ $(document).ready(function(){
     });
     
     table_set_keyboard();
-    /* следующий блок добавляет контекстное меню для копирования ссылок
-	   и для открытия по клику использует applet
+    /* СЃР»РµРґСѓСЋС‰РёР№ Р±Р»РѕРє РґРѕР±Р°РІР»СЏРµС‚ РєРѕРЅС‚РµРєСЃС‚РЅРѕРµ РјРµРЅСЋ РґР»СЏ РєРѕРїРёСЂРѕРІР°РЅРёСЏ СЃСЃС‹Р»РѕРє
+	   Рё РґР»СЏ РѕС‚РєСЂС‹С‚РёСЏ РїРѕ РєР»РёРєСѓ РёСЃРїРѕР»СЊР·СѓРµС‚ applet
 	*/
     $(document).contextMenu( function () {
         return CMenu_builder(this.event);
@@ -139,15 +139,15 @@ function table_set_keyboard()
     //    $(document).keyup(function(event){
     //        log(event.keyCode);
     //    });
-    // со сменой на версию 1.4.3 плохо работает jquery.keyboard попытаюсь сменить на обычный кейпрес
-    // однако используем индесы оттуда
-    // keypress имеет другие коды!!!
+    // СЃРѕ СЃРјРµРЅРѕР№ РЅР° РІРµСЂСЃРёСЋ 1.4.3 РїР»РѕС…Рѕ СЂР°Р±РѕС‚Р°РµС‚ jquery.keyboard РїРѕРїС‹С‚Р°СЋСЃСЊ СЃРјРµРЅРёС‚СЊ РЅР° РѕР±С‹С‡РЅС‹Р№ РєРµР№РїСЂРµСЃ
+    // РѕРґРЅР°РєРѕ РёСЃРїРѕР»СЊР·СѓРµРј РёРЅРґРµСЃС‹ РѕС‚С‚СѓРґР°
+    // keypress РёРјРµРµС‚ РґСЂСѓРіРёРµ РєРѕРґС‹!!!
     $(document).keydown(function(event){
         tskHandled = false;
 
         if ($.inArray(event.keyCode,$.keyb.getRange('letters')) != -1 ||
             $.inArray(event.keyCode,$.keyb.getRange('allnum')) != -1) {
-            // для ввода в строку поиска
+            // РґР»СЏ РІРІРѕРґР° РІ СЃС‚СЂРѕРєСѓ РїРѕРёСЃРєР°
             
             if ($('#dialog').length>0 && $('#dialog').is(':visible')) {
                 return true;
@@ -173,12 +173,12 @@ function table_set_keyboard()
             } else {
                 if ($('.partybutton').length>0) {
                     $('.partybutton').first().click();
-                    // отменить дальнейшую обработку
+                    // РѕС‚РјРµРЅРёС‚СЊ РґР°Р»СЊРЅРµР№С€СѓСЋ РѕР±СЂР°Р±РѕС‚РєСѓ
                     tskHandled = true;
                     event.returnValue = false;
                     event.stopPropagation();
                     eevent.preventDefault();
-                    return false; // должно заблокировать дальнейшую обработку энтер, в опере не срабатывает
+                    return false; // РґРѕР»Р¶РЅРѕ Р·Р°Р±Р»РѕРєРёСЂРѕРІР°С‚СЊ РґР°Р»СЊРЅРµР№С€СѓСЋ РѕР±СЂР°Р±РѕС‚РєСѓ СЌРЅС‚РµСЂ, РІ РѕРїРµСЂРµ РЅРµ СЃСЂР°Р±Р°С‚С‹РІР°РµС‚
                 }
             }
             return true;
@@ -224,31 +224,31 @@ function table_set_keyboard()
 function CMenu_builder(oEvent) {
     var objMenu = [];
     switch (true) {
-        /* тут даже можно вставить проверку, чтобы целевой фрагмент не был выделенным текстом, 
-         * который мы, например, можем хотеть скопировать/вставить при помощи основного меню :-)*/
+        /* С‚СѓС‚ РґР°Р¶Рµ РјРѕР¶РЅРѕ РІСЃС‚Р°РІРёС‚СЊ РїСЂРѕРІРµСЂРєСѓ, С‡С‚РѕР±С‹ С†РµР»РµРІРѕР№ С„СЂР°РіРјРµРЅС‚ РЅРµ Р±С‹Р» РІС‹РґРµР»РµРЅРЅС‹Рј С‚РµРєСЃС‚РѕРј, 
+         * РєРѕС‚РѕСЂС‹Р№ РјС‹, РЅР°РїСЂРёРјРµСЂ, РјРѕР¶РµРј С…РѕС‚РµС‚СЊ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ/РІСЃС‚Р°РІРёС‚СЊ РїСЂРё РїРѕРјРѕС‰Рё РѕСЃРЅРѕРІРЅРѕРіРѕ РјРµРЅСЋ :-)*/
         case (document.getSelection().length > 0) :
             break;
         case oEvent.target.nodeName == 'A' && oEvent.target.className.search('filelink')>-1 :
-            /* генерируем данные для одного случая в массив objMenu */
+            /* РіРµРЅРµСЂРёСЂСѓРµРј РґР°РЅРЅС‹Рµ РґР»СЏ РѕРґРЅРѕРіРѕ СЃР»СѓС‡Р°СЏ РІ РјР°СЃСЃРёРІ objMenu */
             objMenu.push({
-                'Скопировать в буффер' : function () {
+                'РЎРєРѕРїРёСЂРѕРІР°С‚СЊ РІ Р±СѓС„С„РµСЂ' : function () {
                     document.bazaapplet.copytoclipboard(Url.decode(oEvent.target.href));
                     return true;
                 }
             });
             break;
         case oEvent.target.nodeName == 'BUTTON' && oEvent.target.className.search('subElems')>-1 :
-            /* генерируем данные для другого случая objMenu */
+            /* РіРµРЅРµСЂРёСЂСѓРµРј РґР°РЅРЅС‹Рµ РґР»СЏ РґСЂСѓРіРѕРіРѕ СЃР»СѓС‡Р°СЏ objMenu */
             break;
         case oEvent.target.nodeName == 'a' && oEvent.target.parentNode.id =='footer' :
-            /* генерируем данные для другого случая objMenu из статичного набора*/
+            /* РіРµРЅРµСЂРёСЂСѓРµРј РґР°РЅРЅС‹Рµ РґР»СЏ РґСЂСѓРіРѕРіРѕ СЃР»СѓС‡Р°СЏ objMenu РёР· СЃС‚Р°С‚РёС‡РЅРѕРіРѕ РЅР°Р±РѕСЂР°*/
             objMenu.push({
-                'Действие №1' : function () {
+                'Р”РµР№СЃС‚РІРёРµ в„–1' : function () {
                     return true;
                 }
             });
             objMenu.push({
-                'Действие №2' : function () {
+                'Р”РµР№СЃС‚РІРёРµ в„–2' : function () {
                     return true;
                 }
             });
