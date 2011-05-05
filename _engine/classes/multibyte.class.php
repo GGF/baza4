@@ -8,12 +8,31 @@ class multibyte {
         else
             return false;
     }
-    static public function utf8_to_cp1251($t) {
-        return iconv("UTF-8", "CP1251", $t);
+
+    static public function utf8_to_cp1251($var) {
+        $newVar = array();
+
+        if (is_array($var)) {
+            foreach ($var as $k => $v)
+                $newVar[$k] = self::utf8_to_cp1251 ($v);
+        } else {
+            $newVar = iconv("UTF-8", "CP1251", $var);
+        }
+        return $newVar;
     }
-    static public function cp1251_to_utf8($t) {
-        return iconv("CP1251", "UTF-8", $t);
+
+    static public function cp1251_to_utf8($var) {
+        $newVar = array();
+
+        if (is_array($var)) {
+            foreach ($var as $k => $v)
+                $newVar[$k] = self::cp1251_to_utf8($v);
+        } else {
+            $newVar = iconv("CP1251", "UTF-8", $var);
+        }
+        return $newVar;
     }
+
     static public function UTF($var, $action = 'ENCODE') {
 
         $newVar = array();
@@ -32,12 +51,15 @@ class multibyte {
 
         return $newVar;
     }
+
     static public function UTF_encode($var) {
         return self::UTF($var, "ENCODE");
     }
+
     static public function UTF_decode($var) {
         return self::UTF($var, "DECODE");
     }
+
     static public function Json_encode($var, $removeEntities = true) {
 
         if ($_SERVER [cmsEncoding] != "UTF-8")
@@ -49,20 +71,21 @@ class multibyte {
 
         return $json;
     }
+
     // FROM JSON TO ARRAY
     static public function Json_decode($json) {
-	
-	if ($_SERVER [cmsEncoding] != "UTF-8")
-		$json = self::UTF_encode ( $json );
-	
-	$var = json_decode ( $json, true );
-	
-	if ($_SERVER [cmsEncoding] != "UTF-8")
-		$var = self::UTF_decode ( $var );
-	
-	return $var;
 
-}
+        if ($_SERVER [cmsEncoding] != "UTF-8")
+            $json = self::UTF_encode($json);
+
+        $var = json_decode($json, true);
+
+        if ($_SERVER [cmsEncoding] != "UTF-8")
+            $var = self::UTF_decode($var);
+
+        return $var;
+    }
+
     static public function UTF_entityEncode($text) {
 
         $res = "";
@@ -83,6 +106,7 @@ class multibyte {
 
         return $res;
     }
+
     // ----------------------------------------------------------------------------------------------------------------------------------------------------------------//
     static public function UTF_entityDecode($var, $encode = true) {
 

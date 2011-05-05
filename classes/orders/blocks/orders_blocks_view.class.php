@@ -1,4 +1,4 @@
-<?php
+ï»¿<?php
 
 /**
  * Description of orders_blocks_view
@@ -16,35 +16,35 @@ class orders_blocks_view extends sqltable_view {
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "customer",
-            "label" => "Çàêàç÷èê:",
+            "label" => "Ð—Ð°ÐºÐ°Ð·Ñ‡Ð¸Ðº:",
             "value" => $rec["customer"],
             "options" => array("readonly" => true,),
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "blockname",
-            "label" => "Íàèìåíîâàíèå áëîêà",
+            "label" => "ÐÐ°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð±Ð»Ð¾ÐºÐ°",
             "value" => $rec[blockname],
             "options" => array("readonly" => true),
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "size",
-            "label" => "Ðàçìåð áëîêà",
+            "label" => "Ð Ð°Ð·Ð¼ÐµÑ€ Ð±Ð»Ð¾ÐºÐ°",
             "value" => "{$rec[sizex]}x{$rec[sizey]}",
             "options" => array("readonly" => true),
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "thickness",
-            "label" => "Òîëùèíà áëîêà",
+            "label" => "Ð¢Ð¾Ð»Ñ‰Ð¸Ð½Ð° Ð±Ð»Ð¾ÐºÐ°",
             "value" => $rec[thickness],
             "options" => array("readonly" => true),
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "copper",
-            "label" => "Ïëîùàäè áëîêà",
+            "label" => "ÐŸÐ»Ð¾Ñ‰Ð°Ð´Ð¸ Ð±Ð»Ð¾ÐºÐ°",
             "value" => sprintf("C=%-6.2f S=%-6.2f", $rec[scomp] / 10000, $rec[ssolder] / 10000),
             "options" => array("readonly" => true),
         ));
@@ -55,14 +55,14 @@ class orders_blocks_view extends sqltable_view {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "pos{$i}",
-                "label" => "Ïëàòà {$i}",
+                "label" => "ÐŸÐ»Ð°Ñ‚Ð° {$i}",
                 "value" => $pos[board_name],
                 "options" => array("readonly" => true),
             ));
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "nib{$i}",
-                "label" => "Øò íà áëîêå",
+                "label" => "Ð¨Ñ‚ Ð½Ð° Ð±Ð»Ð¾ÐºÐµ",
                 "value" => $pos[nib],
                 "options" => array("readonly" => true),
             ));
@@ -76,7 +76,7 @@ class orders_blocks_view extends sqltable_view {
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXTAREA,
             "name" => "comment",
-            "label" => "Êîìåíòàðèé",
+            "label" => "ÐšÐ¾Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¹",
             "value" => $rec[comment],
         ));
         $rec[fields] = $fields;

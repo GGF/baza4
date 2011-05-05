@@ -5,6 +5,7 @@
  */
 
 class orders_boards_model extends sqltable_model {
+
     public function __construct() {
         parent::__construct();
         $this->maintable = 'boards';
@@ -56,6 +57,12 @@ class orders_boards_model extends sqltable_model {
         return $cols;
     }
 
+    public function delete($delete) {
+        $sql = "DELETE FROM boards WHERE id='{$delete}'";
+        sql::query($sql);
+        return sql::affected();
+    }
+
     public function getRecord($edit) {
         $rec = parent::getRecord($edit);
         $rec[customer] = $this->getCustomer($rec[customer_id]);
@@ -63,14 +70,15 @@ class orders_boards_model extends sqltable_model {
         $rec[comment] = $this->getComment($rec[comment_id]);
         return $rec;
     }
-    
+
     public function setRecord($data) {
         extract($data);
         $comment_id = $this->getCommentId($comment);
-        $sql="UPDATE boards SET comment_id='{$comment_id}' WHERE id='{$edit}'";
+        $sql = "UPDATE boards SET comment_id='{$comment_id}' WHERE id='{$edit}'";
         sql::query($sql);
         return parent::setRecord($data);
     }
+
 }
 
 ?>

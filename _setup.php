@@ -29,8 +29,7 @@ if ($_REQUEST[level]=='update') { //update лучше не выводить от
 $_SERVER["mysql"] = array(
     "lang" => array(
         "host" => "servermpp.mpp",
-        "base" => "zaommpp2",
-//        "base" => "zaompp",
+        "base" => "zaompp",
         "name" => "root",
         "pass" => "MMnnHs",
         "log" => array(

@@ -61,6 +61,14 @@ class orders_blocks_model extends sqltable_model {
         return $cols;
     }
 
+    public function delete($delete) {
+        $sql = "DELETE FROM blocks WHERE id='{$delete}'";
+        sql::query($sql);
+        $sql = "DELETE FROM blockpos WHERE block_id='{$delete}'";
+        sql::query($sql);
+        return sql::affected();
+    }
+
     public function getRecord($edit) {
         $rec = parent::getRecord($edit);
         $rec[customer] = $this->getCustomer($rec[customer_id]);
@@ -73,14 +81,15 @@ class orders_blocks_model extends sqltable_model {
         $rec[comment] = $this->getComment($rec[comment_id]);
         return $rec;
     }
-    
+
     public function setRecord($data) {
         extract($data);
         $comment_id = $this->getCommentId($comment);
-        $sql="UPDATE blocks SET comment_id='{$comment_id}' WHERE id='{$edit}'";
+        $sql = "UPDATE blocks SET comment_id='{$comment_id}' WHERE id='{$edit}'";
         sql::query($sql);
         return parent::setRecord($data);
     }
+
 }
 
 ?>

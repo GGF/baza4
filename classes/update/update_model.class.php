@@ -52,11 +52,11 @@ class update_model {
                 WHERE id='{$rs[id]}'";
             sql::query($sql);
         }
-        // а тепрерь созадидим фал копирования сверловок
+        // Р° С‚РµРїСЂРµСЂСЊ СЃРѕР·Р°РґРёРґРёРј С„Р°Р» РєРѕРїРёСЂРѕРІР°РЅРёСЏ СЃРІРµСЂР»РѕРІРѕРє
         $sql = "SELECT kdir FROM customers WHERE id='{$customer_id}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
-            if ($customer == "Импульс") {
+            if ($customer == "РРјРїСѓР»СЊСЃ") {
                 $rs[0].="\\{$drillname}";
                 $mpp = -1;
             }
@@ -69,7 +69,7 @@ class update_model {
     }
 
     public function addblock($rec) {
-        multibyte::UTF_decode($rec);
+        $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
         $sql = "SELECT orders.customer_id AS id 
                 FROM tz 
@@ -81,7 +81,7 @@ class update_model {
             exit;
         }
         $customer_id = $rs[id];
-        // добавление блока
+        // РґРѕР±Р°РІР»РµРЅРёРµ Р±Р»РѕРєР°
         $sql = "SELECT id 
                 FROM blocks 
                 WHERE customer_id='{$customer_id}' AND blockname='{$blockname}'";
@@ -101,7 +101,7 @@ class update_model {
                     WHERE id='{$block_id}'";
             sql::query($sql);
         }
-        // удалим позиции с блока потому что они будут добавляться из ТЗ
+        // СѓРґР°Р»РёРј РїРѕР·РёС†РёРё СЃ Р±Р»РѕРєР° РїРѕС‚РѕРјСѓ С‡С‚Рѕ РѕРЅРё Р±СѓРґСѓС‚ РґРѕР±Р°РІР»СЏС‚СЊСЃСЏ РёР· РўР—
         $sql = "DELETE FROM blockpos WHERE block_id='{$block_id}'";
         sql::query($sql);
 
@@ -109,9 +109,9 @@ class update_model {
     }
 
     public function addblockpos($rec) {
-        multibyte::UTF_decode($rec);
+        $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
-        // заказчик по tzid
+        // Р·Р°РєР°Р·С‡РёРє РїРѕ tzid
         $sql = "SELECT orders.customer_id AS id FROM tz JOIN (orders) ON (tz.order_id=orders.id) WHERE tz.id='{$tznumber}'";
         $rs = sql::fetchOne($sql);
         if (empty($rs)) {
@@ -119,8 +119,8 @@ class update_model {
             exit;
         }
         $customer_id = $rs[id];
-        // плату
-        // коментарий
+        // РїР»Р°С‚Сѓ
+        // РєРѕРјРµРЅС‚Р°СЂРёР№
         $sql = "SELECT id FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
         $rs = sql::fetchOne($sql);
         if (empty($comment)) {
@@ -138,7 +138,7 @@ class update_model {
         }
         $sql = "REPLACE INTO boards 
         (id,board_name,customer_id,sizex,sizey,thickness,
-        texеolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
+        texРµolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
         pallad,immer,aurum,numlam,lsizex,lsizey,mask,mark,glasscloth,
         class,complexity_factor,frez_factor,comment_id)
         VALUES ('{$rs["id"]}' , '{$board}' ,'{$customer_id}' ,'{$sizex}' ,'{$sizey}' ,
@@ -150,7 +150,7 @@ class update_model {
 
         $plate_id = sql::lastId();
 
-        // позицию к блоку
+        // РїРѕР·РёС†РёСЋ Рє Р±Р»РѕРєСѓ
         $sql = "INSERT INTO blockpos (block_id,board_id,nib,nx,ny) VALUES ('{$block_id}','{$plate_id}','{$num}','{$bnx}','{$bny}')";
         sql::query($sql);
 
@@ -158,9 +158,9 @@ class update_model {
     }
 
     public function addposintz($rec) {
-        multibyte::UTF_decode($rec);
+        $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
-        // заказчик по tzid
+        // Р·Р°РєР°Р·С‡РёРє РїРѕ tzid
         $sql = "SELECT orders.customer_id AS id FROM tz 
                 JOIN (orders) ON (tz.order_id=orders.id) WHERE tz.id='{$tznumber}'";
         $rs = sql::fetchOne($sql);
@@ -169,7 +169,7 @@ class update_model {
         }
         $customer_id = $rs[id];
 
-        // Определим идентификатор пользователя
+        // РћРїСЂРµРґРµР»РёРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         $sql = "SELECT id FROM users WHERE nik='{$user}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
@@ -180,7 +180,7 @@ class update_model {
             $user_id = sql::lastId();
         }
 
-        // определим плату
+        // РѕРїСЂРµРґРµР»РёРј РїР»Р°С‚Сѓ
         $sql = "SELECT id FROM plates WHERE customer_id='{$customer_id}' AND plate='{$board}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
@@ -190,15 +190,15 @@ class update_model {
             sql::query($sql) or die(sql::error(true));
             $plate_id = sql::lastId();
         }
-        // определим плату
+        // РѕРїСЂРµРґРµР»РёРј РїР»Р°С‚Сѓ
         $sql = "SELECT id FROM boards WHERE customer_id='{$customer_id}' AND board_name='{$board}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
             $board_id = $rs["id"];
         } else {
-            // не буду добавлять - данных нет и это делается в другом месте
+            // РЅРµ Р±СѓРґСѓ РґРѕР±Р°РІР»СЏС‚СЊ - РґР°РЅРЅС‹С… РЅРµС‚ Рё СЌС‚Рѕ РґРµР»Р°РµС‚СЃСЏ РІ РґСЂСѓРіРѕРј РјРµСЃС‚Рµ
         }
-        // коментарий
+        // РєРѕРјРµРЅС‚Р°СЂРёР№
         $sql = "SELECT * FROM coments WHERE comment='{$comment}'";
         $com = sql::fetchOne($sql);
         if (empty($com)) {
@@ -209,7 +209,7 @@ class update_model {
             $comment_id = $com[id];
         }
 
-        // добавим МП если есть такое исправим
+        // РґРѕР±Р°РІРёРј РњРџ РµСЃР»Рё РµСЃС‚СЊ С‚Р°РєРѕРµ РёСЃРїСЂР°РІРёРј
         $sql = "SELECT * FROM posintz WHERE tz_id='{$tznumber}' AND posintz='{$posintz}'";
         $rs = sql::fetchOne($sql);
         if (empty($rs)) {
@@ -241,7 +241,7 @@ class update_model {
                   WHERE id='{$rs[id]}'";
             sql::query($sql);
             $pit_id = $rs["id"];
-            // обновить запуски если некоторые позиции уже запускались
+            // РѕР±РЅРѕРІРёС‚СЊ Р·Р°РїСѓСЃРєРё РµСЃР»Рё РЅРµРєРѕС‚РѕСЂС‹Рµ РїРѕР·РёС†РёРё СѓР¶Рµ Р·Р°РїСѓСЃРєР°Р»РёСЃСЊ
             $sql = "SELECT * FROM lanch WHERE pos_in_tz_id='{$pit_id}'";
             $rs = sql::fetchOne($sql);
             if (empty($rs)) {

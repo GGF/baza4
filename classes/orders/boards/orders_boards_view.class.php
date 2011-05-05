@@ -1,4 +1,4 @@
-<?php
+ï»¿<?php
 
 /**
  * Description of orders_blocks_view
@@ -17,111 +17,111 @@ class orders_boards_view extends sqltable_view {
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "customer",
-            "label" => "Çàêàç÷èê:",
+            "label" => "Ð—Ð°ÐºÐ°Ð·Ñ‡Ð¸Ðº:",
             "value" => $rec["customer"],
             "options" => array("readonly" => true,),
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "board_name",
-            "label" => "Íàèìåíîâàíèå áëîêà",
+            "label" => "ÐÐ°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð±Ð»Ð¾ÐºÐ°",
             "value" => $rec[board_name],
             "options" => array("readonly" => true),
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "class",
-            "label" => "Êëàññ",
+            "label" => "ÐšÐ»Ð°ÑÑ",
             "value" => $rec["class"],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "layers",
-            "label" => "Ñëîåâ",
+            "label" => "Ð¡Ð»Ð¾ÐµÐ²",
             "value" => $rec[layers],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "size",
-            "label" => "Ðàçìåð",
+            "label" => "Ð Ð°Ð·Ð¼ÐµÑ€",
             "value" => "{$rec[sizex]}x{$rec[sizey]}",
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "complexity_factor",
-            "label" => "Êîýô. ñëîæíîñòè",
+            "label" => "ÐšÐ¾ÑÑ„. ÑÐ»Ð¾Ð¶Ð½Ð¾ÑÑ‚Ð¸",
             "value" => $rec[complexity_factor],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
-            "name" => "texåolite",
-            "label" => "Ìàòåðèàë",
-            "value" => $rec[texåolite],
+            "name" => "texÐµolite",
+            "label" => "ÐœÐ°Ñ‚ÐµÑ€Ð¸Ð°Ð»",
+            "value" => $rec[texÐµolite],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "thickness",
-            "label" => "Òîëùèíà",
+            "label" => "Ð¢Ð¾Ð»Ñ‰Ð¸Ð½Ð°",
             "value" => $rec[thickness],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "mask",
-            "label" => "Ìàñêà",
+            "label" => "ÐœÐ°ÑÐºÐ°",
             "value" => $rec[mask],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "mark",
-            "label" => "Ìàðêèðîâêà",
+            "label" => "ÐœÐ°Ñ€ÐºÐ¸Ñ€Ð¾Ð²ÐºÐ°",
             "value" => $rec[mark],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_CHECKBOX,
             "name" => "rmark",
-            "label" => "Ðó÷íàÿ ìàðêèðîâêà",
+            "label" => "Ð ÑƒÑ‡Ð½Ð°Ñ Ð¼Ð°Ñ€ÐºÐ¸Ñ€Ð¾Ð²ÐºÐ°",
             "value" => $rec[rmark],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_CHECKBOX,
             "name" => "frezcorner",
-            "label" => "Ôðåçåðîâêà óãëîâ",
+            "label" => "Ð¤Ñ€ÐµÐ·ÐµÑ€Ð¾Ð²ÐºÐ° ÑƒÐ³Ð»Ð¾Ð²",
             "value" => $rec[frezcorner],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "frez_factor",
-            "label" => "Êîýô. ñëîæíîñòè ôðåçåðîâêè",
+            "label" => "ÐšÐ¾ÑÑ„. ÑÐ»Ð¾Ð¶Ð½Ð¾ÑÑ‚Ð¸ Ñ„Ñ€ÐµÐ·ÐµÑ€Ð¾Ð²ÐºÐ¸",
             "value" => $rec[frez_factor],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_CHECKBOX,
             "name" => "razr",
-            "label" => "Ðàçðóáêà",
+            "label" => "Ð Ð°Ð·Ñ€ÑƒÐ±ÐºÐ°",
             "value" => $rec[razr],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_CHECKBOX,
             "name" => "pallad",
-            "label" => "Ïàëàäèðîâàíèå",
+            "label" => "ÐŸÐ°Ð»Ð°Ð´Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ",
             "value" => $rec[pallad],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_CHECKBOX,
             "name" => "immer",
-            "label" => "Èììåðñèîííîå ïîêðûòèå",
+            "label" => "Ð˜Ð¼Ð¼ÐµÑ€ÑÐ¸Ð¾Ð½Ð½Ð¾Ðµ Ð¿Ð¾ÐºÑ€Ñ‹Ñ‚Ð¸Ðµ",
             "value" => $rec[immer],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "lamel",
-            "label" => "Ëàìåëè (êîëè÷åñòâî-ðàçìåð)",
+            "label" => "Ð›Ð°Ð¼ÐµÐ»Ð¸ (ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾-Ñ€Ð°Ð·Ð¼ÐµÑ€)",
             "value" => "{$rec[numlam]}-{$rec[lsizex]}x{$rec[lsizey]}",
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXTAREA,
             "name" => "comment",
-            "label" => "Êîìåíòàðèé",
+            "label" => "ÐšÐ¾Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¹",
             "value" => $rec[comment],
             "options" => array("rows"=>3),
         ));

@@ -5,7 +5,7 @@ class update extends lego_abstract {
     function __construct($name = false) {
         parent::__construct($name);
     }
-    // обязательно определять для модуля
+    // РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РѕРїСЂРµРґРµР»СЏС‚СЊ РґР»СЏ РјРѕРґСѓР»СЏ
     public function getDir() {
         return __DIR__;
     }
