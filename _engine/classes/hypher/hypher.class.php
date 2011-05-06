@@ -14,8 +14,8 @@ class hypher {
 
     // "перегрузка" я собираюсь вызывать только с одним словарём. зачем якаждый раз учитыват буду
     static function addhypher($text) {
-        $text = iconv($_SERVER[cmsEncoding],'CP1251',$text);
-        return iconv('CP1251',$_SERVER[cmsEncoding],hypher(self::$hy_ru, $text));
+        $text = iconv($_SERVER[Encoding],'CP1251',$text);
+        return iconv('CP1251',$_SERVER[Encoding],hypher(self::$hy_ru, $text));
     }
 
 }

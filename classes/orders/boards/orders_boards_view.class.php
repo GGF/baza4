@@ -126,6 +126,7 @@ class orders_boards_view extends sqltable_view {
             "options" => array("rows"=>3),
         ));
         $rec[fields] = $fields;
+        $rec[files]=true;
         return parent::showrec($rec);
     }
 

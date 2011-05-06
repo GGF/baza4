@@ -8,6 +8,7 @@
 class update_model {
 
     public function phototemplates($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
         $sql = "SELECT id FROM users WHERE nik='{$user}'";
         $rs = sql::fetchOne($sql);
@@ -27,6 +28,7 @@ class update_model {
     }
 
     public function copper($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
         $sql = "SELECT id FROM customers WHERE customer='{$customer}'";
         $rs = sql::fetchOne($sql);

@@ -95,8 +95,6 @@ abstract class lego_abstract extends JsCSS {
     }
 
     private function beforeRun() {
-        /* if(self::isLegoRunned($this->getName()))
-          throw new Exception("Р›РµРіРѕ СЃ РёРјРµРЅРµРј '{$this->getName()}' Р·Р°РїСѓС‰РµРЅРѕ РґРІР°Р¶РґС‹"); */
         //console::getInstance()->out($this->getName());
     }
 

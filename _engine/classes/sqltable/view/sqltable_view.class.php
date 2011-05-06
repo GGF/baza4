@@ -36,7 +36,8 @@ class sqltable_view extends views {
 
         $form->addFields($fields);
         $out = $form->getOutput();
-        $out .= $this->addFileButton();
+        if($rec[files])
+            $out .= $this->addFileButton();
         return $out;
     }
 
@@ -167,9 +168,11 @@ class sqltable_view extends views {
                 $delstr = '';
                 reset($cols);
                 while (list($key, $val) = each($cols)) {
-                    $out .= "<td>" . (strstr($rs["$key"], 'href=') ? "" : $link) .
+                    $disablelink = strstr($rs["$key"], 'href=');
+                    $disablelink |= ($key == 'check' or $key == "№");
+                    $out .= "<td>" . ($disablelink ? "" : $link ) .
                             (empty($rs["$key"]) ? "&nbsp;" : $rs["$key"]) .
-                            (strstr($rs["$key"], 'href=') ? "" : $linkend);
+                            ($disablelink ? "" : $linkend);
                     $delstr .= $rs["$key"] . ' - ';
                 }
                 // вставим пустое поле 100% ширины
@@ -236,8 +239,8 @@ class sqltable_view extends views {
     }
 
     public function getJson($data) {
-        //header("CONTENT-TYPE: TEXT/X-JSON; CHARSET={$_SERVER[cmsEncoding]}");
-        header("CONTENT-TYPE: APPLICATION/JSON; CHARSET={$_SERVER[cmsEncoding]}");
+        //header("CONTENT-TYPE: TEXT/X-JSON; CHARSET={$_SERVER[Encoding]}");
+        header("CONTENT-TYPE: APPLICATION/JSON; CHARSET={$_SERVER[Encoding]}");
         echo json::Json_encode($ret, true);
     }
 

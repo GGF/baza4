@@ -368,6 +368,8 @@ class lanch_nzap_model extends sqltable_model {
         $rec[pio1] = $numpl1 == 0 ? $numbers : $numpl1; // позже возможно можно будет удалить если numpl будет из ТЗ заполнятся
         $rec[datez] = $rec[date];
         $tolsh = preg_split('/[\.±]/',$rec[tolsh]);
+        $tolsh[0]=empty ($tolsh[0])?0:$tolsh[0];
+        $tolsh[1]=empty ($tolsh[1])?0:$tolsh[1];
         $tolsh = sprintf("%-d.%-d",$tolsh[0],$tolsh[1]);
         $tolsh = trim(sprintf("%-5.3f",$rec[tolsh]),'0');
         $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . $tolsh;

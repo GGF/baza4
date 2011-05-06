@@ -4,16 +4,17 @@ $(document).ready(function(){
         var url = $(this).attr('autoupdate-link');
         var self=this;
         //alert($('select['+target+']').val()+'___');
+        //alert($(self).val());
         $('.ajaxloading').show();
         $.ajax({
             type: "GET",
             url: url,
-            data: target+'='+$('select['+target+']').val(),
+            data: 'idstr='+$(self).val(),
             success: function(recieved){
                 //log("OK loaded: "+recieved.length+" byte ");
-                //log(recieved.substring(0,40));
-                //alert($(self).html());
-                $(self).html(recieved);
+                //log(recieved);
+                //alert($('select['+target+']').html());
+                $('select['+target+']').html(recieved);
                 //alert($(self).html());
             },
             error: function(x){

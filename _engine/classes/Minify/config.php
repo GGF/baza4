@@ -4,7 +4,7 @@
  * @package Minify
  */
 
-$min_serveOptions['contentTypeCharset'] = $_SERVER[cmsEncoding];
+$min_serveOptions['contentTypeCharset'] = $_SERVER[Encoding];
 
 /**
  * In 'debug' mode, Minify can combine files with no minification and 

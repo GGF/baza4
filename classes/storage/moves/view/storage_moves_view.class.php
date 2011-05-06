@@ -33,6 +33,7 @@ class storage_moves_view extends sqltable_view {
                         "0" => "Расход",
                     ),
                     "value" => $rec["type"],
+                    "options" => array("html"=>" autohide=1 "),
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_TEXT,
@@ -73,7 +74,9 @@ class storage_moves_view extends sqltable_view {
                 //"options"	=>	array( "html" => "size=70", ),
                 )
         );
-        return parent::showrec($rec);
+        $out = parent::showrec($rec);
+        $out .= "<script>$('select[autohide=1]').trigger('myevent');</script>";
+        return $out;
     }
 
 }

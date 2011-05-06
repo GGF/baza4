@@ -43,20 +43,19 @@ $_SERVER["mysql"] = array(
     ),
 );
 
-// перехватим ошибки
-if ($_SERVER[debug][report]) {
-    console::getInstance();
-    profiler::add('Autoexec', 'Выполнение начальных установок');
-}
-
-
 // Временная зона
 date_default_timezone_set("Europe/Moscow");
 
-$_SERVER[cmsEncoding] = "UTF-8";
-$_SERVER[cmsEncodingSQL] = 'utf8';
-$_SERVER[cmsEncodingCP] = 'UTF-8';
-$_SERVER[cmsEncodingFS] = "UTF-8";   // File system
+$_SERVER[Encoding] = "UTF-8";
+$_SERVER[EncodingSQL] = 'utf8';
+$_SERVER[EncodingCP] = 'UTF-8';
+$_SERVER[EncodingFS] = "UTF-8";   // File system
+
+// перехватим ошибки
+if ($_SERVER[debug][report]) {
+    console::getInstance()->out(print_r($_REQUEST,true));
+    profiler::add('Autoexec', 'Выполнение начальных установок');
+}
 
 // настройки файлового сервера
 // на каком сервере файлы шарятся
@@ -66,7 +65,7 @@ define("SHARE_ROOT_DIR","/home/common/");
 // каталог сохранения файлов относительно DOCUMENT_ROOT
 define("UPLOAD_FILES_DIR","/files"); 
 
-header("Content-Type: text/html; charset={$_SERVER[cmsEncoding]}");
+header("Content-Type: text/html; charset={$_SERVER[Encoding]}");
 
 if ($_REQUEST[level]!='update') { // update делается без авторизации
     if (!Auth::getInstance()->run()->success){

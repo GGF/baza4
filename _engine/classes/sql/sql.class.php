@@ -26,10 +26,10 @@ class sql {
         self::$db = &self::$lang;
         self::$sh = &self::$shared;
 
-        $_SERVER[mysql][lang][encoding] = $_SERVER[cmsEncodingSQL];
+        $_SERVER[mysql][lang][encoding] = $_SERVER[EncodingSQL];
 
         self::$lang = new sql_mysql(
-                        CMSSQL_CONNECTION_LANG,
+                        SQL_CONNECTION_LANG,
                         $_SERVER[mysql][lang]
         );
 

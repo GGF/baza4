@@ -11,7 +11,6 @@ class firstlevel extends lego_abstract {
     protected $birthdays;
     protected $menu;
     protected $adminhere;
-    protected $console;
     protected $maincontent;
     protected $maintarget;
 
@@ -36,8 +35,6 @@ class firstlevel extends lego_abstract {
     }
 
     public function init() {
-        if ($_SERVER[debug][report])
-            $this->console = console::getInstance();
         CTitle::setTitle("База данных ЗАО МПП");
         $this->bashcite = new bashcite();
         $this->birthdays = new birthdays();
@@ -54,8 +51,6 @@ class firstlevel extends lego_abstract {
         Output::assign('bashcite', $this->bashcite->run()->getOutput());
         Output::assign('birthdays', $this->birthdays->run()->getOutput());
         Output::assign('linkbase', $this->actUri('home')->url()); //'http://' . $_SERVER['HTTP_HOST']); //$this->actUri('index')->url());
-        if ($_SERVER[debug][report])
-            Output::assign('console', $this->console->run()->getOutput());
     }
 
     public function action_index() {

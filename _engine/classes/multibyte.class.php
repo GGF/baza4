@@ -43,9 +43,9 @@ class multibyte {
                 $newVar[self::UTF($k, $action)] = self::UTF($v, $action);
         } else {
             if ($action == 'ENCODE') {
-                $newVar = (!self::is_utf($var)) ? iconv($_SERVER[cmsEncodingCP], "UTF-8", $var) : $var;
+                $newVar = (!self::is_utf($var)) ? iconv($_SERVER[EncodingCP], "UTF-8", $var) : $var;
             } else {
-                $newVar = (self::is_utf($var)) ? iconv("UTF-8", $_SERVER[cmsEncodingCP], $var) : $var;
+                $newVar = (self::is_utf($var)) ? iconv("UTF-8", $_SERVER[EncodingCP], $var) : $var;
             }
         }
 
@@ -62,7 +62,7 @@ class multibyte {
 
     static public function Json_encode($var, $removeEntities = true) {
 
-        if ($_SERVER [cmsEncoding] != "UTF-8")
+        if ($_SERVER [Encoding] != "UTF-8")
             $var = self::UTF_encode($var);
         $json = json_encode($var);
 
@@ -75,12 +75,12 @@ class multibyte {
     // FROM JSON TO ARRAY
     static public function Json_decode($json) {
 
-        if ($_SERVER [cmsEncoding] != "UTF-8")
+        if ($_SERVER [Encoding] != "UTF-8")
             $json = self::UTF_encode($json);
 
         $var = json_decode($json, true);
 
-        if ($_SERVER [cmsEncoding] != "UTF-8")
+        if ($_SERVER [Encoding] != "UTF-8")
             $var = self::UTF_decode($var);
 
         return $var;
@@ -122,7 +122,7 @@ class multibyte {
         }
 
         $str = implode($str);
-        return $encode ? iconv("UTF-8", $_SERVER[cmsEncodingCP], $str) : $str;
+        return $encode ? iconv("UTF-8", $_SERVER[EncodingCP], $str) : $str;
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------------------------//

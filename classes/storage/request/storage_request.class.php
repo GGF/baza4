@@ -23,6 +23,9 @@ class storage_request extends sqltable {
         return $this->view->showrec($_REQUEST);
     }
 
+    public function action_edit($id) {
+        return false;
+    }
 }
 
 ?>

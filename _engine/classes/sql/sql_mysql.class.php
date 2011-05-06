@@ -1,36 +1,32 @@
 <?php
 
-/*
- * cmsSQL класс используется далее для lang и shared (c) Osmio
- */
+define(SQL_CONNECTION_LANG, "LANG");
+define(SQL_CONNECTION_SHARED, "SHARED");
 
-define(CMSSQL_CONNECTION_LANG, "LANG");
-define(CMSSQL_CONNECTION_SHARED, "SHARED");
+define(SQL_REPORT_ARRAY, false);
+define(SQL_REPORT_HTML, true);
+define(SQL_REPORT_CLEAN, true);
 
-define(CMSSQL_REPORT_ARRAY, false);
-define(CMSSQL_REPORT_HTML, true);
-define(CMSSQL_REPORT_CLEAN, true);
+define(SQL_FETCH_ID, "fetch-id");
+define(SQL_FETCH, false);
+define(SQL_FETCHID, SQL_FETCH_ID);
 
-define(CMSSQL_FETCH_ID, "fetch-id");
-define(CMSSQL_FETCH, false);
-define(CMSSQL_FETCHID, CMSSQL_FETCH_ID);
-
-define(CMSSQL_TYPE_NORMAL, "normal");
-define(CMSSQL_TYPE_QUERY, "query");
-define(CMSSQL_TYPE_ERROR, "error");
-define(CMSSQL_TYPE_WARNING, "warning");
-define(CMSSQL_TYPE_NOTICE, "notice");
+define(SQL_TYPE_NORMAL, "normal");
+define(SQL_TYPE_QUERY, "query");
+define(SQL_TYPE_ERROR, "error");
+define(SQL_TYPE_WARNING, "warning");
+define(SQL_TYPE_NOTICE, "notice");
 
 /**
  * Раньше было block — null, log - true, nolog - false
  * Теперь block — блокирует совсем, log — по-умолчанию, 
  * force — логгит в любом случае
  */
-define(CMSSQL_LOG, false);  // default — log, but not display
-define(CMSSQL_LOG_DEFAULT, CMSSQL_LOG); // synonym — DEPRECATED
-define(CMSSQL_NOLOG, CMSSQL_LOG); // synonym — DEPRECATED
-define(CMSSQL_LOG_BLOCK, null);  // block
-define(CMSSQL_LOG_FORCE, true);  // force
+define(SQL_LOG, false);  // default — log, but not display
+define(SQL_LOG_DEFAULT, SQL_LOG); // synonym — DEPRECATED
+define(SQL_NOLOG, SQL_LOG); // synonym — DEPRECATED
+define(SQL_LOG_BLOCK, null);  // block
+define(SQL_LOG_FORCE, true);  // force
 
 class sql_mysql {
 
@@ -99,13 +95,13 @@ class sql_mysql {
 
         $logLevel = $array[log];
         $encoding = $array[encoding] ? $array[encoding] : 
-                                        $_SERVER[cmsEncodingSQL];
+                                        $_SERVER[EncodingSQL];
 
         if (!is_array($logLevel) || !count($logLevel))
-            $logLevel = array(CMSSQL_TYPE_ERROR => true);
+            $logLevel = array(SQL_TYPE_ERROR => true);
 
         // always log normal
-        $logLevel[CMSSQL_TYPE_NORMAL] = true;
+        $logLevel[SQL_TYPE_NORMAL] = true;
 
         $this->_type = $type;
 
@@ -135,10 +131,11 @@ class sql_mysql {
             if (!$array[noCollation]) {
 
                 // Установка кодировки подключения
-                $this->query("SET names '{$encoding}'");
-                $this->query("SET character_set_client='{$encoding}', 
-                character_set_results='{$encoding}', 
-                collation_connection='{$encoding}_GENERAL_CI'");
+                mysql_set_charset($encoding,  $this->_connection);
+//                $this->query("SET names '{$encoding}'");
+//                $this->query("SET character_set_client='{$encoding}', 
+//                character_set_results='{$encoding}', 
+//                collation_connection='{$encoding}_GENERAL_CI'");
             }
 
             $this->_encoding = $encoding;
@@ -181,7 +178,7 @@ class sql_mysql {
      * 	Включает/выключает принудительный немедленный вывод ошибок
      * 	@param		string	$message   Сообщение
      * 	@param		string	$type      Тип сообщения 
-     *                         (CMSSQL_TYPE_[NORMAL|QUERY|ERROR|WARNING|NOTICE])
+     *                         (SQL_TYPE_[NORMAL|QUERY|ERROR|WARNING|NOTICE])
      * 	@param		bool	$logOverride	
      *      Выводить ли сообщение при выключенном режиме 
      *      отображения сообщений этого типа
@@ -198,15 +195,15 @@ class sql_mysql {
      * 	Записывает новый элемент в массив отчета
      * 	@param  string	$message    Сообщение
      * 	@param  string	$type       Тип сообщения 
-     *                  (CMSSQL_TYPE_[NORMAL|QUERY|ERROR|WARNING|NOTICE])
+     *                  (SQL_TYPE_[NORMAL|QUERY|ERROR|WARNING|NOTICE])
      * 	@param  bool    $logOverride    Выводить ли сообщение 
      *          при выключенном режиме отображения сообщений этого типа
      */
-    function log($message, $type = CMSSQL_TYPE_NORMAL, $logOverride = false) {
+    function log($message, $type = SQL_TYPE_NORMAL, $logOverride = false) {
 
-        if ($type == CMSSQL_TYPE_WARNING)
+        if ($type == SQL_TYPE_WARNING)
             $this->_warnings++;
-        if ($type == CMSSQL_TYPE_ERROR) {
+        if ($type == SQL_TYPE_ERROR) {
 
             $this->_errors++;
             $this->_errorsArray[] = $message;
@@ -249,12 +246,12 @@ class sql_mysql {
     /**
      * 	Выводит лог
      * 	@param	bool	$html   Выводить в виде html (иначе в виде массива) 
-     *                          [CMSSQL_REPORT_ARRAY|CMSSQL_REPORT_HTML]
+     *                          [SQL_REPORT_ARRAY|SQL_REPORT_HTML]
      * 	@param	bool	$clean	
-     *                  Очищать ли лог после вывода [CMSSQL_REPORT_CLEAN]
+     *                  Очищать ли лог после вывода [SQL_REPORT_CLEAN]
      * 	@return	mixed
      */
-    function logOut($html = CMSSQL_REPORT_HTML, $clean = false) {
+    function logOut($html = SQL_REPORT_HTML, $clean = false) {
 
         $k = 0;
         $array = array();
@@ -286,13 +283,13 @@ class sql_mysql {
 
                     list($type, $msg, $override) = $l;
 
-                    if ($override == CMSSQL_LOG_FORCE)
+                    if ($override == SQL_LOG_FORCE)
                         $hasOverrides = true;
-                    if ($type == CMSSQL_TYPE_WARNING)
+                    if ($type == SQL_TYPE_WARNING)
                         $hasWarnings = true;
-                    if ($type == CMSSQL_TYPE_ERROR)
+                    if ($type == SQL_TYPE_ERROR)
                         $hasErrors = true;
-                    if ($type == CMSSQL_TYPE_NOTICE)
+                    if ($type == SQL_TYPE_NOTICE)
                         $hasNotices = true;
                 }
 
@@ -305,44 +302,44 @@ class sql_mysql {
                     list($type, $msg, $override) = $l;
                     $msg = trim($msg);
 
-                    $consoleType = ($type == CMSSQL_TYPE_WARNING 
-                                        || $type == CMSSQL_TYPE_ERROR 
-                                        || $type == CMSSQL_TYPE_NOTICE) ? 
+                    $consoleType = ($type == SQL_TYPE_WARNING 
+                                        || $type == SQL_TYPE_ERROR 
+                                        || $type == SQL_TYPE_NOTICE) ? 
                                     $type : "";
 
-                    // ошибки с CMSSQL_LOG_BLOCK до сюда даже не дойдут
+                    // ошибки с SQL_LOG_BLOCK до сюда даже не дойдут
                     if (
                     // Есть оверрайд
                             $hasOverrides ||
                             // Нормальный вывод
-                            $type == CMSSQL_TYPE_NORMAL ||
+                            $type == SQL_TYPE_NORMAL ||
                             // Является запросом и их можно логгить, 
                             // или внутри есть ошибки/предупреждения 
                             // и их можно логгить
                             (
-                            ($type == CMSSQL_TYPE_QUERY && array_key_exists(CMSSQL_TYPE_QUERY, $this->_logLevel)) || (
-                            ($hasErrors && array_key_exists(CMSSQL_TYPE_ERROR, $this->_logLevel)) ||
-                            ($hasWarnings && array_key_exists(CMSSQL_TYPE_WARNING, $this->_logLevel))
+                            ($type == SQL_TYPE_QUERY && array_key_exists(SQL_TYPE_QUERY, $this->_logLevel)) || (
+                            ($hasErrors && array_key_exists(SQL_TYPE_ERROR, $this->_logLevel)) ||
+                            ($hasWarnings && array_key_exists(SQL_TYPE_WARNING, $this->_logLevel))
                             )
                             ) ||
                             // Является ошибкой/предупреждением/напоминанием 
                             // и его можно логгить
-                            ($type == CMSSQL_TYPE_ERROR && array_key_exists(CMSSQL_TYPE_ERROR, $this->_logLevel)) ||
-                            ($type == CMSSQL_TYPE_WARNING && array_key_exists(CMSSQL_TYPE_WARNING, $this->_logLevel)) ||
-                            ($type == CMSSQL_TYPE_NOTICE && array_key_exists(CMSSQL_TYPE_NOTICE, $this->_logLevel))
+                            ($type == SQL_TYPE_ERROR && array_key_exists(SQL_TYPE_ERROR, $this->_logLevel)) ||
+                            ($type == SQL_TYPE_WARNING && array_key_exists(SQL_TYPE_WARNING, $this->_logLevel)) ||
+                            ($type == SQL_TYPE_NOTICE && array_key_exists(SQL_TYPE_NOTICE, $this->_logLevel))
                     ) {
 
-                        if ($type == CMSSQL_TYPE_QUERY)
+                        if ($type == SQL_TYPE_QUERY)
                             $msg = $this->format($msg);
 
                         $cssType = "mysql_{$type}";
 
                         if ($hasNotices)
-                            $cssType .= " mysql_" . CMSSQL_TYPE_NOTICE;
+                            $cssType .= " mysql_" . SQL_TYPE_NOTICE;
                         if ($hasWarnings)
-                            $cssType .= " mysql_" . CMSSQL_TYPE_WARNING;
+                            $cssType .= " mysql_" . SQL_TYPE_WARNING;
                         if ($hasErrors)
-                            $cssType .= " mysql_" . CMSSQL_TYPE_ERROR;
+                            $cssType .= " mysql_" . SQL_TYPE_ERROR;
 
                         $array[] = array("<pre class='mysql {$cssType}'><b>" . 
                                         UCFirst($type) . 
@@ -479,13 +476,13 @@ class sql_mysql {
      * 	@param	string  $SQL    Запрос
      * 	@param	array|bool	$array	Массив для постановки, 
      * для совместимости может принять сразу лог
-     * 	@param	bool    $log    Режим лога: CMSSQL_LOG — пишем, 
+     * 	@param	bool    $log    Режим лога: SQL_LOG — пишем, 
      * но не выводим, _FORCE — пишем и выводим всегда, 
      * _BLOCK — блокируем запись, но если будет ошибка — 
      * все равно выведется в консоль, но вместо запроса 
      * будет фраза о блокировке
      */
-    function query($SQL, $array = array(), $log = CMSSQL_LOG) {
+    function query($SQL, $array = array(), $log = SQL_LOG) {
 
         $time = $this->time();
 
@@ -508,7 +505,7 @@ class sql_mysql {
 
         $SQL = $this->prepare($SQL, $array);
 
-        $SQLlog = ($log !== CMSSQL_LOG_BLOCK) ? $SQL : 
+        $SQLlog = ($log !== SQL_LOG_BLOCK) ? $SQL : 
             "Запись запроса заблокирована через LOG_BLOCK.";
 
         // exec
@@ -517,18 +514,18 @@ class sql_mysql {
         $this->_queries++;
         $this->_lastQuery = $SQLlog;
 
-        $this->log($SQLlog, CMSSQL_TYPE_QUERY, $log);
+        $this->log($SQLlog, SQL_TYPE_QUERY, $log);
 
         if ($deprecated)
             $this->log("Функция была вызвана со старым набором" .
                     "параметров (без массива).{$stack}", 
-                            CMSSQL_TYPE_WARNING, CMSSQL_LOG_FORCE);
+                            SQL_TYPE_WARNING, SQL_LOG_FORCE);
                     // этот ворнинг полюбому идет в лог
 
         if ($this->error()) {
             $r = false;
             $this->log($this->error() . 
-                    $stack, CMSSQL_TYPE_ERROR, CMSSQL_LOG_FORCE); 
+                    $stack, SQL_TYPE_ERROR, SQL_LOG_FORCE); 
             // ошибки в лог идут вне зависимости от параметра
         }
 
@@ -553,7 +550,7 @@ class sql_mysql {
      * 	@param	bool    $log		Тип лога, см. функцию query()
      * 	@return	array
      */
-    function result($res, $array = array(), $i = 0, $log = CMSSQL_LOG) {
+    function result($res, $array = array(), $i = 0, $log = SQL_LOG) {
 
         if (!is_int($i)) {
 
@@ -572,7 +569,7 @@ class sql_mysql {
         }
 
         //if ($return == false) $this->log("result(): 
-        //Пустой ответ БД", CMSSQL_TYPE_WARNING);
+        //Пустой ответ БД", SQL_TYPE_WARNING);
 
         $time = $this->time() - $time;
         $this->_execTime += $time;
@@ -590,7 +587,7 @@ class sql_mysql {
      * 	@param	bool		$log	Тип лога, см. функцию query()
      * 	@return	array
      */
-    function resultOne($query, $array = array(), $i = 0, $log = CMSSQL_LOG) {
+    function resultOne($query, $array = array(), $i = 0, $log = SQL_LOG) {
 
         return $this->result($this->query($query, $array, $log), 
                                                 $array, $i, $log);
@@ -609,7 +606,7 @@ class sql_mysql {
      * 	@param	bool	$log		Тип лога, см. функцию query()
      * 	@return	array
      */
-    function fetch($res, $array = array(), $log = CMSSQL_LOG) {
+    function fetch($res, $array = array(), $log = SQL_LOG) {
 
         $time = $this->time();
 
@@ -622,7 +619,7 @@ class sql_mysql {
         }
 
         //if (!count($return) || !$return) 
-        //$this->log("fetch(): Пустой ответ БД", CMSSQL_TYPE_WARNING);
+        //$this->log("fetch(): Пустой ответ БД", SQL_TYPE_WARNING);
 
         $time = $this->time() - $time;
         $this->_fetchTime += $time;
@@ -639,20 +636,20 @@ class sql_mysql {
      * см. функцию query() — это DEPRECATED!)
      * 	@param	bool	$log	Тип лога, см. функцию query()
      * 	@param	bool	$id	Если передана константа 
-     * CMSSQL_FETCH_ID — вернет ассоциативный массив с полем ID из 
-     * строки ответа в качестве ключей [CMSSQL_FETCH|CMSSQL_FETCH_ID]
+     * SQL_FETCH_ID — вернет ассоциативный массив с полем ID из 
+     * строки ответа в качестве ключей [SQL_FETCH|SQL_FETCH_ID]
      * 	@return	array
      */
     function fetchAll($SQL, $array = array(), 
-                        $log = CMSSQL_LOG, $id = CMSSQL_FETCH) {
+                        $log = SQL_LOG, $id = SQL_FETCH) {
 
         // Для краткости таки можно вызывать сначала вставляя FETCHID, 
         // а потом уже LOG, т.к. в большинстве случаев лог остается дефолтным, 
         // а меняется только фетч
-        if ($log === CMSSQL_FETCH_ID) {
+        if ($log === SQL_FETCH_ID) {
 
-            $log = ($id != CMSSQL_FETCH) ? $id : CMSSQL_LOG;
-            $id = CMSSQL_FETCH_ID;
+            $log = ($id != SQL_FETCH) ? $id : SQL_LOG;
+            $id = SQL_FETCH_ID;
         }
 
         $time = $this->time();
@@ -664,7 +661,7 @@ class sql_mysql {
 
             while ($f = $this->fetch($r)) {
 
-                if (isset($f[id]) && $id == CMSSQL_FETCH_ID)
+                if (isset($f[id]) && $id == SQL_FETCH_ID)
                     $output[$f[id]] = $f; else {
                     $output[$k++] = $f;
                 }
@@ -672,7 +669,7 @@ class sql_mysql {
         }
 
         //if (count($output) == 0) 
-        //$this->log("fetchAll(): Пустой ответ БД", CMSSQL_TYPE_WARNING);
+        //$this->log("fetchAll(): Пустой ответ БД", SQL_TYPE_WARNING);
 
         $time = $this->time() - $time;
         $this->_execTime += $time;
@@ -689,7 +686,7 @@ class sql_mysql {
      * 	@param	bool	$log		Тип лога, см. функцию query()
      * 	@return	array
      **/
-    function fetchOne($query, $array = array(), $log = CMSSQL_LOG) {
+    function fetchOne($query, $array = array(), $log = SQL_LOG) {
 
         return $this->fetch($this->query($query, $array, $log), $array, $log);
     }
@@ -741,7 +738,7 @@ class sql_mysql {
      * 	@param	bool		$log		Тип лога, см. функцию query()
      * 	@return	int
      */
-    function insert($table, $data, $log = CMSSQL_LOG) {
+    function insert($table, $data, $log = SQL_LOG) {
 
         if (isset($data[0]) && is_array($data[0])) { // Множественная вставка
             $time = $this->time();
@@ -765,7 +762,7 @@ class sql_mysql {
                     $SQLn++;
                     $SQL[$SQLn] = $SQLbase;
                     $this->log("insert(): Новый подзапрос №{$c}", 
-                            CMSSQL_TYPE_WARNING);
+                            SQL_TYPE_WARNING);
                 }
                 $SQL[$SQLn] .= $SQLrow . ", ";
             }
@@ -789,7 +786,7 @@ class sql_mysql {
         }
 
         //if (!$this->error()) 
-        //$this->query("OPTIMIZE TABLE {$table}", array(), CMSSQL_LOG_BLOCK);
+        //$this->query("OPTIMIZE TABLE {$table}", array(), SQL_LOG_BLOCK);
         // Cleanup
         unset($data);
         unset($SQL);
@@ -813,7 +810,7 @@ class sql_mysql {
      * 	@return	int
      */
     function insertUpdate($table, $data, $exclude = array("id"), 
-            $log = CMSSQL_LOG) {
+            $log = SQL_LOG) {
 
         if (!is_array($data) || count($data) < 1)
             return false;
@@ -841,7 +838,7 @@ class sql_mysql {
                     mb_strlen($upd) > $this->maxPacket()) {
                 $n++;
                 $this->log("insertUpdate(): Новый подзапрос №{$n}", 
-                        CMSSQL_TYPE_WARNING);
+                        SQL_TYPE_WARNING);
             }
 
             $SQLs[$n] .= $value . ", ";
@@ -852,7 +849,7 @@ class sql_mysql {
 
         // Оптимизируем, если нет ошибок
         //if (!$this->error()) 
-        //$this->query("OPTIMIZE TABLE {$table}", array(), CMSSQL_LOG_BLOCK);
+        //$this->query("OPTIMIZE TABLE {$table}", array(), SQL_LOG_BLOCK);
         // Cleanup
         unset($data);
         unset($SQLs);
@@ -876,7 +873,7 @@ class sql_mysql {
      * 	@param	bool		$log    Тип лога, см. функцию query()
      * 	@return	int
      */
-    function update($table, $where, $array, $data = false, $log = CMSSQL_LOG) {
+    function update($table, $where, $array, $data = false, $log = SQL_LOG) {
 
         // Раньше не было массивов, поэтому сейчас для обратной 
         // совместимости массив можно не указывать
@@ -897,7 +894,7 @@ class sql_mysql {
 
         // Оптимизируем, если нет ошибок
         //if (!$this->error()) 
-        //$this->query("OPTIMIZE TABLE {$table}", array(), CMSSQL_LOG_BLOCK);
+        //$this->query("OPTIMIZE TABLE {$table}", array(), SQL_LOG_BLOCK);
 
         return $this->affected();
     }

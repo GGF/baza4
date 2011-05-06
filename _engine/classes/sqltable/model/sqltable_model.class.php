@@ -50,7 +50,6 @@ class sqltable_model {
         if (!isset($linkfile))
             $linkfile = array();
         $curfile = $curfile + $linkfile + $files; // в мерге перенумеровываются ключи!!!
-        console::getInstance()->out(print_r($curfile,true));
         $this->storeFilesInTable($curfile, $this->maintable, $edit);
         $ret[affected] = true;
         return $ret;

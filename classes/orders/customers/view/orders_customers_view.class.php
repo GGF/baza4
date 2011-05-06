@@ -32,7 +32,7 @@ class orders_customers_view extends sqltable_view {
             ),
         );
         $rec[fields] = $fields;
-
+        $rec[files] = true;
         return parent::showrec($rec);
     }
 

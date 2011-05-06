@@ -45,7 +45,7 @@ class lanch_conduct_view extends sqltable_view {
                 "label" => "Заказчик:",
                 "values" => $customers,
                 "value" => '',
-                "options" => array("html" => " customerid "),
+                "options" => array("html" => " autoupdate-link='{$rec[boardlink]}' autoupdate=boardid ",),
             ));
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_SELECT,
@@ -53,7 +53,7 @@ class lanch_conduct_view extends sqltable_view {
                 "label" => "Плата:",
                 "values" => '',
                 "value" => '',
-                "options" => array("html" => " autoupdate-link='{$rec[boardlink]}' autoupdate=customerid ",),
+                "options" => array("html" => " boardid=1 "),
             ));
         }
         array_push($fields, array(

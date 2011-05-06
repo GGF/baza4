@@ -10,7 +10,7 @@
             .val( value )
             .focus(function() {
                 //alert(111111);
-                $(select).trigger('myevent');
+                //$(select).trigger('myevent');
             }
             )
             .autocomplete({
@@ -38,6 +38,7 @@
                     self._trigger( "selected", event, {
                         item: ui.item.option
                     });
+                    $(select).trigger('myevent');
                 },
                 change: function( event, ui ) {
                     if ( !ui.item ) {

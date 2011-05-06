@@ -115,7 +115,7 @@ class ajaxform_edit {
     public function getFieldOut($field) {
         $out = '';
         if ($field->type != AJAXFORM_TYPE_HIDDEN) {
-            $out .= "<tr><td><label>$field->label</label>";
+            $out .= "<tr id='tr{$field->name}'><td><label>$field->label</label>";
             $out .= "<td><span class=nobreak>" . $this->form->add($field->name) . '</span>';
         } else {
             $out .= "<tr><td colspan=2 class='hidden'>" . $this->form->add($field->name);

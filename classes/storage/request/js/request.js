@@ -6,8 +6,8 @@ $(document).ready(function(){
         return false;
     });
     $('#selectrequestdate').live('change',function(){
-        //log($(this).serialize());
-        $().lego.load('requestform',$('table.listtable').attr('loaded'),'&ddate='+$(this).attr('value'));
+        log($(this).serialize());
+        $().lego.load('requestform',$('table.listtable').attr('loaded'),$(this).serialize());
     });
     $('#requestbutton').live('click',function(){
         $('form[name=requestform]').submit();

@@ -76,20 +76,7 @@ class console extends lego_abstract {
 
     public function action_index() {
         if ($_SERVER[debug][report]) {
-
-            profiler::add("Завершение", "Вывод кешированной страницы");
-
-            $this->out(profiler::export(), "time");
-
-            foreach (sql::$lang->logOut(CMSSQL_REPORT_ARRAY) as $line)
-                $this->out($line[0], "mysql", $line[1]);
-
-            $this->out("Сжатие <b>отключено</b>.", "", "notice");
-            $this->out("<b>Полное время выполнения: <u>" .
-                    floor(profiler::$full * 1000) .
-                    " мс</u>.</b>", "", "notice");
-            $this->out("");
-            Output::assign('scripts', $this->instanse->html);
+            Output::assign('scripts', $this->getScripts());
             return $this->fetch('console.tpl');
         } else {
             return '';
@@ -103,7 +90,7 @@ class console extends lego_abstract {
 
             $this->out(profiler::export(), "time");
 
-            foreach (sql::$lang->logOut(CMSSQL_REPORT_ARRAY) as $line)
+            foreach (sql::$lang->logOut(SQL_REPORT_ARRAY) as $line)
                 $this->out($line[0], "mysql", $line[1]);
 
             $this->out("Сжатие <b>отключено</b>.", "", "notice");
@@ -130,11 +117,12 @@ if ($_SERVER[debug][report]) {
 
     function cmsBacktrace($format = false) {
 
-        ob_start();
+        //ob_start();
+        $out = '';
 
         if ($format != CMSBACKTRACE_PLAIN) {
-            print "<div><strong>Backtrace:</strong></div>\n";
-            print "<div class='trace'>\n";
+            $out .= "<div><strong>Backtrace:</strong></div>\n";
+            $out .= "<div class='trace'>\n";
         }
 
         $trace = debug_backtrace();
@@ -158,24 +146,22 @@ if ($_SERVER[debug][report]) {
                         "in {$f["file"]} on line {$f["line"]}" : "internal";
 
                 if ($format != CMSBACKTRACE_PLAIN)
-                    print "		<div>";
-                print "{$n}. <strong>{$func}()</strong> {$file}";
+                    $out .= "		<div>";
+                $out .= "{$n}. <strong>{$func}()</strong> {$file}";
                 if ($format != CMSBACKTRACE_PLAIN)
-                    print "</div>";
-                print "\n";
+                    $out .= "</div>";
+                $out .= "\n";
             }
         }
 
         if ($format != CMSBACKTRACE_PLAIN) {
 
-            print "	</div>\n";
-            print "</div>\n";
+            $out .= "	</div>\n";
+            $out .= "</div>\n";
         }
 
-        if ($format == CMSBACKTRACE_RAW || $format == CMSBACKTRACE_PLAIN)
-            return ob_get_clean();
-        else
-            cmsWarning(ob_get_clean());
+//        if ($format == CMSBACKTRACE_RAW || $format == CMSBACKTRACE_PLAIN)
+            return $out;
     }
 
     function cmsErrorHandler($errno, $errmsg, $filename, $linenum, $vars) {

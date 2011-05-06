@@ -24,7 +24,7 @@ class storage_request_model extends storage_rest_model {
     }
 
     public function getCols() {
-        $cols[check] = "<input type=checkbox id='ucuc' onclick=\"if ($('#ucuc').attr('checked')) $('.check-me').attr({checked:true}); else $('.check-me').attr({checked:false});\">";
+        $cols[check] = "<input type=checkbox id='ucuc' onchange=\"if ($(this).is(':checked')) $('.check-me').prop('checked',true); else $('.check-me').prop('checked',false);\">";
         $cols[nazv] = "Наименование";
         $cols[rashod] = "Расход";
         $cols[ost] = "Остаток на сегодня";

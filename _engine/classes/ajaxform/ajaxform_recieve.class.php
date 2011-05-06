@@ -18,8 +18,8 @@ class ajaxform_recieve {
             $_REQUEST = array_merge($_REQUEST, $json);
             self::$ajaxform_recieve = true;
 
-            //header("CONTENT-TYPE: TEXT/X-JSON; CHARSET={$_SERVER[cmsEncoding]}");
-            header("CONTENT-TYPE: APPLICATION/JSON; CHARSET={$_SERVER[cmsEncoding]}");
+            //header("CONTENT-TYPE: TEXT/X-JSON; CHARSET={$_SERVER[Encoding]}");
+            header("CONTENT-TYPE: APPLICATION/JSON; CHARSET={$_SERVER[Encoding]}");
         }
         self::$ajaxform_recieve = true;
         ob_start("ajaxform_recieve::process");

@@ -43,7 +43,7 @@ class orders_order_view extends sqltable_view {
             "obligatory" => true,
         ));
         $rec[fields] = $fields;
-
+        $rec[files]=true;
         return parent::showrec($rec);
     }
 

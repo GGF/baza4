@@ -232,13 +232,13 @@ class sqltable extends lego_abstract {
     }
 
     public function action_getboards() {
-        $customerid = $_REQUEST[customerid];
+        $customerid = $_REQUEST[idstr];
         $data = $this->model->getBoards($customerid);
         return $this->view->getSelect($data);
     }
 
     public function action_getblocks() {
-        $customerid = $_REQUEST[customerid];
+        $customerid = $_REQUEST[idstr];
         $data = $this->model->getBlocks($customerid);
         return $this->view->getSelect($data);
     }
