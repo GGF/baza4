@@ -209,8 +209,6 @@ var LegoCache = {
         
         //сохраняем загруженный УРЛ в переменную:
         jQuery.fn.lego.lastLoadedUrl = urldecode(url);
-        location.hash = url+'&'+data; //сохраняем загруженный УРЛ в адресную строку
-        currentState = document.location.hash;
         
         //БЕРЕМ ИЗ КЭША
         var from_cache = LegoCache.get(lego_name, url);
@@ -226,6 +224,9 @@ var LegoCache = {
             url: url,
             data: data,
             success: function(received){
+                location.hash = url+'&'+data; //сохраняем загруженный УРЛ в адресную строку
+                currentState = document.location.hash;
+
                 $().lego.log("ОК, загружено: "+received.length+" байт в лего "+lego_name+"...");
                 $().lego.log(received.substr(0,20));
                 if($(received).hasClass('lego')){
@@ -416,7 +417,7 @@ function parse_str (str, array){
 }
 
 function urldecode (str){
-   return decodeURIComponent(str.replace(/\+/g, '%20'));
+    return decodeURIComponent(str.replace(/\+/g, '%20'));
 }
 
 function urlencode (str){
@@ -426,6 +427,7 @@ function urlencode (str){
 
 function checkLocalState() {
     if (document.location.hash && document.location.hash != currentState) {
+        $().lego.log('Reloadpage:'+currentState);
         currentState = document.location.hash;
         window.location =  $().lego.getNoAjaxUrl(currentState.substr(1));
     }
