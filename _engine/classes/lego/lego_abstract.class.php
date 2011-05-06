@@ -81,8 +81,8 @@ abstract class lego_abstract extends JsCSS {
         //else
         //  $this->output = $this->_404("wrong action ($method_name) [class=" . get_class($this) . "]");
         Output::assign("lego", $this->runner());
-        $this->afterRun();
-        return $this;
+        return $this->afterRun();
+            return $this;
     }
 
     public function getAction() {
@@ -103,8 +103,10 @@ abstract class lego_abstract extends JsCSS {
         if ($this->_get("ajax") == $this->getName()) {
             echo $this->output;
             echo console::getInstance()->getScripts();
-            die;
+            //die; // изза этой фигни кэш неправильно строился
+            return false;
         }
+        return $this;
     }
 
     static public function isLegoRunned($name) {

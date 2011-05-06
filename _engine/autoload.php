@@ -38,6 +38,10 @@
 define('__LEGO_DIR__', strtr(str_replace(realpath($_SERVER['DOCUMENT_ROOT']),
                     '', realpath(__DIR__)), '\\', '/'));
 
+if (!$_SERVER["debug"]["noCache"]["php"]) {
+    require_once realpath($_SERVER['DOCUMENT_ROOT']).cache::buildScript($_SESSION["cache"], 'php');
+}
+
 /**
  * Функция автоподгрузки классов. Подключает необходимый файл по имени класса
  * 
@@ -45,7 +49,6 @@ define('__LEGO_DIR__', strtr(str_replace(realpath($_SERVER['DOCUMENT_ROOT']),
  */
 function __autoload($class_name) {
 
-    if ($_SERVER[debug][noCache][php] || !file_exists($_SERVER['SYSCACHE'] . '/autoexec_' . md5(implode($_REQUEST, '')) . '.php')) {
         $class_folder = 'classes';
         // Локальные классы (в каждой папке проекта может быть папка $class_folder. 
         // Она и называется локальными классам)
@@ -66,12 +69,14 @@ function __autoload($class_name) {
         $slashed_class_name = str_replace("_", "/", $class_name); // A/B/C
         $short_path = substr($slashed_class_name, 0, strrpos($slashed_class_name, '/')); // A/B
 
+        
         foreach ($class_paths as $class_path) {
             // если класс A_B_C находится в файле /A/B/C.class.php
             $file_full_name = "{$class_path}/{$slashed_class_name}.class.php";
             if (file_exists($file_full_name)) {
                 require_once($file_full_name);
-                $_SESSION[cache][] = $file_full_name;
+                if ($class_name!='cache')
+                    $_SESSION["cache"][$class_name] = $file_full_name;
                 return;
             }
 
@@ -80,7 +85,8 @@ function __autoload($class_name) {
                     "{$class_path}/{$slashed_class_name}/{$class_name}.class.php";
             if (file_exists($file_full_name)) {
                 require_once($file_full_name);
-                $_SESSION[cache][] = $file_full_name;
+                if ($class_name!='cache')
+                    $_SESSION["cache"][$class_name] = $file_full_name;
                 return;
             }
 
@@ -88,7 +94,8 @@ function __autoload($class_name) {
             $file_full_name = "{$class_path}/{$short_path}/{$class_name}.class.php";
             if (file_exists($file_full_name)) {
                 require_once($file_full_name);
-                $_SESSION[cache][] = $file_full_name;
+                if ($class_name!='cache')
+                    $_SESSION["cache"][$class_name] = $file_full_name;
                 return;
             }
 
@@ -97,15 +104,10 @@ function __autoload($class_name) {
                     "{$class_path}/{$short_path}/{$class_name}/{$class_name}.class.php";
             if (file_exists($file_full_name)) {
                 require_once($file_full_name);
-                $_SESSION[cache][] = $file_full_name;
+                if ($class_name!='cache')
+                    $_SESSION["cache"][$class_name] = $file_full_name;
                 return;
             }
         }
-    } else {
-        /* 
-         * В случае если отладка отключена поключить кэшированый автоинслуд 
-         */
-        require_once $_SERVER['SYSCACHE'] . '/autoexec_' . md5(implode($_REQUEST, '')) . '.php';
-    }
 }
 

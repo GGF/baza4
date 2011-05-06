@@ -1,8 +1,5 @@
 <?php
 
-include __DIR__ . '/_engine/autoload.php'; // инклудим автозагрузку модулей
-//также тут всякие настройки базы данных, и вообще любые настройки проекта
-
 Error_Reporting(E_ALL & ~E_NOTICE);
 
 // КОНФИГУРАЦИЯ DEBUG РЕЖИМА
@@ -19,7 +16,7 @@ $_SERVER["debug"] = array(
 );
 $_SERVER['SYSCACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 $_SERVER[CACHE] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
-//$_SERVER["debug"] = false;
+$_SERVER["debug"] = false;
 if ($_REQUEST[level]=='update') { //update лучше не выводить отладочный текст. как нить так отлажу
     $_SERVER["debug"]["noCache"]["php"] = true;
     $_SERVER["debug"]["report"] = false;
@@ -50,6 +47,10 @@ $_SERVER[Encoding] = "UTF-8";
 $_SERVER[EncodingSQL] = 'utf8';
 $_SERVER[EncodingCP] = 'UTF-8';
 $_SERVER[EncodingFS] = "UTF-8";   // File system
+
+ob_start();
+include __DIR__ . '/_engine/autoload.php'; // инклудим автозагрузку модулей
+$tmp = ob_get_clean();
 
 // перехватим ошибки
 if ($_SERVER[debug][report]) {
