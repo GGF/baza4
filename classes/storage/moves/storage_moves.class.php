@@ -8,12 +8,12 @@ class storage_moves extends sqltable {
     }
 
     public function action_index($all = '', $order = '', $find = '', $idstr = '') {
-        $tovar = $this->model->getTovar($_SESSION[spr_id]);
-        $ost = $this->model->getOst($_SESSION[spr_id]);
+        $tovar = $this->model->getTovar($idstr);
+        $ost = $this->model->getOst($idstr);
         $ost=$ost[ost];
         $edizm = $tovar[edizm];
         $nazv = $tovar[nazv];
-        $this->title = empty($_SESSION[spr_id]) ? "" : "Движения - {$nazv} - остаток - {$ost} {$edizm}";
+        $this->title = empty($idstr) ? "" : "Движения - {$nazv} - остаток - {$ost} {$edizm}";
         return parent::action_index($all, $order, $find, $idstr);
     }
 

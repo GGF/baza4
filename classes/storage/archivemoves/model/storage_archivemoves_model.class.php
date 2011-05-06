@@ -4,7 +4,7 @@ class storage_archivemoves_model extends storage_rest_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $spr_id = $_SESSION[arc_spr_id];
+        $spr_id = $idstr;
         $sql = "SELECT *,sk_arc_{$this->sklad}_dvizh.id
                 FROM {$this->db}sk_arc_{$this->sklad}_dvizh
                 JOIN ({$this->db}sk_{$this->sklad}_postav,{$this->db}coments)

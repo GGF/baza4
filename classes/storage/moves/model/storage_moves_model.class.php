@@ -4,7 +4,7 @@ class storage_moves_model extends storage_rest_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $spr_id = $_SESSION[spr_id];
+        $spr_id = $idstr;
         if (empty($spr_id))
             return array();
         if ($all) {
@@ -85,7 +85,7 @@ class storage_moves_model extends storage_rest_model {
              WHERE sk_{$this->sklad}_dvizh.id='{$edit}'";
         $rec = sqltable_model::getRecord($sql);
         $rec[supply] = $supply;
-        $rec[spr_id] = $_SESSION[spr_id];
+        $rec[spr_id] = $idstr;
         return $rec;
     }
 
