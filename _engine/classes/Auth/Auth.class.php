@@ -14,7 +14,7 @@ class Auth extends lego_abstract {
     public function __construct($name=false, $directCall = true) {
         if ($directCall) {
             trigger_error("Нельзя использовать конструктор для" .
-                    "создания класса console." .
+                    "создания класса Auth." .
                     "Используйте статический метод getInstance()", E_USER_ERROR);
         }
         parent::__construct($name);
@@ -76,6 +76,7 @@ class Auth extends lego_abstract {
                     $this->user["u_id"] = $rs["id"];
                     $this->user["id"] = $rs["id"];
                     $sql = "UPDATE session SET ts=NOW() WHERE session='{$sessionid}'";
+                    sql::query($sql);
                     $sql = "SELECT rights.right,type,rtype FROM rights " .
                             "JOIN (rtypes,rrtypes) " .
                             "ON (rtypes.id=type_id " .
