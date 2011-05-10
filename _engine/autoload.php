@@ -39,7 +39,8 @@ define('__LEGO_DIR__', strtr(str_replace(realpath($_SERVER['DOCUMENT_ROOT']),
                     '', realpath(__DIR__)), '\\', '/'));
 
 if (!$_SERVER["debug"]["noCache"]["php"]) {
-    require_once realpath($_SERVER['DOCUMENT_ROOT']).cache::buildScript($_SESSION["cache"], 'php');
+    if(!empty($_SESSION["cache"]) && is_array($_SESSION["cache"]))
+        require_once realpath($_SERVER['DOCUMENT_ROOT']).cache::buildScript($_SESSION["cache"], 'php');
 }
 
 /**

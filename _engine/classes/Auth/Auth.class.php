@@ -57,7 +57,6 @@ class Auth extends lego_abstract {
         return $this->user;
     }
 
-
     public function action_index() {
         $mes = '';
         $sessionid = session_id();
@@ -139,6 +138,7 @@ class Auth extends lego_abstract {
             sql::query($sql);
         }
         //return print_r($_REQUEST,true);
+        $_SESSION["cache"]=array();
         $this->gohome();
     }
 
