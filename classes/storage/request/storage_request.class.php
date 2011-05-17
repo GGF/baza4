@@ -15,6 +15,7 @@ class storage_request extends sqltable {
         $out = '<form class="lego" name=requestform action="'.$this->actUri('print')->ajaxurl($this->getName()).'">';
         $out.=parent::action_index($all, $order, $find, $idstr);
         $out.='</form>';
+        //$out .= $this->getHeaderBlock();
         return $out;
     }
 

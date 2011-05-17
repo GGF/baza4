@@ -49,9 +49,8 @@ class ajaxform_recieve {
 
         // в контенте есть скрипты для вывода в консоль
         // получается неправильный json
-        
-        $content = trim(html_entity_decode($content));
-        return json::Json_encode(array(
+        //$content = trim(html_entity_decode($content));
+        return multibyte::Json_encode(array(
             "js" => self::$result,
             "text" => "{$content}",
                 ), self::$entityDecode);

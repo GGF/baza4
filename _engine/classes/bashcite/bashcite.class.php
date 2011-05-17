@@ -21,17 +21,6 @@ class bashcite extends lego_abstract {
                 } else {
                     $ret = $this->fetch("bashcitehide.tpl");
                 }
-//		$cookie = $this->_cookie("bashcite");
-//		if (!$cookie) {
-//			$this->_cookieSet('bashcite','hide');
-//			$cookie = 'hide';
-//		}
-//		if ($show===true ) {
-//			Output::assign('bashcite',$this->_getcite());
-//			$ret = $this->fetch("bashcite.tpl");
-//		} else {
-//			$ret = $this->fetch("bashcitehide.tpl");
-//		}
                 if (Ajax::isAjaxRequest())
                     return $ret;
                 else

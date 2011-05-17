@@ -21,8 +21,8 @@ class storages extends firstlevel {
         $this->menu->add('zap', 'Запчасти инструменты',false);
         $this->menu->add('test', 'Отладка',false);
         $this->menu->add('back', 'назад',false);
-        $this->menu->run();
-        return $this->menu->getOutput();        
+        if ($this->menu->run())
+            return $this->menu->getOutput();        
     }
     public function  __call($name, $arguments) {
         $_SESSION[storagetype] = str_replace('action_', '', $name);

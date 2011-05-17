@@ -1,6 +1,6 @@
 <?php
 
-class storage_archivemoves_model extends storage_rest_model {
+class storage_archivemoves_model extends storage_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();

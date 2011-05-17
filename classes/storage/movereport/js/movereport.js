@@ -1,11 +1,11 @@
 $(document).ready(function(){
     $('form[name=monthform]').live('submit',function(){
-        log($(this).serialize());
+        //log($(this).serialize());
         $().lego.load($('table.listtable').attr('name'), $(this).attr('action'),$(this).serialize());
         return false;
     });
     $('form[name=peroidreport]').live('submit',function(){
-        log($(this).serialize());
+        //log($(this).serialize());
         $().lego.load($('table.listtable').attr('name'), $(this).attr('action'),$(this).serialize());
         return false;
     });

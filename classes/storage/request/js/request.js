@@ -7,11 +7,12 @@ $(document).ready(function(){
     $('#selectrequestdate').live('change',function(){
         //log('ddate='+$(this).val());
         var date = $(this).val();
-        setTimeout(function(){
-            $().lego.load('requestform',$('table.listtable').attr('loaded'),'ddate='+date);//$('form[name=requestform]').serialize());
-        }, 500);
-        
-        return false;
+        $().lego.load('requestform',$('table.listtable').attr('loaded')+'&ddate='+date);
+//        setTimeout(function(){
+//            $().lego.load('requestform',$('table.listtable').attr('loaded')+'$ddate='+date);//$('form[name=requestform]').serialize());
+//        }, 500);
+//        
+//        return false;
     });
     $('#requestbutton').live('click',function(){
         $('form[name=requestform]').submit();

@@ -16,7 +16,10 @@ class storage_archivemoves extends sqltable {
         $this->title = empty($idstr) ? "" : "Движения - {$nazv} - остаток - {$ost} {$edizm}";
         return parent::action_index($all, $order, $find, $idstr);
     }
-
+    
+    public function action_open($id) {
+        return false;
+    }
 }
 
 ?>

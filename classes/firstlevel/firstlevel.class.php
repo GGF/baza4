@@ -42,15 +42,15 @@ class firstlevel extends lego_abstract {
         $this->menu = new menu($this);
         $this->maintarget = "#maindiv";
         $this->maincontent = $this;
-        //$this->maincontent = new 
     }
 
     public function setOutputAssigns() {
+        Output::assign('header',$this->getAllHeaderblock());
         Output::assign('title', CTitle::get());
         Output::assign('adminhere', $this->adminhere->run()->getOutput());
         Output::assign('bashcite', $this->bashcite->run()->getOutput());
         Output::assign('birthdays', $this->birthdays->run()->getOutput());
-        Output::assign('linkbase', $this->actUri('home')->url()); //'http://' . $_SERVER['HTTP_HOST']); //$this->actUri('index')->url());
+        Output::assign('linkbase', $this->actUri('home')->url()); 
     }
 
     public function action_index() {

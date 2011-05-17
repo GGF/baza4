@@ -12,11 +12,11 @@ class Menu extends lego_abstract {
     $this->parent = $parent;
     }
 
-    public function add($type, $text, $checkright=true, $link='') {
+    public function add($type, $text, $checkright=true, $noajax=false) {
         array_push($this->items, array(
             "type" => $type,
             "text" => $text,
-            "link" => $link,
+            "noajax" => $noajax,
             "picture" => '',
             "right" => $checkright,
                 )
@@ -37,7 +37,7 @@ class Menu extends lego_abstract {
         $menuitems = "";
                 $fkey = 0;
         foreach ($this->items as $item) {
-            $text = $type = $link = $picture = $right = '';
+            $text = $type = $noajax = $picture = $right = '';
             extract($item);
             //echo $type."_".$right;
             if ($this->parent) {
@@ -56,8 +56,7 @@ class Menu extends lego_abstract {
                 $menuitems .= "<li class='menu-item_outerWrap'>" .
                 "<a " . ($fkey++<11?"hotkey='Ctrl + f{$fkey }' ":" ") .
                 "title='{$text}' " .
-                "data-silent='{$this->parent->getMainTarget()}' legotarget='{$this->parent->getName()}'" .
-//                "href='" . $this->parent->actUri("{$type}")->url() . "'" .
+                ($item[noajax]?'':"data-silent='{$this->parent->getMainTarget()}' legotarget='{$this->parent->getName()}'") .
                 "href='" . $uri->set($this->parent->getName(),$type)->url() . "'" .
                 "class='menu-item' id='{$type}'>" .
                 "<div id='{$type}' class='menu-item" .

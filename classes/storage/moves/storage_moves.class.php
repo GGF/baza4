@@ -16,7 +16,7 @@ class storage_moves extends sqltable {
         $this->title = empty($idstr) ? "" : "Движения - {$nazv} - остаток - {$ost} {$edizm}";
         return parent::action_index($all, $order, $find, $idstr);
     }
-
+    
 }
 
 ?>

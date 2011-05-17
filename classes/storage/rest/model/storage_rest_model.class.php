@@ -1,17 +1,9 @@
 <?php
 
-class storage_rest_model extends sqltable_model {
-
-    public $db;
-    public $sklad;
-
-    public function __construct() {
-        parent::__construct();
-        $this->db = '`zaomppsklads`.';
-    }
+class storage_rest_model extends storage_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        $ret = array();
+        $ret = parent::getData($all,$order,$find,$idstr);
         $sql = "SELECT *,if((krost>ost),'<span style=\"color:red\"><b>мало</b></span>','') AS malo,
                     sk_{$this->sklad}_spr.id
               FROM {$this->db}sk_{$this->sklad}_spr

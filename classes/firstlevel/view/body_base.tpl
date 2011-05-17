@@ -5,7 +5,7 @@
     <meta name="Author" content="Игорь Федоров">
 	<meta name="Description" content="ЗАО МПП">
     <title>{$title}</title>
-    {$lego->getAllHeaderblock()}
+    {$header}
   </head>
   <body>
   {$adminhere}

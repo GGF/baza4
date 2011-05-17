@@ -11,8 +11,10 @@ class baza extends firstlevel {
         $this->menu->add('docs', 'Документы',false);
         $this->menu->add('help', 'Помощь',false);
         $this->menu->add('back', 'Выход',false);
-        $this->menu->run();
-        return $this->menu->getOutput();
+        if ($this->menu->run())
+            return $this->menu->getOutput();
+        else 
+            return '';
     }
     
     public function action_wiki() {

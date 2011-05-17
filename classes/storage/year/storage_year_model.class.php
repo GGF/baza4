@@ -5,7 +5,7 @@
  *
  * @author igor
  */
-class storage_year_model extends storage_rest_model {
+class storage_year_model extends storage_model {
 
     public function arc() {
         // годовая архивация

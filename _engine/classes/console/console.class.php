@@ -64,6 +64,9 @@ class console extends lego_abstract {
 
         if (!$msg)
             $msg = "&nbsp;";
+        
+        if (is_array($msg))
+            $msg = print_r($msg,true);
 
         $this->instanse->html .= "<script> cmsConsole{$type}('" .
                 sql::check($msg) .

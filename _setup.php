@@ -14,15 +14,15 @@ $_SERVER["debug"] = array(
     "showNotices" => true,
     "checkReverse" => false,
 );
-//$_SERVER["debug"] = false;
+$_SERVER["debug"] = false;
 
 if ($_REQUEST[level] == 'update') { //update лучше не выводить отладочный текст. как нить так отлажу
     $_SERVER["debug"]["noCache"]["php"] = true;
     $_SERVER["debug"]["report"] = false;
 }
 
-$_SERVER['SYSCACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp/';
-$_SERVER[CACHE] = $_SERVER['DOCUMENT_ROOT'] . '/tmp/';
+$_SERVER['SYSCACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
+$_SERVER[CACHE] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 
 // База данных
 $_SERVER["mysql"] = array(
@@ -65,7 +65,7 @@ $tmp = ob_get_clean();
 
 // перехватим ошибки
 if ($_SERVER[debug][report]) {
-    console::getInstance()->out(print_r($_REQUEST, true));
+    console::getInstance();//->out(print_r($_REQUEST, true));
     profiler::add('Autoexec', 'Выполнение начальных установок');
 }
 

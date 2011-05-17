@@ -13,13 +13,14 @@ include "_setup.php";
 $classname = $_REQUEST["level"];
 $m = new $classname();
 if ($m->run())
-    echo $m->getOutput();
+    if (!Ajax::isAjaxRequest())
+        echo $m->getOutput();
 
 if ($_SERVER[debug][report]) {
-    echo console::getInstance()->run()->getOutput();
+    if (Ajax::isAjaxRequest()) {
+        echo console::getInstance()->getScripts(); 
+    } else
+        echo console::getInstance()->run()->getOutput();
 }
-// сохранить кэш автовставки
-if (!$_SERVER["debug"]["noCache"]["php"]) {
-    cache::buildScript($_SESSION[cache],'php');
-}
+
 ?>

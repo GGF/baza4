@@ -166,7 +166,7 @@ class multibyte {
         $str = preg_replace('/%u([a-z0-9]{4})/si', '\u$1', $str);
         $str = preg_replace('/%([a-z0-9]{2})/si', '\u00$1', $str);
 
-        return cmsUTF_entityDecode($str, false);
+        return self::UTF_entityDecode($str, false);
     }
 
     static public function mb_chr($c) {

@@ -21,7 +21,8 @@ class sql {
 
     static function init() {
 
-        profiler::add("Autoexec", "MySQL: Выполнение скриптов до подключения");
+        if ($_SERVER[debug][report])
+            profiler::add("Autoexec", "MySQL: Выполнение скриптов до подключения");
 
         self::$db = &self::$lang;
         self::$sh = &self::$shared;
@@ -33,7 +34,8 @@ class sql {
                         $_SERVER[mysql][lang]
         );
 
-        profiler::add("Autoexec", "MySQL: Подключение языковой БД");
+        if ($_SERVER[debug][report])
+            profiler::add("Autoexec", "MySQL: Подключение языковой БД");
 
         // REVERSE
 
@@ -82,10 +84,12 @@ class sql {
     }
 
     static function query($sql='') {
-        profiler::add("Выполнение", "MySQL: Начало выполения запроса");
+        if ($_SERVER[debug][report])
+            profiler::add("Выполнение", "MySQL: Начало выполения запроса");
         $args = func_get_args();
         $ret = call_user_func_array(array(&sql::$lang, "query"), $args);
-        profiler::add("Выполнение", "MySQL: Конец выполнения запроса");
+        if ($_SERVER[debug][report])
+            profiler::add("Выполнение", "MySQL: Конец выполнения запроса");
         return $ret;
     }
 
@@ -95,18 +99,14 @@ class sql {
     }
 
     static function fetchAll($sql='') {
-        profiler::add("Выполнение", "MySQL(fetchAll): Начало выполения запроса");
         $args = func_get_args();
         $ret = call_user_func_array(array(&sql::$lang, "fetchAll"), $args);
-        profiler::add("Выполнение", "MySQL(fetchAll): Конец выполения запроса");
         return $ret;
     }
 
     static function fetchOne($sql='') {
-        profiler::add("Выполнение", "MySQL(fetchOne): Начало выполения запроса");
         $args = func_get_args();
         $ret = call_user_func_array(array(&sql::$lang, "fetchOne"), $args);
-        profiler::add("Выполнение", "MySQL(fetchOne): Конец выполения запроса");
         return $ret;
     }
 

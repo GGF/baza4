@@ -92,7 +92,6 @@ class sqltable extends lego_abstract {
         $this->addbutton = Auth::getInstance()->getRights($this->type, 'edit');
 
         try {
-            profiler::add('Выполнение', $this->getName() . get_class($this) . ': Попытка создать модель');
             $classname = "{$this->getName()}_model";
             if (!class_exists($classname)) {
                 $classname = get_class($this) . "_model";
@@ -101,12 +100,10 @@ class sqltable extends lego_abstract {
                 throw new Exception("Нет класса {$classname}");
             $this->model = new $classname();
             $this->model->init();
-            profiler::add('Выполнение', $this->getName() . ': Попытка создать модель удалась');
         } catch (Exception $e) {
             console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
         }
         try {
-            profiler::add('Выполнение', $this->getName() . ': Попытка создать вид');
             $classname = "{$this->getName()}_view";
             if (!class_exists($classname)) {
                 $classname = get_class($this) . "_view";
@@ -117,14 +114,11 @@ class sqltable extends lego_abstract {
             if (!class_exists($classname))
                 throw new Exception("Нет класса {$classname}");
             $this->view = new $classname($this);
-            profiler::add('Выполнение', $this->getName() . ': Попытка создать вид удалась');
         } catch (Exception $e) {
             console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
         }
         try {
-            profiler::add('Выполнение', $this->getName() . ': Попытка создать форму');
             $this->form = new ajaxform(''); // для подключения скриптов
-            profiler::add('Выполнение', $this->getName() . ': Попытка создать форму удалась');
         } catch (Exception $e) {
             console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
         }

@@ -82,7 +82,6 @@ abstract class lego_abstract extends JsCSS {
         //  $this->output = $this->_404("wrong action ($method_name) [class=" . get_class($this) . "]");
         Output::assign("lego", $this->runner());
         return $this->afterRun();
-            return $this;
     }
 
     public function getAction() {
@@ -102,9 +101,8 @@ abstract class lego_abstract extends JsCSS {
         array_pop(self::$runned_legos);
         if ($this->_get("ajax") == $this->getName()) {
             echo $this->output;
-            echo console::getInstance()->getScripts();
-            //die; // изза этой фигни кэш неправильно строился
-            return false;
+            //echo console::getInstance()->getScripts();
+            //die;
         }
         return $this;
     }
@@ -303,12 +301,14 @@ abstract class lego_abstract extends JsCSS {
     }
 
     public function fetch($template) {
-        profiler::add("Выполнение", $this->name . ": начало отрисовки");
+        if ($_SERVER[debug][report])
+            profiler::add("Выполнение", $this->name . ": начало отрисовки");
         $templatedir = Output::getTemplateCompiler()->getTemplateDir();
         Output::getTemplateCompiler()->setTemplateDir($this->getViewDir());
         $content = Output::fetch($template);
         Output::getTemplateCompiler()->setTemplateDir($templatedir);
-        profiler::add("Выполнение", $this->name . ": конец отрисовки");
+        if ($_SERVER[debug][report])
+            profiler::add("Выполнение", $this->name . ": конец отрисовки");
         return $content;
     }
 

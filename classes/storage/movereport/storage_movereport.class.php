@@ -36,13 +36,13 @@ class storage_movereport extends sqltable {
 
             $this->title.="<form method=get name=peroidreport id=form_peroidreport action='" . $this->actUri('index')->url() . "'>";
             $this->title.="Отчет за период: с ";
-            $this->title.="<input size=10 id='datepicker1'  name='sdate' value='{$sdate}' type=text >";
+            $this->title.="<input size=10 datepicker=1  name='sdate' value='{$sdate}' type=text >";
             $this->title.=" по ";
-            $this->title.="<input size=10 id='datepicker2'  name='edate' value='{$edate}' type=text >";
+            $this->title.="<input size=10 datepicker=1 name='edate' value='{$edate}' type=text >";
             $this->title.="<input type=button id=rangebutton value='Отчет'>";
             $this->title.="</form>";
-            $this->title.="<script>$('#datepicker1').datepicker();$('#datepicker2').datepicker();</script>";
         }
+        //$this->title.= $this->getHeaderBlock();
         return parent::action_index($all, $order, $find, $idstr);
     }
 

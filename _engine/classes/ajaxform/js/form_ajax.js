@@ -234,7 +234,7 @@ var ajaxform = {
                 }
 					
                 // Вызов кастомных callback'ов перед основной обработкой
-                if (self.callbacks.before[formName]) for (var i = 0; i < self.callbacks.before[formName].length; i++) {
+                if (self.callbacks.before[formName]) for (i = 0; i < self.callbacks.before[formName].length; i++) {
 						
                     res = self.callbacks.before[formName][i](res, formID);
                     if (res == null || res == false) break;
@@ -249,7 +249,7 @@ var ajaxform = {
 							
                         //alert(JSON.stringify(res.errors));
 							
-                        for (var i = 0; i < res.errors.length; i++) {
+                        for (i = 0; i < res.errors.length; i++) {
 								
                             if (res.errors[i].type != "critical") {
 								
@@ -278,7 +278,7 @@ var ajaxform = {
 						
 						
                     // Вызов кастомных callback'ов после основной обработки — перемещено сюда, теперь можно что угодно творить с алертами и html, а не только с redirect
-                    if (self.callbacks.after[formName]) for (var i = 0; i < self.callbacks.after[formName].length; i++) {
+                    if (self.callbacks.after[formName]) for (i = 0; i < self.callbacks.after[formName].length; i++) {
 							
                         res = self.callbacks.after[formName][i](res, formID);
                         if (res == null || res == false) break;
@@ -297,7 +297,7 @@ var ajaxform = {
 						
 												
                     // Вызов кастомных callback'ов после вообще всего
-                    if (self.callbacks.finish[formName]) for (var i = 0; i < self.callbacks.finish[formName].length; i++) {
+                    if (self.callbacks.finish[formName]) for (i = 0; i < self.callbacks.finish[formName].length; i++) {
 							
                         res = self.callbacks.finish[formName][i](res, formID);
                         if (res == null || res == false) break;
@@ -435,11 +435,13 @@ var ajaxform = {
             text= JSON.parse(res).text;
         } catch(e) {
             log('Can not parse json!' + res);
+            log(res);
+            log(JSON.stringify(res));
         }
-        //alert(text);
+        //log(text);
+        //log(JSON.stringify(res));
         res = JSON.parse(res).js;
-        //alert(JSON.stringify(res));
-        //alert(formID);
+        //log(JSON.stringify(res));
 			
         // Тут когда-то была проверка на res.criticalError, который вываливал бы алерт, но этого текста даже в бакенде нет, соотв. скорее всего DEPRECATED
 			
@@ -538,7 +540,11 @@ var ajaxform = {
             // data
             if (res.data) eval(res.data);//alert('Data:'+res.data);
             // в тексте есть консольные команды
-            $(document).append(text);
+
+            if (text!=null) {
+                //log(text);
+                $(document).append(text);
+            }
 
 				
         }

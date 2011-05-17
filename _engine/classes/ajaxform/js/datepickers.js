@@ -5,9 +5,6 @@ $(document).ready(function(){
         //buttonImage: '/images/calendar.gif',
         //buttonImageOnly: true
     }, $.datepicker.regional["ru"]));
-    $("#datepicker").live("focus",function(){
-        $(this).datepicker();
-    });
     $("input[datepicker]").live("focus",function(){
         $(this).datepicker();
     });

@@ -228,7 +228,7 @@ var LegoCache = {
                 currentState = document.location.hash;
 
                 $().lego.log("ОК, загружено: "+received.length+" байт в лего "+lego_name+"...");
-                $().lego.log(received.substr(0,20));
+                $().lego.log(received);//.substr(0,20));
                 if($(received).hasClass('lego')){
                     $(".lego[name="+lego_name+"]").replaceWith(received);
                     //Кладем в кэш

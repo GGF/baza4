@@ -93,7 +93,13 @@ class orders_posintz_model extends sqltable_model {
         $affected += sql::affected();
         return $affected;
     }
-
+    public function getRecord($edit) {
+        $rec = parent::getRecord($edit);
+        $blockmodel = new orders_blocks_model();
+        $rec = $blockmodel->getRecord($rec[block_id]);
+        return $rec;
+    }
+    
 }
 
 ?>

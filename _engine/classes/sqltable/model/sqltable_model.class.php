@@ -3,7 +3,7 @@
 class sqltable_model {
 
     protected $maintable;
-    protected $idstr;
+    public $idstr;
 
     public function __construct() {
         $this->maintable = '';

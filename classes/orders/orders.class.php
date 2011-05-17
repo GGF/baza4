@@ -14,8 +14,8 @@ class orders extends secondlevel {
         $this->menu->add('blocks', 'Заготовки', false);
         $this->menu->add('boards', 'Платы',false);
         $this->menu->add('back', 'Назад',false);
-        $this->menu->run();
-        return $this->menu->getOutput();        
+        if ($this->menu->run())
+            return $this->menu->getOutput();        
     }
 
 }

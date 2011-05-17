@@ -353,7 +353,7 @@ class sql_mysql {
             //if ($out) $array[] = array("<img src='/images/free.gif'>", "");
         }
 
-        $array[] = array(print_r($this->_logLevel, 1), CMSCONSOLE_NOTICE);
+        $array[] = array(print_r($this->_logLevel, true), CMSCONSOLE_NOTICE);
         $array[] = array("Запросов: <b>{$this->_queries}</b>," .
         "Предупреждений: <b>{$this->_warnings}</b>," .
         "Ошибок: <b>{$this->_errors}</b>.", CMSCONSOLE_NOTICE);

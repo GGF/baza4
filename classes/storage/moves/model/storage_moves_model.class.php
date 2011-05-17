@@ -1,6 +1,6 @@
 <?php
 
-class storage_moves_model extends storage_rest_model {
+class storage_moves_model extends storage_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
@@ -35,6 +35,7 @@ class storage_moves_model extends storage_rest_model {
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY ddate ");
         }
         $ret = sql::fetchAll($sql);
+        $this->idstr = $spr_id;
         return $ret;
     }
 
@@ -85,12 +86,12 @@ class storage_moves_model extends storage_rest_model {
              WHERE sk_{$this->sklad}_dvizh.id='{$edit}'";
         $rec = sqltable_model::getRecord($sql);
         $rec[supply] = $supply;
-        $rec[spr_id] = $idstr;
         return $rec;
     }
 
     public function setRecord($data) {
         extract($data);
+        console::getInstance()->out(print_r($data,true));
         // отредактировано
         // найдем поставщика
         if (!empty($supply_id)) {

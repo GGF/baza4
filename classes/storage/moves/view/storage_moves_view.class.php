@@ -15,7 +15,7 @@ class storage_moves_view extends sqltable_view {
                 array(
                     "type" => AJAXFORM_TYPE_HIDDEN,
                     "name" => "spr_id",
-                    "value" => $rec["spr_id"],
+                    "value" => $rec["idstr"],
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_TEXT,

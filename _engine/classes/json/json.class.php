@@ -5,7 +5,7 @@ class json {
 // FROM ARRAY TO JSON
     static public function Json_encode($var, $removeEntities = true) {
 
-        if ($_SERVER [Encoding] != "UTF-8")
+        //if ($_SERVER [Encoding] != "UTF-8")
             $var = multibyte::UTF_encode($var);
         $json = json_encode($var);
 
@@ -18,12 +18,12 @@ class json {
 // FROM JSON TO ARRAY
     static public function Json_decode($json) {
 
-        if ($_SERVER [Encoding] != "UTF-8")
+        //if ($_SERVER [Encoding] != "UTF-8")
             $json = multibyte::UTF_encode($json);
 
         $var = json_decode($json, true);
 
-        if ($_SERVER [Encoding] != "UTF-8")
+        //if ($_SERVER [Encoding] != "UTF-8")
             $var = multibyte::UTF_decode($var);
 
         return $var;
@@ -86,26 +86,4 @@ class json {
     }
 
 }
-
-/*
-  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------//
-  //   JSON CLASS IF PHP < 5.2.0                                                                                                                                     //
-  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------//
-
-
-  if (! is_callable ( "json_encode" )) {
-
-  $_SERVER [json] = new Services_JSON ( SERVICES_JSON_LOOSE_TYPE );
-
-  function json_encode($json) {
-  return $_SERVER [json]->encode ( $json );
-  }
-  function json_decode($json) {
-  return $_SERVER [json]->decode ( $json );
-  }
-
-  }
-
-  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------//
- */
 ?>

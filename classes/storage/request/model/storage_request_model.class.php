@@ -5,7 +5,7 @@
  *
  * @author igor
  */
-class storage_request_model extends storage_rest_model {
+class storage_request_model extends storage_model {
 
     public function getData($all = false, $order = '', $find = '', $idstr = '') {
         $ddate = $idstr;
