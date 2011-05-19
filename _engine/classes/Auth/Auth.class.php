@@ -6,11 +6,11 @@ class Auth extends lego_abstract {
     public $user;
     public $rigths;
     static private $instance;
-    
 
     public function getDir() {
         return __DIR__;
     }
+
     public function __construct($name=false, $directCall = true) {
         if ($directCall) {
             trigger_error("Нельзя использовать конструктор для" .
@@ -25,7 +25,7 @@ class Auth extends lego_abstract {
                 self::$instance = new self('Auth', false) :
                 self::$instance;
     }
-    
+
     public function init() {
         parent::init();
         // проверка на существование
@@ -33,13 +33,13 @@ class Auth extends lego_abstract {
         // Почистим устаревшие сессии
         $sql = "DELETE FROM session " .
                 "WHERE UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(ts) > 3600*8";
-        if (sql::query($sql,array(),SQL_LOG_BLOCK) === false) {
+        if (sql::query($sql, array(), SQL_LOG_BLOCK) === false) {
             // неправильный запрос - видимо изза отсутствия таблиц
             $this->install();
         }
     }
-    
-    public function getRights($type=false,$action=false) {
+
+    public function getRights($type=false, $action=false) {
         if ($type) {
             if ($action) {
                 return $this->rights[$type][$action];
@@ -49,9 +49,9 @@ class Auth extends lego_abstract {
         }
         return $this->rights;
     }
-    
+
     public function getUser($field=false) {
-        if($field) {
+        if ($field) {
             return $this->user[$field];
         }
         return $this->user;
@@ -62,12 +62,12 @@ class Auth extends lego_abstract {
         $sessionid = session_id();
         if (!empty($sessionid)) {
             $sql1 = "SELECT * FROM session " .
-                            "WHERE session ='{$sessionid}'";
-            $rs = sql::fetchOne($sql1,array(),SQL_LOG_BLOCK);
+                    "WHERE session ='{$sessionid}'";
+            $rs = sql::fetchOne($sql1, array(), SQL_LOG_BLOCK);
             if (!empty($rs)) {
-                $sql="SELECT * FROM users " .
-                                "WHERE id='{$rs["u_id"]}'";
-                $rs = sql::fetchOne($sql,array(),SQL_LOG_BLOCK);
+                $sql = "SELECT * FROM users " .
+                        "WHERE id='{$rs["u_id"]}'";
+                $rs = sql::fetchOne($sql, array(), SQL_LOG_BLOCK);
                 if (!empty($rs)) {
                     $this->user["username"] = $rs["nik"];
                     $this->user["userid"] = $rs["id"];
@@ -75,18 +75,22 @@ class Auth extends lego_abstract {
                     $this->user["u_id"] = $rs["id"];
                     $this->user["id"] = $rs["id"];
                     $sql = "UPDATE session SET ts=NOW() WHERE session='{$sessionid}'";
-                    sql::query($sql,array(),SQL_LOG_BLOCK);
-                    $sql = "SELECT rights.right,type,rtype FROM rights " .
-                            "JOIN (rtypes,rrtypes) " .
-                            "ON (rtypes.id=type_id " .
-                            "AND rrtypes.id=rtype_id) " .
-                            "WHERE u_id='{$rs["id"]}'";
-                    $res = sql::fetchAll($sql,array(),SQL_LOG_BLOCK);
-                    foreach ($res as $rs) {
-                        if ($rs["right"] == '1') {
-                            $this->rights[$rs["type"]][$rs["rtype"]] = true;
+                    sql::query($sql, array(), SQL_LOG_BLOCK);
+                    // права
+                    if (empty($_SESSION["rights"])) {
+                        $sql = "SELECT rights.right,type,rtype FROM rights " .
+                                "JOIN (rtypes,rrtypes) " .
+                                "ON (rtypes.id=type_id " .
+                                "AND rrtypes.id=rtype_id) " .
+                                "WHERE u_id='{$rs["id"]}'";
+                        $res = sql::fetchAll($sql, array(), SQL_LOG_BLOCK);
+                        foreach ($res as $rs) {
+                            if ($rs["right"] == '1') {
+                                $_SESSION["rights"][$rs["type"]][$rs["rtype"]] = true;
+                            }
                         }
-                    }
+                    } 
+                    $this->rights = $_SESSION["rights"];
                     $this->success = true;
                     return true;
                 } else {
@@ -131,20 +135,21 @@ class Auth extends lego_abstract {
         // ------------------------------------
         $sql = "SELECT * FROM users " .
                 "WHERE password='{$_REQUEST["password"]}'";
-        $res = sql::fetchOne($sql,array(),SQL_LOG_BLOCK);
+        $res = sql::fetchOne($sql, array(), SQL_LOG_BLOCK);
         if ($res) {
             $sql = "INSERT INTO session (session,u_id) " .
                     "VALUES ('" . session_id() . "','{$res[id]}')";
-            sql::query($sql,array(),SQL_LOG_BLOCK);
+            sql::query($sql, array(), SQL_LOG_BLOCK);
         }
         //return print_r($_REQUEST,true);
-        $_SESSION["cache"]=array();
+        $_SESSION["cache"] = array();
+        $_SESSION["rights"] = array();
         $this->gohome();
     }
 
     public function action_logout() {
         $sql = "DELETE FROM session WHERE session='" . session_id() . "'";
-        sql::query($sql,array(),SQL_LOG_BLOCK);
+        sql::query($sql, array(), SQL_LOG_BLOCK);
         // Unset all of the session variables.
         session_unset();
         // Finally, destroy the session.
@@ -155,6 +160,7 @@ class Auth extends lego_abstract {
     public function logout() {
         $this->action_logout();
     }
+
     private function gohome() {
         if (Ajax::isAjaxRequest()) {
             echo "<script>";
