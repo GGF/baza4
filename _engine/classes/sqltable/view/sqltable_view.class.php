@@ -109,12 +109,16 @@ class sqltable_view extends views {
                         "href='{$this->owner->actUri('add')->url()}' " .
                         "value='Добавить' title='Добавить' id=addbutton>";
             $findurl = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr)->url();
+            if ($this->owner->findbutton) {
             $ret .= "<tr><td colspan=100 class='search'>" .
                     "<form name='find' method='post' action='{$findurl}'>" .
                     "<input type=text class='find' " .
                     "placeholder='" . (!empty($this->owner->find) ? $this->owner->find : "Искать...") . "' " .
                     "name='find' id='findtext{$this->owner->tid}' " .
-                    "></form>";
+                    ">".
+                    "</form>" .
+                    "";
+            }
         }
         return $ret;
     }

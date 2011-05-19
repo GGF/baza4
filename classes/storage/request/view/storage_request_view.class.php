@@ -23,8 +23,10 @@ class storage_request_view extends sqltable_view {
             $out.=">" . sprintf("%s", $rs["ddate"]) . "</option>";
         }
         $out.="</select>";
-        $out.="<table width=100%><tr><td style='border:0'>Через кого:<td style='border:0'>
-                <select name=cherezkogo>
+        $out.="<table width=100%><tr><td style='border:0'>";
+        $out.="Через&nbsp;кого:";
+        $out.="<td style='border:0'>";
+        $out.="<select name=cherezkogo>
                 <option value=''></option>
                 <optgroup label='Красная группа'>
                 <option value='Балуков А.Н.' style='color:red;'>Балуков А.Н.</option>
@@ -64,15 +66,15 @@ class storage_request_view extends sqltable_view {
                 <optgroup label='Светлозеленая группа'>
                 <option value='Жинкин А.И.' style='color:lightgreen;'>Жинкин А.И.</option>
                 </optgroup>
-                </select>
-                <td style='border:0'>Разрешил:<td style='border:0'>
-                <select name=razresh>
+                </select>";
+        $out.="<td style='border:0'>Разрешил:<td style='border:0'>";
+        $out.="<select name=razresh>
                 <option value='Китуничев Д.С.' style='color:black;'>Китуничев Д.С.</option>
                 <option value='Николайчук И.И.' style='color:black;'>Николайчук И.И.</option>
                 <option value='' style='color:black;'></option>
-                </select>
-                <td style='border:0'>Затребовал:<td style='border:0'>
-                <select name=zatreb>
+                </select>";
+        $out.="<td style='border:0'>Затребовал:<td style='border:0'>";
+        $out.="<select name=zatreb>
                 <option value=''></option>
                 <optgroup label='Красная группа'>
                 <option value='Мещанинов В.Ф.' style='color:red;'>Мещанинов В.Ф.</option>
@@ -90,8 +92,8 @@ class storage_request_view extends sqltable_view {
                 <option value='Михайлов В.Н.' style='color:black;'>Михайлов В.Н.</option>
                 <option value='Макарова Т.Л.' style='color:black;'>Макарова Т.Л.</option>
                 </optgroup>
-                </select>
-                </table>";
+                </select>";
+        $out.="</td></tr></table>";
         $out.="<input type=button id=requestbutton value='Печать' >";
         return $out;
     }

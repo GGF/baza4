@@ -12,7 +12,9 @@ class storage_request extends sqltable {
         $idstr = empty($_REQUEST[ddate])?$data[dates][0][ddate]:$_REQUEST[ddate];
         $data[ddate] = $idstr;
         $this->title = $this->view->getTitle($data);
-        $out = '<form class="lego" name=requestform action="'.$this->actUri('print')->ajaxurl($this->getName()).'">';
+        $out = '';
+        $out.= '<form class="lego" name=requestform action="'.$this->actUri('print')->ajaxurl($this->getName()).'" >';
+        $this->findbutton = false;
         $out.=parent::action_index($all, $order, $find, $idstr);
         $out.='</form>';
         //$out .= $this->getHeaderBlock();

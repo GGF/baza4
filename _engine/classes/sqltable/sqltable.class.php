@@ -40,6 +40,11 @@ class sqltable extends lego_abstract {
      */
     protected $addbutton;
     /*
+     * @var bool нужна ли кнопка поиска
+     */
+    protected $findbutton;
+
+    /*
      * @var array массив названий колонок имя - имя поля, значение - загголовок
      */
     protected $cols;
@@ -90,6 +95,7 @@ class sqltable extends lego_abstract {
         $this->edit = Auth::getInstance()->getRights($this->type, 'edit');
         $this->buttons = true;
         $this->addbutton = Auth::getInstance()->getRights($this->type, 'edit');
+        $this->findbutton = true;
 
         try {
             $classname = "{$this->getName()}_model";

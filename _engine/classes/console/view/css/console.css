@@ -13,7 +13,7 @@
     width: 100%;
 }
 #cmsConsole, #cmsConsole td { 
-    font: normal normal 11px "Tahoma", Sans-serif !important;
+    font: normal normal 1.1em "Tahoma", Sans-serif !important;
 }
 #cmsConsole a {
     color: #213D7E; 

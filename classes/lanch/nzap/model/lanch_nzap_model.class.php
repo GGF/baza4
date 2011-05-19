@@ -371,7 +371,7 @@ class lanch_nzap_model extends sqltable_model {
         $tolsh[0]=empty ($tolsh[0])?0:$tolsh[0];
         $tolsh[1]=empty ($tolsh[1])?0:$tolsh[1];
         $tolsh = sprintf("%-d.%-d",$tolsh[0],$tolsh[1]);
-        $tolsh = trim(sprintf("%-5.3f",$rec[tolsh]),'0');
+        //$tolsh = trim(sprintf("%-5.3f",$rec[tolsh]),'0');
         $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . $tolsh;
         $rec[tolsh] = $tolsh;
         $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";

@@ -26,7 +26,7 @@ class storage extends secondlevel {
         ),
         instr => array(
             sklad => 'inst_',
-            title => 'Основные средства'
+            title => 'ОС'
         ),
         himiya => array(
             sklad => 'him_',
@@ -34,7 +34,7 @@ class storage extends secondlevel {
         ),
         nepon => array(
             sklad => 'nepon_',
-            title => 'Сверла 3.175'
+            title => 'Св 3.175'
         ),
         maloc => array(
             sklad => 'maloc_',
@@ -46,7 +46,7 @@ class storage extends secondlevel {
         ),
         zap => array(
             sklad => 'zap_',
-            title => 'Запчасти'
+            title => 'З и И'
         ),
         test => array(
             sklad => 'test_',

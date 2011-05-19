@@ -63,7 +63,7 @@ class Menu extends lego_abstract {
                 ($this->parent->getAction()==$type?" menu-item-sel":"") .
                 "' " . 
                 (empty($picture) ? "" : "style='background-image: URL(\"/picture/{$picture}\");'") .
-                "><span class='menutext'>" . hypher::addhypher($text) . "</span>" .
+                "><div class='menutext'>" . hypher::addhypher($text) . "</div>" .
                 "</div>" .
                 "</a>" .
                 "</li>";

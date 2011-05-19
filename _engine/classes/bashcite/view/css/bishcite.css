@@ -1,6 +1,6 @@
 #bashcite {
 	font-family: 'Monaco', 'Courier New', monospace;
-	font-size: 10pt;
+	font-size: 1em;
 	margin: 0;
 	font-weight: normal;
 	background: #f0f0f0;
@@ -8,6 +8,7 @@
 	border: 1px dotted #999;
 	text-decoration:none;
 	color : black;
+        text-align: left;
 }
 
 #bashcite a {
