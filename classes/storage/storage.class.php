@@ -3,61 +3,12 @@
 class storage extends secondlevel {
 
     //public $type;
-    public static $storages = array(
-        himiya => array(
-            sklad => 'him_',
-            title => 'Материалы'
-        ),
-        materials => array(
-            sklad => 'mat_',
-            title => 'Текстолит'
-        ),
-        himiya2 => array(
-            sklad => 'him1_',
-            title => 'Лаборатория'
-        ),
-        sverla => array(
-            sklad => 'sver_',
-            title => 'Сверла 3.0'
-        ),
-        halaty => array(
-            sklad => 'hal_',
-            title => 'Спецодежда'
-        ),
-        instr => array(
-            sklad => 'inst_',
-            title => 'ОС'
-        ),
-        himiya => array(
-            sklad => 'him_',
-            title => 'Материалы'
-        ),
-        nepon => array(
-            sklad => 'nepon_',
-            title => 'Св 3.175'
-        ),
-        maloc => array(
-            sklad => 'maloc_',
-            title => 'Малоценка'
-        ),
-        stroy => array(
-            sklad => 'stroy_',
-            title => 'Стройматериалы'
-        ),
-        zap => array(
-            sklad => 'zap_',
-            title => 'З и И'
-        ),
-        test => array(
-            sklad => 'test_',
-            title => 'Склад для отладки'
-        ),
-    );
+
     private $need_yaer_arc;
 
     public function init() {
         parent::init();
-        CTitle::addSection("Склады | " . storage::$storages[$_SESSION[storagetype]][title]);
+        CTitle::addSection("Склады | " . storages::$storages[$_SESSION[storagetype]][title]);
     }
 
     public function __call($name, $arguments) {

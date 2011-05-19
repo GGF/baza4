@@ -2,6 +2,11 @@
 	text-align: center;
 	background-color: rgb(255, 226, 197);
 	color: red;
+        min-height: 40px;
 	font-size: 1.2em;
 }
 
+.soob a {
+    text-decoration: none;
+    color: red;
+}

@@ -15,11 +15,25 @@ input,select {
     font-size: 0.8em;
 }
 
-.glavmenu {
-    text-align: center;
-    vertical-align:middle;
-    background-color: rgb(172, 194, 172);
+a.glavmenu {
+    text-decoration: none;
     color:black;
+}
+
+div.glavmenu {
+    font-size: 1.5em;
+    text-align: left;
+
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top:  5px;
+    height: 35px;
+
+    float: left;
+    background-color: rgb(172, 194, 172);
+    background-image: url(img/domik.gif);
+    background-repeat: no-repeat;
+    background-position: left;
 }
 
 #maindiv {
