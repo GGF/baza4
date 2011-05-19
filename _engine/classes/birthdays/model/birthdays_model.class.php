@@ -10,7 +10,6 @@ class birthdays_model {
         $dr = '';
         $sql = "SELECT *, (YEAR(NOW())-YEAR(dr)) as let FROM workers WHERE DAYOFYEAR(dr)>= DAYOFYEAR(CURRENT_DATE()) AND DAYOFYEAR(dr)<= (DAYOFYEAR(CURRENT_DATE())+4) ORDER BY DAYOFYEAR(dr)";
         $rs = sql::fetchAll($sql);
-        $rs = 0;
         if (empty($rs)) {
             //$calend = file_get_contents('http://www.calend.ru/img/export/calend.rss');
             //$calend = file_get_contents(__DIR__ . '/sample.xml');
