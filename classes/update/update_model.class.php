@@ -255,6 +255,25 @@ class update_model {
         return $pit_id;
     }
 
+    public function update_lanched() {
+        $out = '';
+        $sql = "TRUNCATE TABLE `lanched`";
+        sql::query($sql);
+        $out .= sql::error() . "<br>";
+        $sql = "SELECT block_id, MAX( ldate ) AS md
+                FROM lanch
+                WHERE ldate >= DATE_SUB(NOW(),INTERVAL 1 MONTH) 
+                GROUP BY block_id
+                ";
+        $rs = sql::fetchAll($sql);
+        foreach ($rs as $res) {
+            $sql = "INSERT INTO lanched SET block_id='{$res[block_id]}', lastdate='{$res[md]}'";
+            sql::query($sql);
+            $out .= sql::error() . "<br>";
+        }
+        return $out;
+    }
+
 }
 
 ?>
