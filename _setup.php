@@ -71,7 +71,7 @@ if ($_SERVER[debug][report]) {
 
 header("Content-Type: text/html; charset={$_SERVER[Encoding]}");
 
-if ($_REQUEST[level] != 'update') { // update делается без авторизации
+if (!($_REQUEST[level] == 'update' || $_REQUEST[level] == 'getdata')) { // update делается без авторизации
     if (!Auth::getInstance()->run()->success) {
         echo Auth::getInstance()->getOutput();
         echo console::getInstance()->run()->getOutput();

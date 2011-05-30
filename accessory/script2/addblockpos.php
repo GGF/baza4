@@ -46,7 +46,7 @@ if (empty($comment)) {
 }
 $sql = "REPLACE INTO boards 
         (id,board_name,customer_id,sizex,sizey,thickness,
-        texеolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
+        textolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
         pallad,immer,aurum,numlam,lsizex,lsizey,mask,mark,glasscloth,
         class,complexity_factor,frez_factor,comment_id)
         VALUES ('{$rs["id"]}' , '{$board}' ,'{$customer_id}' ,'{$sizex}' ,'{$sizey}' ,

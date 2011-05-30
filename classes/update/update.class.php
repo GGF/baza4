@@ -11,7 +11,8 @@ class update extends lego_abstract {
     }
     
     public function __call($name, $arguments) {
-        $model = new update_model();
+        $classname = get_class($this).'_model';
+        $model = new $classname();
         $act = str_replace('action_', '', $name);
         return $model->$act($_REQUEST);
     }

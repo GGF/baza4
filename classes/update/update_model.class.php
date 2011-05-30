@@ -43,14 +43,15 @@ class update_model {
         $rs = sql::fetchOne($sql);
         if (empty($rs)) {
             $sql = "INSERT INTO blocks 
-                    (scomp,ssolder,drlname,customer_id,blockname,sizex,sizey) 
+                    (scomp,ssolder,drlname,customer_id,blockname,sizex,sizey,auarea,smalldrill,bigdrill) 
                   VALUES 
-                    ('{$comp}','{$solder}','{$drillname}','{$customer_id}','{$board}','{$sizex}','{$sizey}')";
+                    ('{$comp}','{$solder}','{$drillname}','{$customer_id}','{$board}','{$sizex}','{$sizey}','{$auarea}','{$smalldrill}','{$bigdrill}')";
             sql::query($sql);
         } else {
             $sql = "UPDATE blocks 
                     SET scomp='{$comp}', ssolder='{$solder}', drlname='{$drillname}', 
-                        sizex='{$sizex}', sizey='{$sizey}' 
+                        sizex='{$sizex}', sizey='{$sizey}',
+                        auarea='{$auarea}', smalldrill='{$smalldrill}', bigdrill='{$bigdrill}'
                 WHERE id='{$rs[id]}'";
             sql::query($sql);
         }
@@ -140,7 +141,7 @@ class update_model {
         }
         $sql = "REPLACE INTO boards 
         (id,board_name,customer_id,sizex,sizey,thickness,
-        texеolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
+        textolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
         pallad,immer,aurum,numlam,lsizex,lsizey,mask,mark,glasscloth,
         class,complexity_factor,frez_factor,comment_id)
         VALUES ('{$rs["id"]}' , '{$board}' ,'{$customer_id}' ,'{$sizex}' ,'{$sizey}' ,

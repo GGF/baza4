@@ -54,9 +54,9 @@ class orders_boards_view extends sqltable_view {
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
-            "name" => "texеolite",
+            "name" => "textolite",
             "label" => "Материал",
-            "value" => $rec[texеolite],
+            "value" => $rec[textolite],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,

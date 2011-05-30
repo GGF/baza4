@@ -16,7 +16,7 @@ if ($m->run())
     if (!Ajax::isAjaxRequest())
         echo $m->getOutput();
 
-if ($_SERVER[debug][report]) {
+if ($_SERVER[debug][report] && !($_REQUEST[level] == 'update' || $_REQUEST[level] == 'getdata')) {
     if (Ajax::isAjaxRequest()) {
         echo console::getInstance()->getScripts(); 
     } else
