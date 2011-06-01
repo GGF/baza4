@@ -45,7 +45,14 @@ class orders_blocks_view extends sqltable_view {
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "copper",
             "label" => "Площади блока",
-            "value" => sprintf("C=%-6.2f S=%-6.2f", $rec[scomp] / 10000, $rec[ssolder] / 10000),
+            "value" => sprintf("C=%-6.2f S=%-6.2f Au=%-6.2f", $rec[scomp] / 10000, $rec[ssolder] / 10000, $rec[auarea]),
+            "options" => array("readonly" => true, "html" => 'size=25'),
+        ));
+        array_push($fields, array(
+            "type" => AJAXFORM_TYPE_TEXT,
+            "name" => "drills",
+            "label" => "Отверстия блока",
+            "value" => sprintf("%-6d / %-6d ", $rec[smalldrill], $rec[bigdrill]),
             "options" => array("readonly" => true),
         ));
 

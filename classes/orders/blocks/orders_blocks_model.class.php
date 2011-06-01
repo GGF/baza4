@@ -57,6 +57,9 @@ class orders_blocks_model extends sqltable_model {
         $cols[size] = "Размер";
         $cols[scomp] = 'COMP';
         $cols[ssolder] = 'SOLDER';
+        $cols[auarea] = 'Au';
+        $cols[smalldrill] = '<=0.6';
+        $cols[bigdrill] = '>0.6';
         $cols[files] = 'Файлы';
         return $cols;
     }
