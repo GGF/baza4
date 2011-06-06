@@ -102,11 +102,11 @@ class Auth extends lego_abstract {
             }
         }
 
-        // пустая сессия, не восстановлена о базе, не найден пользователь
-        if ($_SERVER["SCRIPT_NAME"] != '/index.php') {
-            $this->gohome();
-            // показать начало чтоб не подменю показывать
-        }
+//        // пустая сессия, не восстановлена о базе, не найден пользователь
+//        if ($_SERVER["SCRIPT_NAME"] != '/index.php') {
+//            $this->gohome();
+//            // показать начало чтоб не подменю показывать
+//        }
         Output::assign('css', $this->getAllHeaderBlock());
         Output::assign('mes', $mes);
         Output::assign('title', 'Авторизация');
