@@ -1,8 +1,4 @@
-<html>
-<head>
 {$css}
-</head>
-<body>
 <div id='dialog'>
 <div class="auth"> 
 <table>
@@ -21,6 +17,5 @@
 <tr><td class="underline" colspan=2>&nbsp;</td></tr>
 </table>
 </div>
+<div>{$dop}</div>
 </div>
-</body>
-</html>

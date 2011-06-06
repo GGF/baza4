@@ -13,15 +13,23 @@ $(document).ready(function(){
             resizable: false,
             draggable: false
         });
-        ri.prop('checked',member)
-        .change(function(){
-            $("#password").focus();
-            var val = $(this).prop('checked');
-            localStorage.setItem('remember',val);
-        });
-    } else {
         if (member) {
-            localStorage.setItem('auth',true);
+            $("#password").val(member);
+            $("#authform").submit();
+        } else {
+            ri
+            //.prop('checked',member)
+            .change(function(){
+                if ($("#password").val()=='') {
+                    alert('Сначала пароль, потом галочку, потом Enter');
+                } else {
+                    if ( $(this).prop('checked') )
+                        localStorage.setItem('remember',$("#password").val());
+                }
+                $("#password").focus();
+                return false;
+            });
         }
-    }
+    } else {
+}
 });

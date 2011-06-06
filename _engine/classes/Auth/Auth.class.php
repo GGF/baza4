@@ -89,7 +89,7 @@ class Auth extends lego_abstract {
                                 $_SESSION["rights"][$rs["type"]][$rs["rtype"]] = true;
                             }
                         }
-                    } 
+                    }
                     $this->rights = $_SESSION["rights"];
                     $this->success = true;
                     return true;
@@ -102,11 +102,8 @@ class Auth extends lego_abstract {
             }
         }
 
-//        // пустая сессия, не восстановлена о базе, не найден пользователь
-//        if ($_SERVER["SCRIPT_NAME"] != '/index.php') {
-//            $this->gohome();
-//            // показать начало чтоб не подменю показывать
-//        }
+        // пустая сессия, не восстановлена о базе, не найден пользователь
+
         Output::assign('css', $this->getAllHeaderBlock());
         Output::assign('mes', $mes);
         Output::assign('title', 'Авторизация');
@@ -133,6 +130,7 @@ class Auth extends lego_abstract {
 
     public function action_logout() {
         $sql = "DELETE FROM session WHERE session='" . session_id() . "'";
+        echo "<script>localStorage.clear();</script>";
         sql::query($sql, array(), SQL_LOG_BLOCK);
         // Unset all of the session variables.
         session_unset();
@@ -149,10 +147,6 @@ class Auth extends lego_abstract {
     private function gohome() {
         if (Ajax::isAjaxRequest()) {
             echo "<script>";
-//            echo "localStorage.clear()";
-//            if ($this->success) {
-//                echo "localStorage.setItem('user',{$this->user})";
-//            }
             echo "window.location = 'http://{$_SERVER['HTTP_HOST']}'";
             echo "</script>";
         } else
