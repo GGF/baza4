@@ -11,16 +11,21 @@ class lanch_nzap_model extends sqltable_model {
         $sql = "SELECT *,posintz.id AS nzid,posintz.id
         FROM posintz
         LEFT JOIN (lanched) ON (posintz.block_id=lanched.block_id)
-        JOIN (blocks,tz,filelinks,customers,orders)
+        JOIN (blocks,tz,filelinks,customers,orders,blockpos,boards)
             ON (tz.order_id=orders.id
             AND blocks.id=posintz.block_id
             AND posintz.tz_id=tz.id
             AND tz.file_link_id=filelinks.id
-            AND blocks.customer_id=customers.id)
+            AND blocks.customer_id=customers.id
+            AND blocks.id=blockpos.block_id
+            AND blockpos.board_id = boards.id
+            )
         WHERE posintz.ldate = '0000-00-00' "
                 . (!empty($find) ? "AND (blocks.blockname LIKE '%{$find}%'
+            OR board_name LIKE '%{$find}%'
             OR filelinks.file_link LIKE '%{$find}%'
             OR orders.number LIKE '%{$find}%') " : "")
+                . " GROUP BY blocks.blockname "
                 . (!empty($order) ? "ORDER BY {$order} " :
                         "ORDER BY customers.customer,tz.id,posintz.id ")
                 . ($all ? "" : "LIMIT 20");
