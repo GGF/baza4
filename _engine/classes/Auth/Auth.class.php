@@ -138,6 +138,7 @@ class Auth extends lego_abstract {
         session_unset();
         // Finally, destroy the session.
         session_destroy();
+        $this->success = false;
         $this->gohome();
     }
 
@@ -148,6 +149,10 @@ class Auth extends lego_abstract {
     private function gohome() {
         if (Ajax::isAjaxRequest()) {
             echo "<script>";
+//            echo "localStorage.clear()";
+//            if ($this->success) {
+//                echo "localStorage.setItem('user',{$this->user})";
+//            }
             echo "window.location = 'http://{$_SERVER['HTTP_HOST']}'";
             echo "</script>";
         } else
