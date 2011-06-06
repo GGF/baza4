@@ -89,7 +89,7 @@ class Auth extends lego_abstract {
                                 $_SESSION["rights"][$rs["type"]][$rs["rtype"]] = true;
                             }
                         }
-                    } 
+                    }
                     $this->rights = $_SESSION["rights"];
                     $this->success = true;
                     return true;
@@ -103,30 +103,11 @@ class Auth extends lego_abstract {
         }
 
         // пустая сессия, не восстановлена о базе, не найден пользователь
-        if ($_SERVER["SCRIPT_NAME"] != '/index.php') {
-            $this->gohome();
-            // показать начало чтоб не подменю показывать
-        }
+
         Output::assign('css', $this->getAllHeaderBlock());
         Output::assign('mes', $mes);
         Output::assign('title', 'Авторизация');
         Output::assign('actionlink', $this->actUri('login')->url());
-        $scripts = "
-            document.location.hash = '';
-            currentState = document.location.hash
-            $('#dialog').dialog({
-                closeOnEscape: false,
-                title:'Авторизация',
-                width: 'auto',
-                modal: true,
-                resizable: false,
-                draggable: false
-            });
-            //$('#authform').submit(function(){alert($(this).serialize());})
-            //$('#ser').click(function(){alert($('#authform').serialize());});
-            //$('#password').keydown(function(ev){if (ev.keyCode == 13) $('#authform').submit()});
-        ";
-        Output::assign('scripts', $scripts);
         return $this->fetch('form.tpl');
     }
 
@@ -149,11 +130,13 @@ class Auth extends lego_abstract {
 
     public function action_logout() {
         $sql = "DELETE FROM session WHERE session='" . session_id() . "'";
+        echo "<script>localStorage.clear();</script>";
         sql::query($sql, array(), SQL_LOG_BLOCK);
         // Unset all of the session variables.
         session_unset();
         // Finally, destroy the session.
         session_destroy();
+        $this->success = false;
         $this->gohome();
     }
 

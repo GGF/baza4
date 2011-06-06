@@ -14,7 +14,7 @@ $_SERVER["debug"] = array(
     "showNotices" => true,
     "checkReverse" => false,
 );
-$_SERVER["debug"] = false;
+//$_SERVER["debug"] = false;
 
 if ($_REQUEST[level] == 'update') { //update лучше не выводить отладочный текст. как нить так отлажу
     $_SERVER["debug"]["noCache"]["php"] = true;
