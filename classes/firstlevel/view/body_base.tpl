@@ -1,22 +1,29 @@
-﻿<!--   Copyright 2011 Igor Fedoroff   |  g_g_f@mail.ru  -->
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta name="Author" content="Игорь Федоров">
-	<meta name="Description" content="ЗАО МПП">
+<html lang="ru" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>{$title}</title>
-    {$header}
-  </head>
-  <body>
-  {$adminhere}
-  <a href="{$linkbase}" class="glavmenu" title="Домой"><div class="glavmenu">Главное меню</div></a>
-  {$birthdays}
-  {$bashcite}
-  {$menu}
+    <meta name="Author" content="Игорь Федоров">
+    <meta name="Description" content="ЗАО МПП">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico">
 
-  <div id="maindiv">
-  {$content}
-  </div>
-  {$console}
-  </body>
+    {$css}
+</head>
+
+<body>
+<header>
+    {$adminhere}
+    <a href="{$linkbase}" class="glavmenu" title="Домой"><div class="glavmenu">Главное меню</div></a>
+    {$birthdays}
+    {$bashcite}
+    {$menu}
+</header>
+<div id="maindiv">
+    {$content}
+</div>
+{$scripts}
+</body>
 </html>
+<!--   Copyright 2011 Igor Fedoroff   |  g_g_f@mail.ru  -->

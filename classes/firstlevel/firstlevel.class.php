@@ -45,7 +45,8 @@ class firstlevel extends lego_abstract {
     }
 
     public function setOutputAssigns() {
-        Output::assign('header',$this->getAllHeaderblock());
+        Output::assign('css',$this->getAllHeaderStylesheets());
+        Output::assign('scripts',$this->getAllHeaderJavascripts());
         Output::assign('title', CTitle::get());
         Output::assign('adminhere', $this->adminhere->run()->getOutput());
         Output::assign('bashcite', $this->bashcite->run()->getOutput());

@@ -62,20 +62,29 @@ abstract class JsCSS implements IJsCSS {
         }
         return $ret;
     }
-
-    public function getAllHeaderBlock() {
-        $csses = $this->getAllStylesheets();
+    
+    public function getAllHeaderJavascripts() {
         $jses = $this->getAllJavascripts();
         $ret = "";
-        foreach ($csses as $one) {
-            $one = $one{0}=='/'?$one:'/'.$one;
-            $ret .= "<style media='all' type='text/css' >@import url({$one}?{$this->getVersion()});</style> \n";
-        }
         foreach ($jses as $one) {
             $one = $one{0}=='/'?$one:'/'.$one;
             $ret .= "<script type='text/javascript' src='{$one}?{$this->getVersion()}'></script>\n";
         }
         return $ret;
+    }
+
+    public function getAllHeaderStylesheets() {
+        $csses = $this->getAllStylesheets();
+        $ret = "";
+        foreach ($csses as $one) {
+            $one = $one{0}=='/'?$one:'/'.$one;
+            $ret .= "<style media='all' type='text/css' >@import url({$one}?{$this->getVersion()});</style> \n";
+        }
+        return $ret;
+    }
+
+    public function getAllHeaderBlock() {
+        return $this->getAllHeaderStylesheets().$this->getAllHeaderJavascripts();
     }
 
     static public function getAllJavascripts() {
