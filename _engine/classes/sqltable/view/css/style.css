@@ -1,4 +1,4 @@
-.find {
+п»ї.find {
     border: 0px;
     width: 100%;
     padding: 0px;
@@ -110,14 +110,18 @@ a div.fullwidth {
 }
 
 /*
-    Для диалогов
+    Р”Р»СЏ РґРёР°Р»РѕРіРѕРІ
 */
 a.filelink {
-	text-decoration:underline;
-	font-weight:bold;
-	font-size: 1.5em;
+    text-decoration:underline;
+    font-weight:bold;
+    font-size: 1.5em;
+    font-family: 'Times New Roman',Times,serif;
 }
 
+#dialog {
+    font-family: 'Times New Roman',Times,serif;
+}
 p {
     margin: 0.2em;
 }
