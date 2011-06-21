@@ -13,6 +13,7 @@
 </head>
 
 <body>
+<div id="container">
 <header>
     {$adminhere}
     <a href="{$linkbase}" class="glavmenu" title="Домой"><div class="glavmenu">Главное меню</div></a>
@@ -22,6 +23,9 @@
 </header>
 <div id="maindiv">
     {$content}
+</div>
+</footer>
+</footer>
 </div>
 {$scripts}
 </body>

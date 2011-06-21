@@ -53,20 +53,14 @@ class Menu extends lego_abstract {
             } else {
                 $uri = new UriConstructor();
                 $uri->clear();
-                $menuitems .= "<li class='menu-item_outerWrap'>" .
-                "<a " . ($fkey++<11?"hotkey='Ctrl + f{$fkey }' ":" ") .
-                "title='{$text}' " .
-                ($item[noajax]?'':"data-silent='{$this->parent->getMainTarget()}' legotarget='{$this->parent->getName()}'") .
-                "href='" . $uri->set($this->parent->getName(),$type)->url() . "'" .
-                "class='menu-item' id='{$type}'>" .
-                "<div id='{$type}' class='menu-item" .
-                ($this->parent->getAction()==$type?" menu-item-sel":"") .
-                "' " . 
-                (empty($picture) ? "" : "style='background-image: URL(\"/picture/{$picture}\");'") .
-                "><div class='menutext'>" . hypher::addhypher($text) . "</div>" .
-                "</div>" .
-                "</a>" .
-                "</li>";
+                Output::assign('hotkey', $fkey++<11?"Ctrl + f{$fkey }":"");
+                Output::assign('text',hypher::addhypher($text));
+                Output::assign('ajax',($item[noajax]?'':"data-silent='{$this->parent->getMainTarget()}' legotarget='{$this->parent->getName()}'"));
+                Output::assign('type',$type);
+                Output::assign('url',$uri->set($this->parent->getName(),$type)->url());
+                Output::assign('selected',($this->parent->getAction()==$type?" menu-item-sel":""));
+                Output::assign('picture', (empty($picture) ? "" : "style='background-image: URL(\"/picture/{$picture}\");'"));
+                $menuitems .= $this->fetch('menu_item.tpl');
             }
         }
         Output::assign('menuitems',$menuitems);
