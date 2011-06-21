@@ -1,5 +1,5 @@
 #!/bin/sh
-FILE="VERSION3"
+FILE="VERSION"
 BVER=`cat $FILE | cut -d . -f 1,2` 
 VERSION=`cat $FILE | cut -d . -f 3`
 VERSION=$(($VERSION+1))
