@@ -27,25 +27,10 @@ abstract class JsCSS implements IJsCSS {
 
     public function getJavascripts() {
         return self::getDirDeep($this->getDir() . "/js/", "/(\.js|\.js\.php)$/i", true);
-//        $js = array();
-//        $h = @opendir($this->getDir() . "/js");
-//        while ($file = @readdir($h)) {
-//            if ($file{0} == '.')
-//                continue;
-//            if (preg_match("/(\.js|\.js\.php)$/i", $file))
-//                $js[] = $this->getWebDir() . '/js/' . $file;
-//        }
-//        return $js;
     }
 
     public function getStylesheets() {
         return self::getDirDeep($this->getDir() . "/view/css/", "/(\.css|\.css\.php)$/i", true);
-//        $css = array();
-//        $dir = @opendir($this->getDir() . "/view/css");
-//        while ($file = @readdir($dir))
-//            if (preg_match("/(\.css|\.css\.php)$/i", $file))
-//                $css[] = $this->getWebDir() . "/view/css/" . $file;
-//        return $css;
     }
 
     public function getHeaderBlock() {
@@ -62,15 +47,10 @@ abstract class JsCSS implements IJsCSS {
         }
         return $ret;
     }
-
-    public function getAllHeaderBlock() {
-        $csses = $this->getAllStylesheets();
+    
+    public function getAllHeaderJavascripts() {
         $jses = $this->getAllJavascripts();
         $ret = "";
-        foreach ($csses as $one) {
-            $one = $one{0}=='/'?$one:'/'.$one;
-            $ret .= "<style media='all' type='text/css' >@import url({$one}?{$this->getVersion()});</style> \n";
-        }
         foreach ($jses as $one) {
             $one = $one{0}=='/'?$one:'/'.$one;
             $ret .= "<script type='text/javascript' src='{$one}?{$this->getVersion()}'></script>\n";
@@ -78,10 +58,25 @@ abstract class JsCSS implements IJsCSS {
         return $ret;
     }
 
+    public function getAllHeaderStylesheets() {
+        $csses = $this->getAllStylesheets();
+        $ret = "";
+        foreach ($csses as $one) {
+            $one = $one{0}=='/'?$one:'/'.$one;
+            $ret .= "<style media='all' type='text/css' >@import url({$one}?{$this->getVersion()});</style> \n";
+        }
+        return $ret;
+    }
+
+    public function getAllHeaderBlock() {
+        return $this->getAllHeaderStylesheets().$this->getAllHeaderJavascripts();
+    }
+
     static public function getAllJavascripts() {
         $js = array();
         $js[] = self::getWebDir(__DIR__) . '/js/jquery.js';
-        $js[] = self::getWebDir(__DIR__) . '/js/log.js';
+        $js[] = self::getWebDir(__DIR__) . '/js/modernizr-1.6.min.js';
+        $js[] = self::getWebDir(__DIR__) . '/js/plugins.js';
         foreach (self::$all_jscss as $one) {
             $js = array_merge($js, $one->getJavascripts());
         }
@@ -94,6 +89,7 @@ abstract class JsCSS implements IJsCSS {
 
     static public function getAllStylesheets() {
         $css = array();
+        $css[] = self::getWebDir(__DIR__) . '/view/css/style.css';
         foreach (self::$all_jscss as $one) {
             $css = array_merge($css, $one->getStylesheets());
         }

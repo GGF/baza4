@@ -90,7 +90,6 @@ class sqltable_view extends views {
         if ($this->owner->del) {
             $ret .= "<th>&nbsp;";
         }
-        $ret .= "<tbody>";
         if ($this->owner->buttons) {
             $url = $this->owner->actUri('index', !$this->owner->all)->url();
             $ret .= "<tr><td colspan=100 class='buttons'>" .
@@ -120,6 +119,7 @@ class sqltable_view extends views {
                     "";
             }
         }
+        $ret .= "<tbody>";
         return $ret;
     }
 
