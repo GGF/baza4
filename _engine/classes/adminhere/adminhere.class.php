@@ -1,31 +1,37 @@
-<?
-class adminhere extends lego_abstract {
-	private $m;
-	// îáÿçàòåëüíî îïðåäåëÿòü äëÿ ìîäóëÿ
-	public function getDir(){ return __DIR__; }
-	public function __construct($name=false) {
-		parent::__construct($name);
-	}
-	
-	public function init() {
-		$this->m = new adminhere_model();
-	}
-	
-	public function action_index() {
-		Output::assign('adminlink',$this->actUri('userwin')->url());
-		Output::assign('users','');
-		Output::assign('divstyle','div {opacity:1;}');
-		if ($this->m->yes()) {
-			return $this->fetch('adminhere.tpl');
-		}
-		else 
-			return "";
-	}
-	public function action_userwin() {
-		Output::assign('divstyle','div {opacity:1;}');
-		Output::assign('users',$this->m->userwin());
-		return $this->fetch('adminhere.tpl');
-	}
-} 
+ï»¿<?
 
+class adminhere extends lego_abstract {
+
+    private $m;
+
+    // Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÑ‚ÑŒ Ð´Ð»Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
+    public function getDir() {
+        return __DIR__;
+    }
+
+    public function __construct($name=false) {
+        parent::__construct($name);
+    }
+
+    public function init() {
+        $this->m = new adminhere_model();
+    }
+
+    public function action_index() {
+        if (Auth::getInstance()->getUser('id') == 1) // Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð°Ð´Ð¼Ð¸Ð½Ñƒ
+            Output::assign('adminlink', $this->actUri('userwin')->url());
+        Output::assign('users', '');
+        if ($this->m->yes()) {
+            return $this->fetch('adminhere.tpl');
+        }
+        else
+            return "";
+    }
+
+    public function action_userwin() {
+        Output::assign('users', $this->m->userwin());
+        return $this->fetch('adminhere.tpl');
+    }
+
+}
 ?>

@@ -28,6 +28,8 @@
     background-image: url(img/cp.png);
     background-position:center center;
     background-repeat:no-repeat;
+    /*background-color: silver;*/
+    border-radius: 8px;
 }
 
 a.menu-item {

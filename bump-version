@@ -1,0 +1,8 @@
+#!/bin/sh
+FILE="VERSION"
+BVER=`cat $FILE | cut -d . -f 1,2` 
+VERSION=`cat $FILE | cut -d . -f 3`
+VERSION=$(($VERSION+1))
+echo -n $BVER.$VERSION. > $FILE.tmp
+cat $FILE | cut -d . -f 4 >>$FILE.tmp
+mv -f $FILE.tmp $FILE
