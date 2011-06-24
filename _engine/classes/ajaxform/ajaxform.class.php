@@ -360,7 +360,7 @@ class ajaxform extends JsCSS {
             }
         }
 
-        $out = "<script> ajaxform.fields[\"{$this->name}\"] = " . multibyte::JSON_encode($json) . "; </script>\n";
+        $out = "<script> ajaxform.fields[\"{$this->name}\"] = " . multibyte::JSON_encode($json) . ";</script>\n";
 
         if (!$this->alert) {
 
@@ -392,6 +392,7 @@ class ajaxform extends JsCSS {
 
             $this->sessionSet();
         }
+        return $out;
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------------------------------------- //

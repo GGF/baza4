@@ -62,6 +62,9 @@ class multibyte {
 
     static public function Json_encode($var, $removeEntities = true) {
 
+        // изза html сущностей не получается json_encode
+        array_walk_recursive($var, create_function('&$item,$key', '{$item=htmlentities($item);}'));
+
         if ($_SERVER [Encoding] != "UTF-8")
             $var = self::UTF_encode($var);
         $json = json_encode($var);
