@@ -14,7 +14,7 @@ class multibyte {
 
         if (is_array($var)) {
             foreach ($var as $k => $v)
-                $newVar[$k] = self::utf8_to_cp1251 ($v);
+                $newVar[$k] = self::utf8_to_cp1251($v);
         } else {
             $newVar = iconv("UTF-8", "CP1251", $var);
         }
@@ -63,14 +63,15 @@ class multibyte {
     static public function Json_encode($var, $removeEntities = true) {
 
         // изза html сущностей не получается json_encode
-        array_walk_recursive($var, create_function('&$item,$key', '{$item=htmlentities($item);}'));
-
+//        array_walk_recursive($var, create_function('&$item,$key', '{$item=multibyte::Escape($item);;}'));
+//        array_walk_recursive($var, create_function('&$item,$key', '{$item=htmlentities($item);}'));
+        
         if ($_SERVER [Encoding] != "UTF-8")
             $var = self::UTF_encode($var);
-        $json = json_encode($var);
+        $json = json_encode($var,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
 
-        if ($removeEntities)
-            $json = self::UTF_entityDecode($json);
+//        if ($removeEntities)
+//            $json = self::UTF_entityDecode($json);
 
         return $json;
     }
@@ -93,9 +94,9 @@ class multibyte {
 
         $res = "";
 
-        foreach (mb_splitChars($text) as $t) {
+        foreach (self::mb_splitChars($text) as $t) {
 
-            $ord = mb_ord($t);
+            $ord = self::mb_ord($t);
 
             if (strlen($ord) < 2)
                 $ord = "0" . $ord;
@@ -172,6 +173,20 @@ class multibyte {
         return self::UTF_entityDecode($str, false);
     }
 
+    static public function mb_splitChars($string) {
+
+        $strlen = mb_strlen($string);
+
+        while ($strlen) {
+
+            $array[] = mb_substr($string, 0, 1, "UTF-8");
+            $string = mb_substr($string, 1, $strlen, "UTF-8");
+            $strlen = mb_strlen($string);
+        }
+
+        return $array;
+    }
+
     static public function mb_chr($c) {
 
         if ($c <= 0x7F) {
@@ -188,6 +203,37 @@ class multibyte {
         } else {
             return false;
         }
+    }
+
+    static public function mb_ord($c, $index = 0, &$bytes = null) {
+
+        $len = strlen($c);
+        $bytes = 0;
+
+        if ($index >= $len)
+            return false;
+
+        $h = ord($c{$index});
+
+        if ($h <= 0x7F) {
+            $bytes = 1;
+            return $h;
+        } else if ($h < 0xC2) {
+            return false;
+        } else if ($h <= 0xDF && $index < $len - 1) {
+            $bytes = 2;
+            return ($h & 0x1F) << 6 | (ord($c{$index + 1}) & 0x3F);
+        } else if ($h <= 0xEF && $index < $len - 2) {
+            $bytes = 3;
+            return ($h & 0x0F) << 12 | (ord($c{$index + 1}) & 0x3F) << 6
+            | (ord($c{$index + 2}) & 0x3F);
+        } else if ($h <= 0xF4 && $index < $len - 3) {
+            $bytes = 4;
+            return ($h & 0x0F) << 18 | (ord($c{$index + 1}) & 0x3F) << 12
+            | (ord($c{$index + 2}) & 0x3F) << 6
+            | (ord($c{$index + 3}) & 0x3F);
+        } else
+            return false;
     }
 
 }
