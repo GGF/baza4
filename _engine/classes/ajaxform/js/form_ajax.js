@@ -123,7 +123,7 @@ var ajaxform = {
             }
 				
             this.updater.add(id, obj.attr("id"));
-            obj.addClass("cmsForm_errorField");
+            obj.addClass("Form_errorField");
 				
         } else
             log("Невозможно найти объект с ID «" + id + "» для вывода ошибки.\nТекст ошибки: «" + html + "»");
@@ -148,7 +148,7 @@ var ajaxform = {
         this.updater.remove(id, obj.attr("id"));
 			
         $("#" + id + "_error").hide();
-        $(obj).removeClass("cmsForm_errorField");
+        $(obj).removeClass("Form_errorField");
 			
         $("#" + id + "_errorText").hide().html(""); // для span
         $(obj).attr("title", ""); // src для title
@@ -237,7 +237,7 @@ var ajaxform = {
         //if (send == null || send == false) return false; // заваливаем отправку
 			
         // блокируем кнопки — проставляем rel только тем, которые здесь блокируются, чтобы потом с таких его снимать
-        $("#" + formID).find("input[type=submit], input[type=image], input[type=reset], input[type=button]").data("disabled", true).attr("rel", "disabled").attr("disabled", true).addClass("cmsForm_disabled");
+        $("#" + formID).find("input[type=submit], input[type=image], input[type=reset], input[type=button]").data("disabled", true).attr("rel", "disabled").attr("disabled", true).addClass("Form_disabled");
 			
         var sendJSON = new Array();
         sendJSON[formName] = send;
@@ -370,7 +370,7 @@ var ajaxform = {
         }
 			
         // Разблокируем кнопки, заблокированные перед отправкой
-        if (!res.redirect) $("#" + formID).find("input[rel=disabled]").data("disabled", false).attr("disabled", false).attr("rel", "").removeClass("cmsForm_disabled");
+        if (!res.redirect) $("#" + formID).find("input[rel=disabled]").data("disabled", false).attr("disabled", false).attr("rel", "").removeClass("Form_disabled");
 			
     }
 		

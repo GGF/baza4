@@ -227,7 +227,7 @@ class ajaxform extends JsCSS {
 
             if ($field[options][length] && mb_strlen($req[$field[name]]) > $field[options][length]) {
 
-                $this->error(AJAXFORM_ERROR_FORMAT, $field[name], cmsLang("cmsForm.error.length") . ": " . $field[options][length]);
+                $this->error(AJAXFORM_ERROR_FORMAT, $field[name], Lang::getString("Form.error.length") . ": " . $field[options][length]);
                 $req[$field[name]] = mb_substr($req[$field[name]], 0, $field[options][length]);
             }
         }
@@ -376,8 +376,6 @@ class ajaxform extends JsCSS {
         } else {
 
             // Если в сессии есть алерт — это значит, что мы находимся в режиме без скриптов
-            //cmsAlert_html($this->_session[alert]);
-            //cmsAlert($this->alert);
             $text = $this->alert;
             $text = addslashes($text);
             $text = str_replace("\n", '\n', $text);
@@ -853,8 +851,8 @@ class ajaxform extends JsCSS {
         $id = $this->getID($name);
 
         $return = "";
-        $return .= ( $underline) ? "<span class='cmsForm_error' id='{$id}_error' style='display: block'><img src='/images/free.gif'></span>" : "";
-        $return .= "<span class='cmsForm_errorText' id='{$id}_errorText' style='display: block'>{$html}</span>"; // для span
+        $return .= ( $underline) ? "<span class='Form_error' id='{$id}_error' style='display: block'><img src='/images/free.gif'></span>" : "";
+        $return .= "<span class='Form_errorText' id='{$id}_errorText' style='display: block'>{$html}</span>"; // для span
         // для растяга…
         $return .= "<script> ajaxform.errorHTML('{$id}', '', ''); </script>"; // уже без " . addSlashes($html) . " — ибо и так выведено
 
@@ -1098,7 +1096,7 @@ class ajaxform extends JsCSS {
 
         echo $this->text("confirm", "", array("length" => 6, "errors" => array("noSpan" => true), "html" => "autocomplete='off'"));
         echo " ";
-        echo "<img src='/?ajaxform[act]=captcha&ajax=ajaxform&formName={$this->name}&rnd=" . array_sum(explode(" ", microtime())) . "' id='" . $this->getID("captcha") . "' class='captcha cmsForm_captcha' title='CAPTCHA' width='" . ajaxform::$captcha[width] . "' height='" . ajaxform::$captcha[height] . "'>";
+        echo "<img src='/?ajaxform[act]=captcha&ajax=ajaxform&formName={$this->name}&rnd=" . array_sum(explode(" ", microtime())) . "' id='" . $this->getID("captcha") . "' class='captcha Form_captcha' title='CAPTCHA' width='" . ajaxform::$captcha[width] . "' height='" . ajaxform::$captcha[height] . "'>";
         echo " ";
         echo "<label><a href='javascript: ajaxform.reloadCaptcha(\"{$this->name}\", \"{$this->uid}\")' class='dashed'>repload...</a></label>";
         echo "<script> $('#" . $this->getID("confirm") . "').keyup(function(e){ ajaxform.cleanCaptcha(e, this); }); </script>";
@@ -1410,7 +1408,6 @@ class ajaxform extends JsCSS {
                 console::getInstance()->error("Поле «{$name}» не найдено в массиве или неверно задан тип ({$array[type]}).");
         }
 
-        //cmsVar($errors, "errors");
         // если есть ошибки — выводим их под поле
         if ($errors)
             $return .= $this->errorHTML($name, implode($errorsHtml), true);
@@ -1513,8 +1510,6 @@ class ajaxform extends JsCSS {
 
                 return ($this->fields[$path][values][$last]) ? $this->fields[$path][values][$last] : null;
             } else {
-
-                //cmsError("Не найдено поле «{$name}»."); // плохо реагирует на незаполненные поля при юзании из-под кеша пользователей
                 return null;
             }
         }

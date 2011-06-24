@@ -44,6 +44,7 @@ $_SERVER["mysql"] = array(
 
 // Временная зона
 date_default_timezone_set("Europe/Moscow");
+$_SERVER["language"] = 'RU';
 
 // Кодировки
 $_SERVER[Encoding] = "UTF-8";     // HTML
