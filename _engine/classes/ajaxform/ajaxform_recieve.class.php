@@ -9,7 +9,7 @@ class ajaxform_recieve {
     public static function init() {
         header("HTTP/1.0 200 OK");
 
-        $json = json::Json_decode($_REQUEST['json']);
+        $json = multibyte::Json_decode($_REQUEST['json']);
 
         if ($json) {
 
@@ -40,16 +40,10 @@ class ajaxform_recieve {
 
     /**
      * 	Функция возвращает обработанный для фронтенда контент
-     * 	@param	string	$content	Текущий контент (то, что вывелось на страницу тем или иным образом)
+     * 	@param	$content string	Текущий контент (то, что вывелось на страницу тем или иным образом)
      */
     public static function process($content) {
 
-        /*
-         */
-
-        // в контенте есть скрипты для вывода в консоль
-        // получается неправильный json
-        //$content = trim(html_entity_decode($content));
         return multibyte::Json_encode(array(
             "js" => self::$result,
             "text" => "{$content}",
@@ -74,7 +68,7 @@ class ajaxform_recieve {
         $content = ob_get_contents();
         ob_end_clean();
 
-        print $content;
+        echo $content;
     }
 
 }

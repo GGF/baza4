@@ -16,7 +16,7 @@ $_SERVER["debug"] = array(
 );
 //$_SERVER["debug"] = false;
 
-if ($_REQUEST[level] == 'update') { //update лучше не выводить отладочный текст. как нить так отлажу
+if ($_REQUEST[level] == 'update' || $_REQUEST[level] == 'getdata') { //update лучше не выводить отладочный текст. как нить так отлажу
     $_SERVER["debug"]["noCache"]["php"] = true;
     $_SERVER["debug"]["report"] = false;
 }
@@ -62,6 +62,10 @@ define("UPLOAD_FILES_DIR", "/files/");
 ob_start();
 include __DIR__ . '/_engine/autoload.php'; // инклудим автозагрузку модулей
 $tmp = ob_get_clean();
+/*
+ * Делать хоть один инстанс нужно для включения скриптов в заголовки
+ */
+Lang::getInstance()->setLang('ru');
 
 // перехватим ошибки
 if ($_SERVER[debug][report]) {
@@ -69,9 +73,10 @@ if ($_SERVER[debug][report]) {
     profiler::add('Autoexec', 'Выполнение начальных установок');
 }
 
+
 header("Content-Type: text/html; charset={$_SERVER[Encoding]}");
 
-if (!($_REQUEST[level] == 'update' || $_REQUEST[level] == 'getdata')) { // update делается без авторизации
+if ($_SERVER["debug"]["report"]) { // update и getdata делается без авторизации
     if (!Auth::getInstance()->run()->success) {
         echo Auth::getInstance()->getOutput();
         echo console::getInstance()->run()->getOutput();

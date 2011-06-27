@@ -1,4 +1,5 @@
 <?php
+include_once 'i18n.php';
 
 class Auth extends lego_abstract {
 
@@ -13,9 +14,7 @@ class Auth extends lego_abstract {
 
     public function __construct($name=false, $directCall = true) {
         if ($directCall) {
-            trigger_error("Нельзя использовать конструктор для" .
-                    "создания класса Auth." .
-                    "Используйте статический метод getInstance()", E_USER_ERROR);
+            trigger_error(Lang::getString('Auth.errors.noconstructor'), E_USER_ERROR);
         }
         parent::__construct($name);
     }
@@ -94,11 +93,10 @@ class Auth extends lego_abstract {
                     $this->success = true;
                     return true;
                 } else {
-                    $mes .= "Не могу найти пользователя по сессии." .
-                            "Обратитесь к разработчику!";
+                    $mes .= Lang::getString('Auth.session.cantfinduser');
                 }
             } else {
-                $mes .= "Сессия не верна или устарела!";
+                $mes .= Lang::getString('Auth.session.old');
             }
         }
 

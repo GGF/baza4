@@ -126,7 +126,6 @@ $(function(){
     prompt.css("border", "1px solid black");
     // скруглим её особым образом, оставив один угл острым:
     prompt.css("border-radius", "7px 7px 0px 7px");
-    prompt.css("-moz-border-radius", "7px 7px 0px 7px");
 
 
     // показать подсказки к клавишам
@@ -250,7 +249,6 @@ $(function(){
         hotmap.css('top', '200px');      //свисая сверху на двухстах пикселях
         hotmap.css('padding', '20px');
         hotmap.css("border-radius", "10px"); //будучи скруглен, как я люблю
-        hotmap.css("-moz-border-radius", "10px");//даже в мозилле
         hotmap.append("<h3>Hot-keys</h3>");
         // и наполняем его самими клавишами и пояснениями из ссылок
         $("a[hotkey]").each(function(){
@@ -264,6 +262,7 @@ $(function(){
             // И дописываем этот текст и клавишу в квадрат:
             hotmap.append("<b>"+hotkey+"</b> "+display_text+"<br />");
         });
+        hotmap.append('<style>@media print { .hotsitemap {display:none;} .hotprompt {display:none;}}</style>');
     }
 
     // скрыть эту карту

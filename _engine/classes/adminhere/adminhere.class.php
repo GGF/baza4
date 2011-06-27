@@ -1,4 +1,5 @@
 ﻿<?
+include 'i18n.php';
 
 class adminhere extends lego_abstract {
 
@@ -21,6 +22,7 @@ class adminhere extends lego_abstract {
         if (Auth::getInstance()->getUser('id') == 1) // только админу
             Output::assign('adminlink', $this->actUri('userwin')->url());
         Output::assign('users', '');
+        Output::assign('linktitle', Lang::getString('Adminhere'));
         if ($this->m->yes()) {
             return $this->fetch('adminhere.tpl');
         }
