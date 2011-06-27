@@ -218,11 +218,16 @@ class sqltable extends lego_abstract {
                 $form->processed("$('#dialog').dialog('close').remove();reload_table();");
             }
         } else {
-            foreach ($form->errors as $err) {
-                $form->alert(print_r($err, true));
-            }
+//            foreach ($form->errors as $err) {
+//                if ($err[type]=='obligatory') {
+//                    //$form->html("Поле {$err[name]} обязательно");
+//                    $form->errorHTML($err["name"]);
+//                } else {
+//                    $form->alert(print_r($err, true));
+//                }
+//            }
             // в случае ошибок обработка без закрытия
-            $form->processed();
+            $form->processed('');
         }
         return '';
     }

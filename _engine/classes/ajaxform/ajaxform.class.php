@@ -1,5 +1,7 @@
 <?
 
+include_once 'i18n.php';
+
 define("AJAXFORM_TYPE_CODE", "code");
 define("AJAXFORM_TYPE_HIDDEN", "hidden");
 define("AJAXFORM_TYPE_TEXT", "text");
@@ -227,7 +229,7 @@ class ajaxform extends JsCSS {
 
             if ($field[options][length] && mb_strlen($req[$field[name]]) > $field[options][length]) {
 
-                $this->error(AJAXFORM_ERROR_FORMAT, $field[name], cmsLang("cmsForm.error.length") . ": " . $field[options][length]);
+                $this->error(AJAXFORM_ERROR_FORMAT, $field[name], Lang::getString("Form.error.length") . ": " . $field[options][length]);
                 $req[$field[name]] = mb_substr($req[$field[name]], 0, $field[options][length]);
             }
         }
@@ -242,7 +244,7 @@ class ajaxform extends JsCSS {
 
                 if ($res === false && $req[$format[name]]) {
 
-                    $html = ($format[type] == AJAXFORM_FORMAT_CUSTOM) ? $format[html] : cmsLang("cmsForm.error.format.{$format[type]}");
+                    $html = ($format[type] == AJAXFORM_FORMAT_CUSTOM) ? $format[html] : Lang::getString("Form.error.format.{$format[type]}");
                     $this->error(AJAXFORM_ERROR_FORMAT, $format[name], $html);
                 } elseif ($res === null) {
 
@@ -277,7 +279,7 @@ class ajaxform extends JsCSS {
                     // НЕ ЗАПОЛНЕННОЕ ПОЛЕ ДЛЯ ЧЕКЕРА НЕ ВАЖНО — ЗДЕСЬ ГЛАВНОЕ, ЧТОБЫ НЕ ЧЕКЕР ЕГО ТАКИМ СДЕЛАЛ
                     // если стало пустым после чекеров или не нашлось
                     if ($checker[type] != AJAXFORM_CHECK_DEFAULT)
-                        $this->error(AJAXFORM_ERROR_CHECK, $name, ($checker[type] == AJAXFORM_CHECK_CUSTOM) ? $checker[html] : $this->Lang_var("cmsForm.error.checker." . $checker[type]));
+                        $this->error(AJAXFORM_ERROR_CHECK, $name, ($checker[type] == AJAXFORM_CHECK_CUSTOM) ? $checker[html] : Lang::getString ("Form.error.checker." . $checker[type]));
                     $errors[$name] = true;
                 }
             }
@@ -295,15 +297,26 @@ class ajaxform extends JsCSS {
                 // после обработки чекером значение стало пустым, или в массиве элемента не нашлось сопоставления значению
                 if ($this->value($name, $req[$name]) === null) {
 
-                    $html = ($field[type] == AJAXFORM_TYPE_CHECKBOX || $field[type] == AJAXFORM_TYPE_RADIO || $field[type] == AJAXFORM_TYPE_SELECT || $field[type] == AJAXFORM_TYPE_FILE) ? $this->Lang_var("cmsForm.error.obligatory." . $field[type]) : $this->Lang_var("cmsForm.error.obligatory.empty");
+                    $html = ($field[type] == AJAXFORM_TYPE_CHECKBOX 
+                            || $field[type] == AJAXFORM_TYPE_RADIO 
+                            || $field[type] == AJAXFORM_TYPE_SELECT 
+                            || $field[type] == AJAXFORM_TYPE_FILE) ?
+                                Lang::getString("Form.error.obligatory." . $field[type]) :
+                                Lang::getString("Form.error.obligatory.empty");
+//                endif;
+//                endif;
 
                     $this->error(AJAXFORM_ERROR_OBLIGATORY, $name, $html);
                 }
 
                 // проверим массив, есть ли там вообще такое значение (достаточно проверить тип —
                 // если СЕЛЕКТ или РАДИО, то null в условии только поэтому может появиться
-                if (($field[type] == AJAXFORM_TYPE_SELECT || $field[type] == AJAXFORM_TYPE_RADIO) && $this->value($name, $req[$name]) === null && !empty($req[$name])) { // было выше в чекерах
-                    $this->error(AJAXFORM_ERROR_OBLIGATORY, $name, cmsLang("cmsForm.error.obligatory.not-found"));
+                if (($field[type] == AJAXFORM_TYPE_SELECT 
+                        || $field[type] == AJAXFORM_TYPE_RADIO) 
+                     && $this->value($name, $req[$name]) === null 
+                     && !empty($req[$name])) { // было выше в чекерах
+                        $this->error(AJAXFORM_ERROR_OBLIGATORY, $name, 
+                                Lang::getString("Form.error.obligatory.not-found"));
                     continue; // был break… само собой не работало
                 }
             }
@@ -315,7 +328,7 @@ class ajaxform extends JsCSS {
 
             if ($req[confirm] != $this->fields[confirm][value]) {
 
-                $this->error(AJAXFORM_ERROR_CONFIRM, "confirm", $this->Lang_var("cmsForm.error.code"));
+                $this->error(AJAXFORM_ERROR_CONFIRM, "confirm", Lang::getString("Form.error.code"));
                 //$this->alert($req[confirm] . "|" . $this->fields[confirm][value]);
             }
         }
@@ -360,7 +373,7 @@ class ajaxform extends JsCSS {
             }
         }
 
-        $out = "<script> ajaxform.fields[\"{$this->name}\"] = " . multibyte::JSON_encode($json) . "; </script>\n";
+        $out = "<script> ajaxform.fields[\"{$this->name}\"] = " . multibyte::JSON_encode($json) . ";</script>\n";
 
         if (!$this->alert) {
 
@@ -376,8 +389,6 @@ class ajaxform extends JsCSS {
         } else {
 
             // Если в сессии есть алерт — это значит, что мы находимся в режиме без скриптов
-            //cmsAlert_html($this->_session[alert]);
-            //cmsAlert($this->alert);
             $text = $this->alert;
             $text = addslashes($text);
             $text = str_replace("\n", '\n', $text);
@@ -392,6 +403,7 @@ class ajaxform extends JsCSS {
 
             $this->sessionSet();
         }
+        return $out;
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -401,7 +413,7 @@ class ajaxform extends JsCSS {
     /**
      * Забирает сессию. При успехе возвращает true
      *
-     * @param		bool		$partial	Забирать ли сессию частично
+     * @param	$partial    boolean	Забирать ли сессию частично
      * @return	bool
      */
     function sessionGet($partial = false) {
@@ -852,8 +864,8 @@ class ajaxform extends JsCSS {
         $id = $this->getID($name);
 
         $return = "";
-        $return .= ( $underline) ? "<span class='cmsForm_error' id='{$id}_error' style='display: block'><img src='/images/free.gif'></span>" : "";
-        $return .= "<span class='cmsForm_errorText' id='{$id}_errorText' style='display: block'>{$html}</span>"; // для span
+        $return .= ( $underline) ? "<span class='Form_error' id='{$id}_error' style='display: block'></span>" : "";
+        $return .= "<span class='Form_errorText' id='{$id}_errorText' style='display: block'>{$html}</span>"; // для span
         // для растяга…
         $return .= "<script> ajaxform.errorHTML('{$id}', '', ''); </script>"; // уже без " . addSlashes($html) . " — ибо и так выведено
 
@@ -1097,7 +1109,7 @@ class ajaxform extends JsCSS {
 
         echo $this->text("confirm", "", array("length" => 6, "errors" => array("noSpan" => true), "html" => "autocomplete='off'"));
         echo " ";
-        echo "<img src='/?ajaxform[act]=captcha&ajax=ajaxform&formName={$this->name}&rnd=" . array_sum(explode(" ", microtime())) . "' id='" . $this->getID("captcha") . "' class='captcha cmsForm_captcha' title='CAPTCHA' width='" . ajaxform::$captcha[width] . "' height='" . ajaxform::$captcha[height] . "'>";
+        echo "<img src='/?ajaxform[act]=captcha&ajax=ajaxform&formName={$this->name}&rnd=" . array_sum(explode(" ", microtime())) . "' id='" . $this->getID("captcha") . "' class='captcha Form_captcha' title='CAPTCHA' width='" . ajaxform::$captcha[width] . "' height='" . ajaxform::$captcha[height] . "'>";
         echo " ";
         echo "<label><a href='javascript: ajaxform.reloadCaptcha(\"{$this->name}\", \"{$this->uid}\")' class='dashed'>repload...</a></label>";
         echo "<script> $('#" . $this->getID("confirm") . "').keyup(function(e){ ajaxform.cleanCaptcha(e, this); }); </script>";
@@ -1409,7 +1421,6 @@ class ajaxform extends JsCSS {
                 console::getInstance()->error("Поле «{$name}» не найдено в массиве или неверно задан тип ({$array[type]}).");
         }
 
-        //cmsVar($errors, "errors");
         // если есть ошибки — выводим их под поле
         if ($errors)
             $return .= $this->errorHTML($name, implode($errorsHtml), true);
@@ -1512,8 +1523,6 @@ class ajaxform extends JsCSS {
 
                 return ($this->fields[$path][values][$last]) ? $this->fields[$path][values][$last] : null;
             } else {
-
-                //cmsError("Не найдено поле «{$name}»."); // плохо реагирует на незаполненные поля при юзании из-под кеша пользователей
                 return null;
             }
         }
@@ -1715,10 +1724,6 @@ class ajaxform extends JsCSS {
         return $out;
     }
 
-    function Lang_var($var) {
-        return $var;
-    }
-    
     // 2 функции преобразования даты для пикера и базы
     public function date2datepicker($date) {
         return!empty($date) ? date("d.m.Y", mktime(0, 0, 0, ceil(substr($date, 5, 2)), ceil(substr($date, 8, 2)), ceil(substr($date, 1, 4)))) : date("d.m.Y");

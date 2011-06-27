@@ -44,6 +44,7 @@ $_SERVER["mysql"] = array(
 
 // Временная зона
 date_default_timezone_set("Europe/Moscow");
+$_SERVER["lang"] = "ru";
 
 // Кодировки
 $_SERVER[Encoding] = "UTF-8";     // HTML
@@ -68,6 +69,11 @@ if ($_SERVER[debug][report]) {
     console::getInstance();//->out(print_r($_REQUEST, true));
     profiler::add('Autoexec', 'Выполнение начальных установок');
 }
+
+/*
+ * Делать хоть один инстанс нужно для включения скриптов в заголовки
+ */
+Lang::getInstance();
 
 header("Content-Type: text/html; charset={$_SERVER[Encoding]}");
 

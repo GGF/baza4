@@ -61,6 +61,7 @@ class lanch_conduct_view extends sqltable_view {
             "name" => "pib",
             "label" => "Плат в блоке",
             "value" => $rec["pib"],
+            "obligatory"    =>  true,
                 //"options"	=>	array( "html" => "size=10", ),
         ));
         array_push($fields, array(
