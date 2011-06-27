@@ -8,6 +8,7 @@
 class Lang extends JsCSS {
 
     static private $lang;
+    static private $langtext;
     static private $instance;
 
     public function __construct($name=false, $directCall = true) {
@@ -25,29 +26,38 @@ class Lang extends JsCSS {
 
     static public function staticConsturct() {
         parent::staticConsturct();
-        self::$lang = array();
+        self::$langtext = array();
     }
 
     public function getDir() {
         return __DIR__;
     }
 
+    public function getJavascripts() {
+        return array($this->getWebDir(__DIR__).'/js/'.self::$lang.'.js',$this->getWebDir(__DIR__).'/js/lang.js',);
+    }
+
     static public function add($array) {
-        self::$lang = array_replace_recursive(self::$lang, $array);
+        self::$langtext = array_replace_recursive(self::$langtext, $array);
     }
 
     static public function getString($var) {
         $var = explode(".", $var);
-        $tmp = self::$lang;
+        $tmp = self::$langtext;
 
         foreach ($var as $v)
             if (isset($tmp[$v]))
                 $tmp = $tmp[$v]; else
                 return implode(".", $var);
 
-        $tmp = $tmp[$_SERVER["lang"]];
+        $tmp = $tmp[self::$lang];
 
         return $tmp;
+    }
+
+    public function setLang($lang='en') {
+        self::$lang = $lang;
+        $_SERVER["lang"] = $lang;
     }
 
 }
