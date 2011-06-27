@@ -8,9 +8,19 @@
 class Lang extends JsCSS {
 
     static private $lang;
-    
-    public function __construct() {
+    static private $instance;
+
+    public function __construct($name=false, $directCall = true) {
+        if ($directCall) {
+            trigger_error(Lang::getString('Lang.errors.noconstructor'), E_USER_ERROR);
+        }
         parent::__construct();
+    }
+
+    static public function getInstance() {
+        return (self::$instance === null) ?
+                self::$instance = new self('Auth', false) :
+                self::$instance;
     }
 
     static public function staticConsturct() {

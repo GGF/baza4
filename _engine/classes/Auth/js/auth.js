@@ -21,7 +21,7 @@ $(document).ready(function(){
             //.prop('checked',member)
             .change(function(){
                 if ($("#password").val()=='') {
-                    alert('Сначала пароль, потом галочку, потом Enter');
+                    alert(Lang.get('Auth.warnings.order'));
                 } else {
                     if ( $(this).prop('checked') )
                         localStorage.setItem('remember',$("#password").val());

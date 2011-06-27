@@ -70,6 +70,11 @@ if ($_SERVER[debug][report]) {
     profiler::add('Autoexec', 'Выполнение начальных установок');
 }
 
+/*
+ * Делать хоть один инстанс нужно для включения скриптов в заголовки
+ */
+Lang::getInstance();
+
 header("Content-Type: text/html; charset={$_SERVER[Encoding]}");
 
 if (!($_REQUEST[level] == 'update' || $_REQUEST[level] == 'getdata')) { // update делается без авторизации

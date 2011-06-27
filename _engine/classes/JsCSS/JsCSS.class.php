@@ -80,7 +80,7 @@ abstract class JsCSS implements IJsCSS {
         foreach (self::$all_jscss as $one) {
             $js = array_merge($js, $one->getJavascripts());
         }
-        $js = array_unique($js);
+        $js = array_unique($js); // не работает. по разным каталогам. надо смотреть хэш файлов
         if (!$_SERVER[debug][noCache][js]) {
             $js = array(cache::buildScript($js, 'js'));
         }
@@ -93,7 +93,7 @@ abstract class JsCSS implements IJsCSS {
         foreach (self::$all_jscss as $one) {
             $css = array_merge($css, $one->getStylesheets());
         }
-        $css = array_unique($css);
+        $css = array_unique($css); // не работает. по разным каталогам. надо смотреть хэш файлов
         if (!$_SERVER[debug][noCache][css]) {
             $css = array(cache::buildScript($css, 'css'));
         }
