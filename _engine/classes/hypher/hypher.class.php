@@ -9,7 +9,7 @@ class hypher {
 
     static public function staticConstruct() {
         // Загрузка файла описания и набора правил.
-        self::$hy_ru = hypher_load(dirname(__FILE__) . '/includes/hyph_ru_RU.conf');
+        self::$hy_ru = hypher_load(__DIR__ . '/includes/hyph_ru_RU.conf');
     }
 
     // "перегрузка" я собираюсь вызывать только с одним словарём. зачем якаждый раз учитыват буду
