@@ -9,7 +9,7 @@ class ajaxform_recieve {
     public static function init() {
         header("HTTP/1.0 200 OK");
 
-        $json = json::Json_decode($_REQUEST['json']);
+        $json = multibyte::Json_decode($_REQUEST['json']);
 
         if ($json) {
 

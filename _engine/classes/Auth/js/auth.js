@@ -1,6 +1,6 @@
 $(document).ready(function(){
-    document.location.hash = '';
-    currentState = document.location.hash
+//    document.location.hash = '';
+//    currentState = document.location.hash
 
     var member = eval(localStorage.getItem('remember'));
     var ri = $("input[name=rememberme]");
