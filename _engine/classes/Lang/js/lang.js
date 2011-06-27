@@ -15,7 +15,7 @@ var Lang = {
             else
                 return index;
         }
-        return tmp['ru'];
+        return tmp[language];
     }
 }
 function array_replace_recursive(arr) {
