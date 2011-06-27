@@ -36,15 +36,14 @@ var ajaxform = {
          */
         resize: function(){
             for (id in this.elements) {
-                //alert(id + ", Ширина " + $("#" + id).width());
                 var w = $("#" + this.elements[id]).outerWidth(true);
                 var h = $("#" + this.elements[id]).outerHeight(true);
                 var c = $("#" + this.elements[id]).position();
 					
                 $("#" + id + "_error").css({
                     width:	w,
-                    top:		c.top + h,
-                    left:		c.left
+                    top:	c.top + h,
+                    left:	c.left
                 });
 					
             }

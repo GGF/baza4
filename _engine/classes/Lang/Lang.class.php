@@ -8,6 +8,10 @@
 class Lang extends JsCSS {
 
     static private $lang;
+    
+    public function __construct() {
+        parent::__construct();
+    }
 
     static public function staticConsturct() {
         parent::staticConsturct();
