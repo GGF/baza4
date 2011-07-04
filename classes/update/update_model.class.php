@@ -60,7 +60,7 @@ class update_model {
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
             if ($customer == "Импульс") {
-                $rs[0].="\\{$drillname}";
+                $rs[kdir] .= "\\{$drillname}";
                 $mpp = -1;
             }
             $out = "mkdir k:\\{$rs[kdir]}" . ($mpp != -1 ? "\\MPP" : "") . "\\\n";
