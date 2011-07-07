@@ -74,9 +74,9 @@ class ajaxform_edit {
         if ($field["obligatory"])
             $this->form->addObligatory($field["name"]);
         if ($field["format"])
-            $this->form->addFormat($field["format"]["name"], $field["format"]["type"], $field["format"]["pregPattern"]);
+            $this->form->addFormat($field["name"], $field["format"]["type"], $field["format"]["pregPattern"]);
         if ($field["check"])
-            $this->form->addChecker($field["check"]["name"], $field["check"]["type"], $field["check"]["pregPattern"], $field["check"]["pregReplace"]);
+            $this->form->addChecker($field["name"], $field["check"]["type"], $field["check"]["pregPattern"], $field["check"]["pregReplace"]);
         return $nunid;
     }
 

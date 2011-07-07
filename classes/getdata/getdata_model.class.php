@@ -23,6 +23,17 @@ class getdata_model extends sqltable_model {
         $out .= json_encode($res);
         return $out;
     }
+
+    public function textolite($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        extract($rec);
+        $out = '';
+        $sql = "SELECT * FROM `zaomppsklads`.`sk_mat__spr` ORDER BY nazv";
+        $res[textolite] = sql::fetchAll($sql);
+        $out .= json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
+        return $out;
+    }
+
 }
 
 ?>

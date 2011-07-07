@@ -14,22 +14,39 @@ class storage_rest_view extends sqltable_view {
 			array(
 				"type"		=> AJAXFORM_TYPE_TEXT,
 				"name"		=> "nazv",
-				"label"			=>'Наименование:',
+				"label"		=>'Наименование:',
 				"value"		=> $rec["nazv"],
 				"options"	=>	array( "html" => "size=70", ),
 			),
 			array(
 				"type"		=> AJAXFORM_TYPE_TEXT,
 				"name"		=> "edizm",
-				"label"			=>'Единица измерения:',
+				"label"		=>'Единица измерения:',
 				"value"		=> $rec["edizm"],
 				"options"	=>	array( "html" => "size=10", ),
 			),
 			array(
 				"type"		=> AJAXFORM_TYPE_TEXT,
+				"name"		=> "spr_price",
+				"label"		=>'Последняя цена:',
+				"value"		=> $rec["spr_price"],
+                                "check"         => array( "type" => AJAXFORM_CHECK_NUMERIC),
+				"options"	=>	array( "html" => "size=10", ),
+			),
+			array(
+				"type"		=> AJAXFORM_TYPE_TEXT,
+				"name"		=> "koeff",
+				"label"		=>'Коэфф. перевода в обчные единицы:',
+				"value"		=> $rec["koeff"],
+                                "check"         => array( "type" => AJAXFORM_CHECK_NUMERIC),
+				"options"	=>	array( "html" => "size=10", ),
+			),
+			array(
+				"type"		=> AJAXFORM_TYPE_TEXT,
 				"name"		=> "krost",
-				"label"			=>'Критический остаток:',
+				"label"		=>'Критический остаток:',
 				"value"		=> $rec["krost"],
+                                "check"         => array( "type" => AJAXFORM_CHECK_NUMERIC),
 				"options"	=>	array( "html" => "size=10", ),
 			)
         );
