@@ -21,6 +21,8 @@ class storage_rest_model extends storage_model {
         $cols = array();
         $cols[nazv] = "Название";
         $cols[edizm] = "Ед.Изм.";
+        $cols[spr_price] = "Цена";
+        $cols[koeff] = "Коэфф";
         $cols[ost] = "Остаток на складе";
         $cols[krost] = "Крит. кол-во";
         $cols[malo] = "Внимание";
@@ -77,13 +79,13 @@ class storage_rest_model extends storage_model {
     public function setRecord($data) {
         extract($data);
         if (empty($edit)) {
-            $sql = "INSERT INTO {$this->db}sk_{$this->sklad}_spr (nazv,edizm,krost) VALUES ({$nazv},{$edizm},{$krost})";
+            $sql = "INSERT INTO {$this->db}sk_{$this->sklad}_spr (nazv,edizm,spr_price,koeff,krost) VALUES ({$nazv},{$edizm},{$spr_price},{$koeff},{$krost})";
             sql::query($sql);
             $sprid = sql::lastId();
             $sql = "INSERT INTO {$this->db}sk_{$this->sklad}_ost (spr_id,ost) VALUES ('{$sprid}','0')";
             sql::query($sql);
         } else {
-            $sql = "UPDATE {$this->db}sk_{$this->sklad}_spr SET nazv='{$nazv}', edizm='{$edizm}', krost='{$krost}' WHERE id='{$edit}'";
+            $sql = "UPDATE {$this->db}sk_{$this->sklad}_spr SET nazv='{$nazv}', edizm='{$edizm}', spr_price='{$spr_price}', koeff='{$koeff}', krost='{$krost}' WHERE id='{$edit}'";
             sql::query($sql);
         }
         return true;//sql::affected();
