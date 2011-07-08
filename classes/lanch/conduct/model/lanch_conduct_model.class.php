@@ -5,6 +5,11 @@
  */
 
 class lanch_conduct_model extends sqltable_model {
+    
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'condustors';
+    }
 
     public function getData($all=false,$order='',$find='',$idstr='') {
         $ret = array();

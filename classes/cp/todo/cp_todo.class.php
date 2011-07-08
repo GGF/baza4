@@ -6,7 +6,7 @@ class cp_todo extends sqltable {
     public function getDir() {
         return __DIR__;
     }
-
+    
     public function action_edit($id) {
         if (!Auth::getInstance()->getRights($this->getName(),'edit'))
             return $this->view->getMessage('Нет прав на редактирование');

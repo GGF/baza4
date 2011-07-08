@@ -32,7 +32,7 @@ class Auth extends lego_abstract {
         // Почистим устаревшие сессии
         $sql = "DELETE FROM session " .
                 "WHERE UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(ts) > 3600*8";
-        if (sql::query($sql, array(), SQL_LOG_BLOCK) === false) {
+        if (sql::query($sql) === false) {
             // неправильный запрос - видимо изза отсутствия таблиц
             $this->install();
         }
@@ -62,11 +62,11 @@ class Auth extends lego_abstract {
         if (!empty($sessionid)) {
             $sql1 = "SELECT * FROM session " .
                     "WHERE session ='{$sessionid}'";
-            $rs = sql::fetchOne($sql1, array(), SQL_LOG_BLOCK);
+            $rs = sql::fetchOne($sql1);
             if (!empty($rs)) {
                 $sql = "SELECT * FROM users " .
                         "WHERE id='{$rs["u_id"]}'";
-                $rs = sql::fetchOne($sql, array(), SQL_LOG_BLOCK);
+                $rs = sql::fetchOne($sql);
                 if (!empty($rs)) {
                     $this->user["username"] = $rs["nik"];
                     $this->user["userid"] = $rs["id"];
@@ -74,7 +74,7 @@ class Auth extends lego_abstract {
                     $this->user["u_id"] = $rs["id"];
                     $this->user["id"] = $rs["id"];
                     $sql = "UPDATE session SET ts=NOW() WHERE session='{$sessionid}'";
-                    sql::query($sql, array(), SQL_LOG_BLOCK);
+                    sql::query($sql);
                     // права
                     if (empty($_SESSION["rights"])) {
                         $sql = "SELECT rights.right,type,rtype FROM rights " .
@@ -82,7 +82,7 @@ class Auth extends lego_abstract {
                                 "ON (rtypes.id=type_id " .
                                 "AND rrtypes.id=rtype_id) " .
                                 "WHERE u_id='{$rs["id"]}'";
-                        $res = sql::fetchAll($sql, array(), SQL_LOG_BLOCK);
+                        $res = sql::fetchAll($sql);
                         foreach ($res as $rs) {
                             if ($rs["right"] == '1') {
                                 $_SESSION["rights"][$rs["type"]][$rs["rtype"]] = true;
@@ -114,11 +114,11 @@ class Auth extends lego_abstract {
         // ------------------------------------
         $sql = "SELECT * FROM users " .
                 "WHERE password='{$_REQUEST["password"]}'";
-        $res = sql::fetchOne($sql, array(), SQL_LOG_BLOCK);
+        $res = sql::fetchOne($sql);
         if ($res) {
             $sql = "INSERT INTO session (session,u_id) " .
                     "VALUES ('" . session_id() . "','{$res[id]}')";
-            sql::query($sql, array(), SQL_LOG_BLOCK);
+            sql::query($sql);
         }
         //return print_r($_REQUEST,true);
         $_SESSION["cache"] = array();
@@ -129,7 +129,7 @@ class Auth extends lego_abstract {
     public function action_logout() {
         $sql = "DELETE FROM session WHERE session='" . session_id() . "'";
         echo "<script>localStorage.clear();</script>";
-        sql::query($sql, array(), SQL_LOG_BLOCK);
+        sql::query($sql);
         // Unset all of the session variables.
         session_unset();
         // Finally, destroy the session.

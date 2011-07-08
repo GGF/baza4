@@ -9,6 +9,15 @@ class storage extends secondlevel {
     public function init() {
         parent::init();
         CTitle::addSection("Склады | " . storages::$storages[$_SESSION[storagetype]][title]);
+        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`sk_{$this->sklad}_spr`";
+        if (!sql::query($sql)) {
+            $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
+            $replace = array(
+                "storagebase" => $_SERVER["storagebase"],
+                "storage"   =>  storages::$storages[$_SESSION[storagetype]][sklad],
+            );
+            $this->install($replace); // если не получилось прочитать комментарии нужно создать базу и таблицы
+        }
     }
 
     public function __call($name, $arguments) {
@@ -45,7 +54,7 @@ class storage extends secondlevel {
         $_SESSION[storagetype] = '';
         parent::action_back('storages');
     }
-
+    
 }
 
 ?>

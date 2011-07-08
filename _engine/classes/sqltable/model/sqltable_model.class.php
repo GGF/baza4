@@ -6,12 +6,17 @@ class sqltable_model {
     public $idstr;
 
     public function __construct() {
-        $this->maintable = '';
+        $this->maintable = 'coments';
         $this->idstr = '';
     }
 
     public function init() {
-        
+        if (empty($this->maintable)) {
+            return true;
+        } else {
+            $sql = "SELECT COUNT(*) FROM {$this->maintable}";
+            return sql::query($sql); // если будет ошибка придется создавать таблицы
+        }
     }
 
     public function getData($all=false, $order='', $find='', $idstr='') {

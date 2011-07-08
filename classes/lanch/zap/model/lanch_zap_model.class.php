@@ -5,6 +5,11 @@
  */
 
 class lanch_zap_model extends sqltable_model {
+    
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'lanch';
+    }
 
     public function getData($all=false,$order='',$find='',$idstr='') {
         $ret = array();
