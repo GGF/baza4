@@ -9,7 +9,9 @@ class storage extends secondlevel {
     public function init() {
         parent::init();
         CTitle::addSection("Склады | " . storages::$storages[$_SESSION[storagetype]][title]);
-        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`sk_{$this->sklad}_spr`";
+        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`sk_" .
+                storages::$storages[$_SESSION[storagetype]][sklad] .
+                "_spr`";
         if (!sql::query($sql)) {
             $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
             $replace = array(
