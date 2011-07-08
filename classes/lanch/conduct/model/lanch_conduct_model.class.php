@@ -8,7 +8,7 @@ class lanch_conduct_model extends sqltable_model {
     
     public function __construct() {
         parent::__construct();
-        $this->maintable = 'condustors';
+        $this->maintable = 'conductors';
     }
 
     public function getData($all=false,$order='',$find='',$idstr='') {
