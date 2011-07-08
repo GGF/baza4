@@ -2,7 +2,13 @@
 
 class storage extends secondlevel {
 
-    //public $type;
+    public function getDir() {
+        return __DIR__;
+        /*
+         * это строка должна быть в каждом лего, но фишка в том, что шаблоны
+         * отрисовки у первого левела. А скрипты прямо тут. Нужно наследовать шаблоны.
+         */
+    }
 
     private $need_yaer_arc;
 
@@ -16,7 +22,7 @@ class storage extends secondlevel {
             $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
             $replace = array(
                 "storagebase" => $_SERVER["storagebase"],
-                "storage"   =>  storages::$storages[$_SESSION[storagetype]][sklad],
+                "storage" => storages::$storages[$_SESSION[storagetype]][sklad],
             );
             $this->install($replace); // если не получилось прочитать комментарии нужно создать базу и таблицы
         }
@@ -56,7 +62,7 @@ class storage extends secondlevel {
         $_SESSION[storagetype] = '';
         parent::action_back('storages');
     }
-    
+
 }
 
 ?>

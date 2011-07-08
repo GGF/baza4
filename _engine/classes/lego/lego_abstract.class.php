@@ -288,16 +288,32 @@ abstract class lego_abstract extends JsCSS {
                echo "install complete";
         }
     }
-
+    
     public function fetch($template) {
+        /* 
+            тут проблемы с отрисовкой, нужно наследовать шаблоны
+        */
         if ($_SERVER[debug][report])
-            profiler::add("Выполнение", $this->name . ": начало отрисовки");
-        $templatedir = Output::getTemplateCompiler()->getTemplateDir();
-        Output::getTemplateCompiler()->setTemplateDir($this->getViewDir());
-        $content = Output::fetch($template);
-        Output::getTemplateCompiler()->setTemplateDir($templatedir);
+            profiler::add("Выполнение", "{$this->name}: {$template} начало отрисовки");
+        // найдем шаблон
+        $obj = $this;
+        while($obj) {
+            if(file_exists($obj->getViewDir().'/'.$template)) {
+                $templatedir = Output::getTemplateCompiler()->getTemplateDir();
+                Output::getTemplateCompiler()->setTemplateDir($obj->getViewDir());
+                $content = Output::fetch($template);
+                Output::getTemplateCompiler()->setTemplateDir($templatedir);
+                break;
+            }
+            $parentclass = get_parent_class($obj);
+            if ($parentclass) {
+                $obj = new $parentclass();
+            } else {
+                $obj = false;
+            }
+        }
         if ($_SERVER[debug][report])
-            profiler::add("Выполнение", $this->name . ": конец отрисовки");
+            profiler::add("Выполнение", "{$this->name}: {$template} конец отрисовки");
         return $content;
     }
 
