@@ -66,7 +66,10 @@ class storages extends firstlevel {
         $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`coments`"; // мне не нравится что имя таблицы с ошибкой
         if (!sql::query($sql)) {
             $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
-            $this->install(); // если не получилось прочитать комментарии нужно создать базу и таблицы
+            $replace = array(
+                "storagebase" => $_SERVER["storagebase"],
+            );
+            $this->install($replace); // если не получилось прочитать комментарии нужно создать базу и таблицы
         }
         CTitle::addSection('Склады');
     }

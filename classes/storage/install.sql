@@ -20,13 +20,13 @@ SET time_zone = "+00:00";
 -- База данных: `zaomppsklads`
 --
 
-USE 'zaomppsklads1';
+USE `%storagebase%`;
 
 --
--- Структура таблицы `sk_test__dvizh`
+-- Структура таблицы `sk_%storage%_dvizh`
 --
 
-CREATE TABLE IF NOT EXISTS `sk_test__dvizh` (
+CREATE TABLE IF NOT EXISTS `sk_%storage%_dvizh` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `numd` varchar(10) NOT NULL DEFAULT '',
@@ -45,10 +45,10 @@ CREATE TABLE IF NOT EXISTS `sk_test__dvizh` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `sk_test__dvizh_arc`
+-- Структура таблицы `sk_%storage%_dvizh_arc`
 --
 
-CREATE TABLE IF NOT EXISTS `sk_test__dvizh_arc` (
+CREATE TABLE IF NOT EXISTS `sk_%storage%_dvizh_arc` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `numd` varchar(10) NOT NULL DEFAULT '',
@@ -67,10 +67,10 @@ CREATE TABLE IF NOT EXISTS `sk_test__dvizh_arc` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `sk_test__ost`
+-- Структура таблицы `sk_%storage%_ost`
 --
 
-CREATE TABLE IF NOT EXISTS `sk_test__ost` (
+CREATE TABLE IF NOT EXISTS `sk_%storage%_ost` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
   `spr_id` bigint(10) NOT NULL DEFAULT '0',
   `ost` float(12,3) NOT NULL DEFAULT '0.000',
@@ -80,10 +80,10 @@ CREATE TABLE IF NOT EXISTS `sk_test__ost` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `sk_test__postav`
+-- Структура таблицы `sk_%storage%_postav`
 --
 
-CREATE TABLE IF NOT EXISTS `sk_test__postav` (
+CREATE TABLE IF NOT EXISTS `sk_%storage%_postav` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
   `supply` varchar(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
@@ -92,10 +92,10 @@ CREATE TABLE IF NOT EXISTS `sk_test__postav` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `sk_test__spr`
+-- Структура таблицы `sk_%storage%_spr`
 --
 
-CREATE TABLE IF NOT EXISTS `sk_test__spr` (
+CREATE TABLE IF NOT EXISTS `sk_%storage%_spr` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
   `nazv` varchar(50) NOT NULL DEFAULT '',
   `edizm` varchar(10) NOT NULL DEFAULT '',
@@ -112,10 +112,10 @@ CREATE TABLE IF NOT EXISTS `sk_test__spr` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `sk_arc_test__dvizh`
+-- Структура таблицы `sk_arc_%storage%_dvizh`
 --
 
-CREATE TABLE IF NOT EXISTS `sk_arc_test__dvizh` (
+CREATE TABLE IF NOT EXISTS `sk_arc_%storage%_dvizh` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `numd` varchar(10) NOT NULL DEFAULT '',
@@ -134,10 +134,10 @@ CREATE TABLE IF NOT EXISTS `sk_arc_test__dvizh` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `sk_arc_test__ost`
+-- Структура таблицы `sk_arc_%storage%_ost`
 --
 
-CREATE TABLE IF NOT EXISTS `sk_arc_test__ost` (
+CREATE TABLE IF NOT EXISTS `sk_arc_%storage%_ost` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
   `spr_id` bigint(10) NOT NULL DEFAULT '0',
   `ost` float NOT NULL DEFAULT '0',
@@ -147,10 +147,10 @@ CREATE TABLE IF NOT EXISTS `sk_arc_test__ost` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `sk_arc_test__spr`
+-- Структура таблицы `sk_arc_%storage%_spr`
 --
 
-CREATE TABLE IF NOT EXISTS `sk_arc_test__spr` (
+CREATE TABLE IF NOT EXISTS `sk_arc_%storage%_spr` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
   `nazv` varchar(50) NOT NULL DEFAULT '',
   `edizm` varchar(10) NOT NULL DEFAULT '',

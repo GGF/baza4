@@ -5,6 +5,11 @@
  */
 
 class cp_users_model extends sqltable_model {
+    
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'users';
+    }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
@@ -32,12 +37,6 @@ class cp_users_model extends sqltable_model {
         $sql = "DELETE FROM rights WHERE u_id='{$id}'";
         sql::query($sql);
         return sql::affected();
-    }
-
-    public function getRecord($id) {
-        $sql = "SELECT * FROM users WHERE id='{$id}'";
-        $rec = sql::fetchOne($sql);
-        return $rec;
     }
 
     public function  setRecord($data) {

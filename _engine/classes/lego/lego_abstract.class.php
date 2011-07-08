@@ -283,8 +283,8 @@ abstract class lego_abstract extends JsCSS {
         return $array[$key_name];
     }
 
-    public function install() {
-        if (sql::queryfile($this->dir . "/install.sql")) {
+    public function install($replace=array()) {
+        if (sql::queryfile($this->dir . "/install.sql",$replace)) {
                echo "install complete";
         }
     }

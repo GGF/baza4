@@ -6,7 +6,7 @@ class sqltable_model {
     public $idstr;
 
     public function __construct() {
-        $this->maintable = '';
+        $this->maintable = 'coments';
         $this->idstr = '';
     }
 
