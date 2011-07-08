@@ -28,7 +28,7 @@ $_SERVER[CACHE] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 $_SERVER["mysql"] = array(
     "lang" => array(
         "host" => "servermpp.mpp",
-        "base" => "zaompp",
+        "base" => "zaompp1",
         "name" => "root",
         "pass" => "MMnnHs",
         "log" => array(
@@ -41,6 +41,8 @@ $_SERVER["mysql"] = array(
         "persistent" => true,
     ),
 );
+
+$_SERVER[storagebase] = "zaomppsklads1";
 
 // Временная зона
 date_default_timezone_set("Europe/Moscow");

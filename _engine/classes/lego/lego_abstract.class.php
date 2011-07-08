@@ -63,23 +63,12 @@ abstract class lego_abstract extends JsCSS {
         Output::assign("lego", $this);
         $act = $this->getAction();
         $method_name = "action_$act";
-//        if (!method_exists($this, $method_name))
-//            $method_name = "action_default";
-        //if (method_exists($this, $method_name)) {
-            try {
-                $this->current_action = $act;
-                $this->output = call_user_func_array(array($this, $method_name), $this->getActionParams());
-                //$this->output = $this->{$method_name}();
-            } catch (Exception $e) {
-                if (preg_match("/Table .*? doesn't exist/i", $e->getMessage())) {
-                    $this->install();
-                }
-                $this->output = $this->_404("wrong action ($method_name) [class=" . get_class($this) . "]" . $e->getMessage());
-                //throw $e;
-            }
-        //}
-        //else
-        //  $this->output = $this->_404("wrong action ($method_name) [class=" . get_class($this) . "]");
+        try {
+            $this->current_action = $act;
+            $this->output = call_user_func_array(array($this, $method_name), $this->getActionParams());
+        } catch (Exception $e) {
+            $this->output = $this->_404("wrong action ($method_name) [class=" . get_class($this) . "]" . $e->getMessage());
+        }
         Output::assign("lego", $this->runner());
         return $this->afterRun();
     }
@@ -295,9 +284,9 @@ abstract class lego_abstract extends JsCSS {
     }
 
     public function install() {
-        if (file_exists($this->dir . "/install.sql"))
-            sql::query(file_get_contents($this->dir . "/install.sql"));
-        echo "install complete";
+        if (sql::queryfile($this->dir . "/install.sql")) {
+               echo "install complete";
+        }
     }
 
     public function fetch($template) {

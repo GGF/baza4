@@ -84,12 +84,8 @@ class sql {
     }
 
     static function query($sql='') {
-        if ($_SERVER[debug][report])
-            profiler::add("Выполнение", "MySQL: Начало выполения запроса");
         $args = func_get_args();
         $ret = call_user_func_array(array(&sql::$lang, "query"), $args);
-        if ($_SERVER[debug][report])
-            profiler::add("Выполнение", "MySQL: Конец выполнения запроса");
         return $ret;
     }
 

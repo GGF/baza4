@@ -71,10 +71,10 @@ class storage_rest_model extends storage_model {
         return $affected;
     }
 
-    public function getRecord($edit) {
-        $sql = "SELECT * FROM {$this->db}sk_{$this->sklad}_spr WHERE id='{$edit}'";
-        return parent::getRecord($sql);
-    }
+//    public function getRecord($edit) {
+//        $sql = "SELECT * FROM {$this->db}sk_{$this->sklad}_spr WHERE id='{$edit}'";
+//        return parent::getRecord($sql);
+//    }
 
     public function setRecord($data) {
         extract($data);
