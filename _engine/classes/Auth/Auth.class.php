@@ -6,6 +6,7 @@ class Auth extends lego_abstract {
     public $success;
     public $user;
     public $rigths;
+    public static $lss;
     static private $instance;
 
     public function getDir() {
@@ -91,6 +92,8 @@ class Auth extends lego_abstract {
                     }
                     $this->rights = $_SESSION["rights"];
                     $this->success = true;
+                    // определимся с сессией окна
+                    Auth::$lss = !empty($_REQUEST["lss"])?$_REQUEST["lss"]:"lss";
                     return true;
                 } else {
                     $mes .= Lang::getString('Auth.session.cantfinduser');
