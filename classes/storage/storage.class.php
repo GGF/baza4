@@ -2,19 +2,27 @@
 
 class storage extends secondlevel {
 
-    //public $type;
+    public function getDir() {
+        return __DIR__;
+        /*
+         * это строка должна быть в каждом лего, но фишка в том, что шаблоны
+         * отрисовки у первого левела. А скрипты прямо тут. Нужно наследовать шаблоны.
+         */
+    }
 
     private $need_yaer_arc;
 
     public function init() {
         parent::init();
-        CTitle::addSection("Склады | " . storages::$storages[$_SESSION[storagetype]][title]);
-        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`sk_{$this->sklad}_spr`";
+        CTitle::addSection("Склады | " . storages::$storages[$_SESSION[Auth::$lss][storagetype]][title]);
+        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`sk_" .
+                storages::$storages[$_SESSION[Auth::$lss][storagetype]][sklad] .
+                "_spr`";
         if (!sql::query($sql)) {
             $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
             $replace = array(
                 "storagebase" => $_SERVER["storagebase"],
-                "storage"   =>  storages::$storages[$_SESSION[storagetype]][sklad],
+                "storage" => storages::$storages[$_SESSION[Auth::$lss][storagetype]][sklad],
             );
             $this->install($replace); // если не получилось прочитать комментарии нужно создать базу и таблицы
         }
@@ -24,6 +32,7 @@ class storage extends secondlevel {
         $arguments[nooutput] = true;
         parent::__call($name, $arguments);
         $this->need_yaer_arc = $this->table->model->getNeedArc();
+        //console::getInstance()->out("lss=".Auth::$lss." ".print_r($_SESSION,true));
 
         if ($this->table->run()) {
             if (Ajax::isAjaxRequest()) {
@@ -51,10 +60,10 @@ class storage extends secondlevel {
     }
 
     public function action_back() {
-        $_SESSION[storagetype] = '';
+        $_SESSION[Auth::$lss][storagetype] = '';
         parent::action_back('storages');
     }
-    
+
 }
 
 ?>

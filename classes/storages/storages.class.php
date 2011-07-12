@@ -84,7 +84,9 @@ class storages extends firstlevel {
     }
 
     public function __call($name, $arguments) {
-        $_SESSION[storagetype] = str_replace('action_', '', $name);
+        // тут надо разбить указатель на склад по локальному окну
+        // то есть из скрипта получить значение
+        $_SESSION[Auth::$lss][storagetype] = str_replace('action_', '', $name);
         $name = 'action_storage';
         parent::__call($name, $arguments);
     }
