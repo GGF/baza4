@@ -5,6 +5,11 @@
  */
 
 class cp_todo_model extends sqltable_model {
+    
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'todo';
+    }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();

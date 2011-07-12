@@ -4,9 +4,17 @@ class secondlevel extends firstlevel {
 
     protected $table;
 
+    public function getDir() {
+        return __DIR__;
+        /*
+         * это строка должна быть в каждом лего, но фишка в том, что шаблоны
+         * отрисовки у первого левела. А скрипты прямо тут. Нужно наследовать шаблоны.
+         */
+    }
     public function init() {
         parent::init();
         new sqltable(); // для включения css и скриптов
+        new firstlevel();// для включения css и скриптов (в основном css) там понимаешь хранится шаблон для всего)
     }
 
     public function __call($name, $arguments) {
@@ -39,7 +47,7 @@ class secondlevel extends firstlevel {
             Output::assign('menu', $this->getIndexMenu());
             Output::setContent($this->table->getOutput());
             return $this->fetch("body_base.tpl");
-        }
+        }        
     }
 
     public function action_back($parent='') {

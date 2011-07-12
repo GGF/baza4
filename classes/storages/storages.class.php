@@ -51,10 +51,26 @@ class storages extends firstlevel {
             sklad => 'test_',
             title => 'Склад для отладки'
         ),
+        test1 => array(
+            sklad => 'test1_',
+            title => 'Склад для отладки1'
+        ),
     );
+
+    public function __construct($name=false) {
+        parent::__construct($name);
+    }
 
     public function init() {
         parent::init();
+        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`coments`"; // мне не нравится что имя таблицы с ошибкой
+        if (!sql::query($sql)) {
+            $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
+            $replace = array(
+                "storagebase" => $_SERVER["storagebase"],
+            );
+            $this->install($replace); // если не получилось прочитать комментарии нужно создать базу и таблицы
+        }
         CTitle::addSection('Склады');
     }
 
@@ -68,7 +84,9 @@ class storages extends firstlevel {
     }
 
     public function __call($name, $arguments) {
-        $_SESSION[storagetype] = str_replace('action_', '', $name);
+        // тут надо разбить указатель на склад по локальному окну
+        // то есть из скрипта получить значение
+        $_SESSION[Auth::$lss][storagetype] = str_replace('action_', '', $name);
         $name = 'action_storage';
         parent::__call($name, $arguments);
     }

@@ -7,8 +7,9 @@ class storage_model extends sqltable_model {
 
     public function __construct() {
         parent::__construct();
-        $this->db = '`zaomppsklads`.';
-        $this->sklad = storages::$storages[$_SESSION[storagetype]][sklad];
+        $this->db = "`$_SERVER[storagebase]`.";
+        $this->sklad = storages::$storages[$_SESSION[Auth::$lss][storagetype]][sklad];
+        $this->maintable = "{$this->db}sk_{$this->sklad}_spr";
     }
 
     public function getNeedArc() {

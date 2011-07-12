@@ -84,12 +84,8 @@ class sql {
     }
 
     static function query($sql='') {
-        if ($_SERVER[debug][report])
-            profiler::add("Выполнение", "MySQL: Начало выполения запроса");
         $args = func_get_args();
         $ret = call_user_func_array(array(&sql::$lang, "query"), $args);
-        if ($_SERVER[debug][report])
-            profiler::add("Выполнение", "MySQL: Конец выполнения запроса");
         return $ret;
     }
 
@@ -125,7 +121,7 @@ class sql {
         return call_user_func_array(array(&sql::$lang, "insertUpdate"), $args);
     }
 
-    static public function queryfile($file) {
+    static public function queryfile($file,$replace=array()) {
         if (file_exists($file)) {
             $file = file_get_contents($file);
             $sqls = explode(';', $file);
@@ -133,7 +129,7 @@ class sql {
                 $sql=trim($sql);
                 if (empty ($sql))                    
                     continue;
-                if(!self::query($sql)) {
+                if(!self::query($sql,$replace)) {
                     self::error(true);
                     return false;
                 }

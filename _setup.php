@@ -42,6 +42,8 @@ $_SERVER["mysql"] = array(
     ),
 );
 
+$_SERVER[storagebase] = "zaomppsklads";
+
 // Временная зона
 date_default_timezone_set("Europe/Moscow");
 

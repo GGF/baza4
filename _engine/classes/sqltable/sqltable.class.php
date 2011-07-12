@@ -105,7 +105,8 @@ class sqltable extends lego_abstract {
             if (!class_exists($classname))
                 throw new Exception("Нет класса {$classname}");
             $this->model = new $classname();
-            $this->model->init();
+            if (!$this->model->init())
+                $this->install ();
         } catch (Exception $e) {
             console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
         }

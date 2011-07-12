@@ -63,23 +63,12 @@ abstract class lego_abstract extends JsCSS {
         Output::assign("lego", $this);
         $act = $this->getAction();
         $method_name = "action_$act";
-//        if (!method_exists($this, $method_name))
-//            $method_name = "action_default";
-        //if (method_exists($this, $method_name)) {
-            try {
-                $this->current_action = $act;
-                $this->output = call_user_func_array(array($this, $method_name), $this->getActionParams());
-                //$this->output = $this->{$method_name}();
-            } catch (Exception $e) {
-                if (preg_match("/Table .*? doesn't exist/i", $e->getMessage())) {
-                    $this->install();
-                }
-                $this->output = $this->_404("wrong action ($method_name) [class=" . get_class($this) . "]" . $e->getMessage());
-                //throw $e;
-            }
-        //}
-        //else
-        //  $this->output = $this->_404("wrong action ($method_name) [class=" . get_class($this) . "]");
+        try {
+            $this->current_action = $act;
+            $this->output = call_user_func_array(array($this, $method_name), $this->getActionParams());
+        } catch (Exception $e) {
+            $this->output = $this->_404("wrong action ($method_name) [class=" . get_class($this) . "]" . $e->getMessage());
+        }
         Output::assign("lego", $this->runner());
         return $this->afterRun();
     }
@@ -294,21 +283,37 @@ abstract class lego_abstract extends JsCSS {
         return $array[$key_name];
     }
 
-    public function install() {
-        if (file_exists($this->dir . "/install.sql"))
-            sql::query(file_get_contents($this->dir . "/install.sql"));
-        echo "install complete";
+    public function install($replace=array()) {
+        if (sql::queryfile($this->dir . "/install.sql",$replace)) {
+               echo "install complete";
+        }
     }
-
+    
     public function fetch($template) {
+        /* 
+            тут проблемы с отрисовкой, нужно наследовать шаблоны
+        */
         if ($_SERVER[debug][report])
-            profiler::add("Выполнение", $this->name . ": начало отрисовки");
-        $templatedir = Output::getTemplateCompiler()->getTemplateDir();
-        Output::getTemplateCompiler()->setTemplateDir($this->getViewDir());
-        $content = Output::fetch($template);
-        Output::getTemplateCompiler()->setTemplateDir($templatedir);
+            profiler::add("Выполнение", "{$this->name}: {$template} начало отрисовки");
+        // найдем шаблон
+        $obj = $this;
+        while($obj) {
+            if(file_exists($obj->getViewDir().'/'.$template)) {
+                $templatedir = Output::getTemplateCompiler()->getTemplateDir();
+                Output::getTemplateCompiler()->setTemplateDir($obj->getViewDir());
+                $content = Output::fetch($template);
+                Output::getTemplateCompiler()->setTemplateDir($templatedir);
+                break;
+            }
+            $parentclass = get_parent_class($obj);
+            if ($parentclass) {
+                $obj = new $parentclass();
+            } else {
+                $obj = false;
+            }
+        }
         if ($_SERVER[debug][report])
-            profiler::add("Выполнение", $this->name . ": конец отрисовки");
+            profiler::add("Выполнение", "{$this->name}: {$template} конец отрисовки");
         return $content;
     }
 

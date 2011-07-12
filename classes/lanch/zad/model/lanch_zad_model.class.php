@@ -6,10 +6,12 @@
  * @author igor
  */
 class lanch_zad_model extends sqltable_model {
-    /* @var $all boolean */
-    /* @var $order string */
-    /* @var $find string */
 
+    public function __construct() {
+        parent::__construct();
+        $this->maintable = 'zadel';
+    }
+    
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
         $sql = "SELECT *,zadel.id AS zid,zadel.id, board_name AS plate
