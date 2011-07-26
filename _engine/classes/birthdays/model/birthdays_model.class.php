@@ -24,7 +24,7 @@ class birthdays_model {
             $count = 0;
             foreach ($rss->channel->item as $item) {
                 if ($count++ >= 3) break;
-                $text = explode(' ', $item->description, 10);
+                $text = explode(' ', $item->title.' - '.$item->description, 10);
                 array_pop($text);
                 $text = implode(' ', $text);
                 $dr .= "<a target=blank href={$item->link}><div>{$text}...</div></a>";
