@@ -22,7 +22,11 @@ class orders_customers_model extends sqltable_model {
             $files = $this->getFilesForId($this->maintable, $value[id]);
             $value[files] = $files[link];
         }
-
+        if($all) {
+            $_SESSION[Auth::$lss][customer_id]='';
+            $_SESSION[Auth::$lss][order_id]='';
+            $_SESSION[Auth::$lss][tz_id]='';
+        }
         return $ret;
     }
 

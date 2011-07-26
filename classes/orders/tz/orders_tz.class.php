@@ -8,7 +8,7 @@ class orders_tz extends sqltable {
     }
 
     public function action_index($all = '', $order = '', $find = '', $idstr = '') {
-        list($customer_id, $order_id, $tzid, $posintzid) = explode(':', $idstr);
+        extract($_SESSION[Auth::$lss]);
         $customer = $this->model->getCustomer($customer_id);
         $customer = $customer[customer];
         $orderarr = $this->model->getOrder($order_id);
@@ -22,7 +22,7 @@ class orders_tz extends sqltable {
     public function action_edit($id) {
         if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
             return $this->view->getMessage('Нет прав на редактирование');
-        list($customer_id, $order_id, $tzid, $posintzid) = explode(':', $this->idstr);
+        extract($_SESSION[Auth::$lss]);
         if (empty($id)) {
             if (empty($order_id)) {
                 return $this->getMessage("Не известно куда добавлять. Выбери заказ!");
@@ -41,14 +41,12 @@ class orders_tz extends sqltable {
     }
 
     public function action_open($id) {
-        $tz_id = $id;
+        $_SESSION[Auth::$lss][tz_id] = $id;
         $tz = $this->model->getTZ($id);
-        $order_id = $tz[order_id];
-        $order = $this->model->getOrder($order_id);
-        $customer_id = $order[customer_id];
-        $idstr = "{$customer_id}:{$order_id}:{$tz_id}:{$posintzid}";
-        $this->_goto($this->uri()->clear()->set('orders', 'posintz')->
-                        set('orders_posintz', 'index', false, '', '', $idstr)->url());
+        $_SESSION[Auth::$lss][order_id] = $tz[order_id];
+        $order = $this->model->getOrder($_SESSION[Auth::$lss][order_id]);
+        $_SESSION[Auth::$lss][customer_id] = $order[customer_id];
+        $this->_goto($this->uri()->clear()->set('orders', 'posintz')->url().'&lss='.Auth::$lss);
     }
 
     public function action_addtz($type) {

@@ -5,7 +5,7 @@
  */
 
 class orders_order_model extends sqltable_model {
-    
+
     public function __construct() {
         parent::__construct();
         $this->maintable = 'orders';
@@ -14,9 +14,8 @@ class orders_order_model extends sqltable_model {
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = parent::getData($all, $order, $find, $idstr);
         $order = strstr($order, 'files') ? '' : $order; // не удается отсортировать по файлам
-        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        extract($_SESSION[Auth::$lss]);
         if (empty($customer_id)) {
-            $customer = "Выберите заказчика!!!";
             $sql = "SELECT *, orders.id AS oid,
                         orders.id
                         FROM orders
@@ -26,12 +25,11 @@ class orders_order_model extends sqltable_model {
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY orders.orderdate DESC ") .
                     ($all ? "LIMIT 50" : "LIMIT 20");
         } else {
-            $cusid = $customer_id;
             // sql
             $sql = "SELECT *, orders.id AS oid, orders.id
                             FROM orders
                             JOIN customers ON customers.id=customer_id " .
-                    (!empty($find) ? "WHERE (number LIKE '%{$find}%' OR orderdate LIKE '%{$find}%' ) AND customer_id='{$cusid}' " : "WHERE customer_id='{$cusid}' ") .
+                    (!empty($find) ? "WHERE (number LIKE '%{$find}%' OR orderdate LIKE '%{$find}%' ) AND customer_id='{$customer_id}' " : "WHERE customer_id='{$customer_id}' ") .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY orders.orderdate DESC ") .
                     ($all ? "LIMIT 50" : "LIMIT 20");
         }
@@ -40,12 +38,16 @@ class orders_order_model extends sqltable_model {
             $files = $this->getFilesForId('orders', $value[id]);
             $value[files] = $files[link];
         }
+        if ($all) {
+            $_SESSION[Auth::$lss][order_id] = '';
+            $_SESSION[Auth::$lss][tz_id]='';
+        }
         return $ret;
     }
 
     public function getCols() {
         $cols = array();
-        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$this->idstr);
+        extract($_SESSION[Auth::$lss]);
         if (empty($customer_id)) {
             $cols[customer] = "Заказчик";
         }
@@ -102,7 +104,7 @@ class orders_order_model extends sqltable_model {
         if ($edit) {
             // редактирование
             $sql = "UPDATE orders
-                    SET customer_id='{$customerid}',
+                    SET customer_id='{$customer_id}',
                     orderdate='{$orderdate}',
                     number='{$number}'
                     WHERE id='{$edit}'";
@@ -111,15 +113,15 @@ class orders_order_model extends sqltable_model {
             // добавление
             $sql = "INSERT INTO orders
                     (customer_id,orderdate,number)
-                    VALUES ('{$customerid}','{$orderdate}','{$number}')";
+                    VALUES ('{$customer_id}','{$orderdate}','{$number}')";
             sql::query($sql);
             $edit = sql::lastId();
         }
         $ret[affected] = true;
 
-        $curfile = !empty($curfile)?array_merge($curfile,$this->storeFiles($files, $this->maintable)):$this->storeFiles($files, $this->maintable);
+        $curfile = !empty($curfile) ? array_merge($curfile, $this->storeFiles($files, $this->maintable)) : $this->storeFiles($files, $this->maintable);
         $this->storeFilesInTable($curfile, $this->maintable, $edit);
- 
+
 
         return $ret;
     }

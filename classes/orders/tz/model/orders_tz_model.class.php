@@ -8,7 +8,7 @@ class orders_tz_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = parent::getData($all, $order, $find, $idstr);
-        list($customer_id, $order_id, $tz_id, $posintzid) = explode(':', $idstr);
+        extract($_SESSION[Auth::$lss]);
         if (!empty($customer_id)) {
             if (empty($order_id)) {
                 $sql = "SELECT *,IF(instr(file_link,'МПП')>0, 'МПП', IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
@@ -44,12 +44,14 @@ class orders_tz_model extends sqltable_model {
                     ($all ? "LIMIT 50" : "LIMIT 20");
         }
         $ret = sql::fetchAll($sql);
+        if ($all)
+            $_SESSION[Auth::$lss][tz_id] = '';
         return $ret;
     }
 
     public function getCols() {
         $cols = array();
-        list($customer_id, $order_id, $tz_id, $posintzid) = explode(':', $this->idstr);
+        extract($_SESSION[Auth::$lss]);
         if (empty($customer_id)) {
             $cols[customer] = "Заказчик";
         }
@@ -89,13 +91,6 @@ class orders_tz_model extends sqltable_model {
         return $rec;
     }
 
-//    public function setRecord($data) {
-//        extract($data);
-//
-//        sql::query($sql);
-//
-//        return sql::affected();
-//    }
 
     public function createTZ($rec) {
         extract($rec);

@@ -8,7 +8,7 @@ class orders_order extends sqltable {
     }
 
     public function action_index($all = '', $order = '', $find = '', $idstr = '') {
-        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        extract($_SESSION[Auth::$lss]);
         $customer = $this->model->getCustomer($customer_id);
         $customer = $customer[customer];
         $this->title = empty($customer_id) ? "Выберите заказчика" : "Заказчик - {$customer} ";
@@ -16,13 +16,11 @@ class orders_order extends sqltable {
     }
 
     public function action_open($id) {
-        $order_id = $id;
+        $_SESSION[Auth::$lss][order_id] = $id;
         $order = $this->model->getOrder($id);
-        $customer_id = $order[customer_id];
-        $tz_id = '';
-        $idstr = "{$customer_id}:{$order_id}:{$tz_id}:{$posintzid}";
-        $this->_goto($this->uri()->clear()->set('orders', 'tz')->
-                set('orders_tz','index', false,'','',$idstr)->url());
+        $_SESSION[Auth::$lss][customer_id] = $order[customer_id];
+        $_SESSION[Auth::$lss][tz_id] = '';
+        $this->_goto($this->uri()->clear()->set('orders', 'tz')->url().'&lss='.Auth::$lss);
     }
 
 }
