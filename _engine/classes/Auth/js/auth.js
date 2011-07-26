@@ -86,33 +86,39 @@ $(document).ready(function(){
         lss=uniqid();
         log('Создан новый ИД сессии');
         sessionStorage.setItem('lss',lss);
+        var url = window.location.toString();
+        if (url.search("lss=")!=-1) {
+            url.replace("/lss=[^&]*/gi",'lss='+lss);
+        }
+        window.location = url; //перейти
+        
     } else {
 		
     }
-        $('a').each(function(){
-            var url = $(this).attr('href');
-            //log($(this).html());
-            // проверим на относительность ссылок, те начинается с http - не наш клиент
-            if (url.search("http://")==-1 && url.search("javascript:")==-1) {
-                //log('Не найден http в ссылке');
-                if (url.search("lss=")!=-1) {
-                    //log('Уже есть ид сессии в ссылке');
-                    //alert(url);
-                    url.replace("/lss=[^&]*/gi",'lss='+lss);
-                    //alert(url);
+    $('a').each(function(){
+        var url = $(this).attr('href');
+        //log($(this).html());
+        // проверим на относительность ссылок, те начинается с http - не наш клиент
+        if (url.search("http://")==-1 && url.search("javascript:")==-1) {
+            //log('Не найден http в ссылке');
+            if (url.search("lss=")!=-1) {
+                //log('Уже есть ид сессии в ссылке');
+                //alert(url);
+                url.replace("/lss=[^&]*/gi",'lss='+lss);
+            //alert(url);
+            } else {
+                //log('Пока нет сессии в ссылке');
+                if(url.search("/\?/")==-1) {
+                    //log('Не найдено параметров в ссылке');
+                    url = url + '?lss='+lss;
                 } else {
-                    //log('Пока нет сессии в ссылке');
-                    if(url.search("/\?/")==-1) {
-                        //log('Не найдено параметров в ссылке');
-                        url = url + '?lss='+lss;
-                    } else {
-                        //log('Найдены параметры в ссылке');
-                        url = url + '&lss='+lss;
-                    }
+                    //log('Найдены параметры в ссылке');
+                    url = url + '&lss='+lss;
                 }
-                $(this).attr('href',url);
             }
-        });
+            $(this).attr('href',url);
+        }
+    });
 
 
 });
