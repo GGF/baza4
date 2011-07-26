@@ -13,9 +13,15 @@ class orders_posintz_view extends sqltable_view {
     }
 
     public function showrec($rec) {
-        $view = new orders_blocks_view($this->owner);
-        $out = $view->showrec($rec);
-        return $out;
+        extract($rec);
+        if (empty($rasslink)) {
+            Output::assign('createlink', $createlink);
+            return $this->fetch('createbutton.tpl');
+        } else {
+            Output::assign('rasslink', fileserver::sharefilelink($rasslink));
+            return $this->fetch('rasslink.tpl');
+        }
+        
     }
 
 }
