@@ -8,7 +8,7 @@ class orders_posintz extends sqltable {
     }
 
     public function action_index($all = '', $order = '', $find = '', $idstr = '') {
-        list($customer_id, $order_id, $tz_id, $posintzid) = explode(':', $idstr);
+        extract($_SESSION[Auth::$lss]);
         $customer = $this->model->getCustomer($customer_id);
         $customer = $customer[customer];
         $orderarr = $this->model->getOrder($order_id);
@@ -24,7 +24,7 @@ class orders_posintz extends sqltable {
     public function action_edit($id) {
         if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
             return $this->view->getMessage('Нет прав на редактирование');
-        list($customer_id, $order_id, $tzid, $posintzid) = explode(':', $this->idstr);
+        extract($_SESSION[Auth::$lss]);
         $rec = $this->model->getRecord($id);
         $rec[createlink] = $this->actUri('createrass', $id)->url();
         return $this->getMessage($this->view->showrec($rec));

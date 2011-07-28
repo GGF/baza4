@@ -13,7 +13,8 @@ class orders_posintz_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = parent::getData($all, $order, $find, $idstr);
-        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+//        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        extract($_SESSION[Auth::$lss]);
         if (!empty($tz_id)) {
             $tzid = $tz_id;
             $sql = "SELECT *,posintz.id as posid,posintz.id
@@ -71,7 +72,8 @@ class orders_posintz_model extends sqltable_model {
 
     public function getCols() {
         $cols = array();
-        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$this->idstr);
+//        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$this->idstr);
+        extract($_SESSION[Auth::$lss]);
         if (empty($customer_id)) {
             $cols[customer] = "Заказчик";
         }
