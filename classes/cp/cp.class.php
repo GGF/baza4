@@ -16,6 +16,7 @@ class cp extends secondlevel {
         $this->menu->add('users', 'Users', false);
         $this->menu->add('rights', 'Rights', false);
         $this->menu->add('todo', 'TODO', false);
+        $this->menu->add('workers', 'Workers', false);
         $this->menu->add('back', 'Назад', false);
         if ($this->menu->run())
             return $this->menu->getOutput();
