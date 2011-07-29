@@ -74,7 +74,7 @@ class sqltable_view extends views {
                                     "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
                                     "href='{$url}' " .
                                     ">" .
-                                    $val .
+                                    hypher::addhypher($val) .
                                     (($key == 'check' or $key == "№") ? "" : ($this->owner->order == $key ? "&darr;" : (($this->owner->order == $key . ' DESC') ? "&uarr;" : ""))) .
                                     "</a>");
                 } else {
