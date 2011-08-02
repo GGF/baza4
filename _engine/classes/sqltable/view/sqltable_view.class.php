@@ -27,16 +27,9 @@ class sqltable_view extends views {
                     //"options" => array("html" => "readonly",),
             ));
         }
-//        array_push($fields, array(
-//            "type" => AJAXFORM_TYPE_FILE,
-//            "name" => "file",
-//            "label" => "Добавить файл:",
-//                //"option" => array( "html" => " onchange='alert($(this).val())' "),
-//        ));
-
         $form->addFields($fields);
         $out = $form->getOutput();
-        if($rec[files])
+        if ($rec[files])
             $out .= $this->addFileButton();
         return $out;
     }
@@ -109,14 +102,14 @@ class sqltable_view extends views {
                         "value='Добавить' title='Добавить' id=addbutton>";
             $findurl = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr)->url();
             if ($this->owner->findbutton) {
-            $ret .= "<tr><td colspan=100 class='search'>" .
-                    "<form name='find' method='post' action='{$findurl}'>" .
-                    "<input type=text class='find' " .
-                    "placeholder='" . (!empty($this->owner->find) ? $this->owner->find : "Искать...") . "' " .
-                    "name='find' id='findtext{$this->owner->tid}' " .
-                    ">".
-                    "</form>" .
-                    "";
+                $ret .= "<tr><td colspan=100 class='search'>" .
+                        "<form name='find' method='post' action='{$findurl}'>" .
+                        "<input type=text class='find' " .
+                        "placeholder='" . (!empty($this->owner->find) ? $this->owner->find : "Искать...") . "' " .
+                        "name='find' id='findtext{$this->owner->tid}' " .
+                        ">" .
+                        "</form>" .
+                        "";
             }
         }
         $ret .= "<tbody>";
@@ -173,7 +166,7 @@ class sqltable_view extends views {
                 reset($cols);
                 while (list($key, $val) = each($cols)) {
                     $disablelink = strstr($rs["$key"], 'href=');
-                    $disablelink |= ($key == 'check' or $key == "№");
+                    $disablelink |= ( $key == 'check' or $key == "№");
                     $out .= "<td>" . ($disablelink ? "" : $link ) .
                             (empty($rs["$key"]) ? "&nbsp;" : $rs["$key"]) .
                             ($disablelink ? "" : $linkend);
@@ -257,10 +250,16 @@ class sqltable_view extends views {
     }
 
     public function addFileButton() {
-        $link = $this->owner->actUri('addfilefield')->ajaxurl($this->owner->getName());
-        $out = '<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="' . $link . '"><input type="button" id="sl{$party}" value="Добавить файлов" ></a>';
-        $link = $this->owner->actUri('addfilelink')->ajaxurl($this->owner->getName());
-        $out .= '<a  data-silent="#editformtable" legotarget="orders_order" data-silent-action="append" href="' . $link . '" id=addfilelinkbutton><input type="button" id="sl{$party}" value="Добавить линки на файлы" ></a>';
+        // тут не используем шаблон изза неправильного наследования шаблонов
+        $name = $this->owner->getName();
+        $link = $this->owner->actUri('addfilefield')->ajaxurl($name);
+        $out = '<a  data-silent="#editformtable" legotarget="'.$name.
+                '" data-silent-action="append" href="' . $link . 
+                '"><input type="button" id="addfilebutton" value="Добавить файлов" ></a>';
+        $link = $this->owner->actUri('addfilelink')->ajaxurl($name);
+        $out .= '<a  data-silent="#editformtable" legotarget="'.$name.
+                '" data-silent-action="append" href="' . $link . 
+                '" id=addfilelinkbutton><input type="button" id="addfilebutton" value="Добавить линки на файлы" ></a>';
         $out .= "<script>
                 $('#addfilelinkbutton').click(function(){
                     var filename=document.bazaapplet.addFile();

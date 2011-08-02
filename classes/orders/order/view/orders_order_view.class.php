@@ -2,10 +2,10 @@
 
 class orders_order_view extends sqltable_view {
 
-    // обязательно определять для модуля
-    public function getDir() {
-        return __DIR__;
-    }
+//    // обязательно определять для модуля
+//    public function getDir() {
+//        return __DIR__;
+//    }
 
     public function showrec($rec) {
 
@@ -43,7 +43,7 @@ class orders_order_view extends sqltable_view {
             "obligatory" => true,
         ));
         $rec[fields] = $fields;
-        $rec[files]=true;
+        //$rec[files]=$this->owner->model->getFiles;
         return parent::showrec($rec);
     }
 
