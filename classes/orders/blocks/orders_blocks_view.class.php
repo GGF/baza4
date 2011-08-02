@@ -87,7 +87,6 @@ class orders_blocks_view extends sqltable_view {
             "value" => $rec[comment],
         ));
         $rec[fields] = $fields;
-        $rec[files]=true;
         return parent::showrec($rec);
     }
 
