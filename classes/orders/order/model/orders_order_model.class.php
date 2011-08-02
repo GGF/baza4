@@ -117,13 +117,7 @@ class orders_order_model extends sqltable_model {
             sql::query($sql);
             $edit = sql::lastId();
         }
-        $ret[affected] = true;
-
-        $curfile = !empty($curfile) ? array_merge($curfile, $this->storeFiles($files, $this->maintable)) : $this->storeFiles($files, $this->maintable);
-        $this->storeFilesInTable($curfile, $this->maintable, $edit);
-
-
-        return $ret;
+        return parent::setRecord($data);
     }
 
 }

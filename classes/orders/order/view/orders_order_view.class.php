@@ -2,11 +2,6 @@
 
 class orders_order_view extends sqltable_view {
 
-//    // обязательно определять для модуля
-//    public function getDir() {
-//        return __DIR__;
-//    }
-
     public function showrec($rec) {
 
         extract($rec);
@@ -15,14 +10,14 @@ class orders_order_view extends sqltable_view {
         if (empty($rec[edit]) && empty($customer_id)) {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_SELECT,
-                "name" => "customerid",
+                "name" => "customer_id",
                 "label" => "Заказчик:",
                 "values" => $rec[customers],
             ));
         } else {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_HIDDEN,
-                "name" => "customerid",
+                "name" => "customer_id",
                 "value" => !empty($customer_id) ? $customer_id : $rec["customer_id"],
             ));
         }
