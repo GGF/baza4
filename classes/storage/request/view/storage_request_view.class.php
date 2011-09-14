@@ -34,7 +34,7 @@ class storage_request_view extends sqltable_view {
                 <option value='Тимофеев В.В.' style='color:red;'>Тимофеев В.В.</option>
                 </optgroup>
                 <optgroup label='Синяя группа'>
-                <option value='Грималовская Г.А.' style='color:blue;'>Грималовская Г.А.</option>
+                <option value='Калядина Л.А.' style='color:blue;'>Калядина Л.А.</option>
                 <option value='Егорычева Т.В.' style='color:blue;'>Егорычева Т.В.</option>
                 <option value='Курочкина М.А.' style='color:blue;'>Курочкина М.А.</option>
                 <option value='Левитская Н.П.' style='color:blue;'>Левитская Н.П.</option>
