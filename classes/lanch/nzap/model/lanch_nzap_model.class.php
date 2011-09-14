@@ -396,7 +396,14 @@ class lanch_nzap_model extends sqltable_model {
                         ($rec[ppsimat] . '-' . $tolsh)
                 ) . $rec[commentp];
         $rec[dozap] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
-        $rec = array_merge($rec, compact('ppart', 'part'));
+        // коментарии о упаковке при свелении и фрезеровании
+        $pack = $tolsh<0.5?4:($tolsh<1?3:($tolsh<1.5?2:1));
+        $shpin = ceil($zagotovokvsego/$pack);
+        $shpin = $shpin>3?3:$shpin;
+        $drillcomment = "По $pack в пачке на $shpin шпинделях";
+        $shpin = $zagotovokvsego>4?2:1;
+        $millcomment = "По $pack в пачке на $shpin шпинделях";
+        $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment'));
         return $rec;
     }
 
