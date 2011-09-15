@@ -13,7 +13,7 @@ class lanch_zap_model extends sqltable_model {
 
     public function getData($all=false,$order='',$find='',$idstr='') {
         $ret = array();
-	$sql="SELECT *,lanch.id AS lanchid,lanch.id
+	$sql="SELECT *,IF(part=0,'<span style=\'color:red\'>Удалена</span>',part) AS part,lanch.id AS lanchid,lanch.id
                 FROM lanch
                 JOIN (users,filelinks,coments,blocks,customers,tz,orders)
                 ON (lanch.user_id=users.id AND lanch.file_link_id=filelinks.id
@@ -50,7 +50,9 @@ class lanch_zap_model extends sqltable_model {
 	$sql="UPDATE posintz SET ldate='0000-00-00' WHERE id='{$rs["pos_in_tz_id"]}'";
 	sql::query($sql);
 	// удаление
-	$sql = "DELETE FROM lanch WHERE id='{$id}'";
+	//$sql = "DELETE FROM lanch WHERE id='{$id}'";
+        // не хочу удалять. пусть все остаются
+    $sql = "UPDATE lanch SET part='0' WHERE id='{$id}'";
 	sql::query($sql);
     }
 
