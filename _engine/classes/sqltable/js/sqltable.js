@@ -122,6 +122,12 @@ $(document).ready(function(){
 //            return false;
 //        }
 //        return true;
+    });    
+    $("a.path").live("click", function(){
+        var link = $(this).attr("href");
+            var re = new RegExp('/','gi');
+            document.bazaapplet.openfile('explorer \"'+link+'\"');
+            return false;
     });
     
     //$('input[type=file]').live('change',function(){alert($(this).val())});

@@ -112,7 +112,9 @@ a div.fullwidth {
 /*
     Для диалогов
 */
-a.filelink {
+a.filelink,
+a.path
+{
     text-decoration:underline;
     font-weight:bold;
     font-size: 1.5em;
