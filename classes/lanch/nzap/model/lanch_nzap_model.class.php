@@ -63,12 +63,13 @@ class lanch_nzap_model extends sqltable_model {
             blocks.id AS bid
             FROM posintz JOIN (tz,filelinks)
                             ON (tz.id=posintz.tz_id
-                                    AND tz.file_link_id=filelinks.id)
-                         LEFT JOIN (blocks) ON (blocks.id=block_id)
+                                    AND tz.file_link_id=filelinks.id )
+                         LEFT JOIN (blocks,customers) ON (blocks.id=block_id AND blocks.customer_id=customers.id)
                 WHERE posintz.id='{$id}'";
         $rs = sql::fetchOne($sql);
         //$rec[block][filelink] = Auth::getInstance()->getRights("nzap","edit")?fileserver::sharefilelink($rs["file_link"]):"";
         $rec[block][filelink] = fileserver::sharefilelink($rs["file_link"]);
+        $rec[block][zpath] = "z:\\Заказчики\\{$rs['customer']}\\{$rs['blockname']}";
         $rec[block][blockname] = $rs[blockname];
         $rec[block][boardinorder] = $rs[numbers];
         $rec[block][blocksizex] = ceil($rs[bsizex]);
