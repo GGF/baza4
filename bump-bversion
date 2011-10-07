@@ -3,6 +3,6 @@ FILE="VERSION"
 BVER=`cat $FILE | cut -d . -f 1` 
 VERSION=`cat $FILE | cut -d . -f 2`
 VERSION=$(($VERSION+1))
-echo -n $BVER.$VERSION. > $FILE.tmp
-cat $FILE | cut -d . -f 3,4 >>$FILE.tmp
+echo -n $BVER.$VERSION.0. > $FILE.tmp
+cat $FILE | cut -d . -f 4 >>$FILE.tmp
 mv -f $FILE.tmp $FILE
