@@ -1,0 +1,1 @@
+<a  data-silent="#editformtable" legotarget="{$ltarget}" data-silent-action="append" href="{$link}"><input type="button" id="addfile" value="{$text}" ></a>

@@ -112,7 +112,9 @@ a div.fullwidth {
 /*
     Для диалогов
 */
-a.filelink {
+a.filelink,
+a.path
+{
     text-decoration:underline;
     font-weight:bold;
     font-size: 1.5em;
@@ -124,4 +126,11 @@ a.filelink {
 }
 p {
     margin: 0.2em;
+}
+
+#verticalText {
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    writing-mode: tb-rl;
 }

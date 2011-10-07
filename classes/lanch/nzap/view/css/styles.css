@@ -1,0 +1,21 @@
+/* 
+    Document   : styles
+    Created on : 07.10.2011, 9:53:07
+    Author     : igor
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+div#nzapfiles {
+    font-size:1.3em;
+    border: 1px dotted gray;
+    text-align: center;
+    cursor: url;
+    background-color: #cccccc;
+    font-weight: bold;
+}
+
+div#hiddenfiles {
+    display:none;
+    background-color: #cccccc;
+}

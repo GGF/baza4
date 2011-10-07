@@ -68,6 +68,7 @@ class orders_boards_model extends sqltable_model {
         $rec[customer] = $this->getCustomer($rec[customer_id]);
         $rec[customer] = $rec[customer][customer];
         $rec[comment] = $this->getComment($rec[comment_id]);
+        $rec[files] = $this->getFilesForId('boards', $edit);
         return $rec;
     }
 

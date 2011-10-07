@@ -16,7 +16,7 @@ class lanch_pt_model extends sqltable_model {
               FROM phototemplates
               JOIN users
               ON phototemplates.user_id=users.id " .
-              (!empty($find)?"WHERE filenames LIKE '%{$find}%'":"") .
+              (!empty($find)?"WHERE filenames LIKE '%{$find}%' OR ts LIKE '%{$find}%' ":"") .
               (!empty($order)?"ORDER BY {$order} ":"ORDER BY ts DESC ") .
               ($all?"LIMIT 50":"LIMIT 20");
         $ret = sql::fetchAll($sql);

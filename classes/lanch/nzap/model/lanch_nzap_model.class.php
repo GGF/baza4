@@ -63,18 +63,23 @@ class lanch_nzap_model extends sqltable_model {
             blocks.id AS bid
             FROM posintz JOIN (tz,filelinks)
                             ON (tz.id=posintz.tz_id
-                                    AND tz.file_link_id=filelinks.id)
-                         LEFT JOIN (blocks) ON (blocks.id=block_id)
+                                    AND tz.file_link_id=filelinks.id )
+                         LEFT JOIN (blocks,customers) ON (blocks.id=block_id AND blocks.customer_id=customers.id)
                 WHERE posintz.id='{$id}'";
         $rs = sql::fetchOne($sql);
         //$rec[block][filelink] = Auth::getInstance()->getRights("nzap","edit")?fileserver::sharefilelink($rs["file_link"]):"";
         $rec[block][filelink] = fileserver::sharefilelink($rs["file_link"]);
+        $rec[block][zpath] = "z:\\Заказчики\\{$rs['customer']}\\{$rs['blockname']}";
         $rec[block][blockname] = $rs[blockname];
         $rec[block][boardinorder] = $rs[numbers];
         $rec[block][blocksizex] = ceil($rs[bsizex]);
         $rec[block][blocksizey] = ceil($rs[bsizey]);
         $rec[block][phtemplates] = ($rs["template_make"] == '0' ?
                         $rs["template_check"] : $rs["template_make"]);
+        // файлы  для заказа
+        $files = $this->getFilesForId('orders', $rs[order_id]);
+        $rec[block][orderfiles] = $files[link];
+        //
         $sql = "SELECT *, boards.sizex AS psizex, boards.sizey AS psizey,
         boards.id AS bid FROM blockpos
         JOIN (customers,blocks,boards)
@@ -327,6 +332,7 @@ class lanch_nzap_model extends sqltable_model {
             $rmark = max($rmark, $rs[rmark]);
             $immer = max($immer, $rs[immer]);
             $class = max($class, $rs['class']);
+            $layers = max($layers, $rs['layers']);
             $i++;
             $sql = "SELECT comment FROM coments WHERE id='{$rs[comment_id]}'";
             $com = sql::fetchOne($sql);
@@ -396,7 +402,14 @@ class lanch_nzap_model extends sqltable_model {
                         ($rec[ppsimat] . '-' . $tolsh)
                 ) . $rec[commentp];
         $rec[dozap] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
-        $rec = array_merge($rec, compact('ppart', 'part'));
+        // коментарии о упаковке при свелении и фрезеровании
+        $pack = $tolsh<0.5?4:($tolsh<1?3:($tolsh<1.6?2:1));
+        $shpin = ceil($zagotovokvsego/$pack);
+        $shpin = $shpin>3?3:$shpin;
+        $drillcomment = "По $pack в пакете на $shpin шпинделях";
+        $shpin = $zagotovokvsego>4?2:1;
+        $millcomment = "По $pack в пакете на $shpin шпинделях";
+        $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment'));
         return $rec;
     }
 
