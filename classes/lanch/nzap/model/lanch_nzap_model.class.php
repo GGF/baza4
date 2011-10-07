@@ -76,6 +76,10 @@ class lanch_nzap_model extends sqltable_model {
         $rec[block][blocksizey] = ceil($rs[bsizey]);
         $rec[block][phtemplates] = ($rs["template_make"] == '0' ?
                         $rs["template_check"] : $rs["template_make"]);
+        // файлы  для заказа
+        $files = $this->getFilesForId('orders', $rs[order_id]);
+        $rec[block][orderfiles] = $files[link];
+        //
         $sql = "SELECT *, boards.sizex AS psizex, boards.sizey AS psizey,
         boards.id AS bid FROM blockpos
         JOIN (customers,blocks,boards)

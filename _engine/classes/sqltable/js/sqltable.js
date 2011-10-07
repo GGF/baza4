@@ -126,7 +126,7 @@ $(document).ready(function(){
     $("a.path").live("click", function(){
         var link = $(this).attr("href");
             var re = new RegExp('/','gi');
-            document.bazaapplet.openfile('explorer \"'+link+'\"');
+            document.bazaapplet.openfile('\"\"d:\\Total Commander XP\\TOTALCMD.EXE\" \"'+link+'\"\"');
             return false;
     });
     
