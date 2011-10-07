@@ -2,11 +2,6 @@
 
 class orders_customers_view extends sqltable_view {
 
-    // обязательно определять для модуля
-    public function getDir() {
-        return __DIR__;
-    }
-
     public function showrec($rec) {
 
         $fields = array(
@@ -32,7 +27,6 @@ class orders_customers_view extends sqltable_view {
             ),
         );
         $rec[fields] = $fields;
-        $rec[files] = true;
         return parent::showrec($rec);
     }
 

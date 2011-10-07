@@ -82,6 +82,7 @@ class orders_blocks_model extends sqltable_model {
                 WHERE blockpos.block_id='{$edit}'";
         $rec[blockpos] = sql::fetchAll($sql);
         $rec[comment] = $this->getComment($rec[comment_id]);
+        $rec[files] = $this->getFilesForId('blocks', $edit);
         return $rec;
     }
 

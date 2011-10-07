@@ -8,6 +8,7 @@ class storage_movereport_model extends storage_model {
         switch ($idstr[0]) {
             case 'month':
                 $month = $idstr[1];
+/*            
                 $sql = "(SELECT  nazv,FORMAT(ost,3) as ost,edizm,
                     FORMAT(SUM(IF(type=1,quant,0)),3) as prihod,
                     FORMAT(SUM(IF(type=0,quant,0)),3) as rashod,sk_{$this->sklad}_spr.id
@@ -32,6 +33,15 @@ class storage_movereport_model extends storage_model {
                         (!empty($find) ? "AND nazv LIKE '%{$find}%' " : "") . " GROUP BY nazv) " .
                         (!empty($order) ? "ORDER BY {$order} " : "ORDER BY nazv ");
                 $ret = sql::fetchAll($sql);
+*/
+                $year = $month%10000;
+                $month = floor($month/10000);
+                $sdate = date("d.m.Y", mktime(0, 0, 0, $month, 1, $year));
+                //'01.'.sprintf("%02s",(floor($month/10000))).'.'.sprintf("%04s",($month%10000));
+                if ($month==12) { $month=1; $year++;} else {$month++;}
+                $edate = date("d.m.Y", mktime(0, 0, 0, $month, 0, $year));
+                //$edate = '01.'.sprintf("%02s",(floor($month/10000)+1)).'.'.sprintf("%04s",($month%10000));
+                return $this->getRangePeriod($sdate, $edate);
                 return $ret;
             case 'range':
                 $sdate = $idstr[1];
@@ -67,6 +77,7 @@ class storage_movereport_model extends storage_model {
 
     public function getRangePeriod($sdate, $edate) {
         $ret = array();
+        console::getInstance()->out("$sdate nnn $edate");
         $sdate = date("Y-m-d", mktime(0, 0, 0, substr($sdate, 3, 2), substr($sdate, 0, 2), substr($sdate, 6, 4))); //$dyear."-".$dmonth."-".$dday;
         $edate = date("Y-m-d", mktime(0, 0, 0, substr($edate, 3, 2), substr($edate, 0, 2), substr($edate, 6, 4))); //$dyear."-".$dmonth."-".$dday;
         $sql = "SELECT *,sk_{$this->sklad}_spr.id FROM {$this->db}sk_{$this->sklad}_spr
@@ -126,7 +137,7 @@ class storage_movereport_model extends storage_model {
             foreach ($res1 as $rs1) {
                 $rash += $rs1["prihod"];
             }
-            if (!empty($prih) || !empty($rash)) {
+            if ( $prih!=0 || $rash!=0 || $rs["ost"]!=0 ) {
                 $cols[nazv] = $rs[nazv];
                 $cols[prihod] = sprintf("%10.2f", $prih);
                 $cols[rashod] = sprintf("%10.2f", $rash);

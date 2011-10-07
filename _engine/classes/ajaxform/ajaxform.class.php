@@ -1727,7 +1727,7 @@ class ajaxform extends JsCSS {
 
     // 2 функции преобразования даты для пикера и базы
     public function date2datepicker($date) {
-        return!empty($date) ? date("d.m.Y", mktime(0, 0, 0, ceil(substr($date, 5, 2)), ceil(substr($date, 8, 2)), ceil(substr($date, 1, 4)))) : date("d.m.Y");
+        return!empty($date) ? date("d.m.Y", mktime(0, 0, 0, ceil(substr($date, 5, 2)), ceil(substr($date, 8, 2)), ceil(substr($date, 0, 4)))) : date("d.m.Y");
     }
 
     public function datepicker2date($date) {

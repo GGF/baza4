@@ -1,22 +1,22 @@
 <?php
 
 /*
- * conduct model class
+ * class
  */
 
-class cp_users_model extends sqltable_model {
+class cp_workers_model extends sqltable_model {
     
     public function __construct() {
         parent::__construct();
-        $this->maintable = 'users';
+        $this->maintable = 'workers';
     }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
         $sql = "SELECT *
-                FROM users " .
-                (!empty($find) ? "WHERE (nik LIKE '%{$find}%' OR fullname LIKE '%{$find}%' OR position LIKE '%{$find}%') " : "") .
-                (!empty($order) ? "ORDER BY " . $order . " " : "ORDER BY nik ") .
+                FROM workers " .
+                (!empty($find) ? "WHERE (fio LIKE '%{$find}%' OR dr LIKE '%{$find}%') " : "") .
+                (!empty($order) ? "ORDER BY " . $order . " " : "ORDER BY fio ") .
                 ($all ? "" : "LIMIT 20");
         $ret = sql::fetchAll($sql);
         return $ret;
@@ -25,76 +25,38 @@ class cp_users_model extends sqltable_model {
     public function getCols() {
         $cols = array();
         $cols[id] = "ID";
-        $cols[nik] = "Nik";
-        $cols[fullname] = "Fullname";
-        $cols[position] = "Position";
+        $cols[fio] = "ФИО";
+        $cols[dolz] = "Должность";
+        $cols[dr] = "День рождения";
         return $cols;
     }
 
     public function delete($id) {
-        $sql = "DELETE FROM users WHERE id='{$id}'";
-        sql::query($sql);
-        $sql = "DELETE FROM rights WHERE u_id='{$id}'";
+        $sql = "DELETE FROM workers WHERE id='{$id}'";
         sql::query($sql);
         return sql::affected();
     }
 
     public function  setRecord($data) {
         extract($data);
-        if ($action == "users") {
-            if (!empty($edit)) {
-                // редактирование
-                $sql = "UPDATE users
-                            SET nik='{$nik}',
-                                fullname='{$fullname}',
-                                position='{$position}',
-                                password='{$password1}'
-                            WHERE id='{$edit}'";
-            } else {
-                // добавление
-                $sql = "INSERT INTO users (nik,fullname,position,password)
-                            VALUES ('$nik','$fullname','$position','$password1')";
-            }
-            sql::query($sql);
-        } else {
-            $sql = "DELETE FROM rights WHERE u_id='{$userid}'";
-            sql::query($sql);
-            if (!empty($r)) {
-                foreach ($r as $key => $val) {
-                    foreach ($val as $k => $V) {
-                        $sql = "INSERT INTO rights (u_id,type_id,rtype_id,rights.right) VALUES ('{$userid}','{$key}','{$k}','1')";
-                        sql::query($sql);
-                    }
-                }
-            }
-            // почистить сессию для того чтоб вступили права пользователь должен перезайти
-            //$sql = "DELETE FROM session WHERE u_id='{$userid}'";
-            //sql::query($sql);
-        }
-        return sql::affected();
+        $fio = "{$f} {$i} {$o}";
+        $storedata = array(
+            array(
+                "id" => $edit,
+                "f" => $f,
+                "i" => $i,
+                "o" => $o,
+                "fio" => $fio,
+                "dolz" => $dolz,
+                "dr" => $dr,
+                ),
+        );
+        sql::insertUpdate($this->maintable,$storedata);
+        return parent::setRecord($data);
+        
+
     }
 
-    public function getRights($userid) {
-        $sql = "SELECT * FROM rtypes";
-        $res = sql::fetchAll($sql);
-        $sql = "SELECT * FROM rrtypes";
-        $res1 = sql::fetchAll($sql);
-        $out = array();
-        foreach ($res as $rs) {
-            $rec[type] = $rs[type];
-            $rec[name] = "r|{$rs["id"]}";
-            foreach ($res1 as $rs1) {
-                $sql = "SELECT * FROM rights WHERE type_id='{$rs["id"]}' AND u_id='{$userid}' AND rtype_id='{$rs1["id"]}'";
-                $rs2 = sql::fetchOne($sql);
-                $value[$rs1["id"]] = ($rs2["right"] == 1 ? 1 : 0);
-                $values[$rs1["id"]] = $rs1["rtype"];
-            }
-            $rec[value] = $value;
-            $rec[values] = $values;
-            $out[types][] = $rec;
-        }
-        return $out;
-    }
 
 }
 
