@@ -1,0 +1,25 @@
+/* 
+    Document   : styles
+    Created on : 07.10.2011, 9:53:07
+    Author     : igor
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+div#multyfiles {
+    font-size:1.3em;
+    border: 1px dotted gray;
+    text-align: center;
+    cursor: url;
+    background-color: #cccccc;
+    font-weight: bold;
+    margin: 5px;
+    padding: 3px;
+}
+
+div#hiddenfiles {
+    display:none;
+    background-color: #cccccc;
+    margin: 5px;
+    padding: 3px;
+}

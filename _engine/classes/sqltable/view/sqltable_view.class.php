@@ -86,7 +86,8 @@ class sqltable_view extends views {
         if ($this->owner->buttons) {
             $url = $this->owner->actUri('index', !$this->owner->all)->url();
             $ret .= "<tr><td colspan=100 class='buttons'>" .
-                    "<input hotkey='Ctrl + a' class='" .
+                    //"<input hotkey='Ctrl + a' class='" .
+                    "<input class='" .
                     (($this->owner->addbutton && $this->owner->edit) ? "half" : "full") .
                     "button' type=button " .
                     "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .

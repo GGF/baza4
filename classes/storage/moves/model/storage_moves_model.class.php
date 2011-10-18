@@ -4,7 +4,7 @@ class storage_moves_model extends storage_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $spr_id = $idstr;
+        $spr_id = $_SESSION[Auth::$lss][tovarid];
         if (empty($spr_id))
             return array();
         if ($all) {
@@ -91,6 +91,7 @@ class storage_moves_model extends storage_model {
 
     public function setRecord($data) {
         extract($data);
+        $spr_id = $_SESSION[Auth::$lss][tovarid];
         console::getInstance()->out(print_r($data,true));
         // отредактировано
         // найдем поставщика

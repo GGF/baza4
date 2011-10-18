@@ -18,8 +18,11 @@ class lanch_zap_view extends sqltable_view {
         Output::assign('slid', $rec[tz][id]);
         $out .= $this->fetch('link.tpl');
         $out .= '<br>';
+        $out .= $rec[letter][link];
+        $out .= '<br>';
         Output::assign('dozaplink', $rec[dozaplink]);
-        $out .= $this->fetch('dozap.tpl');
+        Output::assign('filelinks',$out);
+        $out = $this->fetch('dozap.tpl');
         $out .= "<script>$('form[name=dozap]').submit(function(){
         $().lego.load('lanch_nzap', $(this).attr('action'),$(this).serialize());
         return false;

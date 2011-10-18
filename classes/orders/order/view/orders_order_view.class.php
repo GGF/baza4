@@ -5,7 +5,7 @@ class orders_order_view extends sqltable_view {
     public function showrec($rec) {
 
         extract($rec);
-        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        extract($_SESSION[Auth::$lss]);//list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
         $fields = array();
         if (empty($rec[edit]) && empty($customer_id)) {
             array_push($fields, array(

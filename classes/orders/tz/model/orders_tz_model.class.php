@@ -96,7 +96,7 @@ class orders_tz_model extends sqltable_model {
         extract($rec);
         // np не надо редактировать - только добавлять с текущей датой и пользователем
         // определим позицию в письме
-        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        extract($_SESSION[Auth::$lss]);//list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
         $orderid = $order_id;
         $sql = "SELECT COUNT(*)+1 AS next FROM tz WHERE order_id='{$orderid}'";
         $rs = sql::fetchOne($sql);

@@ -8,8 +8,10 @@ class storage_rest extends sqltable {
     }
 
     public function action_open($id) {
-        $this->_goto($this->uri()->clear()->set('storage', 'moves')->
-                set('storage_moves','index',false,'','',$id)->url());
+        $_SESSION[Auth::$lss][tovarid] = $id;
+        $this->_goto($this->uri()->clear()->set('storage', 'moves')->url().'&lss='.Auth::$lss);
+//        $this->_goto($this->uri()->clear()->set('storage', 'moves')->
+//                set('storage_moves','index',false,'','',$id)->url());
     }
 
 }

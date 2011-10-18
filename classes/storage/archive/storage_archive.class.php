@@ -8,8 +8,10 @@ class storage_archive extends sqltable {
     }
 
     public function action_open($id) {
-        $this->_goto($this->uri()->clear()->set('storage', 'archivemoves')->
-                set('storage_archivemoves','index',false,'','',$id)->url());
+        $_SESSION[Auth::$lss][arctovarid] = $id;
+        $this->_goto($this->uri()->clear()->set('storage', 'archivemoves')->url().'&lss='.Auth::$lss);
+//        $this->_goto($this->uri()->clear()->set('storage', 'archivemoves')->
+//                set('storage_archivemoves','index',false,'','',$id)->url());
     }
 }
 

@@ -36,7 +36,7 @@ class orders_posintz_model extends sqltable_model {
                          AND orders.id = tz.order_id
                          AND customers.id = orders.customer_id
                         ) " .
-                            (!empty($find) ? "WHERE (blocks.blockname LIKE '%{$find}%') AND orders.customer_id='{$_SESSION[customer_id]}' " : " WHERE orders.customer_id='{$_SESSION[customer_id]}' ") .
+                            (!empty($find) ? "WHERE (blocks.blockname LIKE '%{$find}%') AND orders.customer_id='{$customer_id}' " : " WHERE orders.customer_id='{$customer_id}' ") .
                             (!empty($order) ? " ORDER BY {$order} " : " ORDER BY posintz.id DESC ") .
                             ($all ? "" : "LIMIT 20");
                 } else {
@@ -48,7 +48,7 @@ class orders_posintz_model extends sqltable_model {
                          AND orders.id = tz.order_id
                          AND customers.id = orders.customer_id
                         ) " .
-                            (!empty($find) ? "WHERE (blocks.blockname LIKE '%{$find}%') AND orders.id='{$_SESSION[order_id]}' " : " WHERE orders.id='{$_SESSION[order_id]}' ") .
+                            (!empty($find) ? "WHERE (blocks.blockname LIKE '%{$find}%') AND orders.id='{$order_id}' " : " WHERE orders.id='{$order_id}' ") .
                             (!empty($order) ? " ORDER BY {$order} " : " ORDER BY posintz.id DESC ") .
                             ($all ? "" : "LIMIT 20");
                 }
