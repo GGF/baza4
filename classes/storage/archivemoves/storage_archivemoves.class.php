@@ -8,6 +8,7 @@ class storage_archivemoves extends sqltable {
     }
 
     public function action_index($all = '', $order = '', $find = '', $idstr = '') {
+        $idstr = $_SESSION[Auth::$lss][arctovarid];
         $tovar = $this->model->getTovar($idstr);
         $ost = $this->model->getOst($idstr);
         $ost=$ost[ost];

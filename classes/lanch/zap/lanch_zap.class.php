@@ -16,8 +16,10 @@ class lanch_zap extends sqltable {
         $this->addbutton = false;
     }
     public function action_open($id) {
+        //$rec = $this->model->getRecord();
         $rec[sl] = $this->model->getSL($id);
         $rec[tz] = $this->model->getTZ($id);
+        $rec[letter] = $this->model->getLetter($id);
         $rec[dozaplink] = $this->uri()->clear()->set('lanch','nzap')->set('lanch_nzap', 'dozap', $id)->url();
         return $this->getMessage($this->view->showrec($rec));
     }

@@ -87,6 +87,29 @@ class lanch_zap_model extends sqltable_model {
         $rec[link] = fileserver::sharefilelink($res[file_link]);
         return $rec;
     }
+
+    public function getLetter($id) {
+        $sql = "SELECT * FROM lanch WHERE id='{$id}'";
+        $res = sql::fetchOne($sql);
+        if (empty ($res))
+            return false;
+        $sql = "SELECT * FROM tz WHERE id='{$res[tz_id]}'";
+        $res = sql::fetchOne($sql);
+        if (empty ($res))
+            return false;
+                // файлы  для заказа
+        $files = $this->getFilesForId('orders', $res[order_id]);
+        $rec[link] = $files[link];
+        return $rec;
+    }
+    
+    public function getRecord($edit) {
+        $sql = "SELECT * FROM lanch WHERE id='{$id}'";
+        $res = sql::fetchOne($sql);
+        if (empty ($res))
+            return false;
+        
+    }
 }
 
 ?>

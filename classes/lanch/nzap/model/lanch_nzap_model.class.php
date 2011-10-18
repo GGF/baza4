@@ -30,7 +30,7 @@ class lanch_nzap_model extends sqltable_model {
             OR board_name LIKE '%{$find}%'
             OR filelinks.file_link LIKE '%{$find}%'
             OR orders.number LIKE '%{$find}%') " : "")
-                . " GROUP BY blocks.blockname "
+                . " GROUP BY posintz.id,blocks.blockname "
                 . (!empty($order) ? "ORDER BY {$order} " :
                         "ORDER BY customers.customer,tz.id,posintz.id ")
                 . ($all ? "" : "LIMIT 20");
