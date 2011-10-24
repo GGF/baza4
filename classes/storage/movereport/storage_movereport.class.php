@@ -42,6 +42,7 @@ class storage_movereport extends sqltable {
             $this->title.="<input type=button id=rangebutton value='Отчет'>";
             $this->title.="</form>";
         }
+        if (!empty($idstr)) $this->title .= '<input type="button" value="Скопировать для  excel" id="copytable" onclick="copytable();$(\'#copytable\').value(\'Готово\')">';
         //$this->title.= $this->getHeaderBlock();
         return parent::action_index($all, $order, $find, $idstr);
     }

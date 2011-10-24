@@ -266,3 +266,22 @@ function CMenu_builder(oEvent) {
     }
     return objMenu.length ? objMenu : false;
 }
+
+function copytable() {
+    var str = '';
+    var buffer = '';
+    $('table.listtable>tbody>tr').each(function(){
+        $(this).find('td').each(function(){
+            if ( str == '') {
+                str = $(this).text() ;
+            } else {
+                str = str + "\t" + $(this).text() ;
+            }
+        });
+        buffer = buffer + str + "\n";
+        str = '';
+    });
+    document.bazaapplet.copytoclipboard(buffer);
+    $('#copytable').val('Готово');
+    return false;
+}

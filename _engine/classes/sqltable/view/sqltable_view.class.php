@@ -179,14 +179,14 @@ class sqltable_view extends views {
                     $out .= "<td class='edit'><a title='Редактировать'" .
                             "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
                             "href='{$this->owner->actUri('edit', $rs['id'])->url()}' " .
-                            "id=editlink><div>&nbsp;</div></a>";
+                            "id=editlink>&nbsp;</a>";
                 }
                 if ($this->owner->del) {
                     $out .= "<td class='del'><a title='Удалить' " .
                             "data-need-confirm='Удалить " . addslashes(htmlspecialchars($delstr)) . "' " .
                             "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
                             "href='{$this->owner->actUri('delete', $rs['id'], false, addslashes(htmlspecialchars($delstr)))->url()}' " .
-                            "id=dellink><div>&nbsp;</div></a>";
+                            "id=dellink>&nbsp;</a><div></div>";
                 }
             }
         }
@@ -196,10 +196,10 @@ class sqltable_view extends views {
 
     private function get_footer() {
         $out = '';
+        $out .= "</table>";
         if (!empty($this->owner->firsttrid)) {
             $out .= "<script>firsttr = '{$this->owner->firsttrid}';curtr = firsttr;lasttr = '{$this->owner->lasttrid}';</script>";
         }
-        $out .= "</table>";
         return $out;
     }
 

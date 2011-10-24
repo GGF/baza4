@@ -11,6 +11,9 @@
     padding: 0;
     /*border:solid 1px red;*/
 }
+div.fullwidth {
+    display: inline;
+}
 
 .chettr {
     background-color: rgb(250, 250, 250);
@@ -63,15 +66,17 @@
     width: 21px;
 }
 
-.listtable td.del > a > div {
+.listtable td.del > a {
     background: url(img/b_drop.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
+    padding: 8px;
 }
-.listtable td.edit > a > div {
+.listtable td.edit > a {
     background: url(img/b_edit.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
+    padding: 8px;
 }
 
 #showlink {
