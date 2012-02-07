@@ -35,7 +35,7 @@ class Auth extends lego_abstract {
                 "WHERE UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(ts) > 3600*8";
         if (sql::query($sql) === false) {
             // неправильный запрос - видимо изза отсутствия таблиц
-            $this->install();
+            //$this->install();
         }
     }
 

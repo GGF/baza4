@@ -139,3 +139,11 @@ p {
     -o-transform: rotate(90deg);
     writing-mode: tb-rl;
 }
+
+#calcbutton {
+    display:inline-block; 
+    border:0; 
+    margin:0;
+    font-size:12px;
+    font-family: 'trebuchet ms', tahoma, arial, sans-serif; 
+}

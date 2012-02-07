@@ -45,7 +45,8 @@ class lanch_nzap_view extends sqltable_view {
     public function createsl($rec) {
 
         extract($rec);
-        $excel = file_get_contents($this->getDir() . ($dpp ? "/sl.xml" : "/slmpp.xml"));
+        $excel = ($dpp ? ($class==3?($aurum=="+"?"/sl3a.xml":"/sl3.xml"):($aurum=="+"?"/sl4a.xml":"/sl4.xml")) : "/slmpp.xml");
+        $excel = file_get_contents($this->getDir() . $excel );
         preg_match_all('/_([0-9a-z]+)_/', $excel, $matchesarray);
         for ($i = 0; $i < count($matchesarray[0]); $i++) {
             $excel = str_replace($matchesarray[0][$i], ${$matchesarray[1][$i]}, $excel);
