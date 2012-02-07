@@ -25,7 +25,7 @@ class storage_movereport extends sqltable {
                         ((floor($month / 10000) == $rs["dmonth"] && ($month % 10000) == $rs["dyear"]) ? "SELECTED" : "") . ">" .
                         sprintf("%02d", $rs["dmonth"]) . "-" . $rs["dyear"] . "</option>";
             }
-            $this->title.="</select><input type=button id=monthbutton value='Отчет'></form>";
+            $this->title.="</select><input type=button id=monthbutton class='noprint' value='Отчет'></form>";
         }
 
         if (empty($idstr) || !empty($sdate)) {
@@ -39,9 +39,10 @@ class storage_movereport extends sqltable {
             $this->title.="<input size=10 datepicker=1  name='sdate' value='{$sdate}' type=text >";
             $this->title.=" по ";
             $this->title.="<input size=10 datepicker=1 name='edate' value='{$edate}' type=text >";
-            $this->title.="<input type=button id=rangebutton value='Отчет'>";
+            $this->title.="<input type=button id=rangebutton class='noprint' value='Отчет'>";
             $this->title.="</form>";
         }
+        if (!empty($idstr)) $this->title .= '<input type="button" class="noprint" value="Скопировать для  excel" id="copytable" onclick="copytable();$(\'#copytable\').value(\'Готово\')">';
         //$this->title.= $this->getHeaderBlock();
         return parent::action_index($all, $order, $find, $idstr);
     }

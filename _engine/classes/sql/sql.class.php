@@ -29,10 +29,14 @@ class sql {
 
         $_SERVER[mysql][lang][encoding] = $_SERVER[EncodingSQL];
 
-        self::$lang = new sql_mysql(
+//        self::$lang = new sql_mysql(
+//                        SQL_CONNECTION_LANG,
+//                        $_SERVER[mysql][lang]
+//        );
+        self::$lang = new sql_pdo(
                         SQL_CONNECTION_LANG,
                         $_SERVER[mysql][lang]
-        );
+        );        
 
         if ($_SERVER[debug][report])
             profiler::add("Autoexec", "MySQL: Подключение языковой БД");

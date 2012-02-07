@@ -383,12 +383,25 @@ class lanch_nzap_model extends sqltable_model {
         }
         $rec[pio1] = $numpl1 == 0 ? $numbers : $numpl1; // позже возможно можно будет удалить если numpl будет из ТЗ заполнятся
         $rec[datez] = $rec[date];
-        $tolsh = preg_split('/[\.±]/', $rec[tolsh]);
-        $tolsh[0] = empty($tolsh[0]) ? 0 : $tolsh[0];
-        $tolsh[1] = empty($tolsh[1]) ? 0 : $tolsh[1];
-        $tolsh = sprintf("%-d.%-d", $tolsh[0], $tolsh[1]);
-        //$tolsh = trim(sprintf("%-5.3f",$rec[tolsh]),'0');
-        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . $tolsh;
+        if ($rec[tolsh]>0) {
+            $tolsh = preg_split('/[\.±]/', $rec[tolsh]);
+            $tolsh[0] = empty($tolsh[0]) ? 0 : $tolsh[0];
+            $tolsh[1] = empty($tolsh[1]) ? 0 : $tolsh[1];
+            $tolsh = '-' . sprintf("%-d.%-d", $tolsh[0], $tolsh[1]);
+        } else {
+            $tolsh = '';
+            preg_match('/-(\d+\.\d+)/', $rec[mater], $matches);
+            $rec[tolsh] = $matches[1];
+        }
+        // коментарии о упаковке при свелении и фрезеровании
+        $pack = $rec[tolsh]<0.5?4:($rec[tolsh]<1?3:($rec[tolsh]<1.6?2:1));
+        $shpin = ceil($zagotovokvsego/$pack);
+        $shpin = $shpin>3?3:$shpin;
+        $drillcomment = "По $pack в пакете на $shpin шпинделях";
+        $shpin = $zagotovokvsego>4?2:1;
+        $millcomment = "По $pack в пакете на $shpin шпинделях";
+        
+        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . $tolsh;
         $rec[tolsh] = $tolsh;
         $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";
         $rec[zmask] = strstr($rec[mask], multibyte::UTF_encode('ЖМ')) ? "+" : "-";
@@ -399,16 +412,10 @@ class lanch_nzap_model extends sqltable_model {
         $rec[ssold] = sprintf("%3.2f", $rec[ssold] / 10000);
         $rec[lamel] = $rec[numlam] > 0 ? "+" : "-";
         $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
-                        ($rec[ppsimat] . '-' . $tolsh)
+                        ($rec[ppsimat] . $tolsh)
                 ) . $rec[commentp];
         $rec[dozap] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
-        // коментарии о упаковке при свелении и фрезеровании
-        $pack = $tolsh<0.5?4:($tolsh<1?3:($tolsh<1.6?2:1));
-        $shpin = ceil($zagotovokvsego/$pack);
-        $shpin = $shpin>3?3:$shpin;
-        $drillcomment = "По $pack в пакете на $shpin шпинделях";
-        $shpin = $zagotovokvsego>4?2:1;
-        $millcomment = "По $pack в пакете на $shpin шпинделях";
+
         $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment'));
         return $rec;
     }
@@ -528,12 +535,16 @@ class lanch_nzap_model extends sqltable_model {
         }
         $rec[pio1] = $numpl1 == 0 ? $numbers : $numpl1; // позже возможно можно будет удалить если numpl будет из ТЗ заполнятся
         $rec[datez] = $rec[date];
-        $tolsh = preg_split('/[\.±]/', $rec[tolsh]);
-        $tolsh[0] = empty($tolsh[0]) ? 0 : $tolsh[0];
-        $tolsh[1] = empty($tolsh[1]) ? 0 : $tolsh[1];
-        $tolsh = sprintf("%-d.%-d", $tolsh[0], $tolsh[1]);
-        //$tolsh = trim(sprintf("%-5.3f",$rec[tolsh]),'0');
-        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . '-' . $tolsh;
+        if ($rec[tolsh]>0) {
+            $tolsh = preg_split('/[\.±]/', $rec[tolsh]);
+            $tolsh[0] = empty($tolsh[0]) ? 0 : $tolsh[0];
+            $tolsh[1] = empty($tolsh[1]) ? 0 : $tolsh[1];
+            $tolsh = '-'.sprintf("%-d.%-d", $tolsh[0], $tolsh[1]);
+            //$tolsh = trim(sprintf("%-5.3f",$rec[tolsh]),'0');
+        } else {
+            $tolsh ='';
+        }
+        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . $tolsh;
         $rec[tolsh] = $tolsh;
         $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";
         $rec[zmask] = strstr($rec[mask], multibyte::UTF_encode('ЖМ')) ? "+" : "-";
@@ -544,7 +555,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec[ssold] = sprintf("%3.2f", $rec[ssold] / 10000);
         $rec[lamel] = $rec[numlam] > 0 ? "+" : "-";
         $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
-                        ($rec[ppsimat] . '-' . $tolsh)
+                        ($rec[ppsimat] . $tolsh)
                 ) . $rec[commentp];
         $rec[dozapcomment] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
         $rec[numpl1] = $numpl1;

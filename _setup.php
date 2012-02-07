@@ -62,8 +62,23 @@ define("SHARE_ROOT_DIR", "/home/common/");
 define("UPLOAD_FILES_DIR", "/files/");
 
 ob_start();
-include __DIR__ . '/_engine/autoload.php'; // инклудим автозагрузку модулей
-$tmp = ob_get_clean();
+
+//include __DIR__ . '/_engine/autoload.php'; // инклудим автозагрузку модулей
+    //правильно использовать автозагрузку следует с использованием библиотеки SPL
+    //Для этого нужно включить в include_path нужные нам пути
+    set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__ . // <editor-fold defaultstate="collapsed" desc="Длинный путь">
+            DIRECTORY_SEPARATOR// </editor-fold>
+            .'_engine/classes' . PATH_SEPARATOR . __DIR__ . DIRECTORY_SEPARATOR . 'classes' );
+    // потом зарегистрировать расширения
+    spl_autoload_extensions ('.php, .class.php');
+    // при правильном использовании namespace достаточно только (PSR-0  https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)
+    spl_autoload_register();
+    // а так придестя зарегить функцию вслед за дефолтной
+    spl_autoload_register('Autoloader::loadPackages');
+    // сам класс 'Autoloader' описан по PSR-0
+    // очень внимательно файлы будут искаться в МАЛЕНЬКИМИ буквами autoloader.php - Это известный БАГ и скоро может быть пофиксен
+
+ob_get_clean();
 /*
  * Делать хоть один инстанс нужно для включения скриптов в заголовки
  */

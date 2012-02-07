@@ -89,23 +89,23 @@ class sqltable_view extends views {
                     //"<input hotkey='Ctrl + a' class='" .
                     "<input class='" .
                     (($this->owner->addbutton && $this->owner->edit) ? "half" : "full") .
-                    "button' type=button " .
+                    "button noprint' type=button " .
                     "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
                     "href='{$url}' " .
                     "value='" . ($this->owner->all ? "Последние 20" : "Все") . "' " .
                     "title='" . ($this->owner->all ? "Последние 20" : "Все") . "' " .
-                    "id=allbutton>";
+                    "id=allbutton >";
 
             if ($this->owner->addbutton && $this->owner->edit)
-                $ret .= "<input hotkey='Ctrl + e' class='halfbutton' type='button' " .
+                $ret .= "<input hotkey='Ctrl + e' class='halfbutton noprint' type='button' " .
                         "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
                         "href='{$this->owner->actUri('add')->url()}' " .
-                        "value='Добавить' title='Добавить' id=addbutton>";
+                        "value='Добавить' title='Добавить' id=addbutton >";
             $findurl = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr)->url();
             if ($this->owner->findbutton) {
                 $ret .= "<tr><td colspan=100 class='search'>" .
                         "<form name='find' method='post' action='{$findurl}'>" .
-                        "<input type=text class='find' " .
+                        "<input type=text class='find noprint' " .
                         "placeholder='" . (!empty($this->owner->find) ? $this->owner->find : "Искать...") . "' " .
                         "name='find' id='findtext{$this->owner->tid}' " .
                         ">" .
@@ -179,14 +179,14 @@ class sqltable_view extends views {
                     $out .= "<td class='edit'><a title='Редактировать'" .
                             "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
                             "href='{$this->owner->actUri('edit', $rs['id'])->url()}' " .
-                            "id=editlink><div>&nbsp;</div></a>";
+                            "id=editlink>&nbsp;</a>";
                 }
                 if ($this->owner->del) {
                     $out .= "<td class='del'><a title='Удалить' " .
                             "data-need-confirm='Удалить " . addslashes(htmlspecialchars($delstr)) . "' " .
                             "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
                             "href='{$this->owner->actUri('delete', $rs['id'], false, addslashes(htmlspecialchars($delstr)))->url()}' " .
-                            "id=dellink><div>&nbsp;</div></a>";
+                            "id=dellink>&nbsp;</a><div></div>";
                 }
             }
         }
@@ -196,10 +196,10 @@ class sqltable_view extends views {
 
     private function get_footer() {
         $out = '';
+        $out .= "</table>";
         if (!empty($this->owner->firsttrid)) {
             $out .= "<script>firsttr = '{$this->owner->firsttrid}';curtr = firsttr;lasttr = '{$this->owner->lasttrid}';</script>";
         }
-        $out .= "</table>";
         return $out;
     }
 

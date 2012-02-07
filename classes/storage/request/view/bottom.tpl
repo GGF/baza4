@@ -29,7 +29,7 @@
   <td width=118 valign=bottom style='width:70.9pt;border:none;border-bottom:
   solid windowtext 1.0pt;padding:0cm 1.4pt 0cm 1.4pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
-  style='font-size:9.0pt;font-family:"Arial","sans-serif"'>Романова В.В.</span></p>
+  style='font-size:9.0pt;font-family:"Arial","sans-serif"'>Романова В.А.</span></p>
   </td>
   <td width=111 valign=bottom style='width:66.6pt;padding:0cm 1.4pt 0cm 1.4pt'>
   <h2>Получил</h2>

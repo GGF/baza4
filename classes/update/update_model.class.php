@@ -47,6 +47,26 @@ class update_model {
                   VALUES 
                     ('{$comp}','{$solder}','{$drillname}','{$customer_id}','{$board}','{$sizex}','{$sizey}','{$auarea}','{$smalldrill}','{$bigdrill}')";
             sql::query($sql);
+            $block_id = sql::lastId();
+            $sql = "SELECT id FROM boards WHERE customer_id='{$customer_id}' AND board_name='{$board}'";
+            $rs = sql::fetchOne($sql);
+            if (empty($rs)) {
+                $sql = "INSERT INTO boards 
+                            (customer_id,board_name)
+                        VALUES
+                            ('{$customer_id}','{$board}')";
+                //echo $sql;
+                sql::query($sql);
+                $board_id = sql::lastId();
+            } else {
+                $board_id = $rs["id"];
+            }
+            $sql = "INSERT INTO blockpos
+                        (block_id,board_id,nib,nx,ny)
+                    VALUES
+                        ('{$block_id}','{$board_id}','1','1','1')";
+            //echo $sql;
+            sql::query($sql);
         } else {
             $sql = "UPDATE blocks 
                     SET scomp='{$comp}', ssolder='{$solder}', drlname='{$drillname}', 
