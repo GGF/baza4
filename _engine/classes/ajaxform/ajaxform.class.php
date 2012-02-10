@@ -45,7 +45,7 @@ define("AJAXFORM_TEMP", "temp");
 define("AJAXFORM_CACHE", isset($_SERVER[modForm][cachePath]) ? $_SERVER[modForm][cachePath] : $_SERVER[CACHE] . "/form_ajax");
 define("AJAXFORM_CACHE_LIFETIME", isset($_SERVER[modForm][cacheLifetime]) ? $_SERVER[modForm][cacheLifetime] : 60 * 60 * 12); // half day
 
-include_once 'i18n.php';
+include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'i18n.php';
 
 
 class ajaxform extends JsCSS {

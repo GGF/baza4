@@ -28,7 +28,7 @@ define(SQL_LOG, false);  // default — log, but not display
 define(SQL_LOG_BLOCK, null);  // block
 define(SQL_LOG_FORCE, true);  // force
 
-class sql_pdo {
+class sql_PDO {
     /*
      * CONSTRUCTOR : VARIABLE INITIALIZATION     
      */
@@ -420,7 +420,7 @@ class sql_pdo {
      * 	@return	int
      */
     function lastId() {
-        return $this->_connection->lastInsertedId();
+        return $this->_connection->lastInsertId();
     }
 
     /**

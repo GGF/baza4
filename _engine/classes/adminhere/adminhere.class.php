@@ -1,5 +1,5 @@
 ﻿<?
-include 'i18n.php';
+include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'i18n.php';
 
 class adminhere extends lego_abstract {
 

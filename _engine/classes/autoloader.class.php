@@ -35,11 +35,10 @@
  * т.к. это отрицательно влияет на производительность
  */
 
-
-if (!$_SERVER["debug"]["noCache"]["php"]) {
-    if(!empty($_SESSION["cache"]) && is_array($_SESSION["cache"]))
-        require_once realpath($_SERVER['DOCUMENT_ROOT']).cache::buildScript($_SESSION["cache"], 'php');
-}
+/*
+ * Это строка  включает кэш объявлений классов, но при этом вызывает autoloader
+ * для объявления класса cache
+ */
 
 class Autoloader
 {

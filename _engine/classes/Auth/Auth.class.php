@@ -1,5 +1,5 @@
 <?php
-include_once 'i18n.php';
+include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'i18n.php';
 
 class Auth extends lego_abstract {
 

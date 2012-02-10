@@ -9,6 +9,15 @@ if (empty($_REQUEST["level"]))
 
 include "_setup.php";
 
+header("Content-Type: text/html; charset={$_SERVER[Encoding]}");
+
+if ($_SERVER[Auth]) { // update и getdata делается без авторизации
+    if (!Auth::getInstance()->run()->success) {
+        echo Auth::getInstance()->getOutput();
+        echo console::getInstance()->run()->getOutput();
+        exit;
+    }
+}
 
 $classname = $_REQUEST["level"];
 $m = new $classname();

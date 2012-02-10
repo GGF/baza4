@@ -36,12 +36,6 @@
  * т.к. это отрицательно влияет на производительность
  */
 
-
-if (!$_SERVER["debug"]["noCache"]["php"]) {
-    if(!empty($_SESSION["cache"]) && is_array($_SESSION["cache"]))
-        require_once realpath($_SERVER['DOCUMENT_ROOT']).cache::buildScript($_SESSION["cache"], 'php');
-}
-
 /**
  * Функция автоподгрузки классов. Подключает необходимый файл по имени класса
  * 

@@ -15,7 +15,7 @@ abstract class lego_abstract extends JsCSS {
     static public $get;
 
     static public function staticConsturct() {
-        if (class_exists("SiteMap"))
+        if (class_exists("SiteMap",false))
             self::$sitemap = new SiteMap();
         self::$get = new QueryString($_GET);
     }
