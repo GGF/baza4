@@ -14,7 +14,7 @@ $_SERVER["debug"] = array(
     "showNotices" => true,
     "checkReverse" => false,
 );
-$_SERVER["debug"] = false;
+//$_SERVER["debug"] = false;
 
 $_SERVER[Auth] = true;
 

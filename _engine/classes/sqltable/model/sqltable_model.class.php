@@ -36,7 +36,7 @@ class sqltable_model {
         if (empty($edit))
             return array();
         if (is_numeric($edit)) {
-            $sql = "SELECT * FROM {$this->maintable} WHERE id='$edit'";
+            $sql = "SELECT * FROM {$this->maintable} WHERE id='{$edit}'";
             $rec = sql::fetchOne($sql);
             $rec[files] = $this->getFilesForId($this->maintable, $edit);
             return $rec;

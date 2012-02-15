@@ -66,6 +66,7 @@ class lanch_zap_model extends sqltable_model {
     }
 
     public function getSL($id) {
+        $rec=array();
         $sql = "SELECT * FROM lanch WHERE id='{$id}'";
         $res = sql::fetchOne($sql);
         if (empty ($res))
@@ -80,6 +81,7 @@ class lanch_zap_model extends sqltable_model {
     }
     
     public function getTZ($id) {
+        $rec=array();
         $sql = "SELECT * FROM lanch WHERE id='{$id}'";
         $res = sql::fetchOne($sql);
         if (empty ($res))
@@ -98,6 +100,7 @@ class lanch_zap_model extends sqltable_model {
     }
 
     public function getLetter($id) {
+        $rec=array();
         $sql = "SELECT * FROM lanch WHERE id='{$id}'";
         $res = sql::fetchOne($sql);
         if (empty ($res))
@@ -112,13 +115,16 @@ class lanch_zap_model extends sqltable_model {
         return $rec;
     }
     
-    public function getRecord($edit) {
-        $sql = "SELECT * FROM lanch WHERE id='{$id}'";
-        $res = sql::fetchOne($sql);
-        if (empty ($res))
-            return false;
-        
+    public function getPath($id) {
+        $sql = "SELECT customer,blockname
+            FROM lanch JOIN (blocks,customers)
+                            ON (blocks.id=lanch.block_id
+                                    AND customers.id=blocks.customer_id )
+                WHERE lanch.id='{$id}'";
+        $rs = sql::fetchOne($sql);
+        return "z:\\Заказчики\\{$rs['customer']}\\{$rs['blockname']}";
     }
+    
 }
 
 ?>
