@@ -17,6 +17,7 @@
 <header>
     {$adminhere}
     <a href="{$linkbase}" class="glavmenu" title="Домой"><div class="glavmenu">Главное меню</div></a>
+    <!--a href="{$linkbase}" class="glavmenu" title="Домой"><div class="glavmenu">Главное меню</div></a-->
     {$birthdays}
     {$bashcite}
     {$menu}
@@ -24,7 +25,7 @@
 <div id="maindiv">
     {$content}
 </div>
-</footer>
+<footer>
 </footer>
 </div>
 {$scripts}

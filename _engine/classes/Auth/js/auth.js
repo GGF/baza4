@@ -49,7 +49,8 @@ $(document).ready(function(){
     //    document.location.hash = '';
     //    currentState = document.location.hash
 
-    var member = eval(localStorage.getItem('remember'));
+    var member = localStorage.getItem('remember');
+    //гадство. не у всех пароли цифровые и начинаются не с нуля
     var ri = $("input[name=rememberme]");
     if (ri.length>0) {
         $('#dialog').dialog({

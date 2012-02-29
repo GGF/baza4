@@ -30,7 +30,7 @@ class lanch_zap_model extends sqltable_model {
                     orders.id=tz.order_id) " .
                 (!empty ($find)?"AND (blocks.blockname LIKE '%{$find}%' OR board_name LIKE '%{$find}%' OR file_link LIKE '%{$find}%'
                     OR orders.number LIKE '%{$find}%')":"") .
-                    " GROUP BY tz.id,blocks.blockname " .
+                    " GROUP BY lanch.id,blocks.blockname " .
                 (!empty($order)?" ORDER BY ".$order." ":" ORDER BY lanch.id DESC ") .
                 ($all?"LIMIT 50":"LIMIT 20");
         $ret = sql::fetchAll($sql);

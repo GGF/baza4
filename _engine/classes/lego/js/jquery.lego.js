@@ -1,3 +1,7 @@
+/**
+ * hash - Это  содержание адресной строки броузера после символа #
+ * в нем будет хранится урл вызваный по AJAX
+ */
 var currentState;// = document.location.hash;;
 
 $(function(){
@@ -416,15 +420,26 @@ function parse_str (str, array){
     }
 }
 
+/**
+ * Тут по моему все понятно декодировать URL
+ */
 function urldecode (str){
     return decodeURIComponent(str.replace(/\+/g, '%20'));
 }
 
+/**
+ * Заккодировать URL
+ */
 function urlencode (str){
     str = (str+'').toString();
     return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+');
 }
 
+/**
+ * Функци проверяет текущий статус, если он не совпадает с записаным
+ * вызывает последний AJAX заппро нормальным вызовом
+ * 
+ */
 function checkLocalState() {
     if (document.location.hash && document.location.hash != currentState) {
         $().lego.log('Reloadpage:'+currentState);
@@ -433,7 +448,9 @@ function checkLocalState() {
     }
 }
 
-
+/**
+ * Запишем в таймер функцию проверки статуса, после того как документ загружен.
+ */
 $(document).ready(function() {
     setInterval(checkLocalState, 500);
     $('body').append("<div class='ajaxloading'>Loading...</div>");
