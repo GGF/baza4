@@ -2,7 +2,7 @@
 
 class lanch_conduct extends sqltable {
 
-    // обязательно определять для модуля
+    // нужно  определять чтоб найти install.sql
     public function getDir() {
         return __DIR__;
     }

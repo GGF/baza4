@@ -84,7 +84,7 @@ public class bazaApplet extends Applet implements ClipboardOwner {
         * 
         */
 
-       this.logme("Start execution!!!"); // для  отладки вывожу кучу нужной и не очень информации
+       this.logme("Start execution!!! 1"); // для  отладки вывожу кучу нужной и не очень информации
        try //использовать try-catch - это  православно
         {
             this.logme( "args value : = {0}", file);
@@ -169,7 +169,7 @@ public class bazaApplet extends Applet implements ClipboardOwner {
         catch (Exception e)
         { // ну и другие проблемы запуска должны быть показаны
             this.logme( "Error executing command --> {0} ({1})", new Object[]{cmd, file});
-            this.logme( null, e);
+            this.logme( e.getMessage() );
             return 254; // вернем скажем столько
         }
         return process.exitValue(); // хотелось бы посмотреть что же там вернулось

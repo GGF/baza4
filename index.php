@@ -25,9 +25,9 @@ if ($m->run())
     if (!Ajax::isAjaxRequest())
         echo $m->getOutput();
 
-    echo "<script>";
-    echo "storeSetting(".multibyte::Json_encode($_SESSION["user_setting"]).");";
-    echo "</script>";
+//    echo "<script>";
+//    echo "storeSetting(".multibyte::Json_encode($_SESSION["user_setting"]).");";
+//    echo "</script>";
 
 if ($_SERVER[debug][report]) {
     if (Ajax::isAjaxRequest()) {

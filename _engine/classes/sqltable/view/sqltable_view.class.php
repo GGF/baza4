@@ -203,7 +203,7 @@ class sqltable_view extends views {
         return $out;
     }
 
-    public function getMessage($message, $form=false) {
+    public function getMessage($message, $form = false) {
         if (Ajax::isAjaxRequest())
             $out = "<div id=dialog>{$message}</div><script>dialog_modal(" . ($form ? "false" : "true") . ");</script>";
         else {
@@ -218,7 +218,7 @@ class sqltable_view extends views {
         return $this->getMessage($formcontent, true);
     }
 
-    public function getConfirm($message, $action, $cancelaction='index') {
+    public function getConfirm($message, $action, $cancelaction = 'index') {
         $params = func_get_args();
         array_shift($params);
         array_shift($params);
@@ -239,7 +239,7 @@ class sqltable_view extends views {
     public function getJson($data) {
         //header("CONTENT-TYPE: TEXT/X-JSON; CHARSET={$_SERVER[Encoding]}");
         header("CONTENT-TYPE: APPLICATION/JSON; CHARSET={$_SERVER[Encoding]}");
-        echo json::Json_encode($ret, true);
+        echo json::Json_encode($data, true);
     }
 
     public function getSelect($data) {
@@ -254,12 +254,12 @@ class sqltable_view extends views {
         // тут не используем шаблон изза неправильного наследования шаблонов
         $name = $this->owner->getName();
         $link = $this->owner->actUri('addfilefield')->ajaxurl($name);
-        $out = '<a  data-silent="#editformtable" legotarget="'.$name.
-                '" data-silent-action="append" href="' . $link . 
+        $out = '<a  data-silent="#editformtable" legotarget="' . $name .
+                '" data-silent-action="append" href="' . $link .
                 '"><input type="button" id="addfilebutton" value="Добавить файлов" ></a>';
         $link = $this->owner->actUri('addfilelink')->ajaxurl($name);
-        $out .= '<a  data-silent="#editformtable" legotarget="'.$name.
-                '" data-silent-action="append" href="' . $link . 
+        $out .= '<a  data-silent="#editformtable" legotarget="' . $name .
+                '" data-silent-action="append" href="' . $link .
                 '" id=addfilelinkbutton><input type="button" id="addfilebutton" value="Добавить линки на файлы" ></a>';
         $out .= "<script>
                 $('#addfilelinkbutton').click(function(){

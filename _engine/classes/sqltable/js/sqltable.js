@@ -128,13 +128,13 @@ $(document).ready(function(){
             var re = new RegExp('/','gi');
             var totalcmd = localStorage.getItem('total_cmd_path'); // 'd:\\Total Commander XP\\TOTALCMD.EXE';
             //alert(totalcmd);
+            //alert('d:\\Total Commander XP\\TOTALCMD.EXE');
             if (totalcmd == null) {
                 alert(Lang.get('sqltable.warnings.nototalfind'));
                 $(this).attr("href","/?level=setting");
                 return true;
             }
             var res = document.bazaapplet.openfile('\"\"'+totalcmd+'\" \"'+link+'\"\"');
-            alert(res);
             return false;
     });
     
