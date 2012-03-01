@@ -45,6 +45,18 @@ function uniqid (prefix, more_entropy) {
     return retId;
 }
 
+/**
+ * Фуннкция сохранения настроек в localStorage
+ * Сохрраняются параметры типа путь к Total Commander
+ * @param settingJSON масссив настроек
+ */
+function storeSetting(settingJSON) {
+    $.each(settingJSON,function(key,val){
+        //alert(this.key+':'+this.value);
+        localStorage.setItem(this.key,this.value);
+    });
+}
+
 $(document).ready(function(){
     //    document.location.hash = '';
     //    currentState = document.location.hash
@@ -79,6 +91,7 @@ $(document).ready(function(){
             });
         }
     } else {
+        // ничего  не делать если авторизация прошла
     }
     // сделаем механизм сессий окна
     var lss;

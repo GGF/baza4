@@ -6,6 +6,7 @@ class Auth extends lego_abstract {
     public $success;
     public $user;
     public $rigths;
+    public $settings;
     public static $lss;
     static private $instance;
 
@@ -91,6 +92,11 @@ class Auth extends lego_abstract {
                         }
                     }
                     $this->rights = $_SESSION["rights"];
+                    // насстройки
+                    $sql="SELECT users__settings_types.key,value FROM users__settings JOIN users__settings_types ON users__settings_types.id=type_id WHERE user_id='{$this->user["id"]}'";
+                    $res = sql::fetchAll($sql);
+                    $_SESSION["user_setting"] = $res;
+                    $this->settings = $res;
                     $this->success = true;
                     // определимся с сессией окна
                     Auth::$lss = !empty($_REQUEST["lss"])?$_REQUEST["lss"]:"lss";
@@ -103,7 +109,7 @@ class Auth extends lego_abstract {
             }
         }
 
-        // пустая сессия, не восстановлена о базе, не найден пользователь
+        // пустая сессия, не восстановлена по базе, не найден пользователь
 
         Output::assign('css', $this->getAllHeaderBlock());
         Output::assign('mes', $mes);
@@ -126,6 +132,7 @@ class Auth extends lego_abstract {
         //return print_r($_REQUEST,true);
         $_SESSION["cache"] = array();
         $_SESSION["rights"] = array();
+        $_SESSION["user_setting"]=array();
         $this->gohome();
     }
 

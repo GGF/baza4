@@ -126,7 +126,15 @@ $(document).ready(function(){
     $("a.path").live("click", function(){
         var link = $(this).attr("href");
             var re = new RegExp('/','gi');
-            document.bazaapplet.openfile('\"\"d:\\Total Commander XP\\TOTALCMD.EXE\" \"'+link+'\"\"');
+            var totalcmd = localStorage.getItem('total_cmd_path'); // 'd:\\Total Commander XP\\TOTALCMD.EXE';
+            //alert(totalcmd);
+            if (totalcmd == null) {
+                alert(Lang.get('sqltable.warnings.nototalfind'));
+                $(this).attr("href","/?level=setting");
+                return true;
+            }
+            var res = document.bazaapplet.openfile('\"\"'+totalcmd+'\" \"'+link+'\"\"');
+            alert(res);
             return false;
     });
     
