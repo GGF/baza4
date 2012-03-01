@@ -11,6 +11,7 @@ class baza extends firstlevel {
         $this->menu->add('wiki', 'База знаний',false);
         $this->menu->add('docs', 'Документы',false);
         $this->menu->add('help', 'Помощь',false);
+        $this->menu->add('setting', 'Настройки',false);
         $this->menu->add('back', 'Выход',false);
         if ($this->menu->run())
             return $this->menu->getOutput();

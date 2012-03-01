@@ -19,6 +19,14 @@ class sqltable_model {
         }
     }
 
+    /**
+     * Воззвращает массив данных из базы
+     * @param boolean $all Покказывать все
+     * @param string $order Наззвание столбца по которому сортировать
+     * @param string $find Подстрока поиска
+     * @param string $idstr строка  идентификаторов, специальное использование, очень специальное
+     * @return array 
+     */
     public function getData($all=false, $order='', $find='', $idstr='') {
         $this->idstr = $idstr;
         return array();

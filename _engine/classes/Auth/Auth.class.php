@@ -6,6 +6,7 @@ class Auth extends lego_abstract {
     public $success;
     public $user;
     public $rigths;
+    public $settings;
     public static $lss;
     static private $instance;
 
@@ -39,6 +40,12 @@ class Auth extends lego_abstract {
         }
     }
 
+    /**
+     * Получение прав пользователя на чтото
+     * @param string $type Тип прав на которые запрашивается
+     * @param string $action Деййствие на которое запрашиваются права
+     * @return boolean 
+     */
     public function getRights($type=false, $action=false) {
         if ($type) {
             if ($action) {
@@ -49,7 +56,25 @@ class Auth extends lego_abstract {
         }
         return $this->rights;
     }
+    
+    /**
+     * Обрратная предыдущей функция установки прав на что-то
+     * В базу получено право не пишет, используется для того чтоб в порожденных
+     * классах разрешать чтото для всех, ну или соответственно запрещать
+     * @param string $type 
+     * @param string $action
+     * @param boolean $val 
+     */
+    public function setRights($type,$action,$val=true) {
+        $this->rights[$type][$action] = $val;
+    }
 
+
+    /**
+     * Поллучить данные о пользователе
+     * @param string $field Какое поле нужно получить
+     * @return mixed Либо  весь массив, либо выбраное поле 
+     */
     public function getUser($field=false) {
         if ($field) {
             return $this->user[$field];
@@ -91,6 +116,11 @@ class Auth extends lego_abstract {
                         }
                     }
                     $this->rights = $_SESSION["rights"];
+                    // насстройки
+//                    $sql="SELECT users__settings_types.key,value FROM users__settings JOIN users__settings_types ON users__settings_types.id=type_id WHERE user_id='{$this->user["id"]}'";
+//                    $res = sql::fetchAll($sql);
+//                    $_SESSION["user_setting"] = $res;
+//                    $this->settings = $res;
                     $this->success = true;
                     // определимся с сессией окна
                     Auth::$lss = !empty($_REQUEST["lss"])?$_REQUEST["lss"]:"lss";
@@ -103,7 +133,7 @@ class Auth extends lego_abstract {
             }
         }
 
-        // пустая сессия, не восстановлена о базе, не найден пользователь
+        // пустая сессия, не восстановлена по базе, не найден пользователь
 
         Output::assign('css', $this->getAllHeaderBlock());
         Output::assign('mes', $mes);
@@ -126,6 +156,7 @@ class Auth extends lego_abstract {
         //return print_r($_REQUEST,true);
         $_SESSION["cache"] = array();
         $_SESSION["rights"] = array();
+        $_SESSION["user_setting"]=array();
         $this->gohome();
     }
 
