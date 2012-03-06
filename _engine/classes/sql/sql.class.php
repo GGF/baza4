@@ -33,6 +33,10 @@ class sql {
                         SQL_CONNECTION_LANG,
                         $_SERVER[mysql][lang]
         );
+//        self::$lang = new sql_PDO(
+//                        SQL_CONNECTION_LANG,
+//                        $_SERVER[mysql][lang]
+//        );        
 
         if ($_SERVER[debug][report])
             profiler::add("Autoexec", "MySQL: Подключение языковой БД");

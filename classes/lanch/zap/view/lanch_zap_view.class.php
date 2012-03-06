@@ -8,18 +8,22 @@ class lanch_zap_view extends sqltable_view {
     }
 
     public function showrec($rec) {
-        Output::assign('type', 'СЛ');
+        $out='';
+        Output::assign('linkclass', 'path');
+        Output::assign('sllink', $rec[path]);
+        Output::assign('type', 'Путь к плате');
+        Output::assign('slid', '');
+        $out .= $this->fetch('link.tpl');
+        Output::assign('type', 'СЛ-');
         Output::assign('sllink', $rec[sl][link]);
         Output::assign('slid', $rec[sl][id]);
-        $out = $this->fetch('link.tpl');
-        $out .= '<br>';
-        Output::assign('type', 'ТЗ');
+        Output::assign('linkclass', 'filelink');
+        $out .= $this->fetch('link.tpl');
+        Output::assign('type', 'ТЗ-');
         Output::assign('sllink', $rec[tz][link]);
         Output::assign('slid', $rec[tz][id]);
         $out .= $this->fetch('link.tpl');
-        $out .= '<br>';
         $out .= $rec[letter][link];
-        $out .= '<br>';
         Output::assign('dozaplink', $rec[dozaplink]);
         Output::assign('filelinks',$out);
         $out = $this->fetch('dozap.tpl');

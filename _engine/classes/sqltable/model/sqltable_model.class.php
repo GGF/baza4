@@ -19,6 +19,14 @@ class sqltable_model {
         }
     }
 
+    /**
+     * Воззвращает массив данных из базы
+     * @param boolean $all Покказывать все
+     * @param string $order Наззвание столбца по которому сортировать
+     * @param string $find Подстрока поиска
+     * @param string $idstr строка  идентификаторов, специальное использование, очень специальное
+     * @return array 
+     */
     public function getData($all=false, $order='', $find='', $idstr='') {
         $this->idstr = $idstr;
         return array();
@@ -36,7 +44,7 @@ class sqltable_model {
         if (empty($edit))
             return array();
         if (is_numeric($edit)) {
-            $sql = "SELECT * FROM {$this->maintable} WHERE id='$edit'";
+            $sql = "SELECT * FROM {$this->maintable} WHERE id='{$edit}'";
             $rec = sql::fetchOne($sql);
             $rec[files] = $this->getFilesForId($this->maintable, $edit);
             return $rec;

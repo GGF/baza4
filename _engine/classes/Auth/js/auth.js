@@ -45,11 +45,24 @@ function uniqid (prefix, more_entropy) {
     return retId;
 }
 
+/**
+ * Фуннкция сохранения настроек в localStorage
+ * Сохрраняются параметры типа путь к Total Commander
+ * @param settingJSON масссив настроек
+ */
+function storeSetting(settingJSON) {
+    $.each(settingJSON,function(key,val){
+        //alert(this.key+':'+this.value);
+        localStorage.setItem(this.key,this.value);
+    });
+}
+
 $(document).ready(function(){
     //    document.location.hash = '';
     //    currentState = document.location.hash
 
-    var member = eval(localStorage.getItem('remember'));
+    var member = localStorage.getItem('remember');
+    //гадство. не у всех пароли цифровые и начинаются не с нуля
     var ri = $("input[name=rememberme]");
     if (ri.length>0) {
         $('#dialog').dialog({
@@ -78,6 +91,7 @@ $(document).ready(function(){
             });
         }
     } else {
+        // ничего  не делать если авторизация прошла
     }
     // сделаем механизм сессий окна
     var lss;

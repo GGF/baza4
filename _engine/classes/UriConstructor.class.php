@@ -39,7 +39,7 @@ class UriConstructor {
         return $this;
     }
 
-    public function setAct($action /* .... */) {
+    public function setAct(/* .... */) {
         $lego = lego_abstract::current();
         $params = array($lego->getName());
         $params = array_merge($params, func_get_args());

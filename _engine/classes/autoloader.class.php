@@ -1,5 +1,4 @@
-<?
-
+﻿<?php
 /**
  * ПОДКЛЮЧИТЕ ЭТОТ ФАЙЛ, ЧТОБЫ ИМЕТЬ ДОСТУП К КЛАССАМ PHP-LEGO
  * 
@@ -36,21 +35,27 @@
  * т.к. это отрицательно влияет на производительность
  */
 
-/**
- * Функция автоподгрузки классов. Подключает необходимый файл по имени класса
- * 
- * @param mixed $class_name
+/*
+ * Это строка  включает кэш объявлений классов, но при этом вызывает autoloader
+ * для объявления класса cache
  */
-function __autoload($class_name) {
 
-        $class_folder = 'classes';
+class Autoloader
+{
+    /**
+    * Функция автоподгрузки классов. Подключает необходимый файл по имени класса
+    * 
+    * @param mixed $class_name
+    */
+    public static function loadPackages($class_name)
+    {
         // Локальные классы (в каждой папке проекта может быть папка $class_folder. 
         // Она и называется локальными классам)
-        $class_paths[] = dirname($_SERVER['SCRIPT_FILENAME']) . "/$class_folder/";
+        $class_paths[] = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "classes";
 
         // Общие классы (та папка, в которой лежит этот файл и 
         // является глобальными классами)
-        $class_paths[] = dirname(__FILE__) . "/classes/";
+        $class_paths[] = dirname(__FILE__);
 
         //добавим пути из глобальной переменной $CLASS_PATHS
         if (!empty($GLOBALS["CLASS_PATHS"])) {
@@ -62,46 +67,38 @@ function __autoload($class_name) {
         //Группировка по подпапкам (для примера возьмем класс с именем A_B_C)
         $slashed_class_name = str_replace("_", "/", $class_name); // A/B/C
         $short_path = substr($slashed_class_name, 0, strrpos($slashed_class_name, '/')); // A/B
-
+        $find=false; 
+        $file_full_name = '';
         
         foreach ($class_paths as $class_path) {
             // если класс A_B_C находится в файле /A/B/C.class.php
             $file_full_name = "{$class_path}/{$slashed_class_name}.class.php";
             if (file_exists($file_full_name)) {
-                require_once($file_full_name);
-                if ($class_name!='cache')
-                    $_SESSION["cache"][$class_name] = $file_full_name;
-                return;
+                $find=true; break;
             }
-
             // если класс A_B_C находится в файле /A/B/C/A_B_C.class.php
             $file_full_name =
                     "{$class_path}/{$slashed_class_name}/{$class_name}.class.php";
             if (file_exists($file_full_name)) {
-                require_once($file_full_name);
-                if ($class_name!='cache')
-                    $_SESSION["cache"][$class_name] = $file_full_name;
-                return;
+                $find=true; break;
             }
-
             // если класс A_B_C находится в файле /A/B/A_B_C.class.php
             $file_full_name = "{$class_path}/{$short_path}/{$class_name}.class.php";
             if (file_exists($file_full_name)) {
-                require_once($file_full_name);
-                if ($class_name!='cache')
-                    $_SESSION["cache"][$class_name] = $file_full_name;
-                return;
+                $find=true; break;
             }
-
             // если класс A_B_C находится в файле /A/B/A_B_C/A_B_C.class.php
             $file_full_name =
                     "{$class_path}/{$short_path}/{$class_name}/{$class_name}.class.php";
             if (file_exists($file_full_name)) {
-                require_once($file_full_name);
-                if ($class_name!='cache')
-                    $_SESSION["cache"][$class_name] = $file_full_name;
-                return;
+                $find=true; break;
             }
         }
+        if($find) {
+            require_once($file_full_name);
+            if ($class_name!='cache')
+                $_SESSION["cache"][$class_name] = $file_full_name;
+        }
+    }
+ 
 }
-

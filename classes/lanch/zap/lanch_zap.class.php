@@ -16,7 +16,8 @@ class lanch_zap extends sqltable {
         $this->addbutton = false;
     }
     public function action_open($id) {
-        //$rec = $this->model->getRecord();
+        $rec=array();
+        $rec[path]=$this->model->getPath($id);
         $rec[sl] = $this->model->getSL($id);
         $rec[tz] = $this->model->getTZ($id);
         $rec[letter] = $this->model->getLetter($id);

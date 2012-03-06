@@ -13,15 +13,24 @@ class lanch_zap_model extends sqltable_model {
 
     public function getData($all=false,$order='',$find='',$idstr='') {
         $ret = array();
-	$sql="SELECT *,IF(part=0,'<span style=\'color:red\'>Удалена</span>',part) AS part,lanch.id AS lanchid,lanch.id
+	$sql="SELECT *,
+                IF(part=0,'<span style=\'color:red\'>Удалена</span>',part) AS part,
+                lanch.id AS lanchid,
+                lanch.id
                 FROM lanch
-                JOIN (users,filelinks,coments,blocks,customers,tz,orders)
-                ON (lanch.user_id=users.id AND lanch.file_link_id=filelinks.id
-                    AND lanch.comment_id=coments.id AND lanch.block_id=blocks.id
-                    AND blocks.customer_id=customers.id AND lanch.tz_id=tz.id
-                    AND orders.id=tz.order_id) " .
-                (!empty ($find)?"AND (blocks.blockname LIKE '%{$find}%' OR file_link LIKE '%{$find}%'
+                JOIN (users,filelinks,coments,blocks,blockpos,boards,customers,tz,orders)
+                ON (lanch.user_id=users.id AND
+                    lanch.file_link_id=filelinks.id AND
+                    lanch.comment_id=coments.id AND 
+                    lanch.block_id=blocks.id AND 
+                    blocks.customer_id=customers.id AND 
+                    blocks.id=blockpos.block_id AND
+                    blockpos.board_id = boards.id AND 
+                    lanch.tz_id=tz.id AND
+                    orders.id=tz.order_id) " .
+                (!empty ($find)?"AND (blocks.blockname LIKE '%{$find}%' OR board_name LIKE '%{$find}%' OR file_link LIKE '%{$find}%'
                     OR orders.number LIKE '%{$find}%')":"") .
+                    " GROUP BY lanch.id,blocks.blockname " .
                 (!empty($order)?" ORDER BY ".$order." ":" ORDER BY lanch.id DESC ") .
                 ($all?"LIMIT 50":"LIMIT 20");
         $ret = sql::fetchAll($sql);
@@ -57,6 +66,7 @@ class lanch_zap_model extends sqltable_model {
     }
 
     public function getSL($id) {
+        $rec=array();
         $sql = "SELECT * FROM lanch WHERE id='{$id}'";
         $res = sql::fetchOne($sql);
         if (empty ($res))
@@ -71,6 +81,7 @@ class lanch_zap_model extends sqltable_model {
     }
     
     public function getTZ($id) {
+        $rec=array();
         $sql = "SELECT * FROM lanch WHERE id='{$id}'";
         $res = sql::fetchOne($sql);
         if (empty ($res))
@@ -89,6 +100,7 @@ class lanch_zap_model extends sqltable_model {
     }
 
     public function getLetter($id) {
+        $rec=array();
         $sql = "SELECT * FROM lanch WHERE id='{$id}'";
         $res = sql::fetchOne($sql);
         if (empty ($res))
@@ -103,13 +115,16 @@ class lanch_zap_model extends sqltable_model {
         return $rec;
     }
     
-    public function getRecord($edit) {
-        $sql = "SELECT * FROM lanch WHERE id='{$id}'";
-        $res = sql::fetchOne($sql);
-        if (empty ($res))
-            return false;
-        
+    public function getPath($id) {
+        $sql = "SELECT customer,blockname
+            FROM lanch JOIN (blocks,customers)
+                            ON (blocks.id=lanch.block_id
+                                    AND customers.id=blocks.customer_id )
+                WHERE lanch.id='{$id}'";
+        $rs = sql::fetchOne($sql);
+        return "z:\\Заказчики\\{$rs['customer']}\\{$rs['blockname']}";
     }
+    
 }
 
 ?>
