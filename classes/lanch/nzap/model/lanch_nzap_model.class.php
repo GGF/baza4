@@ -82,38 +82,69 @@ class lanch_nzap_model extends sqltable_model {
         $files = $this->getFilesForId('orders', $rs[order_id]);
         $rec[block][orderfiles] = $files[link];
         //
-        $sql = "SELECT *, boards.sizex AS psizex, boards.sizey AS psizey,
-        boards.id AS bid FROM blockpos
+        $sql = "SELECT *, 
+                    zadel.number AS zadelnum, 
+                    boards.sizex AS psizex, 
+                    boards.sizey AS psizey,
+                    boards.id AS bid 
+        FROM blockpos
         JOIN (customers,blocks,boards)
         ON (customers.id=boards.customer_id
             AND blocks.id=block_id
             AND boards.id=board_id)
+        LEFT JOIN (zadel) ON (zadel.board_id = boards.id)
         WHERE block_id='{$rs["bid"]}'";
         $res = sql::fetchAll($sql);
         $nz = 0; // максимальное количество заготовок по количеству плат в блоке
         $nl = 0; // максимальное количество слоев на плате в блоке, хотя бред
         $cl = 0; // класс платы, наибольший по позициям
         $piz = 0; // число плат на заготовке (сумма по блоку)
-        foreach ($res as $rs1) {
-            $board[name] = $rs1["board_name"];
-            $board[sizex] = $rs1["psizex"];
-            $board[sizey] = $rs1["psizey"];
-            $board[numberinblock] = $rs1["nib"];
-            $board[numberinblockx] = $rs1["nx"];
-            $board[numberinblocky] = $rs1["ny"];
-            $board[layers] = $rs1["layers"];
-            $board[mask] = $rs1["mask"];
-            $board[mark] = $rs1["mark"];
-            $sql = "SELECT numbers FROM posintz WHERE tz_id='{$rs["tzid"]}'
-                    AND board_id='{$rs1["bid"]}'";
-            $rs2 = sql::fetchOne($sql);
-            $nz = max($nz, ceil($rs2["numbers"] / $rs1["nib"]));
-            $nl = max($nl, $rs1["layers"]);
-            $cl = max($cl, $rs1["class"]);
-            $piz += $rs1["nib"];
-            $customer = $rs1["customer"];
-            $rec[boards][] = $board;
-        }
+        if (count($res) > 1 ) {
+            // боольше одной платы в блоке, не получится использовать задел
+            $rec[zadel] = 0;
+            foreach ($res as $rs1) {
+                $board[name] = $rs1["board_name"];
+                $board[sizex] = $rs1["psizex"];
+                $board[sizey] = $rs1["psizey"];
+                $board[numberinblock] = $rs1["nib"];
+                $board[numberinblockx] = $rs1["nx"];
+                $board[numberinblocky] = $rs1["ny"];
+                $board[layers] = $rs1["layers"];
+                $board[mask] = $rs1["mask"];
+                $board[mark] = $rs1["mark"];
+                $sql = "SELECT numbers FROM posintz WHERE tz_id='{$rs["tzid"]}'
+                        AND board_id='{$rs1["bid"]}'";
+                $rs2 = sql::fetchOne($sql);
+                $nz = max($nz, ceil($rs2["numbers"] / $rs1["nib"]));
+                $nl = max($nl, $rs1["layers"]);
+                $cl = max($cl, $rs1["class"]);
+                $piz += $rs1["nib"];
+                $customer = $rs1["customer"];
+                $rec[boards][] = $board;
+            }
+        } else {
+            // тольько одна позиция в блоке, съэкономим на обработке массива for each
+                $rs1 = $res[0];
+                $board[name] = $rs1["board_name"];
+                $board[sizex] = $rs1["psizex"];
+                $board[sizey] = $rs1["psizey"];
+                $board[numberinblock] = $rs1["nib"];
+                $board[numberinblockx] = $rs1["nx"];
+                $board[numberinblocky] = $rs1["ny"];
+                $board[layers] = $rs1["layers"];
+                $board[mask] = $rs1["mask"];
+                $board[mark] = $rs1["mark"];
+                $sql = "SELECT numbers FROM posintz WHERE tz_id='{$rs["tzid"]}'
+                        AND board_id='{$rs1["bid"]}'";
+                $rs2 = sql::fetchOne($sql);
+                $nz = ceil($rs2["numbers"] / $rs1["nib"]);
+                $nl = $rs1["layers"];
+                $cl = $rs1["class"];
+                $piz = $rs1["nib"];
+                $customer = $rs1["customer"];
+                $rec[boards][] = $board;
+                $rec[zadel] = $rs1["zadelnum"];
+         }
         //if (Auth::getInstance()->getRights("nzap","edit")) {
         if ($nl > 2) {
             // многослойку радара партии по одной
@@ -617,6 +648,14 @@ class lanch_nzap_model extends sqltable_model {
             }
         }
         return true;
+    }
+    
+    /**
+     * Использует задел, снимает с задела, вычитает с необходимого для запуска
+     * @param int $id Идентификатор позиции в ТЗ
+     */
+    public function usezadel($id) {
+        return $rec[id]=$id; //заглушка
     }
 
 }

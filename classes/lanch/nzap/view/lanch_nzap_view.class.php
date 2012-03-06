@@ -23,6 +23,11 @@ class lanch_nzap_view extends sqltable_view {
             Output::assign('mplink', $rec[mp][mplink]);
             $out .= $this->fetch('mp.tpl');
         }
+        if ($rec[zadel]>0) {
+            // показать кнопку использования задела
+            Output::assign('zadellink', $rec[zadellink]);
+            $out .= $this->fetch('zadel.tpl');
+        }
         $out .= '<br>';
         foreach ($rec[party] as $party) {
             foreach ($party as $key => $val) {
@@ -85,6 +90,16 @@ class lanch_nzap_view extends sqltable_view {
             $out = "Не удалось записать файл";
         }
         return $out;
+    }
+    
+    /**
+     * Создает лист запуска из раздела и возвращает текст для кнопки использования раздела
+     * @param mixed $rec масссив с данными для создани СЛ
+     * @return string текст для кнопки
+     */
+    
+    public function showzadel($rec) {
+        return "<b>Заддел использован! Отккройте плату снова!</b>"; //заглушка
     }
 
 }
