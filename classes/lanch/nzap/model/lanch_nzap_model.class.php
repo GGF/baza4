@@ -13,7 +13,7 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $sql = "SELECT *,posintz.id AS nzid,posintz.id
+        $sql = "SELECT *,orders.number AS ordernum,zadel.number AS zadelnum, posintz.id AS nzid,posintz.id
         FROM posintz
         LEFT JOIN (lanched) ON (posintz.block_id=lanched.block_id)
         JOIN (blocks,tz,filelinks,customers,orders,blockpos,boards)
@@ -25,6 +25,7 @@ class lanch_nzap_model extends sqltable_model {
             AND blocks.id=blockpos.block_id
             AND blockpos.board_id = boards.id
             )
+        LEFT JOIN (zadel) ON zadel.board_id = boards.id
         WHERE posintz.ldate = '0000-00-00' "
                 . (!empty($find) ? "AND (blocks.blockname LIKE '%{$find}%'
             OR board_name LIKE '%{$find}%'
@@ -43,10 +44,11 @@ class lanch_nzap_model extends sqltable_model {
         $cols["№"] = "№";
         $cols["nzid"] = "ID";
         $cols["customer"] = "Заказчик";
-        $cols["number"] = "Заказ";
+        $cols["ordernum"] = "Заказ";
         $cols["blockname"] = "Плата";
         $cols["numbers"] = "Кол-во";
         $cols["lastdate"] = "Посл. зап";
+        $cols["zadelnum"] = "Взаделе";
         return $cols;
     }
 
