@@ -58,9 +58,11 @@ class lanch_nzap extends sqltable {
      * @return string Тест для  кнопки "использовать задел" 
      */
     public function action_zadel($id) {
-        $rec = $this->model->usezadel($id); // доллжна списать задел, уменьшить необходимое количество
-        return $this->view->showzadel($rec); // сдеать лист запуска, и показать текст типа
-        //"<b>Заддел использован! Отккройте плату снова!</b>";
+//        $rec = $this->model->usezadel($id); // доллжна списать задел, уменьшить необходимое количество
+//        return $this->view->showzadel($rec); // сдеать лист запуска, и показать текст типа
+//        //"<b>Заддел использован! Отккройте плату снова!</b>";
+        return $zadel = $this->model->getZadelByPosintzId($id);
+        return '<div class="lego">' . $this->action_sl($lanchid, $zadel, "zadel") . '</div>';
     }
 
 }

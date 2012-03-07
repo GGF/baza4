@@ -224,7 +224,7 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getPartyfile($rec) {
         extract($rec);
-        if ($dozap) {
+        if ($dozap===true) {
             $sql = "SELECT pos_in_tz_id AS posid
             FROM lanch
             WHERE lanch.id='{$posid}'";
@@ -241,6 +241,8 @@ class lanch_nzap_model extends sqltable_model {
             $rec[party] = $party = $rs[party];
             $rec[posid] = $posid;
         }
+        // Получим идентификатор запуска, нового или уже сущечтвующего
+        // почти всегда, кажется, нового
         $sql = "SELECT * FROM lanch
             WHERE pos_in_tz_id='{$posid}' AND part='{$party}'";
         $rs = sql::fetchOne($sql);
@@ -379,7 +381,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec = array_merge($rec, compact('platonblock', 'numlam', 'rmark', 'immer', 'mask', 'layers', 'class', 'mark', 'commentp'));
         // сделать собственно сопроводительный
         $rec[zagotinparty] = $zagotinparty = 25;
-        if ($dozap) {
+        if ($dozap===true) {
             //
             $zagotovokvsego = ceil($dozapnumbers / $platonblock);
             $zag = $zagotovokvsego;
@@ -387,6 +389,8 @@ class lanch_nzap_model extends sqltable_model {
             $ppart1 = $zag * $platonblock;
             $numpl1 = $numbers = $dozapnumbers;
             $part = $party;
+        } elseif ($dozap=="zadel") {
+        
         } else {
             $zagotovokvsego = $numbl != 0 ? $numbl : ceil($numbers / $platonblock); // общее количество заготовок
             $zag = ($party * $zagotinparty >= $zagotovokvsego) ? ($zagotovokvsego - ($party - 1) * $zagotinparty) : $zagotinparty; //заготовок в партии
@@ -536,12 +540,14 @@ class lanch_nzap_model extends sqltable_model {
             $zagotinparty = 5;
         $rec[zagotinparty] = $zagotinparty;
 
-        if ($dozap) {
+        if ($dozap===true) {
             $zagotovokvsego = ceil($dozapnumbers / $platonblock);
             $zag = $zagotovokvsego;
             $ppart = $dozapnumbers;
             $numpl1 = $numbers = $dozapnumbers;
             $part = $party;
+        } elseif ($dozap=="zadel") {
+        
         } else {
             $zagotovokvsego = ceil($numbers / $platonblock); // * 1.15);
             // общее количество заготовок + 15% потом может быть
@@ -629,7 +635,8 @@ class lanch_nzap_model extends sqltable_model {
         sql::query($sql);
 
         // если все запущены - исключить из запуска
-        if (!$dozap) {
+        // если из задела тоже
+        if ($dozap!==true) {
             // обновим таблицу запусков
 
             $sql = "DELETE FROM lanched WHERE block_id='{$block_id}'";
@@ -651,13 +658,51 @@ class lanch_nzap_model extends sqltable_model {
     }
     
     /**
-     * Использует задел, снимает с задела, вычитает с необходимого для запуска
-     * @param int $id Идентификатор позиции в ТЗ
+     * Использует задел, снимает с задела
+     * @param int $id Идентификатор задела
+     * @param int $num Колличество списываемого
      */
-    public function usezadel($id) {
-        return $rec[id]=$id; //заглушка
+    public function usezadel($id,$num) {
+        if (is_numeric($num)) {
+            $sql = "UPDATE zadel SET number=number-{$num} WHERE id='{$id}'";
+        } else {
+            $sql = "DELETE FROM zadel WHERE id='{$id}'";
+        }
+        sql::query($sql);
     }
 
+    /**
+     * Возвращает по номеру позиции в ТЗ количество использованого задела
+     * @param int $id
+     * @return int 
+     */
+    public function getZadelByPosintzId($id) {
+        $sql = "SELECT 
+                    zadel.number AS zadel,
+                    posintz.numbers AS zakaz,
+                    zadel.id AS zadelid
+                FROM posintz 
+                JOIN (zadel,blocks,blockpos,boards) 
+                ON 
+                    posintz.block_id=blocks.id
+                    AND blockpos.block_id=blocks.id
+                    AND boards.id=blockpos.board_id
+                    AND zadel.board_id=boards.id
+                WHERE posintz.id='{$id}'";
+        $res=sql::fetchOne($sql);
+        // определились  сколько в заделе, сколько нада теперь спишем с задела
+        // сколько нада или весь и вернем это количество
+        extract($res);
+        //return $zakaz.'xxx'.$zadel;
+        if ($zakaz>=$zadel) {
+            $this->usezadel($zadelid,"all");
+            return $zadel;
+            
+        } else {
+            $this->usezadel($zadelid,$zakaz);
+            return $zakaz;
+        }
+    }
 }
 
 ?>
