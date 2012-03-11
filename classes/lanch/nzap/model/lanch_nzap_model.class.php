@@ -659,14 +659,13 @@ class lanch_nzap_model extends sqltable_model {
     
     /**
      * Использует задел, снимает с задела
-     * @param int $id Идентификатор задела
-     * @param int $num Колличество списываемого
+     * @param int $rec массив из запроса getZadelByPosintzId
      */
-    public function usezadel($id,$num) {
-        if (is_numeric($num)) {
-            $sql = "UPDATE zadel SET number=number-{$num} WHERE id='{$id}'";
+    public function usezadel($rec) {
+        if ($rec[zakaz]<$rec[zadel]) {
+            $sql = "UPDATE zadel SET number=number-{$rec[zakaz]} WHERE id='{$rec[zadelid]}'";
         } else {
-            $sql = "DELETE FROM zadel WHERE id='{$id}'";
+            $sql = "DELETE FROM zadel WHERE id='{$rec[zadelid]}'";
         }
         sql::query($sql);
     }
@@ -692,16 +691,18 @@ class lanch_nzap_model extends sqltable_model {
         $res=sql::fetchOne($sql);
         // определились  сколько в заделе, сколько нада теперь спишем с задела
         // сколько нада или весь и вернем это количество
-        extract($res);
         //return $zakaz.'xxx'.$zadel;
-        if ($zakaz>=$zadel) {
-            $this->usezadel($zadelid,"all");
-            return $zadel;
+        if ($res[zakaz]>=$rec[zadel]) {
+            //$this->usezadel($zadelid,"all"); 
+            // usezadel лучше  вызвать когда готов лист запуска
+            //return $zadel;
             
         } else {
-            $this->usezadel($zadelid,$zakaz);
-            return $zakaz;
+            //$this->usezadel($zadelid,$zakaz);
+            // usezadel лучше  вызвать когда готов лист запуска
+            //return $zakaz;
         }
+        return $res;
     }
 }
 

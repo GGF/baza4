@@ -44,6 +44,10 @@ class lanch_nzap extends sqltable {
         $out = $this->view->createsl($rec);
         if ($out) {
             $this->model->lanchsl($rec);
+            // если был использован задел, его нужно вычеркнуть
+            if($dozap=="zadel") {
+                $this->model->usezadel($partyornumbdozap);
+            }
         }
         return $out;
     }
@@ -61,7 +65,8 @@ class lanch_nzap extends sqltable {
 //        $rec = $this->model->usezadel($id); // доллжна списать задел, уменьшить необходимое количество
 //        return $this->view->showzadel($rec); // сдеать лист запуска, и показать текст типа
 //        //"<b>Заддел использован! Отккройте плату снова!</b>";
-        return $zadel = $this->model->getZadelByPosintzId($id);
+        $zadel = $this->model->getZadelByPosintzId($id);
+        // zadel буудет массивом, нужно дальше учитывать
         return '<div class="lego">' . $this->action_sl($lanchid, $zadel, "zadel") . '</div>';
     }
 
