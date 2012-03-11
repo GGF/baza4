@@ -67,7 +67,8 @@ class lanch_nzap extends sqltable {
 //        //"<b>Заддел использован! Отккройте плату снова!</b>";
         $zadel = $this->model->getZadelByPosintzId($id);
         // zadel буудет массивом, нужно дальше учитывать
-        return '<div class="lego">' . $this->action_sl($lanchid, $zadel, "zadel") . '</div>';
+//        return '<div class="lego">' . $this->action_sl($lanchid, $zadel, "zadel") . '</div>';
+        return $this->action_sl($id, $zadel, "zadel") ;
     }
 
 }

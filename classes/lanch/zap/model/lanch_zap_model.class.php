@@ -61,7 +61,8 @@ class lanch_zap_model extends sqltable_model {
 	// удаление
 	//$sql = "DELETE FROM lanch WHERE id='{$id}'";
         // не хочу удалять. пусть все остаются
-    $sql = "UPDATE lanch SET part='0' WHERE id='{$id}'";
+        $sql = "UPDATE lanch SET part='0' WHERE id='{$id}'";
+        // todo: воссстановление задела
 	sql::query($sql);
     }
 

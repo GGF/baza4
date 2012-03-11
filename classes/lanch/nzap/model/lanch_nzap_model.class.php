@@ -13,6 +13,7 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
+        // todo: запрос изменить  чтобы если несколько заделов не было нескольких строчек, просуммировать заделы
         $sql = "SELECT *,orders.number AS ordernum,zadel.number AS zadelnum, posintz.id AS nzid,posintz.id
         FROM posintz
         LEFT JOIN (lanched) ON (posintz.block_id=lanched.block_id)
@@ -240,6 +241,9 @@ class lanch_nzap_model extends sqltable_model {
             $rec[dozapnumbers] = $party; // тут было записано сколько при дозапуске
             $rec[party] = $party = $rs[party];
             $rec[posid] = $posid;
+        } elseif($dozap=="zadel") {
+            $rec[dozapnumbers] = $party;
+            $rec[party] = $party = -1;
         }
         // Получим идентификатор запуска, нового или уже сущечтвующего
         // почти всегда, кажется, нового
@@ -390,7 +394,11 @@ class lanch_nzap_model extends sqltable_model {
             $numpl1 = $numbers = $dozapnumbers;
             $part = $party;
         } elseif ($dozap=="zadel") {
-        
+            $zagotovokvsego = ceil($dozapnumbers["use"] / $platonblock);
+            $zag = $zagotovokvsego;
+            $ppart1 = $dozapnumbers["use"];
+            $numpl1 = $numbers = $dozapnumbers["use"];
+            $part = -1;
         } else {
             $zagotovokvsego = $numbl != 0 ? $numbl : ceil($numbers / $platonblock); // общее количество заготовок
             $zag = ($party * $zagotinparty >= $zagotovokvsego) ? ($zagotovokvsego - ($party - 1) * $zagotinparty) : $zagotinparty; //заготовок в партии
@@ -451,7 +459,9 @@ class lanch_nzap_model extends sqltable_model {
         $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
                         ($rec[ppsimat] . $tolsh)
                 ) . $rec[commentp];
-        $rec[dozap] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
+        // проокоментируем сопроаводительный лист
+        $rec[dozap] = $rec[dozap]===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
+                        ($rec[dozap]=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
 
         $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment'));
         return $rec;
@@ -596,7 +606,9 @@ class lanch_nzap_model extends sqltable_model {
         $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
                         ($rec[ppsimat] . $tolsh)
                 ) . $rec[commentp];
-        $rec[dozapcomment] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
+        // прокоментируем сопроводительный лист
+        $rec[dozapcomment] = $rec[dozap]===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
+                        ($rec[dozap]=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
         $rec[numpl1] = $numpl1;
         $rec[stkan] = $stkan;
         $rec[psizex] = '';//$psizex;
@@ -660,6 +672,7 @@ class lanch_nzap_model extends sqltable_model {
     /**
      * Использует задел, снимает с задела
      * @param int $rec массив из запроса getZadelByPosintzId
+     * @return int колличество обработаных записей
      */
     public function usezadel($rec) {
         if ($rec[zakaz]<$rec[zadel]) {
@@ -668,6 +681,7 @@ class lanch_nzap_model extends sqltable_model {
             $sql = "DELETE FROM zadel WHERE id='{$rec[zadelid]}'";
         }
         sql::query($sql);
+        return sql::affected();
     }
 
     /**
@@ -676,6 +690,7 @@ class lanch_nzap_model extends sqltable_model {
      * @return int 
      */
     public function getZadelByPosintzId($id) {
+        // todo: суммированные  заделы
         $sql = "SELECT 
                     zadel.number AS zadel,
                     posintz.numbers AS zakaz,
@@ -688,21 +703,9 @@ class lanch_nzap_model extends sqltable_model {
                     AND boards.id=blockpos.board_id
                     AND zadel.board_id=boards.id
                 WHERE posintz.id='{$id}'";
-        $res=sql::fetchOne($sql);
-        // определились  сколько в заделе, сколько нада теперь спишем с задела
-        // сколько нада или весь и вернем это количество
-        //return $zakaz.'xxx'.$zadel;
-        if ($res[zakaz]>=$rec[zadel]) {
-            //$this->usezadel($zadelid,"all"); 
-            // usezadel лучше  вызвать когда готов лист запуска
-            //return $zadel;
-            
-        } else {
-            //$this->usezadel($zadelid,$zakaz);
-            // usezadel лучше  вызвать когда готов лист запуска
-            //return $zakaz;
-        }
-        return $res;
+        $rec=sql::fetchOne($sql);
+        $rec["use"] = min($rec[zadel],$rec[zakaz]);
+        return $rec;
     }
 }
 
