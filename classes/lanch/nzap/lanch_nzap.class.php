@@ -21,7 +21,7 @@ class lanch_nzap extends sqltable {
         }
         if ($rec[zadel]>0) { 
             $rec[zadellink] = $this->actUri('zadel', $id)->url(); // создать AJAX ссылку для кнопки
-        }
+        } 
         for ($i = 0; $i < $rec[parties]; $i++) {
             if ($rec[party][$i][party]) {
                 $rec[party][$i][sllink] = $this->actUri('sl', $id, $rec[party][$i][party])->url();

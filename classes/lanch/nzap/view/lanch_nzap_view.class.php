@@ -23,24 +23,25 @@ class lanch_nzap_view extends sqltable_view {
             Output::assign('mplink', $rec[mp][mplink]);
             $out .= $this->fetch('mp.tpl');
         }
-        if ($rec[zadel]>0) {
+        if ($rec[zadel]>=$rec[block][boardinorder]) {
             // показать кнопку использования задела
             Output::assign('zadellink', $rec[zadellink]);
             $out .= $this->fetch('zadel.tpl');
-        }
-        $out .= '<br>';
-        foreach ($rec[party] as $party) {
-            foreach ($party as $key => $val) {
-                Output::assign($key, $val);
-            }
-            if (Auth::getInstance()->getRights('lanch_nzap', 'edit')) {
-                if ($party[slid]) {
-                    $out .= $this->fetch('partylink.tpl');
-                } else {
-                    $out .= $this->fetch('partybutton.tpl');
+        } else {
+            $out .= '<br>';
+            foreach ($rec[party] as $party) {
+                foreach ($party as $key => $val) {
+                    Output::assign($key, $val);
                 }
+                if (Auth::getInstance()->getRights('lanch_nzap', 'edit')) {
+                    if ($party[slid]) {
+                        $out .= $this->fetch('partylink.tpl');
+                    } else {
+                        $out .= $this->fetch('partybutton.tpl');
+                    }
+                }
+                $out .= $party[party] % 5 == 0 ? "<br>" : "";
             }
-            $out .= $party[party] % 5 == 0 ? "<br>" : "";
         }
         //$out .= print_r($rec,true);
 

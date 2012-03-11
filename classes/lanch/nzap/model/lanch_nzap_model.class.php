@@ -14,7 +14,7 @@ class lanch_nzap_model extends sqltable_model {
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
         // todo: запрос изменить  чтобы если несколько заделов не было нескольких строчек, просуммировать заделы
-        $sql = "SELECT *,orders.number AS ordernum,zadel.number AS zadelnum, posintz.id AS nzid,posintz.id
+        $sql = "SELECT *,orders.number AS ordernum,SUM(zadel.number) AS zadelnum, posintz.id AS nzid,posintz.id
         FROM posintz
         LEFT JOIN (lanched) ON (posintz.block_id=lanched.block_id)
         JOIN (blocks,tz,filelinks,customers,orders,blockpos,boards)
@@ -84,7 +84,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec[block][orderfiles] = $files[link];
         //
         $sql = "SELECT *, 
-                    zadel.number AS zadelnum, 
+                    SUM(zadel.number) AS zadelnum, 
                     boards.sizex AS psizex, 
                     boards.sizey AS psizey,
                     boards.id AS bid 
@@ -94,7 +94,7 @@ class lanch_nzap_model extends sqltable_model {
             AND blocks.id=block_id
             AND boards.id=board_id)
         LEFT JOIN (zadel) ON (zadel.board_id = boards.id)
-        WHERE block_id='{$rs["bid"]}'";
+        WHERE block_id='{$rs["bid"]}' GROUP BY boards.id";
         $res = sql::fetchAll($sql);
         $nz = 0; // максимальное количество заготовок по количеству плат в блоке
         $nl = 0; // максимальное количество слоев на плате в блоке, хотя бред
@@ -457,7 +457,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec[dozapcoment] = $dozap===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
                         ($dozap=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
 
-        $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment'));
+        $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment','ek'));
         return $rec;
     }
 
@@ -664,7 +664,6 @@ class lanch_nzap_model extends sqltable_model {
             $sql = "SELECT SUM(numbz) AS snumbz FROM lanch WHERE pos_in_tz_id='{$posid}'
             GROUP BY pos_in_tz_id";
             $rs = sql::fetchOne($sql);
-            console::getInstance()->out("{$rs[snumbz]} >= {$zagotovokvsego}");
             if ($rs[snumbz] >= $zagotovokvsego) {
                 $sql = "UPDATE posintz SET ldate=NOW(), luser_id='{$userid}'
          WHERE id='{$posid}'";
@@ -680,13 +679,21 @@ class lanch_nzap_model extends sqltable_model {
      * @return int колличество обработаных записей
      */
     public function usezadel($rec) {
-        if ($rec["use"]<$rec[zadel]) {
-            $sql = "UPDATE zadel SET number=number-{$rec["use"]} WHERE id='{$rec[zadelid]}'";
-        } else {
-            $sql = "DELETE FROM zadel WHERE id='{$rec[zadelid]}'";
+        $res=0;
+        $zds = explode(',',$rec["zds"]);
+        foreach ($zds as $value) {
+            list($id,$count) = explode('-',$value);
+            if ($rec["use"]<$count) {
+                $sql = "UPDATE zadel SET number=number-{$rec["use"]} WHERE id='{$id}'";
+            } else {
+                $sql = "DELETE FROM zadel WHERE id='{$id}'";
+            }            
+            sql::query($sql);
+            $res += sql::affected();
+            $rec["use"] -= $count;
+            if ($rec["use"] <= 0) break;
         }
-        sql::query($sql);
-        return sql::affected();
+        return $res;
     }
 
     /**
@@ -695,20 +702,27 @@ class lanch_nzap_model extends sqltable_model {
      * @return int 
      */
     public function getZadelByPosintzId($id) {
-        // todo: суммированные  заделы
+        $rec=array();
         $sql = "SELECT 
                     zadel.number AS zadel,
                     posintz.numbers AS zakaz,
                     zadel.id AS zadelid
                 FROM posintz 
-                JOIN (zadel,blocks,blockpos,boards) 
+                LEFT JOIN (zadel,blocks,blockpos,boards) 
                 ON 
                     posintz.block_id=blocks.id
                     AND blockpos.block_id=blocks.id
                     AND boards.id=blockpos.board_id
                     AND zadel.board_id=boards.id
-                WHERE posintz.id='{$id}'";
-        $rec=sql::fetchOne($sql);
+                WHERE posintz.id='{$id}'
+                ORDER BY zadel ASC";
+                // сорртирован по количеству чтоб удалять сначала те что меньше
+        $res=sql::fetchAll($sql);
+        foreach ($res as $zd) {
+            $rec[zadel] += $zd["zadel"];
+            $rec[zds] .= "{$zd[zadelid]}-{$zd["zadel"]},";
+            $rec[zakaz] = $zd[zakaz];
+        }
         $rec["use"] = min($rec[zadel],$rec[zakaz]);
         return $rec;
     }
