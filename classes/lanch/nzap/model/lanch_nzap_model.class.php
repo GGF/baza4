@@ -232,15 +232,9 @@ class lanch_nzap_model extends sqltable_model {
             //echo $sql;
             $rs = sql::fetchOne($sql);
             sql::error(true);
-            $posid = $rs[posid];
-            $sql = "SELECT MAX(part)+1 AS party
-                FROM lanch
-                WHERE pos_in_tz_id='{$posid}' ";
-            $rs = sql::fetchOne($sql);
-            sql::error(true);
+            $rec[posid] = $posid = $rs[posid];
             $rec[dozapnumbers] = $party; // тут было записано сколько при дозапуске
-            $rec[party] = $party = $rs[party];
-            $rec[posid] = $posid;
+            $rec[party] = $party = -2;
         } elseif($dozap=="zadel") {
             $rec[dozapnumbers] = $party;
             $rec[party] = $party = -1;
@@ -310,7 +304,7 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getSlDpp($rec) {
         extract($rec);
-        $boardname1 = $boardname2 = $boardname3 = $boardname4 = $boardname5 = $boardname6 =
+        $ek = $boardname1 = $boardname2 = $boardname3 = $boardname4 = $boardname5 = $boardname6 =
                 $nib1 = $nib2 = $nib3 = $nib4 = $nib5 = $nib6 =
                 $psizex1 = $niz1 = $pio1 = $ppart1 = $psizex2 = $niz2 = $pio2 = $ppart2 = $psizex3 = $niz3 = $pio3 = $ppart3 =
                 $psizex4 = $niz4 = $pio4 = $ppart4 = $psizex5 = $niz5 = $pio5 = $ppart5 = $psizex6 = $niz6 = $pio6 = $ppart6 = '';
@@ -390,13 +384,13 @@ class lanch_nzap_model extends sqltable_model {
             $zagotovokvsego = ceil($dozapnumbers / $platonblock);
             $zag = $zagotovokvsego;
             $ppart1 = $dozapnumbers;
-            $ppart1 = $zag * $platonblock;
+            $ppart1 = $ppart = $zag * $platonblock;
             $numpl1 = $numbers = $dozapnumbers;
-            $part = $party;
+            $part = -2;//$party;
         } elseif ($dozap=="zadel") {
-            $zagotovokvsego = ceil($dozapnumbers["use"] / $platonblock);
-            $zag = $zagotovokvsego;
-            $ppart1 = $dozapnumbers["use"];
+            $zagotovokvsego = $numbl != 0 ? $numbl : ceil($numbers / $platonblock); // общее количество заготовок
+            $zag = ceil($dozapnumbers["use"] / $platonblock);
+            $ppart1 = $ppart = $dozapnumbers["use"];
             $numpl1 = $numbers = $dozapnumbers["use"];
             $part = -1;
         } else {
@@ -460,8 +454,8 @@ class lanch_nzap_model extends sqltable_model {
                         ($rec[ppsimat] . $tolsh)
                 ) . $rec[commentp];
         // проокоментируем сопроаводительный лист
-        $rec[dozap] = $rec[dozap]===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
-                        ($rec[dozap]=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
+        $rec[dozapcoment] = $dozap===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
+                        ($dozap=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
 
         $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment'));
         return $rec;
@@ -555,9 +549,12 @@ class lanch_nzap_model extends sqltable_model {
             $zag = $zagotovokvsego;
             $ppart = $dozapnumbers;
             $numpl1 = $numbers = $dozapnumbers;
-            $part = $party;
+            $part = -2;//$party;
         } elseif ($dozap=="zadel") {
-        
+            $zagotovokvsego = ceil($dozapnumbers["use"] / $platonblock);
+            $zag = $zagotovokvsego;
+            $ppart = $dozapnumbers["use"];
+            $numpl1 = $numbers = $dozapnumbers["use"];
         } else {
             $zagotovokvsego = ceil($numbers / $platonblock); // * 1.15);
             // общее количество заготовок + 15% потом может быть
@@ -607,7 +604,7 @@ class lanch_nzap_model extends sqltable_model {
                         ($rec[ppsimat] . $tolsh)
                 ) . $rec[commentp];
         // прокоментируем сопроводительный лист
-        $rec[dozapcomment] = $rec[dozap]===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
+        $rec[dozapcoment] = $rec[dozap]===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
                         ($rec[dozap]=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
         $rec[numpl1] = $numpl1;
         $rec[stkan] = $stkan;
@@ -636,12 +633,19 @@ class lanch_nzap_model extends sqltable_model {
 
     public function lanchsl($rec) {
         extract($rec);
-        $numbp = $zagotovokvsego <= $zagotinparty ? $numbers :
-                ($last ? ($numbers - ($party - 1) * $zagotinparty * $platonblock) : $zagotinparty * $platonblock);
+        if ($dozap === true) {
+            $numbp = $ppart;
+        } elseif ($dozap=="zadel") {
+            $numbp = $dozapnumbers["use"];
+        } else {
+            $numbp = $zagotovokvsego <= $zagotinparty ? $numbers :
+                    ($last ? ($numbers - ($party - 1) * $zagotinparty * $platonblock) : $zagotinparty * $platonblock);
+        }
+        $userid = Auth::getInstance()->getUser("userid");
         $sql = "UPDATE lanch
         SET ldate=NOW(), block_id='{$block_id}',
             numbz='{$zag}', numbp='{$numbp}',
-            user_id='" . Auth::getInstance()->getUser('userid') . "', part='{$party}',
+            user_id='{$userid}', part='{$party}',
             tz_id='{$tzid}', pos_in_tz='{$posintz}'
         WHERE id='{$lanch_id}'";
         sql::query($sql);
@@ -660,8 +664,9 @@ class lanch_nzap_model extends sqltable_model {
             $sql = "SELECT SUM(numbz) AS snumbz FROM lanch WHERE pos_in_tz_id='{$posid}'
             GROUP BY pos_in_tz_id";
             $rs = sql::fetchOne($sql);
+            console::getInstance()->out("{$rs[snumbz]} >= {$zagotovokvsego}");
             if ($rs[snumbz] >= $zagotovokvsego) {
-                $sql = "UPDATE posintz SET ldate=NOW(), luser_id='{$_SERVER["userid"]}'
+                $sql = "UPDATE posintz SET ldate=NOW(), luser_id='{$userid}'
          WHERE id='{$posid}'";
                 sql::query($sql);
             }
@@ -675,8 +680,8 @@ class lanch_nzap_model extends sqltable_model {
      * @return int колличество обработаных записей
      */
     public function usezadel($rec) {
-        if ($rec[zakaz]<$rec[zadel]) {
-            $sql = "UPDATE zadel SET number=number-{$rec[zakaz]} WHERE id='{$rec[zadelid]}'";
+        if ($rec["use"]<$rec[zadel]) {
+            $sql = "UPDATE zadel SET number=number-{$rec["use"]} WHERE id='{$rec[zadelid]}'";
         } else {
             $sql = "DELETE FROM zadel WHERE id='{$rec[zadelid]}'";
         }
