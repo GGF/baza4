@@ -85,55 +85,60 @@ class Auth extends lego_abstract {
     public function action_index() {
         $mes = '';
         $sessionid = session_id();
-        if (!empty($sessionid)) {
+        if (!empty($sessionid)) { // не бывает, сессия создается раньше
             $sql1 = "SELECT * FROM session " .
                     "WHERE session ='{$sessionid}'";
             $rs = sql::fetchOne($sql1);
-            if (!empty($rs)) {
-                $sql = "SELECT * FROM users " .
-                        "WHERE id='{$rs["u_id"]}'";
-                $rs = sql::fetchOne($sql);
-                if (!empty($rs)) {
-                    $this->user["username"] = $rs["nik"];
-                    $this->user["userid"] = $rs["id"];
-                    $this->user["user_id"] = $rs["id"];
-                    $this->user["u_id"] = $rs["id"];
-                    $this->user["id"] = $rs["id"];
-                    $sql = "UPDATE session SET ts=NOW() WHERE session='{$sessionid}'";
-                    sql::query($sql);
-                    // права
-                    if (empty($_SESSION["rights"])) {
-                        $sql = "SELECT rights.right,type,rtype FROM rights " .
-                                "JOIN (rtypes,rrtypes) " .
-                                "ON (rtypes.id=type_id " .
-                                "AND rrtypes.id=rtype_id) " .
-                                "WHERE u_id='{$rs["id"]}'";
-                        $res = sql::fetchAll($sql);
-                        foreach ($res as $rs) {
-                            if ($rs["right"] == '1') {
-                                $_SESSION["rights"][$rs["type"]][$rs["rtype"]] = true;
+            if (!empty($rs)) { // не бывает, в авторизации записываем 0 на неудаче
+                $uuu = $rs["u_id"];
+                if ($rs["u_id"]!=0) {
+                    $sql = "SELECT * FROM users " .
+                            "WHERE id='{$rs["u_id"]}'";
+                    $rs = sql::fetchOne($sql);
+                    if (!empty($rs)) {
+                        $this->user["username"] = $rs["nik"];
+                        $this->user["userid"] = $rs["id"];
+                        $this->user["user_id"] = $rs["id"];
+                        $this->user["u_id"] = $rs["id"];
+                        $this->user["id"] = $rs["id"];
+                        $sql = "UPDATE session SET ts=NOW() WHERE session='{$sessionid}'";
+                        sql::query($sql);
+                        // права
+                        if (empty($_SESSION["rights"])) {
+                            $sql = "SELECT rights.right,type,rtype FROM rights " .
+                                    "JOIN (rtypes,rrtypes) " .
+                                    "ON (rtypes.id=type_id " .
+                                    "AND rrtypes.id=rtype_id) " .
+                                    "WHERE u_id='{$rs["id"]}'";
+                            $res = sql::fetchAll($sql);
+                            foreach ($res as $rs) {
+                                if ($rs["right"] == '1') {
+                                    $_SESSION["rights"][$rs["type"]][$rs["rtype"]] = true;
+                                }
                             }
                         }
+                        $this->rights = $_SESSION["rights"];
+                        $this->success = true;
+                        // определимся с сессией окна
+                        Auth::$lss = !empty($_REQUEST["lss"])?$_REQUEST["lss"]:"lss";
+                        return true;
+                    } else {
+                        $mes .= Lang::getString('Auth.session.cantfinduser');
                     }
-                    $this->rights = $_SESSION["rights"];
-                    // насстройки
-//                    $sql="SELECT users__settings_types.key,value FROM users__settings JOIN users__settings_types ON users__settings_types.id=type_id WHERE user_id='{$this->user["id"]}'";
-//                    $res = sql::fetchAll($sql);
-//                    $_SESSION["user_setting"] = $res;
-//                    $this->settings = $res;
-                    $this->success = true;
-                    // определимся с сессией окна
-                    Auth::$lss = !empty($_REQUEST["lss"])?$_REQUEST["lss"]:"lss";
-                    return true;
                 } else {
-                    $mes .= Lang::getString('Auth.session.cantfinduser');
+                    // нет пользователя
+                    $mes .= Lang::getString('Auth.session.wrongpassword');
                 }
             } else {
-                $mes .= Lang::getString('Auth.session.old');
+                // сессия не верна или устарела, но если первый вход все равно сюда попадет
+                // закоментирую
+                //$mes .= Lang::getString('Auth.session.old');
             }
         }
 
         // пустая сессия, не восстановлена по базе, не найден пользователь
+        $mes = '<script>localStorage.removeItem("remember")</script>'.$mes;
+        //исправляем глюк с зацикливанием неправильно запомненого пароля
 
         Output::assign('css', $this->getAllHeaderBlock());
         Output::assign('mes', $mes);
@@ -145,6 +150,8 @@ class Auth extends lego_abstract {
     public function action_login() {
 
         // ------------------------------------
+        $sql = "DELETE FROM session WHERE session='".session_id()."'";
+        sql::query($sql);
         $sql = "SELECT * FROM users " .
                 "WHERE password='{$_REQUEST["password"]}'";
         $res = sql::fetchOne($sql);
@@ -152,11 +159,16 @@ class Auth extends lego_abstract {
             $sql = "INSERT INTO session (session,u_id) " .
                     "VALUES ('" . session_id() . "','{$res[id]}')";
             sql::query($sql);
+        } else {
+            // неудачная авторизация запишем минус один и в главной сообщим
+            // не минус один, а ноль. у нас ансигнед ИД
+            $sql = "INSERT INTO session (session,u_id) " .
+                    "VALUES ('" . session_id() . "','0')";
+            sql::query($sql); 
         }
         //return print_r($_REQUEST,true);
         $_SESSION["cache"] = array();
         $_SESSION["rights"] = array();
-        $_SESSION["user_setting"]=array();
         $this->gohome();
     }
 

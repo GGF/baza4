@@ -13,7 +13,7 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $sql = "SELECT *,posintz.id AS nzid,posintz.id
+        $sql = "SELECT *,orders.number AS ordernum,SUM(zadel.number) AS zadelnum, posintz.id AS nzid,posintz.id
         FROM posintz
         LEFT JOIN (lanched) ON (posintz.block_id=lanched.block_id)
         JOIN (blocks,tz,filelinks,customers,orders,blockpos,boards)
@@ -25,6 +25,7 @@ class lanch_nzap_model extends sqltable_model {
             AND blocks.id=blockpos.block_id
             AND blockpos.board_id = boards.id
             )
+        LEFT JOIN (zadel) ON zadel.board_id = boards.id
         WHERE posintz.ldate = '0000-00-00' "
                 . (!empty($find) ? "AND (blocks.blockname LIKE '%{$find}%'
             OR board_name LIKE '%{$find}%'
@@ -43,10 +44,11 @@ class lanch_nzap_model extends sqltable_model {
         $cols["№"] = "№";
         $cols["nzid"] = "ID";
         $cols["customer"] = "Заказчик";
-        $cols["number"] = "Заказ";
+        $cols["ordernum"] = "Заказ";
         $cols["blockname"] = "Плата";
         $cols["numbers"] = "Кол-во";
         $cols["lastdate"] = "Посл. зап";
+        $cols["zadelnum"] = "Взаделе";
         return $cols;
     }
 
@@ -80,38 +82,69 @@ class lanch_nzap_model extends sqltable_model {
         $files = $this->getFilesForId('orders', $rs[order_id]);
         $rec[block][orderfiles] = $files[link];
         //
-        $sql = "SELECT *, boards.sizex AS psizex, boards.sizey AS psizey,
-        boards.id AS bid FROM blockpos
+        $sql = "SELECT *, 
+                    SUM(zadel.number) AS zadelnum, 
+                    boards.sizex AS psizex, 
+                    boards.sizey AS psizey,
+                    boards.id AS bid 
+        FROM blockpos
         JOIN (customers,blocks,boards)
         ON (customers.id=boards.customer_id
             AND blocks.id=block_id
             AND boards.id=board_id)
-        WHERE block_id='{$rs["bid"]}'";
+        LEFT JOIN (zadel) ON (zadel.board_id = boards.id)
+        WHERE block_id='{$rs["bid"]}' GROUP BY boards.id";
         $res = sql::fetchAll($sql);
         $nz = 0; // максимальное количество заготовок по количеству плат в блоке
         $nl = 0; // максимальное количество слоев на плате в блоке, хотя бред
         $cl = 0; // класс платы, наибольший по позициям
         $piz = 0; // число плат на заготовке (сумма по блоку)
-        foreach ($res as $rs1) {
-            $board[name] = $rs1["board_name"];
-            $board[sizex] = $rs1["psizex"];
-            $board[sizey] = $rs1["psizey"];
-            $board[numberinblock] = $rs1["nib"];
-            $board[numberinblockx] = $rs1["nx"];
-            $board[numberinblocky] = $rs1["ny"];
-            $board[layers] = $rs1["layers"];
-            $board[mask] = $rs1["mask"];
-            $board[mark] = $rs1["mark"];
-            $sql = "SELECT numbers FROM posintz WHERE tz_id='{$rs["tzid"]}'
-                    AND board_id='{$rs1["bid"]}'";
-            $rs2 = sql::fetchOne($sql);
-            $nz = max($nz, ceil($rs2["numbers"] / $rs1["nib"]));
-            $nl = max($nl, $rs1["layers"]);
-            $cl = max($cl, $rs1["class"]);
-            $piz += $rs1["nib"];
-            $customer = $rs1["customer"];
-            $rec[boards][] = $board;
-        }
+        if (count($res) > 1 ) {
+            // боольше одной платы в блоке, не получится использовать задел
+            $rec[zadel] = 0;
+            foreach ($res as $rs1) {
+                $board[name] = $rs1["board_name"];
+                $board[sizex] = $rs1["psizex"];
+                $board[sizey] = $rs1["psizey"];
+                $board[numberinblock] = $rs1["nib"];
+                $board[numberinblockx] = $rs1["nx"];
+                $board[numberinblocky] = $rs1["ny"];
+                $board[layers] = $rs1["layers"];
+                $board[mask] = $rs1["mask"];
+                $board[mark] = $rs1["mark"];
+                $sql = "SELECT numbers FROM posintz WHERE tz_id='{$rs["tzid"]}'
+                        AND board_id='{$rs1["bid"]}'";
+                $rs2 = sql::fetchOne($sql);
+                $nz = max($nz, ceil($rs2["numbers"] / $rs1["nib"]));
+                $nl = max($nl, $rs1["layers"]);
+                $cl = max($cl, $rs1["class"]);
+                $piz += $rs1["nib"];
+                $customer = $rs1["customer"];
+                $rec[boards][] = $board;
+            }
+        } else {
+            // тольько одна позиция в блоке, съэкономим на обработке массива for each
+                $rs1 = $res[0];
+                $board[name] = $rs1["board_name"];
+                $board[sizex] = $rs1["psizex"];
+                $board[sizey] = $rs1["psizey"];
+                $board[numberinblock] = $rs1["nib"];
+                $board[numberinblockx] = $rs1["nx"];
+                $board[numberinblocky] = $rs1["ny"];
+                $board[layers] = $rs1["layers"];
+                $board[mask] = $rs1["mask"];
+                $board[mark] = $rs1["mark"];
+                $sql = "SELECT numbers FROM posintz WHERE tz_id='{$rs["tzid"]}'
+                        AND board_id='{$rs1["bid"]}'";
+                $rs2 = sql::fetchOne($sql);
+                $nz = ceil($rs2["numbers"] / $rs1["nib"]);
+                $nl = $rs1["layers"];
+                $cl = $rs1["class"];
+                $piz = $rs1["nib"];
+                $customer = $rs1["customer"];
+                $rec[boards][] = $board;
+                $rec[zadel] = $rs1["zadelnum"];
+         }
         //if (Auth::getInstance()->getRights("nzap","edit")) {
         if ($nl > 2) {
             // многослойку радара партии по одной
@@ -191,23 +224,22 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getPartyfile($rec) {
         extract($rec);
-        if ($dozap) {
+        if ($dozap===true) {
             $sql = "SELECT pos_in_tz_id AS posid
             FROM lanch
             WHERE lanch.id='{$posid}'";
             //echo $sql;
             $rs = sql::fetchOne($sql);
             sql::error(true);
-            $posid = $rs[posid];
-            $sql = "SELECT MAX(part)+1 AS party
-                FROM lanch
-                WHERE pos_in_tz_id='{$posid}' ";
-            $rs = sql::fetchOne($sql);
-            sql::error(true);
+            $rec[posid] = $posid = $rs[posid];
             $rec[dozapnumbers] = $party; // тут было записано сколько при дозапуске
-            $rec[party] = $party = $rs[party];
-            $rec[posid] = $posid;
+            $rec[party] = $party = -2;
+        } elseif($dozap=="zadel") {
+            $rec[dozapnumbers] = $party;
+            $rec[party] = $party = -1;
         }
+        // Получим идентификатор запуска, нового или уже сущечтвующего
+        // почти всегда, кажется, нового
         $sql = "SELECT * FROM lanch
             WHERE pos_in_tz_id='{$posid}' AND part='{$party}'";
         $rs = sql::fetchOne($sql);
@@ -271,7 +303,7 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getSlDpp($rec) {
         extract($rec);
-        $boardname1 = $boardname2 = $boardname3 = $boardname4 = $boardname5 = $boardname6 =
+        $ek = $boardname1 = $boardname2 = $boardname3 = $boardname4 = $boardname5 = $boardname6 =
                 $nib1 = $nib2 = $nib3 = $nib4 = $nib5 = $nib6 =
                 $psizex1 = $niz1 = $pio1 = $ppart1 = $psizex2 = $niz2 = $pio2 = $ppart2 = $psizex3 = $niz3 = $pio3 = $ppart3 =
                 $psizex4 = $niz4 = $pio4 = $ppart4 = $psizex5 = $niz5 = $pio5 = $ppart5 = $psizex6 = $niz6 = $pio6 = $ppart6 = '';
@@ -346,14 +378,20 @@ class lanch_nzap_model extends sqltable_model {
         $rec = array_merge($rec, compact('platonblock', 'numlam', 'rmark', 'immer', 'mask', 'layers', 'class', 'mark', 'commentp'));
         // сделать собственно сопроводительный
         $rec[zagotinparty] = $zagotinparty = 25;
-        if ($dozap) {
+        if ($dozap===true) {
             //
             $zagotovokvsego = ceil($dozapnumbers / $platonblock);
             $zag = $zagotovokvsego;
             $ppart1 = $dozapnumbers;
-            $ppart1 = $zag * $platonblock;
+            $ppart1 = $ppart = $zag * $platonblock;
             $numpl1 = $numbers = $dozapnumbers;
-            $part = $party;
+            $part = -2;//$party;
+        } elseif ($dozap=="zadel") {
+            $zagotovokvsego = $numbl != 0 ? $numbl : ceil($numbers / $platonblock); // общее количество заготовок
+            $zag = ceil($dozapnumbers["use"] / $platonblock);
+            $ppart1 = $ppart = $dozapnumbers["use"];
+            $numpl1 = $numbers = $dozapnumbers["use"];
+            $part = -1;
         } else {
             $zagotovokvsego = $numbl != 0 ? $numbl : ceil($numbers / $platonblock); // общее количество заготовок
             $zag = ($party * $zagotinparty >= $zagotovokvsego) ? ($zagotovokvsego - ($party - 1) * $zagotinparty) : $zagotinparty; //заготовок в партии
@@ -414,9 +452,11 @@ class lanch_nzap_model extends sqltable_model {
         $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
                         ($rec[ppsimat] . $tolsh)
                 ) . $rec[commentp];
-        $rec[dozap] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
+        // проокоментируем сопроаводительный лист
+        $rec[dozapcoment] = $dozap===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
+                        ($dozap=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
 
-        $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment'));
+        $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment','ek'));
         return $rec;
     }
 
@@ -503,12 +543,17 @@ class lanch_nzap_model extends sqltable_model {
             $zagotinparty = 5;
         $rec[zagotinparty] = $zagotinparty;
 
-        if ($dozap) {
+        if ($dozap===true) {
             $zagotovokvsego = ceil($dozapnumbers / $platonblock);
             $zag = $zagotovokvsego;
             $ppart = $dozapnumbers;
             $numpl1 = $numbers = $dozapnumbers;
-            $part = $party;
+            $part = -2;//$party;
+        } elseif ($dozap=="zadel") {
+            $zagotovokvsego = ceil($dozapnumbers["use"] / $platonblock);
+            $zag = $zagotovokvsego;
+            $ppart = $dozapnumbers["use"];
+            $numpl1 = $numbers = $dozapnumbers["use"];
         } else {
             $zagotovokvsego = ceil($numbers / $platonblock); // * 1.15);
             // общее количество заготовок + 15% потом может быть
@@ -557,7 +602,9 @@ class lanch_nzap_model extends sqltable_model {
         $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
                         ($rec[ppsimat] . $tolsh)
                 ) . $rec[commentp];
-        $rec[dozapcomment] = $rec[dozap] ? multibyte::UTF_encode('ДОЗАПУСК') : '';
+        // прокоментируем сопроводительный лист
+        $rec[dozapcoment] = $rec[dozap]===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
+                        ($rec[dozap]=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
         $rec[numpl1] = $numpl1;
         $rec[stkan] = $stkan;
         $rec[psizex] = '';//$psizex;
@@ -585,18 +632,26 @@ class lanch_nzap_model extends sqltable_model {
 
     public function lanchsl($rec) {
         extract($rec);
-        $numbp = $zagotovokvsego <= $zagotinparty ? $numbers :
-                ($last ? ($numbers - ($party - 1) * $zagotinparty * $platonblock) : $zagotinparty * $platonblock);
+        if ($dozap === true) {
+            $numbp = $ppart;
+        } elseif ($dozap=="zadel") {
+            $numbp = $dozapnumbers["use"];
+        } else {
+            $numbp = $zagotovokvsego <= $zagotinparty ? $numbers :
+                    ($last ? ($numbers - ($party - 1) * $zagotinparty * $platonblock) : $zagotinparty * $platonblock);
+        }
+        $userid = Auth::getInstance()->getUser("userid");
         $sql = "UPDATE lanch
         SET ldate=NOW(), block_id='{$block_id}',
             numbz='{$zag}', numbp='{$numbp}',
-            user_id='" . Auth::getInstance()->getUser('userid') . "', part='{$party}',
+            user_id='{$userid}', part='{$party}',
             tz_id='{$tzid}', pos_in_tz='{$posintz}'
         WHERE id='{$lanch_id}'";
         sql::query($sql);
 
         // если все запущены - исключить из запуска
-        if (!$dozap) {
+        // если из задела тоже
+        if ($dozap!==true) {
             // обновим таблицу запусков
 
             $sql = "DELETE FROM lanched WHERE block_id='{$block_id}'";
@@ -609,14 +664,67 @@ class lanch_nzap_model extends sqltable_model {
             GROUP BY pos_in_tz_id";
             $rs = sql::fetchOne($sql);
             if ($rs[snumbz] >= $zagotovokvsego) {
-                $sql = "UPDATE posintz SET ldate=NOW(), luser_id='{$_SERVER["userid"]}'
+                $sql = "UPDATE posintz SET ldate=NOW(), luser_id='{$userid}'
          WHERE id='{$posid}'";
                 sql::query($sql);
             }
         }
         return true;
     }
+    
+    /**
+     * Использует задел, снимает с задела
+     * @param int $rec массив из запроса getZadelByPosintzId
+     * @return int колличество обработаных записей
+     */
+    public function usezadel($rec) {
+        $res=0;
+        $zds = explode(',',$rec["zds"]);
+        foreach ($zds as $value) {
+            list($id,$count) = explode('-',$value);
+            if ($rec["use"]<$count) {
+                $sql = "UPDATE zadel SET number=number-{$rec["use"]} WHERE id='{$id}'";
+            } else {
+                $sql = "DELETE FROM zadel WHERE id='{$id}'";
+            }            
+            sql::query($sql);
+            $res += sql::affected();
+            $rec["use"] -= $count;
+            if ($rec["use"] <= 0) break;
+        }
+        return $res;
+    }
 
+    /**
+     * Возвращает по номеру позиции в ТЗ количество использованого задела
+     * @param int $id
+     * @return int 
+     */
+    public function getZadelByPosintzId($id) {
+        $rec=array();
+        $sql = "SELECT 
+                    zadel.number AS zadel,
+                    posintz.numbers AS zakaz,
+                    zadel.id AS zadelid
+                FROM posintz 
+                LEFT JOIN (zadel,blocks,blockpos,boards) 
+                ON 
+                    posintz.block_id=blocks.id
+                    AND blockpos.block_id=blocks.id
+                    AND boards.id=blockpos.board_id
+                    AND zadel.board_id=boards.id
+                WHERE posintz.id='{$id}'
+                ORDER BY zadel ASC";
+                // сорртирован по количеству чтоб удалять сначала те что меньше
+        $res=sql::fetchAll($sql);
+        foreach ($res as $zd) {
+            $rec[zadel] += $zd["zadel"];
+            $rec[zds] .= "{$zd[zadelid]}-{$zd["zadel"]},";
+            $rec[zakaz] = $zd[zakaz];
+        }
+        $rec["use"] = min($rec[zadel],$rec[zakaz]);
+        return $rec;
+    }
 }
 
 ?>
