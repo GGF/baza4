@@ -3,7 +3,7 @@
 <div class="auth"> 
 <table>
 <tr><td colspan=2 class=zag>Необходимо авторизоваться для работы с базой
-<!--tr><td colspan=2 class=zag>{$mes}&nbsp; -->
+<tr><td colspan=2 class=zag>{$mes}&nbsp;
 <tr class="tekst">
 <td>Пароль
 <span class=podtekst>(именно пароль и только пароль)</span>

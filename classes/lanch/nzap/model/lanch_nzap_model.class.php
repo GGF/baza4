@@ -13,7 +13,6 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        // todo: запрос изменить  чтобы если несколько заделов не было нескольких строчек, просуммировать заделы
         $sql = "SELECT *,orders.number AS ordernum,SUM(zadel.number) AS zadelnum, posintz.id AS nzid,posintz.id
         FROM posintz
         LEFT JOIN (lanched) ON (posintz.block_id=lanched.block_id)
