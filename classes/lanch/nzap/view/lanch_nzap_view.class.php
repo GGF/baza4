@@ -23,19 +23,25 @@ class lanch_nzap_view extends sqltable_view {
             Output::assign('mplink', $rec[mp][mplink]);
             $out .= $this->fetch('mp.tpl');
         }
-        $out .= '<br>';
-        foreach ($rec[party] as $party) {
-            foreach ($party as $key => $val) {
-                Output::assign($key, $val);
-            }
-            if (Auth::getInstance()->getRights('lanch_nzap', 'edit')) {
-                if ($party[slid]) {
-                    $out .= $this->fetch('partylink.tpl');
-                } else {
-                    $out .= $this->fetch('partybutton.tpl');
+        if ($rec[zadel]>=$rec[block][boardinorder]) {
+            // показать кнопку использования задела
+            Output::assign('zadellink', $rec[zadellink]);
+            $out .= $this->fetch('zadel.tpl');
+        } else {
+            $out .= '<br>';
+            foreach ($rec[party] as $party) {
+                foreach ($party as $key => $val) {
+                    Output::assign($key, $val);
                 }
+                if (Auth::getInstance()->getRights('lanch_nzap', 'edit')) {
+                    if ($party[slid]) {
+                        $out .= $this->fetch('partylink.tpl');
+                    } else {
+                        $out .= $this->fetch('partybutton.tpl');
+                    }
+                }
+                $out .= $party[party] % 5 == 0 ? "<br>" : "";
             }
-            $out .= $party[party] % 5 == 0 ? "<br>" : "";
         }
         //$out .= print_r($rec,true);
 
@@ -85,6 +91,16 @@ class lanch_nzap_view extends sqltable_view {
             $out = "Не удалось записать файл";
         }
         return $out;
+    }
+    
+    /**
+     * Создает лист запуска из раздела и возвращает текст для кнопки использования раздела
+     * @param mixed $rec масссив с данными для создани СЛ
+     * @return string текст для кнопки
+     */
+    
+    public function showzadel($rec) {
+        return "<b>Заддел использован! Отккройте плату снова!</b>"; //заглушка
     }
 
 }

@@ -1,0 +1,1 @@
+<br><a data-silent="self" legotarget="lanch_nzap" href="{$zadellink}"><input type="button" class="zadelbutton" id="zd" value="Использовать задел" ></a>

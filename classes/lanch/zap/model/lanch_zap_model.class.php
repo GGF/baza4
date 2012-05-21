@@ -14,7 +14,9 @@ class lanch_zap_model extends sqltable_model {
     public function getData($all=false,$order='',$find='',$idstr='') {
         $ret = array();
 	$sql="SELECT *,
-                IF(part=0,'<span style=\'color:red\'>Удалена</span>',part) AS part,
+                IF(part=0,'<span style=\'color:red\'>Удалена</span>',
+                    IF(part=-1,'<span style=\'color:green\'>Из задела</span>',
+                    IF(part=-2,'<span style=\'color:blue\'>Дозапуск</span>',part))) AS part,
                 lanch.id AS lanchid,
                 lanch.id
                 FROM lanch
@@ -61,7 +63,8 @@ class lanch_zap_model extends sqltable_model {
 	// удаление
 	//$sql = "DELETE FROM lanch WHERE id='{$id}'";
         // не хочу удалять. пусть все остаются
-    $sql = "UPDATE lanch SET part='0' WHERE id='{$id}'";
+        $sql = "UPDATE lanch SET part='0' WHERE id='{$id}'";
+        // todo: воссстановление задела
 	sql::query($sql);
     }
 

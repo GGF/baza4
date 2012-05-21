@@ -16,7 +16,7 @@ if ($_SERVER[Auth]) { // update и getdata делается без автори�
         echo Auth::getInstance()->getOutput();
         echo console::getInstance()->run()->getOutput();
         exit;
-    } 
+    }
 }
 
 $classname = $_REQUEST["level"];
@@ -31,9 +31,8 @@ if ($m->run())
 
 if ($_SERVER[debug][report]) {
     if (Ajax::isAjaxRequest()) {
-        echo console::getInstance()->getScripts(); 
+        echo console::getInstance()->getScripts();
     } else
         echo console::getInstance()->run()->getOutput();
 }
-
 ?>
