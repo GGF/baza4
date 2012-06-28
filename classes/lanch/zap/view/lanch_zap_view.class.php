@@ -31,6 +31,7 @@ class lanch_zap_view extends sqltable_view {
         $().lego.load('lanch_nzap', $(this).attr('action'),$(this).serialize());
         return false;
     });</script>";
+        $out .= $this->addComments($rec[id]);
         return $out;
     }
 

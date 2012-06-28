@@ -1,1 +1,1 @@
-<a class='{$linkclass}' href='{$sllink}'>{$type}{$slid}</a><br>
+<div><a class='{$linkclass}' href='{$sllink}'>{$type}{$slid}</a></div>

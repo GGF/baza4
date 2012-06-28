@@ -1,4 +1,4 @@
-<div class="lego" name="lanch_zap">
+<div class="lego" name="lanch_nzap">
 <div id="multyfiles">Файлы</div>
 <div id="hiddenfiles">
 {$filelinks}

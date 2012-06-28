@@ -10,7 +10,7 @@
 var firsttr = '';
 /**
  * Идентификатор текущей строки в таблице
- */ 
+ */
 var curtr = firsttr;
 /**
  * Идетификатор последней строки
@@ -18,13 +18,13 @@ var curtr = firsttr;
 var lasttr = '';
 
 /**
- * Выше глобальные переменные для движения клавишами по таблице, чтобы менять 
+ * Выше глобальные переменные для движения клавишами по таблице, чтобы менять
  * выделеную строку и не уходить за конец-начало
  */
- 
+
 
 /**
- * Функция перезагрузки-обновления таблицы, после, скажем, удаления-добавления 
+ * Функция перезагрузки-обновления таблицы, после, скажем, удаления-добавления
  * или просто проверить что поменялось. Можно вызывать по таймеру...
  */
 function reload_table() {
@@ -36,7 +36,7 @@ function reload_table() {
 }
 
 /**
- * Вызов диалога с текстом 
+ * Вызов диалога с текстом
  * @param boolean info инфформационное окно (Ok) или  с формой (ok=cancel)
  */
 function dialog_modal(info)
@@ -45,14 +45,14 @@ function dialog_modal(info)
     var Buttons;
     var formname;
     formname=$('#dialog').find('form').attr('name');
-    
+
     // Создание кнопок диалога
     if (info)
     {
         Title = 'Сообщение';
         resizeble = false; // неменяемый размер
         onesc=true; //выход по ESC
-		
+
         Buttons={
             Ok: function() {
                 $(this).dialog('close');
@@ -85,7 +85,7 @@ function dialog_modal(info)
 
         };
     }
-    
+
     // ну собственно объект диалога (jquery.dialog)
     $('#dialog').dialog({
         closeOnEscape: onesc,
@@ -96,6 +96,8 @@ function dialog_modal(info)
         draggable: true,
         buttons: Buttons
     });
+    // вызвать скрытие комментариев и файлов TODO: Уж не знаю тут ли, но отображаться они будут только в диалогах
+    $('div.comments').hide().before('<div class="showcomment">Комментарии</div>');
 }
 
 // Focus first element
@@ -138,7 +140,7 @@ $(document).ready(function(){
         curtr=$(this).attr('id');
     });
 
-    // когда нажат enter на  строке поиска, получается посыл формы, а при посыле 
+    // когда нажат enter на  строке поиска, получается посыл формы, а при посыле
     // нужно обновить табличку, а не выполнять POST. Без  скриптов сработает POST и  все будет круто
     $('form[name=find]').live('submit',function(){
         $().lego.load($('table.listtable').attr('name'), $(this).attr('action'),$(this).serialize());
@@ -149,7 +151,7 @@ $(document).ready(function(){
     $('input[name=find]').live('blur',function(){
         $(this).val('');
     });
-    
+
     // Назначим клавиатурные комбинации
     table_set_keyboard();
     /* следующий блок добавляет контекстное меню для копирования ссылок
@@ -165,7 +167,7 @@ $(document).ready(function(){
             var re = new RegExp('/','gi');
             document.bazaapplet.openfile('\"'+link.split(':')[1].replace(re,'\\')+'\"');
             return false;
-    });    
+    });
     // при клике на ссылках "путь" соответственно запустим программу открытия пути
     $("a.path").live("click", function(){
         var link = $(this).attr("href");
@@ -179,10 +181,12 @@ $(document).ready(function(){
                 $(this).attr("href","/?level=setting");
                 return true;
             }
+            //alert('\"mkdir \"'+link+'\"\"');
+            document.bazaapplet.openfile('\"mkdir \"'+link+'\"\"');
             var res = document.bazaapplet.openfile('\"\"'+totalcmd+'\" \"'+link+'\"\"');
             return false; // чтоб нажатие на ссылку броузер не отработал нормальным способом
     });
-    
+
     //$('input[type=file]').live('change',function(){alert($(this).val())});
 });
 
@@ -240,7 +244,7 @@ function table_set_keyboard()
                 return true;
             } else {
                 // а вот если мы в диалоге, а они у нас модальные
-                
+
                 if ($('.partybutton').length>0) {
                     // то или запустим очередную партию заготовок
                     $('.partybutton').first().click();
@@ -294,10 +298,10 @@ function table_set_keyboard()
 				$('#'+curtr+' #dellink').click();
 			}
 			return false;
-						
+
 		}*/
         return true;
-		
+
     });
 
 }
@@ -309,7 +313,7 @@ function table_set_keyboard()
 function CMenu_builder(oEvent) {
     var objMenu = [];
     switch (true) {
-        /* тут даже можно вставить проверку, чтобы целевой фрагмент не был выделенным текстом, 
+        /* тут даже можно вставить проверку, чтобы целевой фрагмент не был выделенным текстом,
          * который мы, например, можем хотеть скопировать/вставить при помощи основного меню :-)*/
         case (document.getSelection().length > 0) :
             break;

@@ -137,7 +137,7 @@ class Auth extends lego_abstract {
         }
 
         // пустая сессия, не восстановлена по базе, не найден пользователь
-        $mes = '<script>localStorage.removeItem("remember")</script>'.$mes;
+        if(!empty($mes)) $mes = '<script>localStorage.removeItem("remember")</script>'.$mes;
         //исправляем глюк с зацикливанием неправильно запомненого пароля
 
         Output::assign('css', $this->getAllHeaderBlock());

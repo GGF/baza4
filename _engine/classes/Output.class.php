@@ -31,6 +31,12 @@ class Output {
         self::$teplate_compiler->assign($varname, $value);
     }
 
+    static public function assignAll($varname) {
+        foreach ($varname as $key => $value) {
+            self::$teplate_compiler->assign($key, $value);
+        }
+    }
+
     static public function setContent($text) {
         self::$content = $text;
         self::assign("content", self::$content);
