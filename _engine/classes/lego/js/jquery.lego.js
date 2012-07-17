@@ -122,7 +122,7 @@ $(function(){
     }
 
     jQuery.fn.lego.log = function(variable){
-        return log(variable);
+        //return log(variable);
     //        if(typeof console == "undefined") return;
     //        console.log(variable);
     }

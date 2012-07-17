@@ -209,7 +209,7 @@ $(function(){
             e.returnValue = false;
             e.stopPropagation();
             e.preventDefault();
-            return false; 
+            return false;
         }
 
         // А это для прочих случаев:

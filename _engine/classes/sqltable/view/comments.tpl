@@ -1,5 +1,4 @@
 <div class="lego comments" name="comments">
-<div class="coment"></div>
 {$comments}
 <input type='hidden' name='savecommenturl' id='savecommenturl' value='{$savecommenturl}'/>
 <form id=addcomment>

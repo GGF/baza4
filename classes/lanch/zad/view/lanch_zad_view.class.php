@@ -9,8 +9,8 @@ class lanch_zad_view extends sqltable_view {
 
     public function showrec($rec) {
 
-        $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
-        $form->init($rec[edit]);
+        //$form = new ajaxform_edit($this->owner->getName(), $rec[action]);
+        //$form->init($rec[edit]);
         $fields = array();
         if (!$rec[isnew]) {
             array_push($fields, array(
@@ -76,9 +76,10 @@ class lanch_zad_view extends sqltable_view {
                 "value" => $rec[ldate],
             ));
 
-        $form->addFields($fields);
+        //$form->addFields($fields);
+            $rec["fields"] = $fields;
 
-        return $form->getOutput();
+        return parent::showrec($rec);
     }
 
 }

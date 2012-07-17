@@ -55,6 +55,10 @@ function dialog_modal(info)
 
         Buttons={
             Ok: function() {
+                if ($('textarea[name="coment"]').length > 0 ) {
+                    if($('textarea[name="coment"]').val().length != 0)
+                        $('input#sendcomment').click();
+                }
                 $(this).dialog('close');
                 $('#dialog').remove(); // убрать div с  диалогом из DOM страницы
                 //reload_table();
@@ -72,6 +76,10 @@ function dialog_modal(info)
                 // изза файловых поле тут надо все же делать посылку формы в класс form_ajax
                 //$(this).dialog('close');
                 //editrecord(type,$('form[name=form_'+type+']').serialize());
+                if ($('textarea[name="coment"]') > 0) {
+                    if($('textarea[name="coment"]').val().length != 0)
+                        $('input#sendcomment').click();
+                }
                 $("form[name="+formname+"]").submit();
             },
             Закрыть: function() {
@@ -97,7 +105,13 @@ function dialog_modal(info)
         buttons: Buttons
     });
     // вызвать скрытие комментариев и файлов TODO: Уж не знаю тут ли, но отображаться они будут только в диалогах
-    $('div.comments').hide().before('<div class="showcomment">Комментарии</div>');
+    //$('div.comments').hide().before('<div class="showcomment">Комментарии('+$('div.comments>div.coment').length+')</div>');
+    if ($('div.comments>div.coment').length >0 ) {
+        $('div.comments').hide().before('<a hotkey="Ctrl + x" Title="Показать коменатрии" class="showcomment"><div>Комментарии('+$('div.comments>div.coment').length+')</div></a>');
+    } else {
+        $('div.comments').hide().before('<a hotkey="Ctrl + x" Title="Показать коменатрии" class="showcomment"><div >-----------</div></a>');
+        $('.showcomment').hide();
+    }
 }
 
 // Focus first element
@@ -182,7 +196,7 @@ $(document).ready(function(){
                 return true;
             }
             //alert('\"mkdir \"'+link+'\"\"');
-            document.bazaapplet.openfile('\"mkdir \"'+link+'\"\"');
+            //document.bazaapplet.openfile('\"mkdir \"'+link+'\"\"');
             var res = document.bazaapplet.openfile('\"\"'+totalcmd+'\" \"'+link+'\"\"');
             return false; // чтоб нажатие на ссылку броузер не отработал нормальным способом
     });

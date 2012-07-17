@@ -5,7 +5,7 @@
 
 $(document).ready(
     function(){
-        $('div.showcomment').live('click',
+        $('.showcomment').live('click',
             function(){
                 $(this).hide();
                 $('div.comments').show();
