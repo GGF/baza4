@@ -1,6 +1,6 @@
 <?php
 
-class sqltable_model {
+class sqltable_model extends model {
 
     protected $maintable;
     public $idstr;
@@ -10,14 +10,20 @@ class sqltable_model {
         $this->idstr = '';
     }
 
+    public function getDir() {
+	return __DIR__;
+    }
+
     public function init() {
         if (empty($this->maintable)) {
             return true;
         } else {
             $sql = "SELECT COUNT(*) FROM {$this->maintable}";
-            return sql::query($sql); // если будет ошибка придется создавать таблицы
+            if (! sql::query($sql) )
+		$this->install ();
         }
     }
+
 
     /**
      * Воззвращает массив данных из базы
@@ -25,7 +31,7 @@ class sqltable_model {
      * @param string $order Наззвание столбца по которому сортировать
      * @param string $find Подстрока поиска
      * @param string $idstr строка  идентификаторов, специальное использование, очень специальное
-     * @return array 
+     * @return array
      */
     public function getData($all=false, $order='', $find='', $idstr='') {
         $this->idstr = $idstr;
@@ -222,7 +228,7 @@ class sqltable_model {
             }
         }
     }
-    
+
     public function getComment($id) {
         $sql = "SELECT * FROM coments WHERE id='{$id}'";
         $comment=sql::fetchOne($sql);

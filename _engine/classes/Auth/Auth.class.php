@@ -1,5 +1,4 @@
 <?php
-include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'i18n.php';
 
 class Auth extends lego_abstract {
 
@@ -7,6 +6,8 @@ class Auth extends lego_abstract {
     public $user;
     public $rigths;
     public $settings;
+    private $_model;
+    private $_view;
     public static $lss;
     static private $instance;
 
@@ -15,6 +16,8 @@ class Auth extends lego_abstract {
     }
 
     public function __construct($name=false, $directCall = true) {
+	// Интернационализируем
+	require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'i18n.php';
         if ($directCall) {
             trigger_error(Lang::getString('Auth.errors.noconstructor'), E_USER_ERROR);
         }
@@ -31,20 +34,16 @@ class Auth extends lego_abstract {
         parent::init();
         // проверка на существование
         $this->success = false;
-        // Почистим устаревшие сессии
-        $sql = "DELETE FROM session " .
-                "WHERE UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(ts) > 3600*8";
-        if (sql::query($sql) === false) {
-            // неправильный запрос - видимо изза отсутствия таблиц
-            //$this->install();
-        }
+	$this->_model = new Auth_model();
+	$this->_view = new Auth_view();
+
     }
 
     /**
      * Получение прав пользователя на чтото
      * @param string $type Тип прав на которые запрашивается
      * @param string $action Деййствие на которое запрашиваются права
-     * @return boolean 
+     * @return boolean
      */
     public function getRights($type=false, $action=false) {
         if ($type) {
@@ -56,14 +55,14 @@ class Auth extends lego_abstract {
         }
         return $this->rights;
     }
-    
+
     /**
      * Обрратная предыдущей функция установки прав на что-то
      * В базу получено право не пишет, используется для того чтоб в порожденных
      * классах разрешать чтото для всех, ну или соответственно запрещать
-     * @param string $type 
+     * @param string $type
      * @param string $action
-     * @param boolean $val 
+     * @param boolean $val
      */
     public function setRights($type,$action,$val=true) {
         $this->rights[$type][$action] = $val;
@@ -73,7 +72,7 @@ class Auth extends lego_abstract {
     /**
      * Поллучить данные о пользователе
      * @param string $field Какое поле нужно получить
-     * @return mixed Либо  весь массив, либо выбраное поле 
+     * @return mixed Либо  весь массив, либо выбраное поле
      */
     public function getUser($field=false) {
         if ($field) {
@@ -148,34 +147,18 @@ class Auth extends lego_abstract {
     }
 
     public function action_login() {
-
-        // ------------------------------------
-        $sql = "DELETE FROM session WHERE session='".session_id()."'";
-        sql::query($sql);
-        $sql = "SELECT * FROM users " .
-                "WHERE password='{$_REQUEST["password"]}'";
-        $res = sql::fetchOne($sql);
-        if ($res) {
-            $sql = "INSERT INTO session (session,u_id) " .
-                    "VALUES ('" . session_id() . "','{$res[id]}')";
-            sql::query($sql);
-        } else {
-            // неудачная авторизация запишем минус один и в главной сообщим
-            // не минус один, а ноль. у нас ансигнед ИД
-            $sql = "INSERT INTO session (session,u_id) " .
-                    "VALUES ('" . session_id() . "','0')";
-            sql::query($sql); 
-        }
-        //return print_r($_REQUEST,true);
+	$rec= array();
+	$rec["password"] = $_REQUEST["password"];
+	$rec["session_id"] = session_id();
+        $this->_model->setsession($rec);
         $_SESSION["cache"] = array();
         $_SESSION["rights"] = array();
         $this->gohome();
     }
 
     public function action_logout() {
-        $sql = "DELETE FROM session WHERE session='" . session_id() . "'";
+	$this->_model->resetsession(session_id());
         echo "<script>localStorage.clear();</script>";
-        sql::query($sql);
         // Unset all of the session variables.
         session_unset();
         // Finally, destroy the session.

@@ -15,17 +15,18 @@ class storage extends secondlevel {
     public function init() {
         parent::init();
         CTitle::addSection("Склады | " . storages::$storages[$_SESSION[Auth::$lss][storagetype]][title]);
-        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`sk_" .
-                storages::$storages[$_SESSION[Auth::$lss][storagetype]][sklad] .
-                "_spr`";
-        if (!sql::query($sql)) {
-            $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
-            $replace = array(
-                "storagebase" => $_SERVER["storagebase"],
-                "storage" => storages::$storages[$_SESSION[Auth::$lss][storagetype]][sklad],
-            );
-            $this->install($replace); // если не получилось прочитать комментарии нужно создать базу и таблицы
-        }
+	// TODO: перенести вмодели
+//        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`sk_" .
+//                storages::$storages[$_SESSION[Auth::$lss][storagetype]][sklad] .
+//                "_spr`";
+//        if (!sql::query($sql)) {
+//            $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
+//            $replace = array(
+//                "storagebase" => $_SERVER["storagebase"],
+//                "storage" => storages::$storages[$_SESSION[Auth::$lss][storagetype]][sklad],
+//            );
+//            $this->install($replace); // если не получилось прочитать комментарии нужно создать базу и таблицы
+//        }
     }
 
     public function __call($name, $arguments) {

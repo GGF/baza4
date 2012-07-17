@@ -63,14 +63,15 @@ class storages extends firstlevel {
 
     public function init() {
         parent::init();
-        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`coments`"; // мне не нравится что имя таблицы с ошибкой
-        if (!sql::query($sql)) {
-            $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
-            $replace = array(
-                "storagebase" => $_SERVER["storagebase"],
-            );
-            $this->install($replace); // если не получилось прочитать комментарии нужно создать базу и таблицы
-        }
+	// TODO: Перенести в модели
+//        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`coments`"; // мне не нравится что имя таблицы с ошибкой
+//        if (!sql::query($sql)) {
+//            $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
+//            $replace = array(
+//                "storagebase" => $_SERVER["storagebase"],
+//            );
+//            $this->install($replace); // если не получилось прочитать комментарии нужно создать базу и таблицы
+//        }
         CTitle::addSection('Склады');
     }
 
