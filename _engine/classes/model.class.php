@@ -5,7 +5,7 @@
  *
  * @author Игорь
  */
-class model {
+abstract class model {
     /**
      * Коструктор
      *

@@ -2,19 +2,60 @@
 
 class Auth extends lego_abstract {
 
+    /**
+     * Удачность авторизации
+     * @var boolean
+     */
     public $success;
+    /**
+     * Пользователь
+     * @var array
+     */
     public $user;
+    /**
+     * Права
+     * @var Object
+     */
     public $rigths;
+    /**
+     * Настройки, типа путь к коммандеру
+     * @var type
+     */
     public $settings;
+    /**
+     * Модель
+     * @var Object
+     */
     private $_model;
+    /**
+     * Отображение
+     * @var object
+     */
     private $_view;
+    /**
+     * Оконная сессия, отдельныйразговор, но позволяет делать разные сесси в окнах при одной авторизации
+     * @var type
+     */
     public static $lss;
+    /**
+     * Инстанс Singleton
+     * @var type
+     */
     static private $instance;
 
+    /**
+     * Перекрытие абстракции из lego
+     * @return system
+     */
     public function getDir() {
         return __DIR__;
     }
 
+    /**
+     * Конструктор Singleton
+     * @param type $name
+     * @param type $directCall
+     */
     public function __construct($name=false, $directCall = true) {
 	// Интернационализируем
 	require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'i18n.php';
@@ -24,15 +65,21 @@ class Auth extends lego_abstract {
         parent::__construct($name);
     }
 
+    /**
+     * Получение инстанса Singleton
+     * @return type
+     */
     static public function getInstance() {
         return (self::$instance === null) ?
                 self::$instance = new self('Auth', false) :
                 self::$instance;
     }
 
+    /**
+     * Инициальзиция переменных, когда объект уже есть
+     */
     public function init() {
         parent::init();
-        // проверка на существование
         $this->success = false;
 	$this->_model = new Auth_model();
 	$this->_view = new Auth_view();
@@ -81,7 +128,12 @@ class Auth extends lego_abstract {
         return $this->user;
     }
 
+    /**
+     * Обработчик действия по умолчанию
+     * @return boolean
+     */
     public function action_index() {
+	// TOTO: в модель перенести действия с базой
         $mes = '';
         $sessionid = session_id();
         if (!empty($sessionid)) { // не бывает, сессия создается раньше
