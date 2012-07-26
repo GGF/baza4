@@ -247,6 +247,34 @@ class sqltable_model extends model {
         }
     }
 
-}
+    public function getCommentsForId($id,$table='') {
+        if (empty($table))
+            $table = $this->maintable;
+        $sql = "SELECT `time`, `nik` AS `author`, `comment`, comments.id as id FROM comments JOIN (users,coments) ON (comments.author_id = users.id AND comments.coment_id = coments.id ) WHERE forobject='{$table}' AND record_id='{$id}'";
+        $rec["comments"] = sql::fetchAll($sql);
+        $rec["table"] = $table;
+        $rec["id"] = $id;
+        return $rec;
+    }
 
+    public function saveComment() {
+        $author_id = $_REQUEST["userid"];
+        $coment = $_REQUEST["coment"];
+        $table = $_REQUEST["table"];
+        $record_id = $_REQUEST["recordid"];
+        $comentid = $this->getCommentId($coment);
+        $sql = "INSERT INTO comments (forobject,record_id,coment_id,author_id) VALUES ('{$table}','{$record_id}','{$comentid}','$author_id')";
+        sql::query($sql);
+        $rec=  compact('table','record_id');
+        //$sql = "SELECT `time`, `nik` AS `author`, `comment` FROM comments JOIN (users,coments) ON (comments.author_id = users.id AND comments.coment_id = coments.id ) WHERE comments.id='{$id}'";
+        return $rec;
+    }
+
+    public function deleteComment($id) {
+        $sql="DELETE FROM comments WHERE id='{$id}'";
+        sql::query($sql);
+        return sql::affected();
+    }
+
+}
 ?>

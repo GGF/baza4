@@ -9,8 +9,6 @@ class lanch_conduct_view extends sqltable_view {
 
     public function showrec($rec) {
 
-        $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
-        $form->init($rec[edit]);
         $fields = array();
         $customers = $rec[customers];
         if (!$rec[isnew]) {
@@ -85,9 +83,9 @@ class lanch_conduct_view extends sqltable_view {
                 //"options"	=>	array( "html" => " side ", ),
         ));
 
-        $form->addFields($fields);
+        $rec["fields"] = $fields;
 
-        return $form->getOutput();
+        return parent::showrec($rec);
     }
 
 }

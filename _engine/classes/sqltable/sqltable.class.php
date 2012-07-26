@@ -283,6 +283,17 @@ class sqltable extends lego_abstract {
         return $out;
     }
 
+    public function action_savecomment() {
+        $rec = $this->model->saveComment();
+        $out = $this->view->addComments($rec["record_id"],$rec["table"]);
+        return $out;
+    }
+
+    public function action_deletecomment($id) {
+        $this->model->deleteComment($id);
+        return '';
+    }
+
 }
 
 ?>

@@ -44,7 +44,8 @@ class lanch_nzap_view extends sqltable_view {
             }
         }
         //$out .= print_r($rec,true);
-
+        // комментарии покажем
+        $out .= $this->addComments($rec["edit"]);
         return $out;
     }
 
@@ -92,13 +93,13 @@ class lanch_nzap_view extends sqltable_view {
         }
         return $out;
     }
-    
+
     /**
      * Создает лист запуска из раздела и возвращает текст для кнопки использования раздела
      * @param mixed $rec масссив с данными для создани СЛ
      * @return string текст для кнопки
      */
-    
+
     public function showzadel($rec) {
         return "<b>Заддел использован! Отккройте плату снова!</b>"; //заглушка
     }

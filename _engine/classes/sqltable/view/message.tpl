@@ -6,7 +6,9 @@
 <span class="ui-icon ui-icon-closethick">close</span>
 </a>
 </div>
-<div id="dialog" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 51px; height: auto">{$message}</div>
+<div id="dialog" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 51px; height: auto">
+{$message}
+</div>
 <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
 <div class="ui-dialog-buttonset">
 <a href='{$oklink}'><button type="button">Ok</button></a>

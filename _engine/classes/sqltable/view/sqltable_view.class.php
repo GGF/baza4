@@ -31,6 +31,7 @@ class sqltable_view extends views {
         $out = $form->getOutput();
         if ($rec[files])
             $out .= $this->addFileButton();
+        $out .= $this->addComments($edit);
         return $out;
     }
 
@@ -277,6 +278,28 @@ class sqltable_view extends views {
         return $out;
     }
 
+    public function addComments($id,$table='') {
+        $out = '';
+        $rec = $this->owner->model->getCommentsForId($id,$table);
+        foreach ($rec[comments] as $coment) {
+            $out .= $this->showcoment($coment);
+        }
+        Output::assign('comments', $out);
+        Output::assign('table', $rec["table"]);
+        Output::assign('userid', Auth::getInstance()->getUser('id'));
+        Output::assign('recordid', $rec["id"]);
+        Output::assign('savecommenturl', $this->owner->actUri('savecomment')->ajaxurl($this->owner->getName()));
+
+        $out = $this->fetch(__DIR__.'/comments.tpl');
+        return $out;
+    }
+
+    public function showcoment($rec) {
+        Output::assignAll($rec);
+        Output::assign('deleteurl', $this->owner->actUri('deletecomment',$rec["id"])->ajaxurl($this->owner->getName()));
+        $out = $this->fetch(__DIR__.'/coment.tpl');
+        return $out;
+    }
 }
 
 ?>

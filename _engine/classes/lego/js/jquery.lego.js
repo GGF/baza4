@@ -14,7 +14,7 @@ $(function(){
             return false;
         }
     });
-	
+
     $("a.needauth").live("click.myNeedAuthEvent", function(){
         var a = this;
         if(Auth.isAuthorized()) return true;
@@ -87,7 +87,7 @@ $(function(){
         });
         return false;
     });
-	
+
     // Обработка молчаливых чекбоксов <input data-silent=...
     $("input[data-silent]").live("change.mySilentEvent", function(){
         var target = $(this).attr("data-silent");
@@ -210,17 +210,17 @@ var LegoCache = {
             $().lego.log("Не обнаружен лего "+lego_name+", либо их много");
             return true;
         }
-        
+
         //сохраняем загруженный УРЛ в переменную:
         jQuery.fn.lego.lastLoadedUrl = urldecode(url);
-        
+
         //БЕРЕМ ИЗ КЭША
         var from_cache = LegoCache.get(lego_name, url);
         if(from_cache && data == null && !nocache){
             $().lego.log("Взято из кэша в лего "+lego_name+"...");
             $(".lego[name="+lego_name+"]").replaceWith(from_cache);
             return true;
-        } 
+        }
 
         $('.ajaxloading').show();
         $.ajax({
@@ -274,7 +274,7 @@ var LegoCache = {
 
     jQuery.fn.lego.ajaxEnable = function(selector){
         jQuery.fn.lego.startProcessHash();
-    
+
 
         // Обработка всех ссылок
         if(!selector) selector = "";
@@ -292,7 +292,7 @@ var LegoCache = {
             jQuery.fn.lego.load(legotarget, ajax_url);
             return false;
         });
-    
+
         // Обработка форм
         $("form:not(.noajax)").livequery("submit", function(e){
             var name = $(this).lego().attr("name");
@@ -438,7 +438,7 @@ function urlencode (str){
 /**
  * Функци проверяет текущий статус, если он не совпадает с записаным
  * вызывает последний AJAX заппро нормальным вызовом
- * 
+ *
  */
 function checkLocalState() {
     if (document.location.hash && document.location.hash != currentState) {

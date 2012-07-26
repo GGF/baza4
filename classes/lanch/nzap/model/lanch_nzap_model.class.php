@@ -5,7 +5,7 @@
  */
 
 class lanch_nzap_model extends sqltable_model {
-    
+
     public function __construct() {
         parent::__construct();
         $this->maintable = 'posintz';
@@ -82,11 +82,11 @@ class lanch_nzap_model extends sqltable_model {
         $files = $this->getFilesForId('orders', $rs[order_id]);
         $rec[block][orderfiles] = $files[link];
         //
-        $sql = "SELECT *, 
-                    SUM(zadel.number) AS zadelnum, 
-                    boards.sizex AS psizex, 
+        $sql = "SELECT *,
+                    SUM(zadel.number) AS zadelnum,
+                    boards.sizex AS psizex,
                     boards.sizey AS psizey,
-                    boards.id AS bid 
+                    boards.id AS bid
         FROM blockpos
         JOIN (customers,blocks,boards)
         ON (customers.id=boards.customer_id
@@ -189,6 +189,7 @@ class lanch_nzap_model extends sqltable_model {
             $rec[party][] = $party;
         }
         //}
+        $rec["edit"] = $id;
         return $rec;
     }
 
@@ -240,6 +241,14 @@ class lanch_nzap_model extends sqltable_model {
         }
         // Получим идентификатор запуска, нового или уже сущечтвующего
         // почти всегда, кажется, нового
+        // давай посмотрим варианты
+        // 1-запуск
+        // 2-дозапуск
+        // 3-использование задела
+        // при запуске могло использоваться, но теперь при удалении будет другое значение
+        // дозапуск не получится если не удален предыдущий запуск
+        // делаем всегда новое
+        /*
         $sql = "SELECT * FROM lanch
             WHERE pos_in_tz_id='{$posid}' AND part='{$party}'";
         $rs = sql::fetchOne($sql);
@@ -252,10 +261,17 @@ class lanch_nzap_model extends sqltable_model {
         } else {
             $lanch_id = $rs["id"];
         }
+        */
+            $sql = "INSERT INTO lanch
+            (ldate, user_id,pos_in_tz_id)
+            VALUES (NOW(),'" . Auth::getInstance()->getUser('userid') . "','{$posid}')";
+            sql::query($sql);
+            $lanch_id = sql::lastId();
+
         // вернем вызывальщику
         $rec[lanch_id] = $lanch_id;
         // заказчик и имя блока
-        $sql = "SELECT * 
+        $sql = "SELECT *
                 FROM posintz
                 JOIN (blocks,customers)
                 ON (blocks.id=posintz.block_id AND blocks.customer_id=customers.id)
@@ -348,11 +364,11 @@ class lanch_nzap_model extends sqltable_model {
         $res = sql::fetchOne($sql);
         $rec[comment2] = empty($res["comment"]) ? '' : multibyte::UTF_encode($res["comment"]);
 // собрать данные о платах в блоке
-        $sql = "SELECT *, board_name AS boardname, sizex AS psizex, sizey AS psizey 
-                FROM blockpos 
-                JOIN (boards) 
-                ON (boards.id=blockpos.board_id) 
-                WHERE blockpos.block_id='{$block_id}' 
+        $sql = "SELECT *, board_name AS boardname, sizex AS psizex, sizey AS psizey
+                FROM blockpos
+                JOIN (boards)
+                ON (boards.id=blockpos.board_id)
+                WHERE blockpos.block_id='{$block_id}'
                 ORDER BY blockpos.id"; // для правильного количества в запуске
         $res = sql::fetchAll($sql);
         $i = 0; // счетчик
@@ -438,7 +454,7 @@ class lanch_nzap_model extends sqltable_model {
         $drillcomment = "По $pack в пакете на $shpin шпинделях";
         $shpin = $zagotovokvsego>4?2:1;
         $millcomment = "По $pack в пакете на $shpin шпинделях";
-        
+
         $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . $tolsh;
         $rec[tolsh] = $tolsh;
         $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";
@@ -453,7 +469,7 @@ class lanch_nzap_model extends sqltable_model {
                         ($rec[ppsimat] . $tolsh)
                 ) . $rec[commentp];
         // проокоментируем сопроаводительный лист
-        $rec[dozapcoment] = $dozap===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
+        $rec[dozapcoment] = $dozap===true ? multibyte::UTF_encode('ДОЗАПУСК') :
                         ($dozap=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
 
         $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment','ek'));
@@ -468,15 +484,15 @@ class lanch_nzap_model extends sqltable_model {
                 $sloi7 = $sloi8 = $sloi9 = $osuk = $stkan = $etest =
                 $aurum = "";
         // получить данные в переменные
-        $sql = "SELECT 
-                    orderdate AS ldate, 
-                    orders.number AS letter, 
-                    fullname AS custom, 
-                    drlname, 
+        $sql = "SELECT
+                    orderdate AS ldate,
+                    orders.number AS letter,
+                    fullname AS custom,
+                    drlname,
                     scomp,
                     ssolder AS ssold,
                     blocks.sizex AS sizex,
-                    blocks.sizey AS sizey, 
+                    blocks.sizey AS sizey,
                     blockname,
                     pitz_mater AS pmater,
                     pitz_psimat AS ppsimat,
@@ -491,13 +507,13 @@ class lanch_nzap_model extends sqltable_model {
                     numpl1,numpl2,numpl3,numpl4,numpl5,numpl6,
                     posintz.posintz AS posintz
 
-                    FROM posintz 
+                    FROM posintz
                     JOIN (customers,blocks,tz,
-                            orders) 
-                    ON (blocks.id=posintz.block_id 
-                        AND customers.id=orders.customer_id 
-                        AND posintz.tz_id=tz.id 
-                        AND tz.order_id=orders.id 
+                            orders)
+                    ON (blocks.id=posintz.block_id
+                        AND customers.id=orders.customer_id
+                        AND posintz.tz_id=tz.id
+                        AND tz.order_id=orders.id
                         )
                     WHERE posintz.id='{$posid}'";
         $rs = sql::fetchOne($sql);
@@ -510,11 +526,11 @@ class lanch_nzap_model extends sqltable_model {
         $sql = "SELECT comment FROM coments WHERE id='{$comment_id2}'";
         $res = sql::fetchOne($sql);
         $rec[comment2] = empty($res["comment"]) ? '' : multibyte::UTF_encode($res["comment"]);
-        $sql = "SELECT *, board_name AS boardname, sizex AS psizex, 
-                        sizey AS psizey 
-                FROM blockpos 
-                JOIN (boards) 
-                ON (boards.id=blockpos.board_id) 
+        $sql = "SELECT *, board_name AS boardname, sizex AS psizex,
+                        sizey AS psizey
+                FROM blockpos
+                JOIN (boards)
+                ON (boards.id=blockpos.board_id)
                 WHERE blockpos.block_id='{$block_id}'";
         $res = sql::fetchAll($sql);
         $i = 0; // счетчик
@@ -603,7 +619,7 @@ class lanch_nzap_model extends sqltable_model {
                         ($rec[ppsimat] . $tolsh)
                 ) . $rec[commentp];
         // прокоментируем сопроводительный лист
-        $rec[dozapcoment] = $rec[dozap]===true ? multibyte::UTF_encode('ДОЗАПУСК') : 
+        $rec[dozapcoment] = $rec[dozap]===true ? multibyte::UTF_encode('ДОЗАПУСК') :
                         ($rec[dozap]=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
         $rec[numpl1] = $numpl1;
         $rec[stkan] = $stkan;
@@ -625,7 +641,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec[maskz] = '';//$maskz;
         $rec[masks] = '';//$masks;
         $rec[osuk] = $osuk;
-        
+
         $rec = array_merge($rec, compact('ppart', 'part'));
         return $rec;
     }
@@ -671,7 +687,7 @@ class lanch_nzap_model extends sqltable_model {
         }
         return true;
     }
-    
+
     /**
      * Использует задел, снимает с задела
      * @param int $rec массив из запроса getZadelByPosintzId
@@ -686,7 +702,7 @@ class lanch_nzap_model extends sqltable_model {
                 $sql = "UPDATE zadel SET number=number-{$rec["use"]} WHERE id='{$id}'";
             } else {
                 $sql = "DELETE FROM zadel WHERE id='{$id}'";
-            }            
+            }
             sql::query($sql);
             $res += sql::affected();
             $rec["use"] -= $count;
@@ -698,17 +714,17 @@ class lanch_nzap_model extends sqltable_model {
     /**
      * Возвращает по номеру позиции в ТЗ количество использованого задела
      * @param int $id
-     * @return int 
+     * @return int
      */
     public function getZadelByPosintzId($id) {
         $rec=array();
-        $sql = "SELECT 
+        $sql = "SELECT
                     zadel.number AS zadel,
                     posintz.numbers AS zakaz,
                     zadel.id AS zadelid
-                FROM posintz 
-                LEFT JOIN (zadel,blocks,blockpos,boards) 
-                ON 
+                FROM posintz
+                LEFT JOIN (zadel,blocks,blockpos,boards)
+                ON
                     posintz.block_id=blocks.id
                     AND blockpos.block_id=blocks.id
                     AND boards.id=blockpos.board_id
