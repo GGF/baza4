@@ -1,6 +1,6 @@
 <?php
 
-class sqltable_model {
+class sqltable_model extends model {
 
     protected $maintable;
     public $idstr;
@@ -10,14 +10,20 @@ class sqltable_model {
         $this->idstr = '';
     }
 
+    public function getDir() {
+	return __DIR__;
+    }
+
     public function init() {
         if (empty($this->maintable)) {
             return true;
         } else {
             $sql = "SELECT COUNT(*) FROM {$this->maintable}";
-            return sql::query($sql); // если будет ошибка придется создавать таблицы
+            if (! sql::query($sql) )
+		$this->install ();
         }
     }
+
 
     /**
      * Воззвращает массив данных из базы

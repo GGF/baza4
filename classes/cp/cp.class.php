@@ -5,11 +5,12 @@ class cp extends secondlevel {
     public function init() {
         parent::init();
         CTitle::addSection('Панель управления');
-        $sql = "SELECT COUNT(*) FROM `rights`";
-        if (!sql::query($sql)) {
-            $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
-            $this->install();
-        }
+	// TODO: перенести в модели
+//        $sql = "SELECT COUNT(*) FROM `rights`";
+//        if (!sql::query($sql)) {
+//            $this->dir = __DIR__; // это позволит для install использовать каталог класса, а для шаблонов предыдущий уровень
+//            $this->install();
+//        }
     }
 
     public function getIndexMenu() {
@@ -20,7 +21,7 @@ class cp extends secondlevel {
         $this->menu->add('back', 'Назад', false);
         if ($this->menu->run())
             return $this->menu->getOutput();
-        else 
+        else
             return '';
     }
 }

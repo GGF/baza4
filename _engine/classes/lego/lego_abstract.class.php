@@ -4,7 +4,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Свойство класса
-     * 
+     *
      * @var array список запускаемых лего
      * Соддержит необходимые для запуска лего
      * После запуска каждый себя выталкивает
@@ -13,16 +13,16 @@ abstract class lego_abstract extends JsCSS {
     /**
      * Свойство класса
      *
-     * @var array Спиисок всех лего 
+     * @var array Спиисок всех лего
      */
     static protected $all_legos = array();
     /**
-     * Свойство класса 
+     * Свойство класса
      * @var string Имяя лего, используется в частности в имени модуля куда его выводить
      */
     private $name;
     /**
-     * 
+     *
      * @var string Дествие по умолчанию, можно задать и другое при инициализации
      * получать только через геттер
      */
@@ -44,7 +44,7 @@ abstract class lego_abstract extends JsCSS {
     private $current_action;
     /**
      *
-     * @var string то  что будет выдано в вывод 
+     * @var string то  что будет выдано в вывод
      */
     protected $output = "";
     /**
@@ -54,7 +54,7 @@ abstract class lego_abstract extends JsCSS {
     protected $dir;
     /**
      *
-     * @var object 
+     * @var object
      */
     static public $sitemap;
     /**
@@ -65,7 +65,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Конструктор статического класса лего
-     * 
+     *
      * вызывается в конце объявления, заполняет статические свойства класса
      * @return none
      */
@@ -76,12 +76,12 @@ abstract class lego_abstract extends JsCSS {
     }
     /**
      * Коннструктор
-     * @param string $name 
+     * @param string $name
      * Имя лего
      * @return none
      */
     public function __construct($name = false) {
-        parent::__construct(); 
+        parent::__construct();
         self::$all_legos[] = $this;
         $this->lego_runner = lego_abstract::current();
         self::$runned_legos[] = $this;
@@ -95,10 +95,10 @@ abstract class lego_abstract extends JsCSS {
      * Инициализатор, обычно перезагружается потомками, вызывается из конструктора
      */
     public function init() {
-        
+
     }
     /*
-     * Возвращает версию текущего файла, теоретически помогает иметь несколько 
+     * Возвращает версию текущего файла, теоретически помогает иметь несколько
      * версий и с каждой работать по воему. На деле не использовался
      * @return int собсственно вверсия
      */
@@ -108,7 +108,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Возвращает карту сайта
-     * @return object Собственно карта сайта 
+     * @return object Собственно карта сайта
      */
     public function getSitemap() {
         return self::$sitemap;
@@ -116,7 +116,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Установка дейтсвия по умолчанию
-     * @param string $default_action 
+     * @param string $default_action
      */
     public function setDefaultAction($default_action) {
         $this->default_action = $default_action;
@@ -124,7 +124,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Воззвращает текущее действие по умолчанию
-     * @return string 
+     * @return string
      */
     public function getDefaultAction() {
         return $this->default_action;
@@ -132,7 +132,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Воззвращает возможные действия
-     * @return array of strings 
+     * @return array of strings
      */
     function getActions() {
         $methods = get_class_methods(get_class($this));
@@ -144,7 +144,7 @@ abstract class lego_abstract extends JsCSS {
     }
 
     /**
-     * Оснновной поток исполнения 
+     * Оснновной поток исполнения
      * @return this сам текущий лего, для сквозных вызовов
      */
     public function run() {
@@ -164,7 +164,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Воззвращает текущее действие, берет из запроса или умолчальное
-     * @return string 
+     * @return string
      */
     public function getAction() {
         $act = $this->_get($this->name, $this->default_action);
@@ -176,7 +176,7 @@ abstract class lego_abstract extends JsCSS {
     }
 
     /**
-     * Выполняется до запуска 
+     * Выполняется до запуска
      */
     private function beforeRun() {
         //console::getInstance()->out($this->getName());
@@ -199,7 +199,7 @@ abstract class lego_abstract extends JsCSS {
     /**
      * Проверка запущен ли лего.
      * @param string $name
-     * @return boolean 
+     * @return boolean
      */
     static public function isLegoRunned($name) {
 
@@ -212,7 +212,7 @@ abstract class lego_abstract extends JsCSS {
     /**
      * Прооверяет существует ли лего по имени
      * @param string $name
-     * @return boolean 
+     * @return boolean
      */
     static public function isLegoExist($name) {
         foreach (self::$all_legos as $lego)
@@ -223,7 +223,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Поллучить имена всех лего
-     * @return array 
+     * @return array
      */
     static public function getAllNames() {
         $ret = array();
@@ -236,7 +236,7 @@ abstract class lego_abstract extends JsCSS {
     /**
      * Сгененрить  404 страницу? проосто чтоб было ясно, что 404
      * @param string $text
-     * @return string 
+     * @return string
      */
     public function _404($text) {
         return($text);
@@ -244,7 +244,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Перейти. Заставить броузер перейти куда сказано.
-     * @param string $url 
+     * @param string $url
      */
     public function _goto($url) {
         $ajax_element = $this->_get("ajax");
@@ -270,7 +270,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Заставить перейти к выполнению действия
-     * @param string $action 
+     * @param string $action
      */
     public function _gotoAct($action) {
         $this->_goto($this->actUri($action)->url());
@@ -278,7 +278,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Получить имя лего
-     * @return string 
+     * @return string
      */
     public function getName() {
         return $this->name;
@@ -286,7 +286,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Поллучть вывод накопившийся
-     * @return string 
+     * @return string
      */
     public function getOutput() {
         if (is_callable($this->output_handler))
@@ -296,7 +296,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Установить обработчик вывода. Шаблонизатор
-     * @param function_handler $func 
+     * @param function_handler $func
      */
     public function setOutputHandler($func) {
         $this->output_handler = $func;
@@ -304,7 +304,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Поллучить URL деййствия
-     * @return uri_object 
+     * @return uri_object
      */
     public function actUri() {
         $params = func_get_args();
@@ -316,16 +316,16 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Получить пустой  uri
-     * @return uri_object 
+     * @return uri_object
      */
     public function uri() {
         return new UriConstructor();
     }
 
     /**
-     * Поллучить параметры 
+     * Поллучить параметры
      * @param string $lego_name
-     * @return array 
+     * @return array
      */
     public function getLegoParams($lego_name = false) {
         if (!$lego_name)
@@ -337,7 +337,7 @@ abstract class lego_abstract extends JsCSS {
      * Получить коннкретный параметр
      * @param string $param_name Имя параметра
      * @param string $lego_name
-     * @return boolean 
+     * @return boolean
      */
     public function getLegoParam($param_name, $lego_name = false) {
         $lego_params = $this->getLegoParams($lego_name);
@@ -353,7 +353,7 @@ abstract class lego_abstract extends JsCSS {
      * @param string $action_name
      * @param int $index
      * @param boolean $default_value
-     * @return var 
+     * @return var
      */
     public function getParam($action_name, $index, $default_value = false) {
         $lego_params = $this->getLegoParams();
@@ -367,7 +367,7 @@ abstract class lego_abstract extends JsCSS {
     /**
      * Поллучить все параметры действия
      * @param string $action
-     * @return array 
+     * @return array
      */
     public function getActionParams($action = false) {
         if (!$action)
@@ -384,17 +384,17 @@ abstract class lego_abstract extends JsCSS {
      * Поллучить один параметр действия
      * @param type $index
      * @param type $default_value
-     * @return type 
+     * @return type
      */
     public function getActionParam($index, $default_value = false) {
         return $this->getParam($this->current_action, $index, $default_value);
     }
 
-    
+
     /**
      * Установить  параметры действия
      * @param mixed $value
-     * @param string $action 
+     * @param string $action
      */
     public function setActionParams($value, $action = false) {
         if (!$action)
@@ -403,10 +403,10 @@ abstract class lego_abstract extends JsCSS {
     }
 
     /**
-     * Установить  один параметр 
+     * Установить  один параметр
      * @param mixed $value
      * @param int $index
-     * @param string $action 
+     * @param string $action
      */
     public function setParam($value, $index=0, $action=false) {
         if (!$action)
@@ -419,7 +419,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Геттер для запускателя
-     * @return object 
+     * @return object
      */
     public function runner() {
         return $this->lego_runner;
@@ -427,7 +427,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Сбросить список запускаемых к началу
-     * @return array 
+     * @return array
      */
     public function root() {
         return reset(self::$runned_legos);
@@ -435,15 +435,15 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Получение каталога с представлениями
-     * @return string 
+     * @return string
      */
     public function getViewDir() {
         return static::getDir() . "/view";
     }
 
     /**
-     * 
-     * @return object 
+     *
+     * @return object
      */
     static public function current() {
         $arr = self::$runned_legos;
@@ -452,7 +452,7 @@ abstract class lego_abstract extends JsCSS {
 
     /**
      * Передача данных по POST?
-     * @return boolean 
+     * @return boolean
      */
     static public function _is_post() {
         return !empty($_POST);
@@ -463,17 +463,17 @@ abstract class lego_abstract extends JsCSS {
      * хакерская штучка
      * @param string $key_name
      * @param mixed $value
-     * @return array 
+     * @return array
      */
     static public function _set($key_name, $value = false) {
         return $_GET[$key_name] = $value;
     }
-    
+
     /**
      * Поллучить элемент GET
      * @param string $key_name
      * @param mixed $default_value
-     * @return mixed 
+     * @return mixed
      */
     static public function _get($key_name, $default_value = false) {
         return self::__get_from_array($_GET, $key_name, $default_value);
@@ -483,7 +483,7 @@ abstract class lego_abstract extends JsCSS {
      * Поллучить элемент POST
      * @param string $key_name
      * @param mixed $default_value
-     * @return mixed 
+     * @return mixed
      */
     static public function _post($key_name, $default_value = false) {
         return self::__get_from_array($_POST, $key_name, $default_value);
@@ -493,7 +493,7 @@ abstract class lego_abstract extends JsCSS {
      * Получение элемента _SESSION
      * @param string $key_name
      * @param mixed $default_value
-     * @return mixed 
+     * @return mixed
      */
     static public function _sess($key_name, $default_value = false) {
         return self::__get_from_array($_SESSION, $key_name, $default_value);
@@ -502,7 +502,7 @@ abstract class lego_abstract extends JsCSS {
     /**
      * Установить  элемент SESSION
      * @param string $key_name
-     * @param mixed $value 
+     * @param mixed $value
      */
     static public function _sessSet($key_name, $value) {
         $_SESSION[$key_name] = $value;
@@ -512,7 +512,7 @@ abstract class lego_abstract extends JsCSS {
      * Поллучить печеньку
      * @param string $key_name
      * @param mixed $default_value
-     * @return mixed 
+     * @return mixed
      */
     static public function _cookie($key_name, $default_value = false) {
         return self::__get_from_array($_COOKIE, $key_name, $default_value);
@@ -522,7 +522,7 @@ abstract class lego_abstract extends JsCSS {
      * Дать  печеньку
      * @param string $key_name
      * @param mixed $value
-     * @param string $expire 
+     * @param string $expire
      */
     static public function _cookieSet($key_name, $value, $expire = false) {
         setcookie($key_name, $value, $expire);
@@ -533,7 +533,7 @@ abstract class lego_abstract extends JsCSS {
      * @param array $array
      * @param string $key_name
      * @param mixed $default_value
-     * @return mixed 
+     * @return mixed
      */
     static private function __get_from_array($array, $key_name, $default_value = false) {
         if (!isset($array[$key_name]))
@@ -542,20 +542,9 @@ abstract class lego_abstract extends JsCSS {
     }
 
     /**
-     * Записать в базу данных структуру для работы именно этого лего, вызывается 
-     * из init прии ошибке работы с базой
-     * @param array $replace 
-     */
-    public function install($replace=array()) {
-        if (sql::queryfile($this->dir . "/install.sql",$replace)) {
-               echo "install complete";
-        }
-    }
-    
-    /**
      * Отрработать вывод по шаблону
      * @param string $template
-     * @return string 
+     * @return string
      */
     public function fetch($template) {
         /* TODO: тут проблемы с отрисовкой, нужно наследовать шаблоны
@@ -585,9 +574,9 @@ abstract class lego_abstract extends JsCSS {
     }
 
     /**
-     * Перрегрузка получения всех скриптов, для включения библиотек для работы 
+     * Перрегрузка получения всех скриптов, для включения библиотек для работы
      * с лего
-     * @return array 
+     * @return array
      */
     public function getJavascripts() {
         $js[] = $this->getWebDir(__DIR__) . '/js/jquery.lego.js';
@@ -600,7 +589,7 @@ abstract class lego_abstract extends JsCSS {
 }
 
 /**
- * Выззов для инициализации статических переменных 
+ * Выззов для инициализации статических переменных
  */
 lego_abstract::staticConsturct();
 

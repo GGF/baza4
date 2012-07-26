@@ -5,20 +5,28 @@
  */
 
 class lanch_conduct_model extends sqltable_model {
-    
+
     public function __construct() {
         parent::__construct();
         $this->maintable = 'conductors';
     }
 
+    /**
+     * В классе
+     * @return system
+     */
+    public function getDir() {
+	return __DIR__;
+    }
+
     public function getData($all=false,$order='',$find='',$idstr='') {
         $ret = array();
         $sql="SELECT *,conductors.id AS condid,boards.id AS plid,conductors.id
-                FROM conductors 
+                FROM conductors
                 JOIN (boards,customers)
                 ON (conductors.board_id=boards.id
                     AND boards.customer_id=customers.id )
-                WHERE ready='0' " . 
+                WHERE ready='0' " .
                 (!empty($find)?" WHERE (board_name LIKE '%{$find}%')":"") .
                 (!empty($order)?" ORDER BY {$order} ":" ORDER BY conductors.id DESC ") .
                 ($all?"":"LIMIT 20");

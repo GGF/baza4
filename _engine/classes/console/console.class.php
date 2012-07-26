@@ -6,17 +6,37 @@ define("CMSCONSOLE_WARNING", "warning");
 define("CMSCONSOLE_NOTICE", "notice");
 define("CMSCONSOLE_PLAIN", "plain");
 
-// сделаем консоль синглтоном
-
+/**
+ * Кдасс сонсоли для отладки, появляется при ошибках или если нажать F9
+ * Сделан  синглетоном, потому как нужны скрипты в броузере, то есть нужно создать
+ * хоть один экземпляр, чтоб получить пути для вывода скрипов
+ */
 class console extends lego_abstract {
 
-    protected static $instance; // object instance
+    /**
+     * Соддержит инстанс синглетона
+     * @var console
+     */
+    protected static $instance;
+    /**
+     * Буффер вывода
+     * @var string
+     */
     private static $html;
 
+    /**
+     * Перекрытие абстрактного получения пути, для скриптов
+     * @return string
+     */
     public function getDir() {
         return __DIR__;
     }
 
+    /**
+     * Обычный коннструктор синглетона
+     * @param boolean $name
+     * @param boolean $directCall
+     */
     public function __construct($name=false, $directCall = true) {
         if ($directCall) {
             trigger_error("Нельзя использовать конструктор для" .
@@ -27,36 +47,86 @@ class console extends lego_abstract {
         $this->html = '';
     }
 
+    /**
+     * Стандартное поллучение инстанса
+     * @return console
+     */
     public static function getInstance() {
         return (self::$instance === null) ?
                 self::$instance = new self('console', false) :
                 self::$instance;
     }
 
+    /**
+     * Почистить буфер вывода
+     */
     public function clear() {
         $this->html = '';
     }
 
+    /**
+     * Вывести сообщение без типа
+     * @param string $msg Сообщение
+     * @param string $pane В какой план выводить
+     * @param boolean $print Печатать или нет
+     * @return string
+     */
     public function notype($msg, $pane = "", $print = false) {
         return $this->out($msg, $pane, "", $print);
     }
 
+    /**
+     * Вывести с индикатором ошибка
+     * @param string $msg Сообщение
+     * @param string $pane В какой план выводить
+     * @param boolean $print Печатать или нет
+     * @return string
+     */
     public function error($msg, $pane = "", $print = false) {
         return $this->out($msg, $pane, "error", $print);
     }
 
+    /**
+     * Вывести с индикатором предупреждение
+     * @param string $msg Сообщение
+     * @param string $pane В какой план выводить
+     * @param boolean $print Печатать или нет
+     * @return string
+     */
     public function warning($msg, $pane = "", $print = false) {
         return $this->out($msg, $pane, "warning", $print);
     }
 
+    /**
+     * Вывести с индикатором "нотис"
+     * @param string $msg Сообщение
+     * @param string $pane В какой план выводить
+     * @param boolean $print Печатать или нет
+     * @return string
+     */
     public function notice($msg, $pane = "", $print = false) {
         return $this->out($msg, $pane, "notice", $print);
     }
 
+    /**
+     * Плоский текст
+     * @param string $msg Сообщение
+     * @param string $pane В какой план выводить
+     * @param boolean $print Печатать или нет
+     * @return string
+     */
     public function plain($msg, $pane = "", $print = false) {
         return $this->out($msg, $pane, "plain", $print);
     }
 
+    /**
+     * Общая функция вывода
+     * @param string $msg Сообщение
+     * @param string $pane В какой план выводить
+     * @param string $type тип индикатора
+     * @param boolean $print Печатать или нет
+     * @return string
+     */
     public function out($msg, $pane = "", $type = "", $print = false) {
 
         if ($type)
@@ -64,7 +134,7 @@ class console extends lego_abstract {
 
         if (!$msg)
             $msg = "&nbsp;";
-        
+
         if (is_array($msg))
             $msg = print_r($msg,true);
 
@@ -77,6 +147,10 @@ class console extends lego_abstract {
             return $this->html;
     }
 
+    /**
+     * Действие по умолчанию
+     * @return string
+     */
     public function action_index() {
         if ($_SERVER[debug][report]) {
             Output::assign('scripts', $this->getScripts());
@@ -86,6 +160,10 @@ class console extends lego_abstract {
         }
     }
 
+    /**
+     * Получение скриптов вывода всех строк в конце
+     * @return string
+     */
     public function getScripts() {
         if ($_SERVER[debug][report]) {
 
@@ -118,6 +196,11 @@ if ($_SERVER[debug][report]) {
     define("CMSBACKTRACE_RAW", true);
     define("CMSBACKTRACE_PLAIN", true);
 
+    /**
+     * Функция обработки ошибок
+     * @param boolean $format
+     * @return string
+     */
     function cmsBacktrace($format = false) {
 
         //ob_start();
