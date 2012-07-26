@@ -9,15 +9,23 @@ class Lang extends JsCSS {
 
     static private $lang;
     static private $langtext;
+    /**
+     * Соддержит инстанс единственный
+     * @var Lang
+     */
     static private $instance;
 
     public function __construct($name=false, $directCall = true) {
         if ($directCall) {
             trigger_error(Lang::getString('Lang.errors.noconstructor'), E_USER_ERROR);
         }
-        parent::__construct();
+        parent::__construct($name);
     }
 
+    /**
+     * Стаандартное получение инстанса
+     * @return Lang
+     */
     static public function getInstance() {
         return (self::$instance === null) ?
                 self::$instance = new self('Auth', false) :

@@ -16,6 +16,10 @@ class Auth_view extends views {
 	return __DIR__;
     }
 
+    public function showform($date) {
+	return $this->fetch('form.tpl', $date);
+    }
+
 }
 
 ?>

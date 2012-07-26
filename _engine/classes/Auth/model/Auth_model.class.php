@@ -53,9 +53,10 @@ class Auth_model extends model {
      * @param array $rec
      */
     public function setsession($rec) {
-	extract($rec);
+	$session_id = $rec["session_id"];
+	$password = $rec["password"];
         // ------------------------------------
-        $sql = "DELETE FROM session WHERE session='{$sesion_id}'";
+        $sql = "DELETE FROM session WHERE session='{$session_id}'";
         sql::query($sql);
         $sql = "SELECT * FROM users " .
                 "WHERE password='{$password}'";
@@ -68,7 +69,7 @@ class Auth_model extends model {
             // неудачная авторизация запишем минус один и в главной сообщим
             // не минус один, а ноль. у нас ансигнед ИД
             $sql = "INSERT INTO session (session,u_id) " .
-                    "VALUES ('{$sesion_id}','0')";
+                    "VALUES ('{$session_id}','0')";
             sql::query($sql);
         }
     }
@@ -81,6 +82,63 @@ class Auth_model extends model {
 	$sql = "DELETE FROM session WHERE session='{$session}'";
 	sql::query($sql);
     }
+
+    /**
+     * Проверка сессии получене данных о пользователе
+     * @var string $sessionid Идентификатор  сессии
+     * @return array
+     */
+    public function checksession($sessionid) {
+	$rec = array();
+        $sql1 = "SELECT * FROM session " .
+                    "WHERE session ='{$sessionid}'";
+        $rs = sql::fetchOne($sql1);
+	if (!empty($rs)) { // не бывает, в авторизации записываем 0 на неудаче
+	    if ($rs["u_id"]!=0) {
+		$sql = "SELECT * FROM users " .
+			"WHERE id='{$rs["u_id"]}'";
+		$rs = sql::fetchOne($sql);
+		if (!empty($rs)) {
+		    $rec["user"]["username"] = $rs["nik"];
+		    $rec["user"]["userid"] = $rs["id"];
+		    $rec["user"]["user_id"] = $rs["id"];
+		    $rec["user"]["u_id"] = $rs["id"];
+		    $rec["user"]["id"] = $rs["id"];
+		    $sql = "UPDATE session SET ts=NOW() WHERE session='{$sessionid}'";
+		    sql::query($sql);
+		    // права
+		    if (empty($_SESSION["rights"])) {
+			$sql = "SELECT rights.right,type,rtype FROM rights " .
+				"JOIN (rtypes,rrtypes) " .
+				"ON (rtypes.id=type_id " .
+				"AND rrtypes.id=rtype_id) " .
+				"WHERE u_id='{$rs["id"]}'";
+			$res = sql::fetchAll($sql);
+			foreach ($res as $rs) {
+			    if ($rs["right"] == '1') {
+				$_SESSION["rights"][$rs["type"]][$rs["rtype"]] = true;
+			    }
+			}
+		    }
+		    $rec["rights"] = $_SESSION["rights"];
+		    $rec["success"] = true;
+		    // определимся с сессией окна
+		    Auth::$lss = !empty($_REQUEST["lss"])?$_REQUEST["lss"]:"lss";
+		    $rec["mes"] = ""; //удачное  завершение
+		} else {
+		    $rec["mes"] .= Lang::getString('Auth.session.cantfinduser');
+		}
+	    } else {
+		// нет пользователя
+		$rec["mes"] .= Lang::getString('Auth.session.wrongpassword');
+	    }
+        } else {
+	    // не  оказалось сессии в базе
+	    $rec["mes"] .= Lang::getString('Auth.session.nosession');
+	}
+	return $rec;
+    }
+
 
 }
 

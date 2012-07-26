@@ -11,7 +11,7 @@ function uniqid (prefix, more_entropy) {
     if (typeof prefix == 'undefined') {
         prefix = "";
     }
- 
+
     var retId;
     var formatSeed = function (seed, reqWidth) {
         seed = parseInt(seed, 10).toString(16); // to hex str
@@ -23,7 +23,7 @@ function uniqid (prefix, more_entropy) {
         }
         return seed;
     };
- 
+
     // BEGIN REDUNDANT
     if (!this.php_js) {
         this.php_js = {};
@@ -33,7 +33,7 @@ function uniqid (prefix, more_entropy) {
         this.php_js.uniqidSeed = Math.floor(Math.random() * 0x75bcd15);
     }
     this.php_js.uniqidSeed++;
- 
+
     retId = prefix; // start with prefix, add current milliseconds hex string
     retId += formatSeed(parseInt(new Date().getTime() / 1000, 10), 8);
     retId += formatSeed(this.php_js.uniqidSeed, 5); // add seed hex string
@@ -41,7 +41,7 @@ function uniqid (prefix, more_entropy) {
         // for more entropy we add a float lower to 10
         retId += (Math.random() * 10).toFixed(8).toString();
     }
- 
+
     return retId;
 }
 
@@ -98,17 +98,18 @@ $(document).ready(function(){
     lss=sessionStorage.getItem('lss');
     if (lss==null) {
         lss=uniqid();
-        log('Создан новый ИД сессии');
         sessionStorage.setItem('lss',lss);
         var url = window.location.toString();
         if (url.search("lss=")!=-1) {
             url.replace("/lss=[^&]*/gi",'lss='+lss);
         }
         window.location = url; //перейти
-        
+
     } else {
-		
+
     }
+
+    // добавление ко всем ссылкам оконной сессии
     $('a').each(function(){
         var url = $(this).attr('href');
         //log($(this).html());
