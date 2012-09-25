@@ -176,11 +176,11 @@ class sqltable_model extends model {
             if (!strstr($file[file_link], $_SERVER['DOCUMENT_ROOT'])) {
                 $filelink = fileserver::sharefilelink($file[file_link]);
                 $file = basename($filelink);
-                $out[link] .= "&nbsp;<a class='filelink' href='{$filelink}'>{$file}</a>";
+                $out[link] .= "<a class='filelink' href='{$filelink}'>{$file}</a><br>";
             } else {
                 $filelink = str_ireplace($_SERVER['DOCUMENT_ROOT'], '', $file[file_link]);
                 $file = basename($filelink);
-                $out[link] .= "&nbsp;<a href='http://{$_SERVER["HTTP_HOST"]}{$filelink}'>{$file}</a>";
+                $out[link] .= "<a href='http://{$_SERVER["HTTP_HOST"]}{$filelink}'>{$file}</a><br>";
             }
         }
         return $out;

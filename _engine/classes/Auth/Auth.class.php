@@ -140,7 +140,6 @@ class Auth extends lego_abstract {
 	$this->success = empty($mes);
 	// поччистить локальное хранилище
         if($this->success) {
-	    console::getInstance()->out(print_r($this->rights,true));
 	    return true;
 	} else {
 	    $mes = '<script>localStorage.removeItem("remember")</script>'.$mes;
