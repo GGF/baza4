@@ -12,7 +12,18 @@
     /*border:solid 1px red;*/
 }
 div.fullwidth {
-    display: inline;
+    /*display: inline;*/
+    /*max-width:600px;
+    max-height:1.5em;*/
+    overflow:hidden;
+}
+div.fullwidth:hover {
+    overflow:visible;
+    max-height:350px;
+
+}
+div.fullwidth .filelink {
+    font-size:1em;
 }
 
 .chettr {
@@ -141,9 +152,9 @@ p {
 }
 
 #calcbutton {
-    display:inline-block; 
-    border:0; 
+    display:inline-block;
+    border:0;
     margin:0;
     font-size:12px;
-    font-family: 'trebuchet ms', tahoma, arial, sans-serif; 
+    font-family: 'trebuchet ms', tahoma, arial, sans-serif;
 }
