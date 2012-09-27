@@ -121,21 +121,21 @@ class Auth_model extends model {
 			}
 		    }
 		    $rec["rights"] = $_SESSION["rights"];
-		    $rec["success"] = true;
+		    $rec["success"] = 'Auth.session.success';
 		    // определимся с сессией окна
 		    Auth::$lss = !empty($_REQUEST["lss"])?$_REQUEST["lss"]:"lss";
-		    $rec["mes"] = ""; //удачное  завершение
 		} else {
-		    $rec["mes"] .= Lang::getString('Auth.session.cantfinduser');
+		    $rec["success"] = 'Auth.session.cantfinduser';
 		}
 	    } else {
 		// нет пользователя
-		$rec["mes"] .= Lang::getString('Auth.session.wrongpassword');
+		$rec["success"] = 'Auth.session.wrongpassword';
 	    }
         } else {
 	    // не  оказалось сессии в базе
-	    $rec["mes"] .= Lang::getString('Auth.session.nosession');
+	    $rec["success"] = 'Auth.session.nosession';
 	}
+	$rec["mes"] .= Lang::getString($rec["success"]);
 	return $rec;
     }
 

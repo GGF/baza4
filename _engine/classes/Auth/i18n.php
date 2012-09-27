@@ -20,6 +20,10 @@ Lang::add(array("Auth" => array(
 			"ru" => "<span style='display:none'>Сессия не верна или устарела!</span>",
 			"en" => "<span style='display:none'>Session too old</span>",
 		),
+		"success" => array(
+			"ru" => "",
+			"en" => "",
+		),
 
 	),
 
