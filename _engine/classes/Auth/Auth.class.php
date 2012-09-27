@@ -130,22 +130,25 @@ class Auth extends lego_abstract {
 
     /**
      * Обработчик действия по умолчанию
-     * @return boolean
+     * @return boolean or string
      */
     public function action_index() {
 	$rec = $this->_model->checksession(session_id());
 	$this->user = $rec["user"];
 	$this->rights = $rec["rights"];
 	$mes = $rec["mes"];
-	$this->success = empty($mes);
-	// поччистить локальное хранилище
-        if($this->success) {
+	$this->success = $rec["success"];
+	console::getInstance()->out($this->success == 'Auth.session.success'.'...'.print_r($rec,true));
+        if($this->success == 'Auth.session.success') {
+	    $this->success = true; // именно  по не success рисуется  окно
 	    return true;
 	} else {
-	    $mes = '<script>localStorage.removeItem("remember")</script>'.$mes;
+	    if($this->success == 'Auth.session.wrongpassword')
+		$mes = '<script>localStorage.removeItem("remember")</script>'.$mes;
 	    /**
 	     * Данные для шаблона
 	     */
+	    $this->success = false; // именно  по не success рисуется  окно
 	    $date= array();
 	    $date['css'] = $this->getAllHeaderBlock();
 	    $date['mes'] = $mes;
@@ -172,7 +175,7 @@ class Auth extends lego_abstract {
      */
     public function action_logout() {
 	$this->_model->resetsession(session_id());
-        echo "<script>localStorage.clear();</script>";
+        echo "<script>localStorage.removeItem('remember');</script>";
         // Unset all of the session variables.
         session_unset();
         // Finally, destroy the session.
