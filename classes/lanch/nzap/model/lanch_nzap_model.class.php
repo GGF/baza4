@@ -13,7 +13,8 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $sql = "SELECT *,orders.number AS ordernum,SUM(zadel.number) AS zadelnum, posintz.id AS nzid,posintz.id
+        $sql = "SELECT *,orders.number AS ordernum,SUM(zadel.number) AS zadelnum, posintz.id AS nzid,posintz.id,
+	    IF(boards.layers>2,'МПП','ДПП') AS boardtype
         FROM posintz
         LEFT JOIN (lanched) ON (posintz.block_id=lanched.block_id)
         JOIN (blocks,tz,filelinks,customers,orders,blockpos,boards)
@@ -46,6 +47,7 @@ class lanch_nzap_model extends sqltable_model {
         $cols["customer"] = "Заказчик";
         $cols["ordernum"] = "Заказ";
         $cols["blockname"] = "Плата";
+        $cols["boardtype"] = "Тип";
         $cols["numbers"] = "Кол-во";
         $cols["lastdate"] = "Посл. зап";
         $cols["zadelnum"] = "Взаделе";
