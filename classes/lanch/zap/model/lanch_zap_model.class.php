@@ -5,7 +5,7 @@
  */
 
 class lanch_zap_model extends sqltable_model {
-    
+
     public function __construct() {
         parent::__construct();
         $this->maintable = 'lanch';
@@ -17,17 +17,18 @@ class lanch_zap_model extends sqltable_model {
                 IF(part=0,'<span style=\'color:red\'>Удалена</span>',
                     IF(part=-1,'<span style=\'color:green\'>Из задела</span>',
                     IF(part=-2,'<span style=\'color:blue\'>Дозапуск</span>',part))) AS part,
+		IF(boards.layers>2,'МПП','ДПП') AS boardtype,
                 lanch.id AS lanchid,
                 lanch.id
                 FROM lanch
                 JOIN (users,filelinks,coments,blocks,blockpos,boards,customers,tz,orders)
                 ON (lanch.user_id=users.id AND
                     lanch.file_link_id=filelinks.id AND
-                    lanch.comment_id=coments.id AND 
-                    lanch.block_id=blocks.id AND 
-                    blocks.customer_id=customers.id AND 
+                    lanch.comment_id=coments.id AND
+                    lanch.block_id=blocks.id AND
+                    blocks.customer_id=customers.id AND
                     blocks.id=blockpos.block_id AND
-                    blockpos.board_id = boards.id AND 
+                    blockpos.board_id = boards.id AND
                     lanch.tz_id=tz.id AND
                     orders.id=tz.order_id) " .
                 (!empty ($find)?"AND (blocks.blockname LIKE '%{$find}%' OR board_name LIKE '%{$find}%' OR file_link LIKE '%{$find}%'
@@ -48,6 +49,7 @@ class lanch_zap_model extends sqltable_model {
 	$cols[customer]="Заказчик";
 	$cols[number]="Заказ";
 	$cols[blockname]="Плата";
+	$cols[boardtype]="Тип";
 	$cols[part]="Партия";
 	$cols[numbz]="Заг.";
 	$cols[numbp]="Плат";
@@ -82,7 +84,7 @@ class lanch_zap_model extends sqltable_model {
         $rec[id] = $id;
         return $rec;
     }
-    
+
     public function getTZ($id) {
         $rec=array();
         $sql = "SELECT * FROM lanch WHERE id='{$id}'";
@@ -117,7 +119,7 @@ class lanch_zap_model extends sqltable_model {
         $rec[link] = $files[link];
         return $rec;
     }
-    
+
     public function getPath($id) {
         $sql = "SELECT customer,blockname
             FROM lanch JOIN (blocks,customers)
@@ -127,7 +129,7 @@ class lanch_zap_model extends sqltable_model {
         $rs = sql::fetchOne($sql);
         return "z:\\Заказчики\\{$rs['customer']}\\{$rs['blockname']}";
     }
-    
+
 }
 
 ?>
