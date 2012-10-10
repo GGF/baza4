@@ -91,7 +91,8 @@ class orders_posintz_model extends sqltable_model {
 
     public function delete($delete) {
         $affected = 0;
-        $sql = "DELETE FROM posintz WHERE id='$delete'";
+        $sql = "DELETE FROM posintz WHERE id='{$delete}'";
+	sql::query($sql);
         $affected += sql::affected();
         return $affected;
     }
@@ -101,7 +102,7 @@ class orders_posintz_model extends sqltable_model {
         $rec = $blockmodel->getRecord($rec[block_id]);
         return $rec;
     }
-    
+
 }
 
 ?>
