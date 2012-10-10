@@ -13,6 +13,7 @@ class storage_model extends sqltable_model {
     }
 
     public function getNeedArc() {
+	return false; //чтото  глючит или ктото. архивнули движения
         $sql = "SELECT YEAR(NOW())>(YEAR(sk_{$this->sklad}_dvizh_arc.ddate)+1) AS need
                 FROM {$this->db}sk_{$this->sklad}_dvizh_arc
                 ORDER BY ddate DESC LIMIT 1";
