@@ -19,9 +19,9 @@ class update_model {
         } else {
             $userid = $rs[id];
         }
-        $sql = "INSERT INTO phototemplates 
-                (ts,user_id,filenames) 
-                VALUES 
+        $sql = "INSERT INTO phototemplates
+                (ts,user_id,filenames)
+                VALUES
                 (NOW(),'{$userid}','{$filenames}')";
         sql::query($sql);
         return sql::lastId();
@@ -42,16 +42,16 @@ class update_model {
         $sql = "SELECT id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$board}'";
         $rs = sql::fetchOne($sql);
         if (empty($rs)) {
-            $sql = "INSERT INTO blocks 
-                    (scomp,ssolder,drlname,customer_id,blockname,sizex,sizey,auarea,smalldrill,bigdrill) 
-                  VALUES 
+            $sql = "INSERT INTO blocks
+                    (scomp,ssolder,drlname,customer_id,blockname,sizex,sizey,auarea,smalldrill,bigdrill)
+                  VALUES
                     ('{$comp}','{$solder}','{$drillname}','{$customer_id}','{$board}','{$sizex}','{$sizey}','{$auarea}','{$smalldrill}','{$bigdrill}')";
             sql::query($sql);
             $block_id = sql::lastId();
             $sql = "SELECT id FROM boards WHERE customer_id='{$customer_id}' AND board_name='{$board}'";
             $rs = sql::fetchOne($sql);
             if (empty($rs)) {
-                $sql = "INSERT INTO boards 
+                $sql = "INSERT INTO boards
                             (customer_id,board_name)
                         VALUES
                             ('{$customer_id}','{$board}')";
@@ -68,8 +68,8 @@ class update_model {
             //echo $sql;
             sql::query($sql);
         } else {
-            $sql = "UPDATE blocks 
-                    SET scomp='{$comp}', ssolder='{$solder}', drlname='{$drillname}', 
+            $sql = "UPDATE blocks
+                    SET scomp='{$comp}', ssolder='{$solder}', drlname='{$drillname}',
                         sizex='{$sizex}', sizey='{$sizey}',
                         auarea='{$auarea}', smalldrill='{$smalldrill}', bigdrill='{$bigdrill}'
                 WHERE id='{$rs[id]}'";
@@ -94,9 +94,9 @@ class update_model {
     public function addblock($rec) {
         $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
-        $sql = "SELECT orders.customer_id AS id 
-                FROM tz 
-                JOIN (orders) ON (tz.order_id=orders.id) 
+        $sql = "SELECT orders.customer_id AS id
+                FROM tz
+                JOIN (orders) ON (tz.order_id=orders.id)
                 WHERE tz.id='{$tznumber}'";
         $rs = sql::fetchOne($sql);
         if (empty($rs)) {
@@ -105,22 +105,22 @@ class update_model {
         }
         $customer_id = $rs[id];
         // добавление блока
-        $sql = "SELECT id 
-                FROM blocks 
+        $sql = "SELECT id
+                FROM blocks
                 WHERE customer_id='{$customer_id}' AND blockname='{$blockname}'";
         $rs = sql::fetchOne($sql);
         if (empty($rs)) {
-            $sql = "INSERT INTO blocks 
-                        (id,customer_id,blockname,sizex,sizey,thickness) 
+            $sql = "INSERT INTO blocks
+                        (id,customer_id,blockname,sizex,sizey,thickness)
                     VALUES
                         (NULL,'{$customer_id}','{$blockname}','{$bsizex}','{$bsizey}','{$thickness}')";
             sql::query($sql);
             $block_id = sql::lastId();
         } else {
             $block_id = $rs["id"];
-            $sql = "UPDATE blocks 
+            $sql = "UPDATE blocks
                     SET customer_id='{$customer_id}',blockname='{$blockname}',
-                        sizex='{$bsizex}',sizey='{$bsizey}',thickness='{$thickness}' 
+                        sizex='{$bsizex}',sizey='{$bsizey}',thickness='{$thickness}'
                     WHERE id='{$block_id}'";
             sql::query($sql);
         }
@@ -159,7 +159,7 @@ class update_model {
                 $comment_id = $com[id];
             }
         }
-        $sql = "REPLACE INTO boards 
+        $sql = "REPLACE INTO boards
         (id,board_name,customer_id,sizex,sizey,thickness,
         textolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
         pallad,immer,aurum,numlam,lsizex,lsizey,mask,mark,glasscloth,
@@ -184,7 +184,7 @@ class update_model {
         $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
         // заказчик по tzid
-        $sql = "SELECT orders.customer_id AS id FROM tz 
+        $sql = "SELECT orders.customer_id AS id FROM tz
                 JOIN (orders) ON (tz.order_id=orders.id) WHERE tz.id='{$tznumber}'";
         $rs = sql::fetchOne($sql);
         if (empty($rs)) {
@@ -236,12 +236,12 @@ class update_model {
         $sql = "SELECT * FROM posintz WHERE tz_id='{$tznumber}' AND posintz='{$posintz}'";
         $rs = sql::fetchOne($sql);
         if (empty($rs)) {
-            $sql = "INSERT INTO posintz 
+            $sql = "INSERT INTO posintz
                     (tz_id,posintz,plate_id,board_id,block_id,numbers,first,
                         srok,priem,constr,template_check,template_make,
                         eltest,numpl1,numpl2,numpl3,numpl4,numpl5,numpl6,numbl,
-                        pitz_mater,pitz_psimat,comment_id) 
-                    VALUES 
+                        pitz_mater,pitz_psimat,comment_id)
+                    VALUES
                         ('{$tznumber}','{$posintz}','{$plate_id}','{$board_id}',
                         '{$block_id}','{$numbers}','{$first}','{$srok}','{$priem}',
                         '{$constr}','{$template_check}','{$template_make}',
@@ -251,16 +251,16 @@ class update_model {
             sql::query($sql);
             $pit_id = sql::lastId();
         } else {
-            $sql = "UPDATE posintz 
+            $sql = "UPDATE posintz
                         SET numbers='{$numbers}', plate_id='{$board_id}',
                             plate_id='{$board_id}', block_id='{$block_id}',
                             first='{$first}',srok='{$srok}',priem='{$priem}',
                             constr='{$constr}',template_check='{$template_check}',
-                            template_make='{$template_make}', eltest='{$eltest}', 
-                            numpl1='{$numpl1}', numpl2='{$numpl2}', numpl3='{$numpl3}', 
+                            template_make='{$template_make}', eltest='{$eltest}',
+                            numpl1='{$numpl1}', numpl2='{$numpl2}', numpl3='{$numpl3}',
                             numpl4='{$numpl4}', numpl5='{$numpl5}', numpl6='{$numpl6}',
-                            numbl='{$numbl}', pitz_mater='{$textolite}', 
-                            pitz_psimat='{$textolitepsi}', comment_id='{$comment_id}' 
+                            numbl='{$numbl}', pitz_mater='{$textolite}',
+                            pitz_psimat='{$textolitepsi}', comment_id='{$comment_id}'
                   WHERE id='{$rs[id]}'";
             sql::query($sql);
             $pit_id = $rs["id"];
@@ -283,7 +283,7 @@ class update_model {
         $out .= sql::error() . "<br>";
         $sql = "SELECT block_id, MAX( ldate ) AS md
                 FROM lanch
-                WHERE ldate >= DATE_SUB(NOW(),INTERVAL 1 MONTH) 
+                WHERE ldate >= DATE_SUB(NOW(),INTERVAL 1 MONTH)
                 GROUP BY block_id
                 ";
         $rs = sql::fetchAll($sql);
@@ -293,6 +293,23 @@ class update_model {
             $out .= sql::error() . "<br>";
         }
         return $out;
+    }
+
+    /**
+     * Удаляет  позицию ТЗ, если  она была уже внесена. Тоесть  сначала ТЗ было на три
+     * позиции, а после одну удалили. Надо её стереть.
+     * Получает переменные в гет запросе tznumber и posintz. Соотвественно
+     * идентификатор и число от 1 до трех
+     * Без  проверок и чеголибо. TODO: прооверки добавить.
+     */
+    public function delposintz($rec) {
+	$rec = multibyte::cp1251_to_utf8($rec);
+        //extract($rec);
+	$tznumber = $rec["tznumber"];
+	$posintz = $rec["posintz"];
+	$sql = "DELETE FROM posintz WHERE tz_id='{$tznumber}' AND posintz='{$posintz}'";
+	sql::query($sql);
+	return true;
     }
 
 }
