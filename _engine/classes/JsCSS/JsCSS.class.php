@@ -78,8 +78,6 @@ abstract class JsCSS implements IJsCSS {
         $js[] = self::getWebDir(__DIR__) . '/js/jquery.ui.core.min.js';
         $js[] = self::getWebDir(__DIR__) . '/js/jquery.ui.widget.min.js';
         $js[] = self::getWebDir(__DIR__) . '/js/jquery.ui.effect.min.js';
-/*        $js[] = self::getWebDir(__DIR__) . '/js/plugins.js';
- */
         $js = $js + self::getDirDeep(__DIR__ . '/js/' , "/(\.js|\.js\.php)$/i", true);
         foreach (self::$all_jscss as $one) {
             $js = array_merge($js, $one->getJavascripts());
@@ -93,7 +91,6 @@ abstract class JsCSS implements IJsCSS {
 
     static public function getAllStylesheets() {
         $css = array();
-//        $css[] = self::getWebDir(__DIR__) . '/view/css/style.css';
         $css = self::getDirDeep(__DIR__ . '/view/css/',"/(\.css|\.css\.php)$/i",true);
         foreach (self::$all_jscss as $one) {
             $css = array_merge($css, $one->getStylesheets());
