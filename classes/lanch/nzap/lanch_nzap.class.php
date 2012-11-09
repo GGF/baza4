@@ -45,7 +45,7 @@ class lanch_nzap extends sqltable {
         if ($out) {
             $this->model->lanchsl($rec);
             // если был использован задел, его нужно вычеркнуть
-            if($dozap=="zadel") {
+            if($dozap==="zadel") {
                 $this->model->usezadel($partyornumbdozap);
             }
         }
