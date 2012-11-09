@@ -29,6 +29,7 @@ class lanch_zap_view extends sqltable_view {
         $out = $this->fetch('dozap.tpl');
         $out .= "<script>$('form[name=dozap]').submit(function(){
         $().lego.load('lanch_nzap', $(this).attr('action'),$(this).serialize());
+        reload_table();
         return false;
     });</script>";
         $out .= $this->addComments($rec[id]);
