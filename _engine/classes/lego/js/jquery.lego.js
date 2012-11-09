@@ -206,8 +206,10 @@ var LegoCache = {
         // если что-то пошло не так, то грузим страницу обычным способом
         $().lego.log('count('+lego_name+')='+$(".lego[name="+lego_name+"]").length);
         if($(".lego[name="+lego_name+"]").length != 1){
-            document.location = no_ajax_url+'&'+data;
             $().lego.log("Не обнаружен лего "+lego_name+", либо их много");
+            alert("Не обнаружен лего "+lego_name+", либо их много. Произойдет вызов не ajax!");
+            document.location = no_ajax_url+'&'+data;
+            // дальше ничего не выполняется
             return true;
         }
 
@@ -240,7 +242,7 @@ var LegoCache = {
                 }
                 else{
                     $().lego.log(lego_name+": Сервер не вернул требуемое Lego: "+url);
-                    document.location = no_ajax_url;
+                    //document.location = no_ajax_url;
                 }
             },
             error: function(x){
