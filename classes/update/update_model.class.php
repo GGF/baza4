@@ -312,6 +312,26 @@ class update_model {
 	return true;
     }
 
+    /**
+     * 
+     */
+    public function mkrfrz($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        $mpp = $rec["mpp"];
+        $customer = $rec["customer"];
+        $drillname = $rec["drillname"];
+        $sql = "SELECT id,kdir FROM customers WHERE customer='{$customer}'";
+        $rs = sql::fetchOne($sql);
+        if (!empty($rs)) {
+            $date = date("ymd");
+            $rs[kdir] .= ($mpp != -1 ? "\\MPP" : "\\DPP") . "\\{$drillname}\\{$date}";
+            $out = "mkdir k:\\{$rs[kdir]}" . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.mk2 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.mk4 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.frz k:\\" . $rs[kdir] . "\\\n";
+            return $out;
+        }        
+    }
 }
 
 ?>
