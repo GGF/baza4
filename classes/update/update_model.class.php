@@ -313,7 +313,9 @@ class update_model {
     }
 
     /**
-     * 
+     * Для коппирования файлов по версиям - датам
+     * При выгоне очередной сверловки вызывается эта функция
+     * и вызывается получившийся бат файл
      */
     public function mkrfrz($rec) {
         $rec = multibyte::cp1251_to_utf8($rec);
@@ -324,11 +326,15 @@ class update_model {
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
             $date = date("ymd");
-            $rs[kdir] .= ($mpp != -1 ? "\\MPP" : "\\DPP") . "\\{$drillname}\\{$date}";
+            $rs[kdir] .=  "\\{$drillname}\\{$date}";
+            //$rs[kdir] .= ($mpp != -1 ? "\\MPP" : "\\DPP") . "\\{$drillname}\\{$date}";
             $out = "mkdir k:\\{$rs[kdir]}" . "\\\n";
             $out .= "copy /Y .\\{$drillname}.mk2 k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.mk4 k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.frz k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.ex2 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.prl k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.fx2 k:\\" . $rs[kdir] . "\\\n";
             return $out;
         }        
     }
