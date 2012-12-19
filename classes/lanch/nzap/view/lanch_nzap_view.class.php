@@ -69,27 +69,36 @@ class lanch_nzap_view extends sqltable_view {
     }
 
     public function showmplink($rec) {
-        $filename = "z:\\Заказчики\\{$rec[customer]}\\{$rec[blockname]}\\Мастерплаты\\МП-{$rec[date]}-{$rec[mp_id]}.xml";
+        $filename = "z:\\Заказчики\\{$rec[customer]}\\{$rec[blockname]}\\Мастерплаты\\МП-{$rec[date]}-{$rec[mp_id]}.xls";
         $filename = fileserver::createdironserver($filename);
-        $date = date("d-m-Y");
-        $excel = file_get_contents($this->getDir() . "/mp.xml");
-        $excel = str_replace("_number_", sprintf("%08d", $rec[mp_id]), $excel);
-        $customer = multibyte::UTF_encode($rec[customer]);
-        $excel = str_replace("_customer_", $customer, $excel);
-        $excel = str_replace("_date_", $date, $excel);
-        $blockname = multibyte::UTF_encode($rec[blockname]);
-        $excel = str_replace("_blockname_", $blockname, $excel);
-        $excel = str_replace("_sizex_", ceil($rec[sizex]), $excel);
-        $excel = str_replace("_sizey_", ceil($rec[sizey]), $excel);
-        $excel = str_replace("_drlname_", $rec[drlname], $excel);
-
-        if (fileserver::savefile($filename, $excel)) {
-            Output::assign('mplink', fileserver::sharefilelink($filename));
-            Output::assign('mpid', $rec[mp_id]);
-            $out = $this->fetch('mplink.tpl');
+        $excel = file_get_contents($this->getDir() . "/mp.xls");
+        $file = @fopen($filename, "w");
+        if ($file) {
+            fwrite($file, $excel);
+            fclose($file);
+            @chmod($filename, 0777);
+            $file = @fopen($filename.".txt", "w");
+            if ($file) {
+                $date = date("d-m-Y");
+                fwrite($file, sprintf("%08d\n",$rec[mp_id]));
+                fwrite($file, multibyte::utf8_to_cp1251($rec[customer]) . "\n");
+                fwrite($file, multibyte::utf8_to_cp1251($date) . "\n");
+                fwrite($file, multibyte::utf8_to_cp1251($rec[blockname]) . "\n");
+                fwrite($file, multibyte::utf8_to_cp1251($rec[sizex]) . "\n");
+                fwrite($file, multibyte::utf8_to_cp1251($rec[sizey]) . "\n");
+                fwrite($file, multibyte::utf8_to_cp1251($rec[drlname]) . "\n");
+                fclose($file);
+                @chmod($filename.".txt", 0777);
+                Output::assign('mplink', fileserver::sharefilelink($filename));
+                Output::assign('mpid', $rec[mp_id]);
+                $out = $this->fetch('mplink.tpl');
+            } else {
+                $out = "Не удалось создать файл txt";
+            }
         } else {
-            $out = "Не удалось записать файл";
+            $out = "Не удалось создать файл xls" . print_r($rec,true);
         }
+
         return $out;
     }
 

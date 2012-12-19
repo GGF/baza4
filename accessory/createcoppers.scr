@@ -14,7 +14,7 @@ Y# = vismaxy! - visminy!
 setlayer@ comp
 layer_alloff@ 1
 util_copper@
-copper@ 0.1,161,0,1
+copper@ 0.1,161,1,1.0
 sc#=copperarea!
 if mpp =-1 then 
 	' двусторон€€ плата - вычесть лишнюю площадь
@@ -25,7 +25,7 @@ end if
 setlayer@ solder
 layer_alloff@ 1
 util_copper@
-copper@ 0.1,161,0,1
+copper@ 0.1,161,1,1.0
 ss#=copperarea!
 if mpp =-1 then 
 	' двусторон€€ плата - вычесть лишнюю площадь
@@ -43,16 +43,37 @@ else
 end if
 
 ' отнимаем еще 2.5 периметра и пр€моугольники'
-minsize#=minsize#-25-17
-bigsize#=bigsize#-35
-auarea# = ss#+sc#-(2*X#+2*Y#)*2.5*2 -(2.0*minsize#*13.0+bigsize#*13.0)*2.0
-auarea% = auarea#/100
-auarea# = auarea%/100.0
+if mpp=-1 then
+	minsize#=minsize#-25-17
+	bigsize#=bigsize#-35
+	auarea# = ss#+sc#-(2*X#+2*Y#)*2.5*2 -(2.0*minsize#*13.0+bigsize#*13.0)*2.0
+else
+	auarea# = ss#+sc#-(minsize#*20.0*2+(bigsize#-40.0)*20.0)*2
+end if
+'auarea% = auarea#/100
+auarea# = auarea#/100.0/100.0
 
 
 ' вычисление количества отверстий'
+drillsostav$ = ""
 if drill <> -1 then
 	setlayer@ drill
+	layer_alloff@ 1
+	for i=1 to Highesttoolref!
+		set_current_toolref@ i
+		drillsostav$ = drillsostav$ + str$(toolsize!) + "|" + str$(Lyrdrillcount!)+"x"
+		if toolused! and tooltype! <> 2 then
+			if toolsize! <= 0.6 then
+				smalldrill = smalldrill + Lyrdrillcount!
+			else
+				bigdrill = bigdrill + Lyrdrillcount!
+			end if
+		end if
+	next
+	back@
+end if
+if mill <> -1 then
+	setlayer@ mill
 	layer_alloff@ 1
 	for i=1 to Highesttoolref!
 		set_current_toolref@ i
@@ -66,6 +87,41 @@ if drill <> -1 then
 	next
 	back@
 end if
+' состав шаблона'
+if comp <> -1 then
+	sostav$ = sostav$ + "comp"
+end if
+if solder <> -1 then
+	sostav$ = sostav$ + ", solder"
+end if
+if mpp > 0 then
+	sostav$ = sostav$ + ", " + str$(mpp)+" int"
+end if
+if mc <> -1 then
+	sostav$ = sostav$ + ", maska-comp"
+end if
+if ms <> -1 then
+	sostav$ = sostav$ + ", maska-sold"
+end if
+if rc <> -1 then
+	sostav$ = sostav$ + ", mark-comp-pos"
+end if
+if rs <> -1 then
+	sostav$ = sostav$ + ", mark-sold-pos"
+end if
+if rcn <> -1 then
+	sostav$ = sostav$ + ", mark-comp"
+end if
+if rsn <> -1 then
+	sostav$ = sostav$ + ", mark-sold"
+end if
+if mcv <> -1 then
+	sostav$ = sostav$ + ", maska-comp-via"
+end if
+if msv <> -1 then
+	sostav$ = sostav$ + ", maska-sold-via"
+end if
+
 '—охранение площадей в текстовом файле
 if tempdrlname$ <> "" then 
 	name$=tempdrlname$
@@ -85,8 +141,15 @@ print #1, count
 print #1, auarea#
 print #1, smalldrill
 print #1, bigdrill
-
+print #1, sostav$
+print #1, drillsostav$
 close #1
+
+' записать файл приложени€ с площад€ми'
+Command$="copy /Y X:\TOOL\CAMscripts\coppers.xls "+ chr$(34)+ path$ +chr$(34)
+Command$="cmd /C "+  chr$(34) + Command$ +  chr$(34)
+'messagebox Command$
+wincall Command$
 
 ' записать данные в базу
 encodestr$=customer$
@@ -96,7 +159,7 @@ encodestr$=board$
 gosub URL_encode
 board$=LTRIM$(RTRIM$(encodestr$))
 
-url$="x:\tool\tear.exe "+chr$(34)+"http://baza4/?level=update&update[act]=copper&customer="+customer$+"&board="+board$+"&comp="+str$(sc#)+"&solder="+str$(ss#)+"&drillname="+name$+"&sizex="+str$(X#)+"&sizey="+str$(Y#)+"&smalldrill="+str$(smalldrill)+"&bigdrill="+str$(bigdrill)+"&auarea="+str$(auarea#)+chr$(34)+" > cx.bat"
+url$="x:\tool\tear.exe "+chr$(34)+"http://baza3/?level=update&update[act]=copper&customer="+customer$+"&board="+board$+"&comp="+str$(sc#)+"&solder="+str$(ss#)+"&drillname="+name$+"&sizex="+str$(X#)+"&sizey="+str$(Y#)+"&smalldrill="+str$(smalldrill)+"&mpp="+str$(mpp)+"&bigdrill="+str$(bigdrill)+"&auarea="+str$(auarea#)+chr$(34)+" > cx.bat"
 
 open path$+"dbq.bat" for output as #1
 	print #1,url$
