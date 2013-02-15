@@ -319,6 +319,25 @@ class update_model {
      */
     public function mkrfrz($rec) {
         $rec = multibyte::cp1251_to_utf8($rec);
+        // TODO duble code
+        // update block size
+        extract($rec);
+        $sql = "SELECT id FROM customers WHERE customer='{$customer}'";
+        $rs = sql::fetchOne($sql);
+        if (empty($rs)) {
+            $sql = "INSERT INTO customers (customer) VALUES ('{$customer}')";
+            sql::query($sql);
+            $customer_id = sql::lastId();
+        } else {
+            $customer_id = $rs[id];
+        }
+        $sql = "SELECT id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$board}'";
+        $rs = sql::fetchOne($sql);
+        if (!empty($rs)) {
+            $sql="UPDATE blocks SET sizex='{$sizex}', sizey='{$sizey}' WHERE id='{$rs[id]}'";
+            sql::fetchOne($sql);
+        }
+        
         $mpp = $rec["mpp"];
         $customer = $rec["customer"];
         $drillname = $rec["drillname"];
