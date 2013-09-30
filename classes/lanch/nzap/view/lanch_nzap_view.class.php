@@ -51,7 +51,8 @@ class lanch_nzap_view extends sqltable_view {
 
     public function createsl($rec) {
         extract($rec);
-        $excel = ($dpp ? ((stristr($mater,"TLX") || stristr($mater,"ro") || stristr($mater,"фаф")) ? "/slro.xml" : ($class==3?($aurum=="+"?"/sl3a.xml":"/sl3.xml"):($aurum=="+"?"/sl4a.xml":"/sl4.xml"))) : "/slmpp.xml");
+        //console::getInstance()->out($mater."--- ".stristr($mater,multibyte::utf8_to_cp1251("фаф"))." --- ".stristr($mater,"ФАФ")." --- ".stristr($mater,multibyte::cp1251_to_utf8("фаф"))." --- ".multibyte::cp1251_to_utf8("фаф")." --- ".multibyte::utf8_to_cp1251("фаф")." --- фаф ");
+        $excel = ($dpp ? ((stristr($mater,"TLX") || stristr($mater,"ro") || stristr($mater,"ФАФ")) ? "/slro.xml" : ($class==3?($aurum=="+"?"/sl3a.xml":"/sl3.xml"):($aurum=="+"?"/sl4a.xml":"/sl4.xml"))) : "/slmpp.xml");
         $excel = file_get_contents($this->getDir() . $excel );
         preg_match_all('/_([0-9a-z]+)_/', $excel, $matchesarray);
         for ($i = 0; $i < count($matchesarray[0]); $i++) {

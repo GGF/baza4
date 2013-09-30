@@ -319,6 +319,25 @@ class update_model {
      */
     public function mkrfrz($rec) {
         $rec = multibyte::cp1251_to_utf8($rec);
+        // TODO duble code
+        // update block size
+        extract($rec);
+        $sql = "SELECT id FROM customers WHERE customer='{$customer}'";
+        $rs = sql::fetchOne($sql);
+        if (empty($rs)) {
+            $sql = "INSERT INTO customers (customer) VALUES ('{$customer}')";
+            sql::query($sql);
+            $customer_id = sql::lastId();
+        } else {
+            $customer_id = $rs[id];
+        }
+        $sql = "SELECT id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$board}'";
+        $rs = sql::fetchOne($sql);
+        if (!empty($rs)) {
+            $sql="UPDATE blocks SET sizex='{$sizex}', sizey='{$sizey}' WHERE id='{$rs[id]}'";
+            sql::fetchOne($sql);
+        }
+        
         $mpp = $rec["mpp"];
         $customer = $rec["customer"];
         $drillname = $rec["drillname"];
@@ -335,6 +354,12 @@ class update_model {
             $out .= "copy /Y .\\{$drillname}.ex2 k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.prl k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.fx2 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-2.mk2 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-2.mk4 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-2.frz k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-2.ex2 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-2.prl k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-2.fx2 k:\\" . $rs[kdir] . "\\\n";
             return $out;
         }        
     }
