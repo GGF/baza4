@@ -190,13 +190,14 @@ public class bazaApplet extends Applet implements ClipboardOwner {
             }
             catch (Exception ex) {
                 // не вышло МУА_ХА_ХА
-                this.logme( null, ex);
-                return false;
+                this.logme( ex.getMessage() );
+                //return false;
             }
         } else {
             this.logme( "Can't get SecurityManager");
-            return false;
+            //return false;
         }
+        this.logme( text );
         final Toolkit tk = Toolkit.getDefaultToolkit();
         StringSelection st = new StringSelection(text);
         // тут  тоже приходится через контроллер доступа, вот такая безопасность у броузеров.
