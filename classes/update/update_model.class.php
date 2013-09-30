@@ -363,6 +363,60 @@ class update_model {
             return $out;
         }        
     }
+    
+    /**
+     * Разбирает строку типа данныеХданные|данныеХданные|
+     * @param string $str
+     * @return var
+     */
+    public function parsexstring($str) {
+        $vars = explode("|",$str);
+        foreach ($vars as $value) {
+            if (!empty($value)) {
+                $res=array();
+                $array = explode("x", $value);
+                foreach ($array as $val) {
+                    $res[]=$val;
+                }
+                $result[]=$res;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Добавляет к блоку данные о проводниках и зазорах
+     */
+     public function wideandgap($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        // TODO duble code
+        // update block size
+        extract($rec);
+        $sql = "SELECT id FROM customers WHERE customer='{$customer}'";
+        $rs = sql::fetchOne($sql);
+        if (empty($rs)) {
+            $sql = "INSERT INTO customers (customer) VALUES ('{$customer}')";
+            sql::query($sql);
+            $customer_id = sql::lastId();
+        } else {
+            $customer_id = $rs[id];
+        }
+        $sql = "SELECT id,comment_id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$board}'";
+        $rs = sql::fetchOne($sql);
+        if (!empty($rs)) {
+            $params = json_decode(sqltable_model::getComment($rs["comment_id"]),true); //получим текщий комент
+            $params["coment"] = "test coment";
+            $params["wideandgaps"] = update_model::parsexstring($wideandgaps);
+            $comment_id = sqltable_model::getCommentId(json_encode($params));
+            $id = $rs["id"];
+            $sql="UPDATE blocks SET comment_id='{$comment_id}' WHERE id='{$id}'";
+            sql::query($sql);
+            echo json_encode($params);
+        } 
+        /* если не нашелся такой блок, то не понятно как вызывался метод, блок создается раньше вызовом coppers и другими
+         * wideandgaps вызывается для готовых блоков, не вижу смысла отрабатывать ситуацию когда блока нет
+         */
+     }
 }
 
 ?>

@@ -81,14 +81,19 @@ class orders_blocks_model extends sqltable_model {
                 JOIN boards ON boards.id=blockpos.board_id 
                 WHERE blockpos.block_id='{$edit}'";
         $rec[blockpos] = sql::fetchAll($sql);
-        $rec[comment] = $this->getComment($rec[comment_id]);
+        $param = json_decode($this->getComment($rec[comment_id]),true);
+        $rec["comment"] = $param["coment"];
+        $rec["param"] = $param;
         $rec[files] = $this->getFilesForId('blocks', $edit);
         return $rec;
     }
 
     public function setRecord($data) {
         extract($data);
-        $comment_id = $this->getCommentId($comment);
+        // в скрытых параметрах формы есть идентификатор коментария, заберем текущий и заменим в нем собственно коментарий
+        $param = json_decode($this->getComment($comment_id),true);
+        $param["coment"] = $comment;
+        $comment_id = $this->getCommentId(json_encode($param));
         $sql = "UPDATE blocks SET comment_id='{$comment_id}' WHERE id='{$edit}'";
         sql::query($sql);
         return parent::setRecord($data);

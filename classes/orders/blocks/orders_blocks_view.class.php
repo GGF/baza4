@@ -73,18 +73,17 @@ class orders_blocks_view extends sqltable_view {
                 "value" => $pos[nib],
                 "options" => array("readonly" => true),
             ));
-//            array_push($fields, array(
-//                "type" => AJAXFORM_TYPE_TEXT,
-//                "name" => "n{$i}",
-//                "label" => "",
-//                "value" => "{$pos[nx]}x{$pos[ny]}",
-//            ));
         }
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXTAREA,
             "name" => "comment",
             "label" => "Коментарий",
             "value" => $rec[comment],
+        ));
+        array_push($fields, array(
+            "type" => AJAXFORM_TYPE_HIDDEN,
+            "name" => "comment_id",
+            "value" => $rec[comment_id],
         ));
         $rec[fields] = $fields;
         return parent::showrec($rec);
