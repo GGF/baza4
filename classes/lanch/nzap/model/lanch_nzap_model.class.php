@@ -361,12 +361,11 @@ class lanch_nzap_model extends sqltable_model {
         $rs = multibyte::UTF_encode($rs);
         $rec = array_merge($rec, $rs);
         extract($rs);
-        $sql = "SELECT comment FROM coments WHERE id='{$comment_id1}'";
-        $res = sql::fetchOne($sql);
-        $rec[comment1] = empty($res["comment"]) ? '' : multibyte::UTF_encode($res["comment"]);
-        $sql = "SELECT comment FROM coments WHERE id='{$comment_id2}'";
-        $res = sql::fetchOne($sql);
-        $rec[comment2] = empty($res["comment"]) ? '' : multibyte::UTF_encode($res["comment"]);
+        // коментарий к блоку, содержится с остальными данными
+        $param = json_decode(sqltable_model::getComment($comment_id1),true);
+        $rec[comment1] = multibyte::UTF_encode($param["coment"]);
+        // комментарий к запуску
+        $rec[comment2] = multibyte::UTF_encode(sqltable_model::getComment($comment_id2));
 // собрать данные о платах в блоке
         $sql = "SELECT *, board_name AS boardname, sizex AS psizex, sizey AS psizey
                 FROM blockpos

@@ -149,15 +149,9 @@ class update_model {
         if (empty($comment)) {
             $comment_id = $rs[comment_id];
         } else {
-            $sql = "SELECT * FROM coments WHERE comment='{$comment}'";
-            $com = sql::fetchOne($sql);
-            if (empty($com)) {
-                $sql = "INSERT INTO coments (comment) VALUES ('{$comment}')";
-                sql::query($sql);
-                $comment_id = sql::lastId();
-            } else {
-                $comment_id = $com[id];
-            }
+            $params = json_decode(sqltable_model::getComment($rs["comment_id"]),true); //получим текщий комент
+            $params["coment"] = $comment;
+            $comment_id = sqltable_model::getCommentId(json_encode($params));
         }
         $sql = "REPLACE INTO boards
         (id,board_name,customer_id,sizex,sizey,thickness,
@@ -222,15 +216,7 @@ class update_model {
             // не буду добавлять - данных нет и это делается в другом месте
         }
         // коментарий
-        $sql = "SELECT * FROM coments WHERE comment='{$comment}'";
-        $com = sql::fetchOne($sql);
-        if (empty($com)) {
-            $sql = "INSERT INTO coments (comment) VALUES ('{$comment}')";
-            sql::query($sql);
-            $comment_id = sql::lastId();
-        } else {
-            $comment_id = $com[id];
-        }
+        $comment_id = sqltable_model::getCommentId($comment);
 
         // добавим МП если есть такое исправим
         $sql = "SELECT * FROM posintz WHERE tz_id='{$tznumber}' AND posintz='{$posintz}'";
@@ -405,7 +391,6 @@ class update_model {
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
             $params = json_decode(sqltable_model::getComment($rs["comment_id"]),true); //получим текщий комент
-            $params["coment"] = "test coment";
             $params["wideandgaps"] = update_model::parsexstring($wideandgaps);
             $comment_id = sqltable_model::getCommentId(json_encode($params));
             $id = $rs["id"];

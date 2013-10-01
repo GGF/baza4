@@ -16,7 +16,7 @@ class orders_blocks_view extends sqltable_view {
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "customer",
-            "label" => "Заказчик:",
+            "label" => "Заказчик",
             "value" => $rec["customer"],
             "options" => array("readonly" => true,),
         ));
