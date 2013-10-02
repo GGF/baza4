@@ -83,6 +83,18 @@ class orders_blocks_model extends sqltable_model {
         $rec[blockpos] = sql::fetchAll($sql);
         $param = json_decode($this->getComment($rec[comment_id]),true);
         $rec["comment"] = $param["coment"];
+        $wideandgaps = $param["wideandgaps"];
+        // если слои еще не заполнены заполним из wideandgaps
+        for($i=1;$i<11;$i++) {
+            $sl1=$wideandgaps[2*$i-2][0];$sl2=$wideandgaps[2*$i-1][0];
+            $pr1=$wideandgaps[2*$i-2][2];$pr2=$wideandgaps[2*$i-1][2];
+            if(empty($param["sl{$i}"])){
+                if(!empty($sl1)) {
+                    $param["sl{$i}"] = $sl1."-".$sl2;
+                    $param["pr{$i}"] = sprintf("%5.3f/%5.3f",$pr1,$pr2);
+                }
+            }
+        }
         $rec["param"] = $param;
         $rec[files] = $this->getFilesForId('blocks', $edit);
         return $rec;
@@ -92,6 +104,18 @@ class orders_blocks_model extends sqltable_model {
         extract($data);
         // в скрытых параметрах формы есть идентификатор коментария, заберем текущий и заменим в нем собственно коментарий
         $param = json_decode($this->getComment($comment_id),true);
+        $param[basemat]=$data["basemat"];
+        $param[sttkan]=$data["sttkan"];
+        $param[sttkankl]=$data["sttkankl"];
+        $param[sttkanrasp]=$data["sttkanrasp"];
+        $param[rtolsh]=$data["rtolsh"];
+        $param[filext]=$data["filext"];
+        $param[elkon]=$data["elkon"];
+        for($i=1;$i<11;$i++) {
+            $param["sl{$i}"]=$data["sl{$i}"];
+            $param["pr{$i}"]=$data["pr{$i}"];
+            $param["mat{$i}"]=$data["mat{$i}"];
+        }
         $param["coment"] = $comment;
         $comment_id = $this->getCommentId(json_encode($param));
         $sql = "UPDATE blocks SET comment_id='{$comment_id}' WHERE id='{$edit}'";
