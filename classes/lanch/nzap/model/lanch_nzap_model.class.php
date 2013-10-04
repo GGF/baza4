@@ -499,7 +499,7 @@ class lanch_nzap_model extends sqltable_model {
         // получить данные в переменные
         $sql = "SELECT
                     blockname AS board_name,
-                    CONCAT(orders.number,CONCAT(' от ',CONCAT(orderdate,CONCAT(' - ',CONCAT(posintz.numbers,' шт.'))))) AS letter,
+                    CONCAT(orders.number,CONCAT(' от ',CONCAT(DATE_FORMAT(orderdate,'%d.%m.%Y'),CONCAT(' - ',CONCAT(posintz.numbers,' шт.'))))) AS letter,
                     fullname AS customerfullname,
                     posintz.numbers AS numbers,
                     drlname AS frezfile,
@@ -600,7 +600,7 @@ class lanch_nzap_model extends sqltable_model {
             $rec["boardname{$i}"] = $rec["boardname{$i}"];
         }
 
-        $rec[dataz] = $rec[date];
+        $rec[dataz] = date("d.m.Y");
 
         $rec[tolsh] = $tolsh;
 
