@@ -1,4 +1,5 @@
 .editdiv {
+    width: 100%;
     max-height:500px;
     overflow-y:auto;
 }
@@ -15,4 +16,10 @@ td.hidden {
     background-color: gray;
     color: white;
     font-weight: bold;
+}
+
+.editformtable {
+    float:left;
+    margin-left: 5px;
+    margin-right: 5px;
 }

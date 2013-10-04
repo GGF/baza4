@@ -149,15 +149,9 @@ class update_model {
         if (empty($comment)) {
             $comment_id = $rs[comment_id];
         } else {
-            $sql = "SELECT * FROM coments WHERE comment='{$comment}'";
-            $com = sql::fetchOne($sql);
-            if (empty($com)) {
-                $sql = "INSERT INTO coments (comment) VALUES ('{$comment}')";
-                sql::query($sql);
-                $comment_id = sql::lastId();
-            } else {
-                $comment_id = $com[id];
-            }
+            $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
+            $params["coment"] = $comment;
+            $comment_id = sqltable_model::getCommentId(multibyte::Json_encode($params));
         }
         $sql = "REPLACE INTO boards
         (id,board_name,customer_id,sizex,sizey,thickness,
@@ -222,15 +216,7 @@ class update_model {
             // не буду добавлять - данных нет и это делается в другом месте
         }
         // коментарий
-        $sql = "SELECT * FROM coments WHERE comment='{$comment}'";
-        $com = sql::fetchOne($sql);
-        if (empty($com)) {
-            $sql = "INSERT INTO coments (comment) VALUES ('{$comment}')";
-            sql::query($sql);
-            $comment_id = sql::lastId();
-        } else {
-            $comment_id = $com[id];
-        }
+        $comment_id = sqltable_model::getCommentId($comment);
 
         // добавим МП если есть такое исправим
         $sql = "SELECT * FROM posintz WHERE tz_id='{$tznumber}' AND posintz='{$posintz}'";
@@ -363,6 +349,59 @@ class update_model {
             return $out;
         }        
     }
+    
+    /**
+     * Разбирает строку типа данныеХданные|данныеХданные|
+     * @param string $str
+     * @return var
+     */
+    public function parsexstring($str) {
+        $vars = explode("|",$str);
+        foreach ($vars as $value) {
+            if (!empty($value)) {
+                $res=array();
+                $array = explode("x", $value);
+                foreach ($array as $val) {
+                    $res[]=$val;
+                }
+                $result[]=$res;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Добавляет к блоку данные о проводниках и зазорах
+     */
+     public function wideandgap($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        // TODO duble code
+        // update block size
+        extract($rec);
+        $sql = "SELECT id FROM customers WHERE customer='{$customer}'";
+        $rs = sql::fetchOne($sql);
+        if (empty($rs)) {
+            $sql = "INSERT INTO customers (customer) VALUES ('{$customer}')";
+            sql::query($sql);
+            $customer_id = sql::lastId();
+        } else {
+            $customer_id = $rs[id];
+        }
+        $sql = "SELECT id,comment_id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$board}'";
+        $rs = sql::fetchOne($sql);
+        if (!empty($rs)) {
+            $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
+            $params["wideandgaps"] = update_model::parsexstring($wideandgaps);
+            $comment_id = sqltable_model::getCommentId(multibyte::Json_encode($params));
+            $id = $rs["id"];
+            $sql="UPDATE blocks SET comment_id='{$comment_id}' WHERE id='{$id}'";
+            sql::query($sql);
+            echo json_encode($params);
+        } 
+        /* если не нашелся такой блок, то не понятно как вызывался метод, блок создается раньше вызовом coppers и другими
+         * wideandgaps вызывается для готовых блоков, не вижу смысла отрабатывать ситуацию когда блока нет
+         */
+     }
 }
 
 ?>

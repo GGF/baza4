@@ -51,13 +51,42 @@ class lanch_nzap_view extends sqltable_view {
 
     public function createsl($rec) {
         extract($rec);
-        //console::getInstance()->out($mater."--- ".stristr($mater,multibyte::utf8_to_cp1251("фаф"))." --- ".stristr($mater,"ФАФ")." --- ".stristr($mater,multibyte::cp1251_to_utf8("фаф"))." --- ".multibyte::cp1251_to_utf8("фаф")." --- ".multibyte::utf8_to_cp1251("фаф")." --- фаф ");
-        $excel = ($dpp ? ((stristr($mater,"TLX") || stristr($mater,"ro") || stristr($mater,"ФАФ")) ? "/slro.xml" : ($class==3?($aurum=="+"?"/sl3a.xml":"/sl3.xml"):($aurum=="+"?"/sl4a.xml":"/sl4.xml"))) : "/slmpp.xml");
-        $excel = file_get_contents($this->getDir() . $excel );
-        preg_match_all('/_([0-9a-z]+)_/', $excel, $matchesarray);
-        for ($i = 0; $i < count($matchesarray[0]); $i++) {
-            $excel = str_replace($matchesarray[0][$i], ${$matchesarray[1][$i]}, $excel);
+        $excel = file_get_contents($this->getDir() . $template );
+        if ($fileext == "xml" ) {
+            // усли шаблон xml файл
+            // заменяем в xml файле данные попадающие под шаблон _имя_ на переменную имя из $rec
+            preg_match_all('/_([0-9a-z]+)_/', $excel, $matchesarray);
+            for ($i = 0; $i < count($matchesarray[0]); $i++) {
+                $excel = str_replace($matchesarray[0][$i], ${$matchesarray[1][$i]}, $excel);
+            }
+        } elseif ($fileext == "xls") {
+            // а шаблон может быть и xls файлом, 
+            $file = @fopen("{$filename}.txt", "w");
+            if ($file) {
+                foreach ($rec as $key => $value) {
+                    // сохраним все переменные в файл txt, чтоб xls потом сам оттуда забрал
+                    // использем в качестве разделителя вертикальную черту, скорее всего её не будет в данных
+                    // если же, паче чаяния, она там окажется придется использовать тройную, скажем, и
+                    //  переписывать скрипты в xls файле
+                    fwrite($file, sprintf("%s|%s\n",multibyte::utf8_to_cp1251($key),multibyte::utf8_to_cp1251($value)));
+                }
+                fclose($file);
+                @chmod("{$filename}.txt", 0777);
+                $url="http://baza3/level=getdata&getdata[act]=checksl&getdata[act][0]={$number}";
+                $barcode = new BarcodeQR();
+                $barcode->url($url);
+                $barcode->draw(150, "{$filename}.png");
+                @chmod("{$filename}.png", 0777);
+            } else {
+                $out = "Не удалось создать файл txt";
+                return false;
+            }
+            // а сам xls запишитеся ниже
+        } else {
+            // вернем ошибку или в будущем как-то обработаем файл
+            return false;
         }
+        // сохранить 
         if (fileserver::savefile($filename, $excel)) {
             Output::assign('sllink', fileserver::sharefilelink($filename));
             Output::assign('slid', $lanch_id);
@@ -66,6 +95,7 @@ class lanch_nzap_view extends sqltable_view {
             $out = "Не удалось записать файл";
             $out = false;
         }
+        // вернуть ссылку на файл
         return $out;
     }
 

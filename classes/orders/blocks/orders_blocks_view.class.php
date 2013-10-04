@@ -16,7 +16,7 @@ class orders_blocks_view extends sqltable_view {
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "customer",
-            "label" => "Заказчик:",
+            "label" => "Заказчик",
             "value" => $rec["customer"],
             "options" => array("readonly" => true,),
         ));
@@ -73,12 +73,7 @@ class orders_blocks_view extends sqltable_view {
                 "value" => $pos[nib],
                 "options" => array("readonly" => true),
             ));
-//            array_push($fields, array(
-//                "type" => AJAXFORM_TYPE_TEXT,
-//                "name" => "n{$i}",
-//                "label" => "",
-//                "value" => "{$pos[nx]}x{$pos[ny]}",
-//            ));
+            $layers = max(array($layers,$pos["layers"]));
         }
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXTAREA,
@@ -86,6 +81,103 @@ class orders_blocks_view extends sqltable_view {
             "label" => "Коментарий",
             "value" => $rec[comment],
         ));
+        array_push($fields, array(
+            "type" => AJAXFORM_TYPE_HIDDEN,
+            "name" => "comment_id",
+            "value" => $rec[comment_id],
+        ));
+        // если многослойка добавляем параметры
+        if ($layers>2) {
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "basemat",
+                "label" => "Базовый материал",
+                "value" => $rec[param][basemat],
+            ));
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "sttkan",
+                "label" => "Стеклоткань",
+                "value" => $rec[param][sttkan],
+            ));
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "sttkankl",
+                "label" => "Кол-во листов",
+                "value" => $rec[param][sttkankl],
+            ));
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "sttkanrasp",
+                "label" => "Распределение",
+                "value" => $rec[param][sttkanrasp],
+            ));
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "rtolsh",
+                "label" => "Расчетная толщ.",
+                "value" => $rec[param][rtolsh],
+            ));
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "filext",
+                "label" => "Расш файла сверл.",
+                "value" => $rec[param][filext],
+            ));
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "elkon",
+                "label" => "Электроконтроль",
+                "value" => $rec[param][elkon],
+            ));
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "foo",
+                "label" => "Еще параметр для выравнивания формы",
+                "value" => "",
+                "options" => array("readonly" => true, "html" => 'size=2'),
+            ));            
+            // слои
+            for($i=1;$i<11;$i++) {
+                array_push($fields, array(
+                    "type" => AJAXFORM_TYPE_TEXT,
+                    "name" => "sl{$i}",
+                    "label" => "Слои{$i}",
+                    "value" => $rec[param]["sl{$i}"],
+                ));
+                array_push($fields, array(
+                    "type" => AJAXFORM_TYPE_TEXT,
+                    "name" => "mat{$i}",
+                    "label" => "Материал слоев",
+                    "value" => $rec[param]["mat{$i}"],
+                ));
+                array_push($fields, array(
+                    "type" => AJAXFORM_TYPE_TEXT,
+                    "name" => "pr{$i}",
+                    "label" => "Проводники",
+                    "value" => $rec[param]["pr{$i}"],
+                ));
+                if ($i==4 || $i==7) {
+                    array_push($fields, array(
+                        "type" => AJAXFORM_TYPE_TEXT,
+                        "name" => "foo{$i}",
+                        "label" => "Еще параметр для выравнивания формы",
+                        "value" => "",
+                        "options" => array("readonly" => true, "html" => 'size=2'),
+                    ));            
+                    array_push($fields, array(
+                        "type" => AJAXFORM_TYPE_TEXT,
+                        "name" => "bar{$i}",
+                        "label" => "Еще параметр для выравнивания формы",
+                        "value" => "",
+                        "options" => array("readonly" => true, "html" => 'size=2'),
+                    ));            
+
+                }
+            }
+
+                        
+        }
         $rec[fields] = $fields;
         return parent::showrec($rec);
     }

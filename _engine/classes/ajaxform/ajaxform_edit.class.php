@@ -92,11 +92,16 @@ class ajaxform_edit {
         $this->form->init();
         $out .= $this->form->form();
         $out .= $this->form->add("edit");
-        $out .= "<table id=editformtable>";
+        $out .= "<div id=editformtable><div class=editformtable>";
+        $count = 0;
         foreach ($this->fields as $field) {
             $out .= $this->getFieldOut($field);
+            if ($count++ > 9) {
+                $count = 0;
+                $out .= "</div><div class=editformtable>";
+            }
         }
-        $out .= "</table>";
+        $out .= "</div><div style='float:none;clear:both;'></div></div>";
         //$out .= '<div style="display:none" >' . $this->form->add("submit") . '</div>';
         $out .= $this->form->end();
         $out .= $this->form->destroy();
@@ -115,10 +120,10 @@ class ajaxform_edit {
     public function getFieldOut($field) {
         $out = '';
         if ($field->type != AJAXFORM_TYPE_HIDDEN) {
-            $out .= "<tr id='tr{$field->name}'><td><label>$field->label</label>";
-            $out .= "<td><span class=nobreak>" . $this->form->add($field->name) . '</span>';
+            $out .= "<div id='tr{$field->name}'>";
+            $out .= "<div style='float: right;' class=nobreak>" . $this->form->add($field->name) . "</div><label class=nobreak>{$field->label}:</label><div style='float:none;clear:both;'></div></div>";
         } else {
-            $out .= "<tr><td colspan=2 class='hidden'>" . $this->form->add($field->name);
+            $out .= "<div class='hidden'>" . $this->form->add($field->name)."</div>";
         }
         return $out;
     }

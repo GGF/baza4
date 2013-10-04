@@ -240,7 +240,7 @@ class sqltable_view extends views {
     public function getJson($data) {
         //header("CONTENT-TYPE: TEXT/X-JSON; CHARSET={$_SERVER[Encoding]}");
         header("CONTENT-TYPE: APPLICATION/JSON; CHARSET={$_SERVER[Encoding]}");
-        echo json::Json_encode($data, true);
+        echo multibyte::Json_encode($data, true);
     }
 
     public function getSelect($data) {

@@ -75,6 +75,11 @@ class sqltable_model extends model {
     }
 
     /*
+     * TODO: дальше идет код связанные именно с этим проектом, потому его лучше выделить 
+     * в класс не в каталоге engin, а в classes, а остальные наследовать уже от того
+     */
+    
+    /*
      * Возвращает список заказчиков для форм
      */
 
@@ -229,13 +234,23 @@ class sqltable_model extends model {
         }
     }
 
-    public function getComment($id) {
+    /**
+     * Возвращает текст комментария по идентификатору
+     * @param int $id
+     * @return string
+     */
+    static public function getComment($id) {
         $sql = "SELECT * FROM coments WHERE id='{$id}'";
         $comment=sql::fetchOne($sql);
         return $comment[comment];
     }
 
-    public function getCommentId($comment) {
+    /**
+     * Возвращает идентификатор коментария по тексту коментария
+     * @param string $comment
+     * @return int
+     */
+    static public function getCommentId($comment) {
         $sql = "SELECT * FROM coments WHERE comment='{$comment}'";
         $rs = sql::fetchOne($sql);
         if (empty ($rs)) {
