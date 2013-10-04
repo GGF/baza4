@@ -251,11 +251,12 @@ class sqltable extends lego_abstract {
     public function action_addfilefield() {
         $edit = new ajaxform_edit($this->getName());
         $edit->restore();
+        $filename = "file" . rand();
         $field =
                 array(
                     "type" => AJAXFORM_TYPE_FILE,
-                    "name" => "file" . rand(),
-                    "label" => "",
+                    "name" => $filename,
+                    "label" => $filename,
         );
         $edit->addFieldAsArray($field);
         $out = $edit->getFieldOut($edit->fields[$field[name]]);

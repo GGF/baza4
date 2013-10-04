@@ -266,9 +266,11 @@ class lanch_nzap_model extends sqltable_model {
             $lanch_id = $rs["id"];
         }
         */
+            // Определим идентификатор коментария
+            $comment_id = 1; //пустой            
             $sql = "INSERT INTO lanch
-            (ldate, user_id,pos_in_tz_id)
-            VALUES (NOW(),'" . Auth::getInstance()->getUser('userid') . "','{$posid}')";
+            (ldate, user_id,pos_in_tz_id,comment_id)
+            VALUES (NOW(),'" . Auth::getInstance()->getUser('userid') . "','{$posid}','{$comment_id}')";
             sql::query($sql);
             $lanch_id = sql::lastId();
 
@@ -284,19 +286,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec[customer] = $customer = $rs[customer];
         $rec[blockname] = $blockname = $rs[blockname];
         $rec[block_id] = $rs[block_id];
-// Определим идентификатор коментария
-        $comment_id = 1; //пустой
-// Определим идентификатор файловой ссылки
-        $rec["l_date"] = $l_date = date("Y-m-d");
-        $rec[file_link] = $file_link =
-                "z:\\Заказчики\\{$customer}\\{$blockname}\\запуски\\" .
-                "СЛ-{$l_date}-{$lanch_id}.xml";
-        $rec[filename] = fileserver::createdironserver($file_link);
-        $rec[file_id] = $file_id = $this->getFileId($file_link);
-        $sql = "UPDATE lanch
-                SET file_link_id='{$file_id}', comment_id='{$comment_id}'
-                WHERE id='{$lanch_id}'";
-        sql::query($sql);
+
         return $rec;
     }
 
@@ -315,10 +305,35 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getSl($rec) {
         if ($rec[dpp]) {
-            return $this->getSlDpp($rec);
+            $rec = $this->getSlDpp($rec);
         } else {
-            return $this->getSlMpp($rec);
+            $rec = $this->getSlMpp($rec);
         }
+        extract($rec);
+        // Определим идентификатор файловой ссылки
+        $rec["l_date"] = $l_date = date("Y-m-d");
+        $file_link = 
+                "z:\\Заказчики\\{$customer}\\{$blockname}\\запуски\\" .
+                "СЛ-{$l_date}-{$lanch_id}.xml";
+        $rec["template"] = ($dpp ? 
+                    ((stristr($mater,"TLX") || stristr($mater,"ro") || stristr($mater,"ФАФ")) ? 
+                        "/slro.xml" : 
+                        ($class==3?
+                            ($aurum=="+"?"/sl3a.xml":"/sl3.xml"):
+                            ($aurum=="+"?"/sl4a.xml":"/sl4.xml")
+                        )
+                    ):"/slmpp{$class}.xls");
+        $fileext = explode(".",$rec["template"]);
+        $rec["fileext"] = $fileext[1];
+        $rec["file_link"] = str_replace("xml", $rec["fileext"], $file_link);
+        $rec["filename"] = fileserver::createdironserver($rec["file_link"]);
+        $rec[file_id] = $file_id = $this->getFileId($file_link);
+        $sql = "UPDATE lanch
+                SET file_link_id='{$file_id}'
+                WHERE id='{$lanch_id}'";
+        sql::query($sql);
+
+        return $rec;
     }
 
     public function getSlDpp($rec) {
@@ -361,12 +376,11 @@ class lanch_nzap_model extends sqltable_model {
         $rs = multibyte::UTF_encode($rs);
         $rec = array_merge($rec, $rs);
         extract($rs);
-        $sql = "SELECT comment FROM coments WHERE id='{$comment_id1}'";
-        $res = sql::fetchOne($sql);
-        $rec[comment1] = empty($res["comment"]) ? '' : multibyte::UTF_encode($res["comment"]);
-        $sql = "SELECT comment FROM coments WHERE id='{$comment_id2}'";
-        $res = sql::fetchOne($sql);
-        $rec[comment2] = empty($res["comment"]) ? '' : multibyte::UTF_encode($res["comment"]);
+        // коментарий к блоку, содержится с остальными данными
+        $param = json_decode(multibyte::Unescape(sqltable_model::getComment($comment_id1)),true);
+        $rec[comment1] = multibyte::UTF_encode($param["coment"]);
+        // комментарий к запуску
+        $rec[comment2] = multibyte::UTF_encode(sqltable_model::getComment($comment_id2));
 // собрать данные о платах в блоке
         $sql = "SELECT *, board_name AS boardname, sizex AS psizex, sizey AS psizey
                 FROM blockpos
@@ -482,33 +496,22 @@ class lanch_nzap_model extends sqltable_model {
 
     public function getSlMpp($rec) {
         extract($rec);
-        $liststkan = $raspstkan = $rtolsh = $bmat1 = $bmat2 = $bmat3 =
-                $bmat4 = $bmat5 = $bmat6 = $bmat7 = $bmat8 = $bmat9 =
-                $sloi1 = $sloi2 = $sloi3 = $sloi4 = $sloi5 = $sloi6 =
-                $sloi7 = $sloi8 = $sloi9 = $osuk = $stkan = $etest =
-                $aurum = "";
         // получить данные в переменные
         $sql = "SELECT
-                    orderdate AS ldate,
-                    orders.number AS letter,
-                    fullname AS custom,
-                    drlname,
-                    scomp,
-                    ssolder AS ssold,
-                    blocks.sizex AS sizex,
-                    blocks.sizey AS sizey,
-                    blockname,
-                    pitz_mater AS pmater,
-                    pitz_psimat AS ppsimat,
-                    blocks.thickness AS tolsh,
-                    priem,
+                    blockname AS board_name,
+                    CONCAT(orders.number,CONCAT(' от ',CONCAT(orderdate,CONCAT(' - ',CONCAT(posintz.numbers,' шт.'))))) AS letter,
+                    fullname AS customerfullname,
                     posintz.numbers AS numbers,
+                    drlname AS frezfile,
+                    scomp AS coppers,
+                    ssolder AS coppers,
+                    CONCAT(CEIL(blocks.sizex),CONCAT('x',CEIL(blocks.sizey))) AS sizez,
+                    priem,
                     tz.id as tzid,
                     blocks.id AS block_id,
                     customers.id AS customer_id,
                     blocks.comment_id AS comment_id1,
                     posintz.comment_id AS comment_id2,
-                    numpl1,numpl2,numpl3,numpl4,numpl5,numpl6,
                     posintz.posintz AS posintz
 
                     FROM posintz
@@ -524,39 +527,32 @@ class lanch_nzap_model extends sqltable_model {
         $rs = multibyte::UTF_encode($rs);
         $rec = array_merge($rec, $rs);
         extract($rs);
-        $sql = "SELECT comment FROM coments WHERE id='{$comment_id1}'";
-        $res = sql::fetchOne($sql);
-        $rec[comment1] = empty($res["comment"]) ? '' : multibyte::UTF_encode($res["comment"]);
-        $sql = "SELECT comment FROM coments WHERE id='{$comment_id2}'";
-        $res = sql::fetchOne($sql);
-        $rec[comment2] = empty($res["comment"]) ? '' : multibyte::UTF_encode($res["comment"]);
+        $param = json_decode(multibyte::Unescape(sqltable_model::getComment($comment_id1)),true);
+        $rec = array_merge($rec, $param);
+        
+        $rec[mkrfile]="{$rec[frezfile]}.{$param[filext]}";
+        
+        $rec[comment1] = multibyte::UTF_encode($param["coment"]);
+        $rec[comment2] = sqltable_model::getComment($comment_id2);
+
         $sql = "SELECT *, board_name AS boardname, sizex AS psizex,
                         sizey AS psizey
                 FROM blockpos
                 JOIN (boards)
                 ON (boards.id=blockpos.board_id)
                 WHERE blockpos.block_id='{$block_id}'";
-        $res = sql::fetchAll($sql);
-        $i = 0; // счетчик
-        $platonblock = $numlam = $rmark = $immer = 0;
-        $mask = $layers = $class = $mark = '';
-        foreach ($res as $rs) {
-            $platonblock = max($platonblock, $rs[nib]);
-            $numlam+=$rs[numlam];
-            $rmark = max($rmark, $rs[rmark]);
-            $immer = max($immer, $rs[immer]);
-            $class = max($class, $rs['class']);
-            $i++;
-            $sql = "SELECT comment FROM coments WHERE id='{$rs[comment_id]}'";
-            $com = sql::fetchOne($sql);
-            $commentp = empty($com["comment"]) ? '' : cp1251_to_utf8($com["comment"]);
-            foreach ($rs as $key => $val) {
-                ${$key . $i} = multibyte::UTF_encode($val);
-            }
-            $mask = ${"mask{$i}"};
-            $mark = ${"mark{$i}"};
-        }
+        $res = sql::fetchOne($sql);
+        extract($res);
+        $platonblock = $res[nib];
+        $tolsh = $res[thickness];
+        $rec[sizep] = sprintf("%5.1fx%5.1f",$res[sizex],$res[sizey]);
+        
+        $mask = $res[mask];
+        $mark = $res[mark];
+        
+
         $rec = array_merge($rec, compact('platonblock', 'numlam', 'rmark', 'immer', 'mask', 'layers', 'class', 'mark', 'commentp'));
+        
         if ($customer_id == '8') // радар
             $zagotinparty = 1;
         else
@@ -570,6 +566,7 @@ class lanch_nzap_model extends sqltable_model {
             $numpl1 = $numbers = $dozapnumbers;
             $part = -2;//$party;
         } elseif ($dozap=="zadel") {
+            $part = -1;
             $zagotovokvsego = ceil($dozapnumbers["use"] / $platonblock);
             $zag = $zagotovokvsego;
             $ppart = $dozapnumbers["use"];
@@ -580,14 +577,18 @@ class lanch_nzap_model extends sqltable_model {
             $zag = ($party * $zagotinparty >= $zagotovokvsego) ? ($zagotovokvsego - ($party - 1) * $zagotinparty) : $zagotinparty;
             $ppart = (ceil($zagotovokvsego / $zagotinparty) > 1) ? (isset($last) ? ($numbers - (ceil($numbers / $platonblock / $zagotinparty) - 1) * $platonblock * $zagotinparty) . "($numbers)" : $zag * $platonblock . "($numbers)") : $numbers;
         }
+
         $rec[last] = ceil($zagotovokvsego / $zagotinparty) <= $party;
         // реорганизуем для запонения сл одной строчкой
-        $rec[type] = multibyte::UTF_encode($layers == '1' ? 'ОПП' : 'ДПП');
         $rec[number] = sprintf("%08d", $lanch_id);
-        $rec[zagotovokvsego] = $rec[zzak] = $zagotovokvsego;
-        $rec[zag] = $rec[zppart] = $zag;
-        $rec[fm1] = (strstr($rec[mark], '1') || strstr($rec[mark], '2') ? "+" : "-");
-        $rec[fm2] = (strstr($rec[mark], '2') ? "+" : "-");
+        
+        $platonblock = $zagotovokvsego*$platonblock;
+        $rec[numonzag] = "{$rec[platonblock]} ({$platonblock})";
+        
+        $rec[znumbers] = "{$zag} ({$zagotovokvsego})";
+        
+        $rec[phm1] = (strstr($rec[mark], '1') || strstr($rec[mark], '2') ? "+" : "-");
+        $rec[phm2] = (strstr($rec[mark], '2') ? "+" : "-");
         $rec[rmark] = ($rec[rmark] == '1' ? "+" : "-");
         $rec[sizex] = ceil($rec[sizex]);
         $rec[sizey] = ceil($rec[sizey]);
@@ -598,55 +599,28 @@ class lanch_nzap_model extends sqltable_model {
             $rec["niz{$i}"] = $rec["nib{$i}"];
             $rec["boardname{$i}"] = $rec["boardname{$i}"];
         }
-        $rec[pio1] = $numpl1 == 0 ? $numbers : $numpl1; // позже возможно можно будет удалить если numpl будет из ТЗ заполнятся
-        $rec[datez] = $rec[date];
-        if ($rec[tolsh]>0) {
-            $tolsh = preg_split('/[\.±]/', $rec[tolsh]);
-            $tolsh[0] = empty($tolsh[0]) ? 0 : $tolsh[0];
-            $tolsh[1] = empty($tolsh[1]) ? 0 : $tolsh[1];
-            $tolsh = '-'.sprintf("%-d.%-d", $tolsh[0], $tolsh[1]);
-            //$tolsh = trim(sprintf("%-5.3f",$rec[tolsh]),'0');
-        } else {
-            $tolsh ='';
-        }
-        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . $tolsh;
+
+        $rec[dataz] = $rec[date];
+
         $rec[tolsh] = $tolsh;
-        $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";
-        $rec[zmask] = strstr($rec[mask], multibyte::UTF_encode('ЖМ')) ? "+" : "-";
-        $rec[aurum] = ($rec[immer] == '1' ? "+" : "-");
-        $rec[priemz] = strstr($priem, multibyte::UTF_encode('ПЗ')) ? "+" : "-";
+
+        $rec[spm] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";
+        $rec[zhpm] = strstr($rec[mask], multibyte::UTF_encode('ЖМ')) ? "+" : "-";
+
+        $rec[immer] = ($rec[immer] == '1' ? "+" : "-");
+        $rec[priempz] = strstr($priem, multibyte::UTF_encode('ПЗ')) ? "+" : "-";
         $rec[priemotk] = '+'; // всегда
-        $rec[scomp] = sprintf("%3.2f", $rec[scomp] / 10000);
-        $rec[ssold] = sprintf("%3.2f", $rec[ssold] / 10000);
+        $rec[copperc] = sprintf("%3.2f", $rec[copperc] / 10000);
+        $rec[coppers] = sprintf("%3.2f", $rec[coppers] / 10000);
         $rec[lamel] = $rec[numlam] > 0 ? "+" : "-";
-        $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
-                        ($rec[ppsimat] . $tolsh)
-                ) . $rec[commentp];
+
         // прокоментируем сопроводительный лист
         $rec[dozapcoment] = $rec[dozap]===true ? multibyte::UTF_encode('ДОЗАПУСК') :
                         ($rec[dozap]=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
-        $rec[numpl1] = $numpl1;
-        $rec[stkan] = $stkan;
-        $rec[psizex] = '';//$psizex;
-        $rec[psizey] = '';//$psizey;
-        $rec[liststkan] = $liststkan;
-        $rec[raspstkan] = $raspstkan;
-        $rec[rtolsh] = $tolsh;
-        for ($i=0;$i<10;$i++) {
-            $rec["bmat{$i}"] = '';//${"bmat$i"};
-            $rec["sloi{$i}"] = '';//${"sloi$i"};
-        }
-        $rec[drlname1] = '';//$drlname1;
-        $rec[drlname2] = '';//$drlname2;
-        $rec[etest] = $etest;
-        $rec[priemp] = '';//$priemp;
-        $rec[priemo] = $priem;
-        $rec[impokr] = '';//$impokr;
-        $rec[maskz] = '';//$maskz;
-        $rec[masks] = '';//$masks;
-        $rec[osuk] = $osuk;
+        $rec[comment] = $rec[comment1]." ".$rec[comment2]." ".$rec[dozapcoment]; 
 
-        $rec = array_merge($rec, compact('ppart', 'part'));
+
+        $rec = array_merge($rec, compact('ppart', 'part', 'zagotovokvsego', 'zag'));
         return $rec;
     }
 
