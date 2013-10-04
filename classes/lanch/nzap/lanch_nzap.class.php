@@ -52,6 +52,11 @@ class lanch_nzap extends sqltable {
         return $out;
     }
 
+    /**
+     * Отрабатывает дозапуск
+     * @param int $lanchid номер предыдущего запуска
+     * @return string Текст html ссылки на сопроведительный лист
+     */
     public function action_dozap($lanchid) {
         return '<div class="lego">' . $this->action_sl($lanchid, $_REQUEST[dozapnumbers], true) . '</div>';
     }

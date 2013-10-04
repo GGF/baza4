@@ -60,10 +60,10 @@ class multibyte {
         return self::UTF($var, "DECODE");
     }
 
-    static public function Json_encode($var, $removeEntities = true) {
+    static public function Json_encode($var, $removeEntities = false) {
 
         // изза html сущностей не получается json_encode
-//        array_walk_recursive($var, create_function('&$item,$key', '{$item=multibyte::Escape($item);;}'));
+        array_walk_recursive($var, create_function('&$item,$key', '{$item=multibyte::Escape($item);;}'));
 //        array_walk_recursive($var, create_function('&$item,$key', '{$item=htmlentities($item);}'));
         
         if ($_SERVER [Encoding] != "UTF-8")

@@ -149,9 +149,9 @@ class update_model {
         if (empty($comment)) {
             $comment_id = $rs[comment_id];
         } else {
-            $params = json_decode(sqltable_model::getComment($rs["comment_id"]),true); //получим текщий комент
+            $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
             $params["coment"] = $comment;
-            $comment_id = sqltable_model::getCommentId(json_encode($params));
+            $comment_id = sqltable_model::getCommentId(multibyte::Json_encode($params));
         }
         $sql = "REPLACE INTO boards
         (id,board_name,customer_id,sizex,sizey,thickness,
@@ -390,9 +390,9 @@ class update_model {
         $sql = "SELECT id,comment_id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$board}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
-            $params = json_decode(sqltable_model::getComment($rs["comment_id"]),true); //получим текщий комент
+            $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
             $params["wideandgaps"] = update_model::parsexstring($wideandgaps);
-            $comment_id = sqltable_model::getCommentId(json_encode($params));
+            $comment_id = sqltable_model::getCommentId(multibyte::Json_encode($params));
             $id = $rs["id"];
             $sql="UPDATE blocks SET comment_id='{$comment_id}' WHERE id='{$id}'";
             sql::query($sql);
