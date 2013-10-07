@@ -503,7 +503,7 @@ class lanch_nzap_model extends sqltable_model {
                     fullname AS customerfullname,
                     posintz.numbers AS numbers,
                     drlname AS frezfile,
-                    scomp AS coppers,
+                    scomp AS copperc,
                     ssolder AS coppers,
                     CONCAT(CEIL(blocks.sizex),CONCAT('x',CEIL(blocks.sizey))) AS sizez,
                     priem,
