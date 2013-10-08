@@ -381,6 +381,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec[comment1] = multibyte::UTF_encode($param["coment"]);
         // комментарий к запуску
         $rec[comment2] = multibyte::UTF_encode(sqltable_model::getComment($comment_id2));
+        $rec[comment2] = $rec[comment2] == 0?"":$rec[comment2] ;
 // собрать данные о платах в блоке
         $sql = "SELECT *, board_name AS boardname, sizex AS psizex, sizey AS psizey
                 FROM blockpos

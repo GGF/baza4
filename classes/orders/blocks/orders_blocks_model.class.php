@@ -92,7 +92,7 @@ class orders_blocks_model extends sqltable_model {
         for($i=1;$i<11;$i++) {
             $sl1=$wideandgaps[2*$i-2][0];$sl2=$wideandgaps[2*$i-1][0];
             $pr1=$wideandgaps[2*$i-2][2];$pr2=$wideandgaps[2*$i-1][2];
-            if(empty($param["sl{$i}"])){
+            if(!isset($param["sl{$i}"]) || empty($param["sl{$i}"])){
                 if(!empty($sl1)) {
                     $param["sl{$i}"] = $sl1."-".$sl2;
                     $param["pr{$i}"] = sprintf("%5.3f/%5.3f",$pr1,$pr2);
