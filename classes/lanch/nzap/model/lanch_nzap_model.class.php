@@ -327,7 +327,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec["fileext"] = $fileext[1];
         $rec["file_link"] = str_replace("xml", $rec["fileext"], $file_link);
         $rec["filename"] = fileserver::createdironserver($rec["file_link"]);
-        $rec[file_id] = $file_id = $this->getFileId($file_link);
+        $rec[file_id] = $file_id = $this->getFileId($rec["file_link"]);
         $sql = "UPDATE lanch
                 SET file_link_id='{$file_id}'
                 WHERE id='{$lanch_id}'";
@@ -572,7 +572,8 @@ class lanch_nzap_model extends sqltable_model {
             $ppart = $dozapnumbers["use"];
             $numpl1 = $numbers = $dozapnumbers["use"];
         } else {
-            $zagotovokvsego = ceil($numbers / $platonblock); // * 1.15);
+            // в дозапуске указано сколько запускать в реале
+            $zagotovokvsego = ceil($dozap / $platonblock);
             // общее количество заготовок + 15% потом может быть
             $zag = ($party * $zagotinparty >= $zagotovokvsego) ? ($zagotovokvsego - ($party - 1) * $zagotinparty) : $zagotinparty;
             $ppart = (ceil($zagotovokvsego / $zagotinparty) > 1) ? (isset($last) ? ($numbers - (ceil($numbers / $platonblock / $zagotinparty) - 1) * $platonblock * $zagotinparty) . "($numbers)" : $zag * $platonblock . "($numbers)") : $numbers;

@@ -24,8 +24,21 @@ class lanch_nzap extends sqltable {
         } 
         for ($i = 0; $i < $rec[parties]; $i++) {
             if ($rec[party][$i][party]) {
-                $rec[party][$i][sllink] = $this->actUri('sl', $id, $rec[party][$i][party])->url();
+                // в дозапуске указываем количество запуска и меняем его если надо скриптом см. ниже
+                $rec[party][$i][sllink] = $this->actUri('sl', $id, $rec[party][$i][party], $rec[block][boardinorder])->url();
             }
+        }
+        if ($rec[party][0][type]=="mpp") {
+            $rec[block][boardinorder] = "<input value='{$rec[block][boardinorder]}' size='4' id='boardinorder'/><script>
+                    $('#boardinorder').change(function(){ 
+                    var sstr = $(this).val();
+                    $('.partybuttonlink').each(function(){
+                        var str=$(this).attr('href');
+                        str = str.replace(new RegExp('lanch_nzap%5Bsl%5D%5B2%5D=[0-9]+'),'lanch_nzap%5Bsl%5D%5B2%5D='+sstr); 
+                        $(this).attr('href',str);
+                    });
+                    });
+                </script>";
         }
         return $this->getMessage($this->view->showrec($rec));
     }
