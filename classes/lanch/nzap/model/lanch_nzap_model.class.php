@@ -318,10 +318,11 @@ class lanch_nzap_model extends sqltable_model {
         $rec["template"] = ($dpp ? 
                     ((stristr($mater,"TLX") || stristr($mater,"ro") || stristr($mater,"ФАФ")) ? 
                         "/slro.xml" : 
-                        ($class==3?
-                            ($aurum=="+"?"/sl3a.xml":"/sl3.xml"):
-                            ($aurum=="+"?"/sl4a.xml":"/sl4.xml")
-                        )
+                        "/sldpp4.xls"
+//                        ($class==3?
+//                            ($aurum=="+"?"/sl3a.xml":"/sl3.xml"):
+//                            ($aurum=="+"?"/sl4a.xml":"/sl4.xml")
+//                        )
                     ):"/slmpp{$class}.xls");
         $fileext = explode(".",$rec["template"]);
         $rec["fileext"] = $fileext[1];
@@ -492,6 +493,13 @@ class lanch_nzap_model extends sqltable_model {
                         ($dozap=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
 
         $rec = array_merge($rec, compact('ppart', 'part','millcomment','drillcomment','ek'));
+        // для xls
+        $rec[phm1] = $rec[fm1];
+        $rec[phm2] = $rec[fm2];
+        $rec[sizez] = "{$rec[sizex]}x{$rec[sizey]}";
+        $rec[frzname] = $rec[drlname];
+        $rec[comment] = $rec[psimat]." ".$rec[comment1]." ".$rec[dozapcoment];
+        $rec[letterldate] = "{$rec[letter]} от {$rec[ldate]}";
         return $rec;
     }
 
@@ -594,13 +602,6 @@ class lanch_nzap_model extends sqltable_model {
         $rec[rmark] = ($rec[rmark] == '1' ? "+" : "-");
         $rec[sizex] = ceil($rec[sizex]);
         $rec[sizey] = ceil($rec[sizey]);
-        for ($i = 1; $i <= 6; $i++) {
-            $rec["psizex{$i}"] = $rec["psizex{$i}"] == 0 ? "" : $rec["psizex{$i}"] . 'x' . $rec["psizey{$i}"];
-            $rec["pio{$i}"] = $rec["numpl{$i}"] == 0 ? "" : $rec["numpl{$i}"];
-            $rec["ppart{$i}"] = $rec["nib{$i}"] * $rec[zag] == 0 ? "" : $rec["nib{$i}"] * $rec[zag];
-            $rec["niz{$i}"] = $rec["nib{$i}"];
-            $rec["boardname{$i}"] = $rec["boardname{$i}"];
-        }
 
         $rec[dataz] = date("d.m.Y");
 
