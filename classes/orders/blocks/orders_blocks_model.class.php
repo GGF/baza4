@@ -91,7 +91,7 @@ class orders_blocks_model extends sqltable_model {
         // если слои еще не заполнены заполним из wideandgaps
         for($i=1;$i<11;$i++) {
             $sl1=$wideandgaps[2*$i-2][0];$sl2=$wideandgaps[2*$i-1][0];
-            $pr1=$wideandgaps[2*$i-2][2];$pr2=$wideandgaps[2*$i-1][2];
+            $pr1=$wideandgaps[2*$i-2][1];$pr2=$wideandgaps[2*$i-1][1];
             if(!isset($param["sl{$i}"]) || empty($param["sl{$i}"])){
                 if(!empty($sl1)) {
                     $param["sl{$i}"] = $sl1."-".$sl2;
