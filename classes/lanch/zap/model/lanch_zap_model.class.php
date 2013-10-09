@@ -13,25 +13,36 @@ class lanch_zap_model extends sqltable_model {
 
     public function getData($all=false,$order='',$find='',$idstr='') {
         $ret = array();
+        // еще убрал forign ключи в таблице blockpos, а то там удалялось
+        if (!empty ($find)) {
+            $sql = "SELECT blockpos.block_id FROM blockpos JOIN boards ON blockpos.board_id=boards.id WHERE board_name LIKE '%{$find}%' GROUP BY blockpos.block_id";
+            $res = sql::fetchAll($sql);
+            if (!empty($res)) {
+                foreach ($res as $value) {
+                    $ids[] = $value[block_id];
+                }
+                $ids = "blocks.id IN (".join(',', $ids).") OR ";
+                
+            }
+        }
 	$sql="SELECT *,
                 IF(part=0,'<span style=\'color:red\'>Удалена</span>',
                     IF(part=-1,'<span style=\'color:green\'>Из задела</span>',
                     IF(part=-2,'<span style=\'color:blue\'>Дозапуск</span>',part))) AS part,
-		IF(boards.layers>2,'МПП','ДПП') AS boardtype,
+                IF(boards.layers>2,'МПП','ДПП') AS boardtype,
                 lanch.id AS lanchid,
                 lanch.id
                 FROM lanch
-                JOIN (users,filelinks,coments,blocks,blockpos,boards,customers,tz,orders)
+                JOIN (users,filelinks,coments,blocks,customers,tz,orders)
                 ON (lanch.user_id=users.id AND
                     lanch.file_link_id=filelinks.id AND
                     lanch.comment_id=coments.id AND
                     lanch.block_id=blocks.id AND
                     blocks.customer_id=customers.id AND
-                    blocks.id=blockpos.block_id AND
-                    blockpos.board_id = boards.id AND
                     lanch.tz_id=tz.id AND
-                    orders.id=tz.order_id) " .
-                (!empty ($find)?"AND (blocks.blockname LIKE '%{$find}%' OR board_name LIKE '%{$find}%' OR file_link LIKE '%{$find}%'
+                    orders.id=tz.order_id)
+                 LEFT JOIN (blockpos,boards) ON blockpos.block_id=blocks.id AND blockpos.board_id = boards.id " .
+                (!empty ($find)?"WHERE ({$ids} blocks.blockname LIKE '%{$find}%' OR file_link LIKE '%{$find}%'
                     OR orders.number LIKE '%{$find}%')":"") .
                     " GROUP BY lanch.id,blocks.blockname " .
                 (!empty($order)?" ORDER BY ".$order." ":" ORDER BY lanch.id DESC ") .
@@ -48,7 +59,7 @@ class lanch_zap_model extends sqltable_model {
 	$cols[nik]="Запустил";
 	$cols[customer]="Заказчик";
 	$cols[number]="Заказ";
-	$cols[blockname]="Плата";
+	$cols[blockname]="Блок";
 	$cols[boardtype]="Тип";
 	$cols[part]="Партия";
 	$cols[numbz]="Заг.";
