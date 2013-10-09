@@ -97,7 +97,7 @@ class lanch_nzap_model extends sqltable_model {
             AND blocks.id=block_id
             AND boards.id=board_id)
         LEFT JOIN (zadel) ON (zadel.board_id = boards.id)
-        WHERE block_id='{$rs["bid"]}' GROUP BY boards.id";
+        WHERE block_id='{$rs["bid"]}' GROUP BY boards.id ORDER BY blockpos.id";
         $res = sql::fetchAll($sql);
         $nz = 0; // максимальное количество заготовок по количеству плат в блоке
         $nl = 0; // максимальное количество слоев на плате в блоке, хотя бред
