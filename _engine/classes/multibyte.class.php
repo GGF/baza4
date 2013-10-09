@@ -150,7 +150,7 @@ class multibyte {
             "т" => "%u0442", "у" => "%u0443", "ф" => "%u0444", "х" => "%u0445",
             "ц" => "%u0446", "ч" => "%u0447", "ш" => "%u0448", "щ" => "%u0449",
             "ъ" => "%u044A", "ы" => "%u044B", "ь" => "%u044C", "э" => "%u044D",
-            "ю" => "%u044E", "я" => "%u044F"
+            "ю" => "%u044E", "я" => "%u044F", 
         );
 
         if ($reverse) {
@@ -167,6 +167,8 @@ class multibyte {
 
     static public function Unescape($str) {
 
+        $str = str_replace(chr(13), ' ', $str);
+        $str = str_replace(chr(10), ' ', $str);
         $str = preg_replace('/%u([a-z0-9]{4})/si', '\u$1', $str);
         $str = preg_replace('/%([a-z0-9]{2})/si', '\u00$1', $str);
 
