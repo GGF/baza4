@@ -315,15 +315,7 @@ class lanch_nzap_model extends sqltable_model {
         $file_link = 
                 "z:\\Заказчики\\{$customer}\\{$blockname}\\запуски\\" .
                 "СЛ-{$l_date}-{$lanch_id}.xml";
-        $rec["template"] = ($dpp ? 
-                    ((stristr($mater,"TLX") || stristr($mater,"ro") || stristr($mater,"ФАФ")) ? 
-                        "/slro.xml" : 
-                        "/sldpp4.xls"
-//                        ($class==3?
-//                            ($aurum=="+"?"/sl3a.xml":"/sl3.xml"):
-//                            ($aurum=="+"?"/sl4a.xml":"/sl4.xml")
-//                        )
-                    ):"/slmpp{$class}.xls");
+        $rec["template"] = ($dpp ? "/sldpp.xls" : "/slmpp{$class}.xls");
         $fileext = explode(".",$rec["template"]);
         $rec["fileext"] = $fileext[1];
         $rec["file_link"] = str_replace("xml", $rec["fileext"], $file_link);
@@ -345,7 +337,7 @@ class lanch_nzap_model extends sqltable_model {
                 $psizex4 = $niz4 = $pio4 = $ppart4 = $psizex5 = $niz5 = $pio5 = $ppart5 = $psizex6 = $niz6 = $pio6 = $ppart6 = '';
 // получить данные в переменные
         $sql = "SELECT
-        orderdate AS ldate,
+        DATE_FORMAT(orderdate,'%d.%m.%Y') AS ldate,
         orders.number AS letter,
         fullname AS custom,
         drlname,
@@ -379,9 +371,12 @@ class lanch_nzap_model extends sqltable_model {
         extract($rs);
         // коментарий к блоку, содержится с остальными данными
         $param = json_decode(multibyte::Unescape(sqltable_model::getComment($comment_id1)),true);
+        if(empty($param)) $param = array(); // если коментарий не JSON или неправильный JSON
+        $rec[custom]=  html_entity_decode($rec[custom]); // кавычки в названии
         $rec[comment1] = multibyte::UTF_encode($param["coment"]);
         // комментарий к запуску
-        $rec[comment2] = multibyte::UTF_encode(sqltable_model::getComment($comment_id2));
+        $comment2 = json_decode(multibyte::Unescape(sqltable_model::getComment($comment_id1)),true);
+        $rec[comment2] = multibyte::UTF_encode($comment2["coment"]);
         $rec[comment2] = $rec[comment2] == 0?"":$rec[comment2] ;
 // собрать данные о платах в блоке
         $sql = "SELECT *, board_name AS boardname, sizex AS psizex, sizey AS psizey
@@ -402,9 +397,8 @@ class lanch_nzap_model extends sqltable_model {
             $class = max($class, $rs['class']);
             $layers = max($layers, $rs['layers']);
             $i++;
-            $sql = "SELECT comment FROM coments WHERE id='{$rs[comment_id]}'";
-            $com = sql::fetchOne($sql);
-            $commentp .= empty($com["comment"]) ? '' : multibyte::UTF_encode($com["comment"]);
+            $comment2 = json_decode(multibyte::Unescape(sqltable_model::getComment($rs[comment_id])),true);
+            $commentp .= multibyte::UTF_encode($comment2["comment"]);
             foreach ($rs as $key => $val) {
                 $rec[$key . $i] = multibyte::UTF_encode($val);
             }
@@ -537,6 +531,8 @@ class lanch_nzap_model extends sqltable_model {
         $rec = array_merge($rec, $rs);
         extract($rs);
         $param = json_decode(multibyte::Unescape(sqltable_model::getComment($comment_id1)),true);
+        if(empty($param)) $param = array(); // если коментарий не JSON или неправильный JSON
+        $rec[customerfullname]=  html_entity_decode($rec[customerfullname]); // кавычки в названии
         $rec = array_merge($rec, $param);
         
         $rec[mkrfile]="{$rec[frezfile]}.{$param[filext]}";
