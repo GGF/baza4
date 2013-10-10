@@ -379,6 +379,8 @@ class lanch_nzap_model extends sqltable_model {
         extract($rs);
         // коментарий к блоку, содержится с остальными данными
         $param = json_decode(multibyte::Unescape(sqltable_model::getComment($comment_id1)),true);
+        if(empty($param)) $param = array(); // если коментарий не JSON или неправильный JSON
+        $rec[custom]=  html_entity_decode($rec[custom]); // кавычки в названии
         $rec[comment1] = multibyte::UTF_encode($param["coment"]);
         // комментарий к запуску
         $rec[comment2] = multibyte::UTF_encode(sqltable_model::getComment($comment_id2));
@@ -537,6 +539,8 @@ class lanch_nzap_model extends sqltable_model {
         $rec = array_merge($rec, $rs);
         extract($rs);
         $param = json_decode(multibyte::Unescape(sqltable_model::getComment($comment_id1)),true);
+        if(empty($param)) $param = array(); // если коментарий не JSON или неправильный JSON
+        $rec[customerfullname]=  html_entity_decode($rec[customerfullname]); // кавычки в названии
         $rec = array_merge($rec, $param);
         
         $rec[mkrfile]="{$rec[frezfile]}.{$param[filext]}";
