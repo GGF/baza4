@@ -53,6 +53,7 @@ class sqltable_model extends model {
             $sql = "SELECT * FROM {$this->maintable} WHERE id='{$edit}'";
             $rec = sql::fetchOne($sql);
             $rec[files] = $this->getFilesForId($this->maintable, $edit);
+            $rec[maintable] = $this->maintable;
             return $rec;
         } else {
             $ret = sql::fetchOne($edit);

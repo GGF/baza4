@@ -8,7 +8,7 @@ $(document).ready(
         $('div#multyfiles').live('click',
             function(){
                 $(this).hide();
-                $('div#hiddenfiles').show();
+                $(this).next('div#hiddenfiles').show();
             }
         );
     }
