@@ -10,7 +10,7 @@ class lanch_zap_view extends sqltable_view {
     public function showrec($rec) {
         $out='';
         Output::assign('linkclass', 'path');
-        Output::assign('sllink', $rec[path]);
+        Output::assign('sllink', "file://".$rec[path]);
         Output::assign('type', 'Путь к блоку');
         Output::assign('slid', '');
         $out .= $this->fetch('link.tpl');

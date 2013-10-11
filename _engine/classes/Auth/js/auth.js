@@ -114,7 +114,7 @@ $(document).ready(function(){
         var url = $(this).attr('href');
         //log($(this).html());
         // проверим на относительность ссылок, те начинается с http - не наш клиент
-        if (url.search("http://")==-1 && url.search("javascript:")==-1) {
+        if (url.search("http://")==-1 && url.search("javascript:")==-1 && url.search("file:")==-1) {
             //log('Не найден http в ссылке');
             if (url.search("lss=")!=-1) {
                 //log('Уже есть ид сессии в ссылке');
