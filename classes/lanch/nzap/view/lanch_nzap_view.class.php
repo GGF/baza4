@@ -45,7 +45,7 @@ class lanch_nzap_view extends sqltable_view {
         }
         //$out .= print_r($rec,true);
         // комментарии покажем
-        $out .= $this->addComments($rec["edit"]);
+        $out .= $this->addComments($rec["edit"],'posintz');
         return $out;
     }
 
@@ -72,7 +72,7 @@ class lanch_nzap_view extends sqltable_view {
                 }
                 fclose($file);
                 @chmod("{$filename}.txt", 0777);
-                $url="http://baza3/level=getdata&getdata[act]=checksl&getdata[act][0]={$number}";
+                $url="http://baza3/?level=getdata&getdata[act]=checksl&slid={$number}";
                 $barcode = new BarcodeQR();
                 $barcode->url($url);
                 $barcode->draw(150, "{$filename}.png");

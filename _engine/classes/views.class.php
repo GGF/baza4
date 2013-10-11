@@ -43,15 +43,30 @@ abstract class views {
      * @param array $date
      * @return String
      */
-    public function fetch($template,$date=false) {
+    public function fetch($template,$data=false) {
+        // найти шаблон, он может быть и у любого потомка этого класса, они же и друг от друга наследуют
+        $dir = $this->dir;
+        $class = get_class($this);
+        while (!file_exists($dir.'/'.$template) && !file_exists($template)) {
+            $class = get_parent_class($class);
+            if ($class) {
+                $ref = new ReflectionClass($class);
+                if (!$ref->isAbstract()) {
+                    $obj = new $class;
+                    $dir = $obj->getDir();
+                }
+            } else {
+                return '';
+            }
+        }
 	// Если переданы данные, сделать обозначения
-	if ($date!==false) {
-	    foreach ($date as $key => $value) {
+	if ($data!==false) {
+	    foreach ($data as $key => $value) {
 		Output::assign($key, $value);
 	    }
 	}
         $templatedir = Output::getTemplateCompiler()->getTemplateDir();
-        Output::getTemplateCompiler()->setTemplateDir($this->dir);
+        Output::getTemplateCompiler()->setTemplateDir($dir);
         $content = Output::fetch($template);
         Output::getTemplateCompiler()->setTemplateDir($templatedir);
         return $content;

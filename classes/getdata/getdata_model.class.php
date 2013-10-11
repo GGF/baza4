@@ -33,6 +33,26 @@ class getdata_model extends sqltable_model {
         $out .= json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
         return $out;
     }
+    
+    /**
+     * Возвращает данные по сопроводительному листу
+     * @param array $rec массив $REQUEST а в нем нас интересует параметр slid
+     * @return string html код с информацией
+     */
+    public function checksl($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        extract($rec);
+        if ( 1*$slid != 0 ) {
+            $lanch = new sqltable;
+            $lanch = new lanch_zap;
+            $out = $lanch->getAllHeaderStylesheets();
+            $out .= $lanch->getAllHeaderJavascripts();
+            $out .= $lanch->action_open($slid);
+        } else {
+            $out = 'Не найден сопровеодительный лист';
+        }
+        return $out;
+    }
 
 }
 

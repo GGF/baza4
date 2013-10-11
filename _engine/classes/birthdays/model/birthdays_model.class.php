@@ -17,7 +17,7 @@ class birthdays_model {
             $filenamerss = $_SERVER[CACHE] . '/calend.xml';
             $filetime = @filemtime($filenamerss);
             if (!$filetime || (date('d',$filetime)!=date('d'))) {
-                $data = file_get_contents('http://www.calend.ru/img/export/calend.rss');
+                $data = preg_replace("/\x01/","",file_get_contents('http://www.calend.ru/img/export/calend.rss'));
                 @file_put_contents ($filenamerss, $data);
             }
             $rss = simplexml_load_file($filenamerss);
