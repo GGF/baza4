@@ -72,7 +72,7 @@ class lanch_nzap_view extends sqltable_view {
                 }
                 fclose($file);
                 @chmod("{$filename}.txt", 0777);
-                $url="http://baza3/?level=getdata&getdata[act]=checksl&slid={$number}";
+                $url="http://baza3.mpp/?level=getdata&getdata[act]=checksl&slid={$number}";
                 $barcode = new BarcodeQR();
                 $barcode->url($url);
                 $barcode->draw(150, "{$filename}.png");
