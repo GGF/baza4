@@ -10,7 +10,7 @@ class lanch extends secondlevel {
     public function getIndexMenu() {
         $this->menu->add('nzap', 'Не запущенные');
         $this->menu->add('zap', 'В производстве');
-        $this->menu->add('conduct', 'Кондукторы');
+        //$this->menu->add('conduct', 'Кондукторы'); // не используется из-за изменений в техпроцессе
         $this->menu->add('mp', 'Мастерплаты');
         $this->menu->add('zad', 'Задел');
         $this->menu->add('pt', 'Шаблоны');
