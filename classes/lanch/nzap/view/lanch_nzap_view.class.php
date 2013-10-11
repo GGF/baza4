@@ -17,7 +17,7 @@ class lanch_nzap_view extends sqltable_view {
             foreach ($board as $key => $val) {
                 Output::assign($key, $val);
             }
-            $out .= $this->fetch('board.tpl');
+            $out .= $this->fetch('boardinfo.tpl');
         }
         if ($rec[mp]) {
             Output::assign('mplink', $rec[mp][mplink]);
