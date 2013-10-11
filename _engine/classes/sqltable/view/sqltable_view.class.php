@@ -31,7 +31,7 @@ class sqltable_view extends views {
         $out = $form->getOutput();
         if ($rec[files])
             $out .= $this->addFileButton();
-        $out .= $this->addComments($edit);
+        $out .= $this->addComments($edit,$rec[maintable]);
         return $out;
     }
 
@@ -210,6 +210,8 @@ class sqltable_view extends views {
         else {
             Output::assign('message', $message);
             Output::assign('oklink', $this->owner->actUri('index', $this->owner->all, $this->owner->order, $this->owner->find, $this->owner->idstr)->url());
+            // шаблон message.tpl не сможет быть изменен потомками
+            //$out = $this->fetch(__DIR__.'message.tpl');
             $out = $this->fetch('message.tpl');
         }
         return $out;

@@ -81,6 +81,17 @@ class lanch_zap_model extends sqltable_model {
 	sql::query($sql);
     }
 
+    
+    public function getRecord($edit) {
+        $rec = parent::getRecord($edit);
+        $sql = "SELECT * FROM blockpos JOIN boards ON boards.id=blockpos.board_id WHERE block_id={$rec[block_id]}";
+        $rec[boards] = sql::fetchAll($sql);
+        foreach ($rec[boards] as &$value) {
+            $value[filelinks] = $this->getFilesForId('boards', $value[board_id]);
+        }
+        return $rec;
+    }
+
     public function getSL($id) {
         $rec=array();
         $sql = "SELECT * FROM lanch WHERE id='{$id}'";
