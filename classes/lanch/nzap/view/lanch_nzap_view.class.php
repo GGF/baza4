@@ -40,7 +40,7 @@ class lanch_nzap_view extends sqltable_view {
                         $out .= $this->fetch('partybutton.tpl');
                     }
                 }
-                $out .= $party[party] % 5 == 0 ? "<br>" : "";
+                //$out .= $party[party] % 5 == 0 ? "<br>" : "";
             }
         }
         //$out .= print_r($rec,true);
