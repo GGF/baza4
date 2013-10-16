@@ -556,7 +556,7 @@ class lanch_nzap_model extends sqltable_model {
         $mark = $res[mark];
         
 
-        $rec = array_merge($rec, compact('platonblock', 'numlam', 'rmark', 'immer', 'mask', 'layers', 'class', 'mark', 'commentp'));
+        $rec = array_merge($rec, compact('platonblock', 'numlam', 'rmark', 'immer', 'mask', 'layers', 'mark', 'commentp'));
         
         if ($customer_id == '8') // радар
             $zagotinparty = 1;

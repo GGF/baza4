@@ -64,9 +64,12 @@ class sqltable_model extends model {
     public function setRecord($data) {
         extract($data);
         // файлы к таблице привязать
+        $files = $data["files"];
         $files = $this->storeFiles($files, $this->maintable);
+        $curfile = $data["curfile"];
         if (!isset($curfile))
             $curfile = array();
+        $linkfile = $data["linkfile"];
         if (!isset($linkfile))
             $linkfile = array();
         $curfile = $curfile + $linkfile + $files; // в мерге перенумеровываются ключи!!!
