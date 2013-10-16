@@ -90,6 +90,12 @@ class orders_blocks_view extends sqltable_view {
         if ($layers>2) {
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "class",
+                "label" => "Класс",
+                "value" => $rec["param"]["class"],
+            ));
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "basemat",
                 "label" => "Базовый материал",
                 "value" => $rec[param][basemat],
@@ -130,13 +136,6 @@ class orders_blocks_view extends sqltable_view {
                 "label" => "Электроконтроль",
                 "value" => $rec[param][elkon],
             ));
-            array_push($fields, array(
-                "type" => AJAXFORM_TYPE_TEXT,
-                "name" => "foo",
-                "label" => "Еще параметр для выравнивания формы",
-                "value" => "",
-                "options" => array("readonly" => true, "html" => 'size=2'),
-            ));            
             // слои
             for($i=1;$i<11;$i++) {
                 array_push($fields, array(
