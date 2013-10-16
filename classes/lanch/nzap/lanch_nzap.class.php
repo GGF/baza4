@@ -22,13 +22,15 @@ class lanch_nzap extends sqltable {
         if ($rec[zadel]>0) { 
             $rec[zadellink] = $this->actUri('zadel', $id)->url(); // создать AJAX ссылку для кнопки
         } 
+        $mpp=false;
         for ($i = 0; $i < $rec[parties]; $i++) {
             if ($rec[party][$i][party]) {
                 // в дозапуске указываем количество запуска и меняем его если надо скриптом см. ниже
                 $rec[party][$i][sllink] = $this->actUri('sl', $id, $rec[party][$i][party], $rec[block][boardinorder])->url();
             }
+            $mpp=$rec[party][$i][type]=="mpp"||$mpp;
         }
-        if ($rec[party][0][type]=="mpp") {
+        if ($mpp) {
             $rec[block][boardinorder] = "<input value='{$rec[block][boardinorder]}' size='4' id='boardinorder'/><script>
                     $('#boardinorder').change(function(){ 
                     var sstr = $(this).val();
