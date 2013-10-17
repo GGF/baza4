@@ -87,9 +87,10 @@ ob_start();
  * auttoload включался  каждый раз, а теперь используется include_once
  */    
 if (!$_SERVER["debug"]["noCache"]["php"]) {
-    if(!empty($_SESSION["cache"]) && is_array($_SESSION["cache"]))
+    if(!empty($_SESSION["cache"]) && is_array($_SESSION["cache"])) {
         require_once realpath($_SERVER['DOCUMENT_ROOT']) . 
             cache::buildScript($_SESSION["cache"], 'php');
+    }
 }
 /*
  * пожалуй уберу строчку из файла autoload и поставлю включение сюда

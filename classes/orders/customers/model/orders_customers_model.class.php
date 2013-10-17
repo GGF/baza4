@@ -86,20 +86,6 @@ class orders_customers_model extends sqltable_model {
         return $affected;
     }
 
-    public function  setRecord($data) {
-        extract($data);
-        if (!empty($edit)) {
-            // редактирование
-            $sql = "UPDATE customers SET customer='{$customer}', fullname='{$fullname}', kdir='{$kdir}'
-                    WHERE id='{$edit}'";
-        } else {
-            // добавление
-            $sql = "INSERT INTO customers (customer,fullname,kdir) VALUES ('{$customer}','{$fullname}','{$kdir}')";
-        }
-        sql::query($sql);
-
-        return parent::setRecord($data);
-    }
 
 }
 

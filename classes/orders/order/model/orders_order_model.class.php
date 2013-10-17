@@ -99,26 +99,7 @@ class orders_order_model extends sqltable_model {
         return $rec;
     }
 
-    public function setRecord($data) {
-        extract($data);
-        if ($edit) {
-            // редактирование
-            $sql = "UPDATE orders
-                    SET customer_id='{$customer_id}',
-                    orderdate='{$orderdate}',
-                    number='{$number}'
-                    WHERE id='{$edit}'";
-            sql::query($sql);
-        } else {
-            // добавление
-            $sql = "INSERT INTO orders
-                    (customer_id,orderdate,number)
-                    VALUES ('{$customer_id}','{$orderdate}','{$number}')";
-            sql::query($sql);
-            $edit = sql::lastId();
-        }
-        return parent::setRecord($data);
-    }
+
 
 }
 

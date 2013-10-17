@@ -125,9 +125,7 @@ class orders_blocks_model extends sqltable_model {
             $param["mat{$i}"]=$data["mat{$i}"];
         }
         $param["coment"] = $comment;
-        $comment_id = $this->getCommentId(multibyte::Json_encode($param));
-        $sql = "UPDATE blocks SET comment_id='{$comment_id}' WHERE id='{$edit}'";
-        sql::query($sql);
+        $data["comment_id"] = $this->getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($param)));
         return parent::setRecord($data);
     }
 
