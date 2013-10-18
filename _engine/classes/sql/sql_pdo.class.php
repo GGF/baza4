@@ -367,21 +367,22 @@ class sql_PDO {
 
         $error = $this->_connection->errorCode(); // вызов PDO 
 
-        if ($error) {
-
-            $return = "<b>MYSQL ERROR #{$error}:</b> " .
-                    $this->_connection->errorInfo();
-
-            if ($print)
-                echo "<div class='cmsError'>{$return}<br><b>" .
-                "IN QUERY:</b><br><pre class='mysql'>" .
-                $this->format(htmlSpecialChars($this->_lastQuery)) .
-                "\n" . cmsBacktrace(CMSBACKTRACE_RAW) .
-                "</pre></div>";
-            else
-                return $return;
-        } else
+        if ($error==="00000") {
             return null;
+        }
+
+        $return = "<b>MYSQL ERROR #{$error}:</b> " .
+                $this->_connection->errorInfo();
+
+        if ($print) {
+            echo "<div class='cmsError'>{$return}<br><b>" .
+            "IN QUERY:</b><br><pre class='mysql'>" .
+            $this->format(htmlSpecialChars($this->_lastQuery)) .
+            "\n" . cmsBacktrace(CMSBACKTRACE_RAW) .
+            "</pre></div>";
+        } else {
+            return $return;
+        }
     }
 
     /**
