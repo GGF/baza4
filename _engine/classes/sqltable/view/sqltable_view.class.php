@@ -9,7 +9,7 @@ class sqltable_view extends views {
 
     public function showrec($rec) {
         if (empty($rec[fields]))
-            return false; // заглушка для нерадактируемых
+            return false; // заглушка для нередактируемых
         extract($rec);
         $form = new ajaxform_edit($this->owner->getName(), $action);
         $form->init($edit);

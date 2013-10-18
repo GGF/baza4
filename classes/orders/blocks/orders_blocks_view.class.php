@@ -57,20 +57,21 @@ class orders_blocks_view extends sqltable_view {
         ));
 
         $i=0;
+        $layers=0;
         foreach ($rec[blockpos] as $pos) {
             $i++;
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
-                "name" => "pos{$i}",
+                "name" => "poss{$i}",
                 "label" => "Плата {$i}",
                 "value" => $pos[board_name],
                 "options" => array("readonly" => true),
             ));
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
-                "name" => "nib{$i}",
-                "label" => "Шт на блоке",
-                "value" => $pos[nib],
+                "name" => "nibb{$i}",
+                "label" => "На блоке",
+                "value" => sprintf("%d %gx%g",$pos[nib],$pos[sizex],$pos[sizey]),
                 "options" => array("readonly" => true),
             ));
             $layers = max(array($layers,$pos["layers"]));
@@ -88,6 +89,12 @@ class orders_blocks_view extends sqltable_view {
         ));
         // если многослойка добавляем параметры
         if ($layers>2) {
+            array_push($fields, array(
+                "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "class",
+                "label" => "Класс",
+                "value" => $rec["param"]["class"],
+            ));
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "basemat",
@@ -130,13 +137,6 @@ class orders_blocks_view extends sqltable_view {
                 "label" => "Электроконтроль",
                 "value" => $rec[param][elkon],
             ));
-            array_push($fields, array(
-                "type" => AJAXFORM_TYPE_TEXT,
-                "name" => "foo",
-                "label" => "Еще параметр для выравнивания формы",
-                "value" => "",
-                "options" => array("readonly" => true, "html" => 'size=2'),
-            ));            
             // слои
             for($i=1;$i<11;$i++) {
                 array_push($fields, array(

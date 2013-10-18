@@ -39,19 +39,7 @@ class cp_workers_model extends sqltable_model {
 
     public function  setRecord($data) {
         extract($data);
-        $fio = "{$f} {$i} {$o}";
-        $storedata = array(
-            array(
-                "id" => $edit,
-                "f" => $f,
-                "i" => $i,
-                "o" => $o,
-                "fio" => $fio,
-                "dolz" => $dolz,
-                "dr" => $dr,
-                ),
-        );
-        sql::insertUpdate($this->maintable,$storedata);
+        $data ["fio"] = "{$f} {$i} {$o}";
         return parent::setRecord($data);
         
 

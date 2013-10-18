@@ -62,15 +62,22 @@ class sqltable_model extends model {
     }
 
     public function setRecord($data) {
-        extract($data);
+        // поля с именами совпадающими с именами полей таблицы добавляем в базу
+        $data["id"] = $data["edit"];
+        $ret[affected] = sql::insertUpdate($this->maintable,array($data));
         // файлы к таблице привязать
+        $files = $data["files"];
         $files = $this->storeFiles($files, $this->maintable);
-        if (!isset($curfile))
+        $curfile = $data["curfile"];
+        if (!isset($curfile)) {
             $curfile = array();
-        if (!isset($linkfile))
+        }
+        $linkfile = $data["linkfile"];
+        if (!isset($linkfile)) {
             $linkfile = array();
+        }
         $curfile = $curfile + $linkfile + $files; // в мерге перенумеровываются ключи!!!
-        $this->storeFilesInTable($curfile, $this->maintable, $edit);
+        $this->storeFilesInTable($curfile, $this->maintable, $data[edit]);
         $ret[affected] = true;
         return $ret;
     }

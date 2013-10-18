@@ -82,6 +82,9 @@ class orders_blocks_model extends sqltable_model {
                 WHERE blockpos.block_id='{$edit}'";
         $rec[blockpos] = sql::fetchAll($sql);
         $param = multibyte::Json_decode(multibyte::Unescape($this->getComment($rec[comment_id])));
+        if (empty($param["class"])) {
+            $param["class"] = $rec[blockpos][0]["class"];
+        }
         if (empty($param[basemat])) {
             $basemat = explode("-",$rec[blockpos][0][textolite]);            
             $param[basemat] = $basemat[0];
@@ -108,6 +111,7 @@ class orders_blocks_model extends sqltable_model {
         extract($data);
         // в скрытых параметрах формы есть идентификатор коментария, заберем текущий и заменим в нем собственно коментарий
         $param = json_decode(multibyte::Unescape($this->getComment($comment_id)),true);
+        $param["class"]=$data["class"];
         $param[basemat]=$data["basemat"];
         $param[sttkan]=$data["sttkan"];
         $param[sttkankl]=$data["sttkankl"];
@@ -121,9 +125,7 @@ class orders_blocks_model extends sqltable_model {
             $param["mat{$i}"]=$data["mat{$i}"];
         }
         $param["coment"] = $comment;
-        $comment_id = $this->getCommentId(multibyte::Json_encode($param));
-        $sql = "UPDATE blocks SET comment_id='{$comment_id}' WHERE id='{$edit}'";
-        sql::query($sql);
+        $data["comment_id"] = $this->getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($param)));
         return parent::setRecord($data);
     }
 

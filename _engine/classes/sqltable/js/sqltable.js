@@ -228,7 +228,9 @@ function table_set_keyboard()
             $.inArray(event.keyCode,$.keyb.getRange('allnum')) != -1) {
             // для ввода в строку поиска
             // если в поиске уже чтото есть
-            if ($('#dialog').length>0 && $('#dialog').is(':visible')) {
+            //if ($('#dialog').length>0 && $('#dialog').is(':visible')) {
+            // если есть элементы ввода кроме find в таблице
+            if ($('input[type=text]').length>$('input[name=find]').length) {
                 return true; // то продолжим
             } else {
                 // иначе найдем строку поиска
@@ -259,7 +261,8 @@ function table_set_keyboard()
             } else {
                 // а вот если мы в диалоге, а они у нас модальные
                 return true; //08-10-2013 в многослойках появилсяэлемент допонения, пришлось отменить запуски, да и не так это удобно было
-                if ($('.partybutton').length>0) {
+                /*
+                    if ($('.partybutton').length>0) {
                     // то или запустим очередную партию заготовок
                     $('.partybutton').first().click();
                     // отменить дальнейшую обработку
@@ -271,6 +274,7 @@ function table_set_keyboard()
                 } else {
                     // или  еще чо нехорошее делаем
                 }
+                */
             }
             return true;
         } else if (event.keyCode==$.keyb.getIndexCode('aup')) {

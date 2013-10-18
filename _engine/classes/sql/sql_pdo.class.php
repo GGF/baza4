@@ -367,21 +367,22 @@ class sql_PDO {
 
         $error = $this->_connection->errorCode(); // вызов PDO 
 
-        if ($error) {
-
-            $return = "<b>MYSQL ERROR #{$error}:</b> " .
-                    $this->_connection->errorInfo();
-
-            if ($print)
-                echo "<div class='cmsError'>{$return}<br><b>" .
-                "IN QUERY:</b><br><pre class='mysql'>" .
-                $this->format(htmlSpecialChars($this->_lastQuery)) .
-                "\n" . cmsBacktrace(CMSBACKTRACE_RAW) .
-                "</pre></div>";
-            else
-                return $return;
-        } else
+        if ($error==="00000") {
             return null;
+        }
+
+        $return = "<b>MYSQL ERROR #{$error}:</b> " .
+                $this->_connection->errorInfo();
+
+        if ($print) {
+            echo "<div class='cmsError'>{$return}<br><b>" .
+            "IN QUERY:</b><br><pre class='mysql'>" .
+            $this->format(htmlSpecialChars($this->_lastQuery)) .
+            "\n" . cmsBacktrace(CMSBACKTRACE_RAW) .
+            "</pre></div>";
+        } else {
+            return $return;
+        }
     }
 
     /**
@@ -614,6 +615,8 @@ class sql_PDO {
     /**
      * 	Функция возвращает имена полей на основе массива для вставки, 
      * делает она это по первому подмассиву
+     * используется в insert() и insertUpdate(), проверка на существование 
+     * полей в таблице не производится
      * 	@param  array  $data       
      * Массив для вставки, сделан ссылкой для экономии памяти
      * 	@param  bool  $returnArray	
@@ -625,7 +628,7 @@ class sql_PDO {
         $fields = array();
         foreach ($data as $k => $v) {
             $fields[] = "`{$k}`";
-            $v=$v; // блокирую ворнинг
+            $v=$v; // блокирую ворнинг неиспользования переменной $v
         }
 
         return $returnArray ? $fields : implode(", ", $fields);
@@ -634,13 +637,20 @@ class sql_PDO {
     /**
      * 	Функция подготавливает входной массив для вставки
      * 	@param  array  $data  Массив для вставки, 
+     * 	@param  array  $keys  Только избранные ключи, 
      * 	@return  array
      */
-    function insert_prepare($data) {
+    function insert_prepare($data,$keys=array()) {
 
-        $sql = "";
-        foreach ($data as $k => $v)
-            $sql[$k] = "'" . $this->check($v) . "'";
+        if (empty($keys)) {
+            $sql = "";
+            foreach ($data as $k => $v)
+                $sql[$k] = "'" . $this->check($v) . "'";
+        } else {
+            foreach ($keys as $value) {
+                $sql[$value] = "'".$this->check($data[str_replace('`', '', $value)])."'";
+            }
+        }
         return "(" . implode(", ", $sql) . ")";
     }
 
@@ -724,21 +734,33 @@ class sql_PDO {
      */
     function insertUpdate($table, $data, $exclude = array("id"), $log = SQL_LOG) {
 
-        if (!is_array($data) || count($data) < 1)
+        if (!is_array($data) || count($data) < 1) {
             return false;
+        }
 
+        $fieldsintable = sql::fetchAll("SHOW COLUMNS FROM `{$table}`");
+        foreach ($fieldsintable as $value) {
+            $fields[]="`{$value["Field"]}`";
+        }
+        $fieldsintable = $fields;
         $fields = $this->insert_getFields(reset($data), true);
+        sort($fields);
+        sort($fieldsintable);
+        $fields = array_intersect($fields,$fieldsintable);
         $values = array();
 
-        foreach ($data as $dataRow)
-            $values[] = $this->insert_prepare($dataRow);
+        foreach ($data as $dataRow) {
+            $values[] = $this->insert_prepare($dataRow,$fields);
+        }
 
         $upd = array();
         $sql = "INSERT INTO `{$table}` (" . implode(", ", $fields) .
                 ") VALUES ";
-        foreach ($fields as $field)
-            if (@!in_array(substr($field, 1, -1), $exclude))
+        foreach ($fields as $field) {
+            if (@!in_array(substr($field, 1, -1), $exclude)) {
                 $upd[] = "{$field} = VALUES({$field})";
+            }
+        }
         $upd = " ON DUPLICATE KEY UPDATE " . implode(", ", $upd);
 
         $SQLs = array();
@@ -755,8 +777,9 @@ class sql_PDO {
             $SQLs[$n] .= $value . ", ";
         }
 
-        foreach ($SQLs as $SQLn)
+        foreach ($SQLs as $SQLn) {
             $this->query($sql . substr($SQLn, 0, -2) . $upd, array(), $log);
+        }
 
         // Оптимизируем, если нет ошибок
         //if (!$this->error()) 
