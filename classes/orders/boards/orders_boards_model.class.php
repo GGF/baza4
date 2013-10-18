@@ -73,10 +73,7 @@ class orders_boards_model extends sqltable_model {
     }
 
     public function setRecord($data) {
-        extract($data);
-        $comment_id = $this->getCommentId($comment);
-        $sql = "UPDATE boards SET comment_id='{$comment_id}' WHERE id='{$edit}'";
-        sql::query($sql);
+        $data["comment_id"] = $this->getCommentId($data["comment"]);
         return parent::setRecord($data);
     }
 

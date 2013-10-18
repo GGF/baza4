@@ -57,20 +57,21 @@ class orders_blocks_view extends sqltable_view {
         ));
 
         $i=0;
+        $layers=0;
         foreach ($rec[blockpos] as $pos) {
             $i++;
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
-                "name" => "pos{$i}",
+                "name" => "poss{$i}",
                 "label" => "Плата {$i}",
                 "value" => $pos[board_name],
                 "options" => array("readonly" => true),
             ));
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_TEXT,
-                "name" => "nib{$i}",
-                "label" => "Шт на блоке",
-                "value" => $pos[nib],
+                "name" => "nibb{$i}",
+                "label" => "На блоке",
+                "value" => sprintf("%d %gx%g",$pos[nib],$pos[sizex],$pos[sizey]),
                 "options" => array("readonly" => true),
             ));
             $layers = max(array($layers,$pos["layers"]));
