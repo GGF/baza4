@@ -23,13 +23,15 @@ class orders_tz_view extends sqltable_view {
             @chmod($filename, 0777);
             $file = @fopen($filename . ".txt", "w");
             if ($file) {
-                fwrite($file, multibyte::utf8_to_cp1251($cdate) . "\n");
-                fwrite($file, multibyte::utf8_to_cp1251(html_entity_decode($fullname)) . "\n");
-                fwrite($file, multibyte::utf8_to_cp1251(html_entity_decode($order)) . "\n");
-                fwrite($file, multibyte::utf8_to_cp1251($odate) . "\n");
-                fwrite($file, sprintf("%08d\n", $tzid));
+                foreach ($rec as $key => $value) {
+                    // сохраним все переменные в файл txt, чтоб xls потом сам оттуда забрал
+                    // использем в качестве разделителя вертикальную черту, скорее всего её не будет в данных
+                    // если же, паче чаяния, она там окажется придется использовать тройную, скажем, и
+                    //  переписывать скрипты в xls файле
+                    fwrite($file, sprintf("%s|%s\n",multibyte::utf8_to_cp1251($key),multibyte::utf8_to_cp1251($value)));
+                }
                 fclose($file);
-                @chmod($filename . ".txt", 0777);
+                @chmod("{$filename}.txt", 0777);
             } else {
                 return "Не удалось создать файл txt";
             }

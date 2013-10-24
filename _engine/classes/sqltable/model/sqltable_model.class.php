@@ -112,7 +112,7 @@ class sqltable_model extends model {
                 "ORDER BY blockname";
         $res = sql::fetchAll($sql);
         foreach ($res as $rs) {
-            $blocks[$rs[id]] = $rs[plate];
+            $blocks[$rs[id]] = $rs[blockname];
         }
         return $blocks;
     }
@@ -193,7 +193,7 @@ class sqltable_model extends model {
             } else {
                 $filelink = str_ireplace($_SERVER['DOCUMENT_ROOT'], '', $file[file_link]);
                 $file = basename($filelink);
-                $out[link] .= "<a href='http://{$_SERVER["HTTP_HOST"]}{$filelink}'>{$file}</a><br>";
+                $out[link] .= "<a target=_blank href='http://{$_SERVER["HTTP_HOST"]}{$filelink}'>{$file}</a><br>";
             }
         }
         return $out;

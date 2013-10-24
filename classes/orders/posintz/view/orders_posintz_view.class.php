@@ -11,8 +11,8 @@ class orders_posintz_view extends sqltable_view {
     public function getDir() {
         return __DIR__;
     }
-
-    public function showrec($rec) {
+    
+    public function showbutton($rec) {
         extract($rec);
         if (empty($rasslink)) {
             Output::assign('createlink', $createlink);
@@ -22,6 +22,35 @@ class orders_posintz_view extends sqltable_view {
             return $this->fetch('rasslink.tpl');
         }
         
+    }
+    
+    public function showrec($rec) {
+        extract($rec);
+        $fields = array();
+        array_push($fields, array(
+            "type" => AJAXFORM_TYPE_HIDDEN,
+            "name" => "tz_id",
+            "value" => $rec["tz_id"],
+        ));
+        array_push($fields, array(
+            "type" => AJAXFORM_TYPE_SELECT,
+            "name" => "block_id",
+            "label" => "Плата:",
+            "values" => $rec["blocks"],
+            "value" => '',
+            "options" => array("html" => " boardid=1 "),
+        ));
+        array_push($fields, array(
+            "type" => AJAXFORM_TYPE_TEXT,
+            "name" => "board_num",
+            "label" => "Плат",
+            "value" => '',
+            "obligatory"    =>  true,
+                //"options"	=>	array( "html" => "size=10", ),
+        ));        
+        $rec["fields"] = $fields;
+
+        return parent::showrec($rec);
     }
 
 }

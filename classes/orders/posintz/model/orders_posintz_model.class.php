@@ -96,11 +96,83 @@ class orders_posintz_model extends sqltable_model {
         $affected += sql::affected();
         return $affected;
     }
-    public function getRecord($edit) {
-        $rec = parent::getRecord($edit);
-        $blockmodel = new orders_blocks_model();
-        $rec = $blockmodel->getRecord($rec[block_id]);
+   
+    public function getRecord($id) {
+        extract($_SESSION[Auth::$lss]); // тут данные выбранных до сих пор заказа и тз
+        $rec[blocks] = $this->getBlocks($customer_id);
+        $rec[tz_id] = $tz_id;
         return $rec;
+    }
+    
+    public function setRecord($rec) {
+        extract($rec);
+        /*
+        Поля в ТЗ для дпп
+
+        blockname               blocks
+        numbers                 posintz
+        first                   posintz
+        srok                    posintz
+        type                    boards
+        class                   boards
+        priem                   posintz
+        complexity_factor       boards
+        boardsizex              boards
+        boardsizey              boards
+        blocksizex              blocks
+        blocksizey              blocks
+        numonblock              blocks
+        numblock                valuetion
+        constr                  posintz
+        template_check          posintz
+        template_make           posintz
+        drills(smalldrill/bigdrill)     blocks
+        textolite               boards
+        thickness               boards
+
+        mask                    boards
+        mark                    boards
+        rmark                   boards
+        razr                    boards
+        frezcorner              boards
+        frez_factor
+
+        lamel                   boards
+        numlam                  boards
+        lsizex                  boards
+        lsizey                  boards
+        immer                   boards
+        auarea                  blocks
+        boardcomment            blocks
+        posintcomment           posintz
+        */
+        $rec[first] = '0'; // если вставляем старую плату, а сейчас мы так и делаем
+        $sql="SELECT * FROM posintz WHERE block_id='{$block_id}' ORDER BY id DESC LIMIT 1";
+        $rs = sql::fetchOne($sql);
+        if(empty($rs)) {
+            $res[affected] = false;
+            return $res;
+        }
+        // определим позицию добавленного в тз
+        $posintz = array(1,2,3);
+        $sql = "SELECT posintz FROM posintz WHERE id='{$tz_id}'";
+        $rsn = sql::fetchAll($sql);
+        if(!empty($rsn)) {
+            foreach ($rsn as $value) {
+                // тут может быть 1 2 или 3
+                $posintz = array_diff($posintz, array($value["posintz"]));
+            }
+            if (empty($posintz)) {
+                $res[affected] = false;
+                return $res;
+            } else {
+                $posintz = $posintz[0];
+            }
+        } else {
+            $posintz = 1;
+        }
+        $res[affected] = true;
+        return $res;
     }
 
 }
