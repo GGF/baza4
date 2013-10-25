@@ -59,7 +59,13 @@ class sqltable extends lego_abstract {
     /*
      *
      */
+    /*
+     * @var sqltable_model
+     */
     protected $model;
+    /*
+     * @var sqltable_view
+     */
     protected $view;
     protected $form;
 
@@ -102,8 +108,9 @@ class sqltable extends lego_abstract {
             if (!class_exists($classname)) {
                 $classname = get_class($this) . "_model";
             }
-            if (!class_exists($classname))
+            if (!class_exists($classname)) {
                 throw new Exception("Нет класса {$classname}");
+            }
             $this->model = new $classname();
             $this->model->init();
         } catch (Exception $e) {
@@ -117,8 +124,9 @@ class sqltable extends lego_abstract {
             if (!class_exists($classname)) {
                 $classname = "sqltable_view";
             }
-            if (!class_exists($classname))
+            if (!class_exists($classname)) {
                 throw new Exception("Нет класса {$classname}");
+            }
             $this->view = new $classname($this);
         } catch (Exception $e) {
             console::getInstance()->out("[class=" . get_class($this) . "] : " . $e->getMessage());
@@ -155,10 +163,12 @@ class sqltable extends lego_abstract {
         $this->idstr = $idstr;
         if ($this->model != null) {
             // порядок получения важен. в получении даты инициализируется idstr
-            if (empty($this->data))
+            if (empty($this->data)) {
                 $this->data = $this->model->getData($all, $order, $find, $idstr);
-            if (empty($this->cols))
+            }
+            if (empty($this->cols)) {
                 $this->cols = $this->model->getCols();
+            }
         }
 
         return $this->view == null ? "" : $this->view->show();
@@ -176,17 +186,18 @@ class sqltable extends lego_abstract {
     }
 
     public function action_edit($id) {
-        if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
+        if (!Auth::getInstance()->getRights($this->getName(), 'edit')) {
             return $this->view->getMessage('Нет прав на редактирование');
+        }
         $rec = $this->model->getRecord($id);
         $rec[idstr] = $this->idstr;
         $rec[isnew] = empty($id);
         $rec[edit] = $id;
         $rec[action] = $this->actUri('processingform')->ajaxurl($this->getName());
         $out = $this->view->showrec($rec);
-        if ($out)
+        if ($out) {
             return $this->view->getForm($out);
-        else {
+        } else {
             $out = "Не радактируется!";
             return $this->view->getMessage($out);
         }

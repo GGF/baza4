@@ -20,9 +20,10 @@ class orders_tz extends sqltable {
     }
 
     public function action_edit($id) {
-        if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
+        if (!Auth::getInstance()->getRights($this->getName(), 'edit')) {
             return $this->view->getMessage('Нет прав на редактирование');
-        extract($_SESSION[Auth::$lss]);
+        }
+        extract($_SESSION[Auth::$lss]); // тут хранятся выбранные данные заказ и т.п.
         if (empty($id)) {
             if (empty($order_id)) {
                 return $this->getMessage("Не известно куда добавлять. Выбери заказ!");

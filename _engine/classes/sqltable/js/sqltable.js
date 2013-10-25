@@ -60,7 +60,6 @@ function dialog_modal(info)
                         $('input#sendcomment').click();
                 }
                 $(this).dialog('close');
-                $('#dialog').remove(); // убрать div с  диалогом из DOM страницы
                 //reload_table();
                 // Смысл перегружать таблицу если мы только сообщили чтото.
                 // однако бывает сто вызывается как информационное, а на деле
@@ -84,7 +83,6 @@ function dialog_modal(info)
             },
             Закрыть: function() {
                 $(this).dialog('close');
-                $('#dialog').remove();
             },
             '?': function() {
                 /// а вот тут можно посмотреть что будет посылаться, ну кроме файлов конечно
@@ -102,7 +100,10 @@ function dialog_modal(info)
         modal: true,
         resizable: resizeble,
         draggable: true,
-        buttons: Buttons
+        buttons: Buttons,
+        close: function(){               
+                $('#dialog').remove(); // убрать div с  диалогом из DOM страницы
+            }
     });
     // вызвать скрытие комментариев и файлов TODO: Уж не знаю тут ли, но отображаться они будут только в диалогах
     //$('div.comments').hide().before('<div class="showcomment">Комментарии('+$('div.comments>div.coment').length+')</div>');

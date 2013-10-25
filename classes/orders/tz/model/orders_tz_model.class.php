@@ -88,6 +88,7 @@ class orders_tz_model extends sqltable_model {
             return array();
         $sql = "SELECT file_link AS tzlink,tz.id FROM tz JOIN filelinks ON filelinks.id=tz.file_link_id WHERE tz.id='{$edit}'";
         $rec = sql::fetchOne($sql);
+        // получить уже существующиепозиции ТЗ и данные для формы заполнения
         return $rec;
     }
 
@@ -139,6 +140,7 @@ class orders_tz_model extends sqltable_model {
         sql::query($sql);
 
         $rec = array('id' => $tzid, 'tzlink' => $file_link, 'success' => true);
+        $tzid = sprintf("%08s",$tzid); // для отображения в заказе
         $rec = array_merge($rec, compact('cdate', 'filename', 'order', 'odate', 'typetz', 'fullname', 'tzid'));
         return $rec;
     }
