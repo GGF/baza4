@@ -250,7 +250,7 @@ class sqltable_model extends model {
     static public function getComment($id) {
         $sql = "SELECT * FROM coments WHERE id='{$id}'";
         $comment=sql::fetchOne($sql);
-        return $comment[comment];
+        return empty($comment[comment])?"":$comment[comment];
     }
 
     /**

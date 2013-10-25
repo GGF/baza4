@@ -60,7 +60,19 @@ class fileserver {
         // записать файл
         $file = @fopen($filename, "w");
         if ($file) {
-            fwrite($file, $content);
+            if (is_array($content)) {
+                // если передали набор данных сохраним переменные в формате key|var
+                foreach ($content as $key => $value) {
+                    // сохраним все переменные в файл txt, чтоб xls потом сам оттуда забрал
+                    // использем в качестве разделителя вертикальную черту, скорее всего её не будет в данных
+                    // если же, паче чаяния, она там окажется придется использовать тройную, скажем, и
+                    //  переписывать скрипты в xls файле
+                    fwrite($file, sprintf("%s|%s\n",multibyte::utf8_to_cp1251($key),multibyte::utf8_to_cp1251($value)));
+                }
+            } else {
+                // иначе просто запишем текст
+                fwrite($file, $content);
+            }
             fclose($file);
             chmod($filename, 0777);
             return true;
