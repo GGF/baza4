@@ -22,17 +22,30 @@ class orders_posintz extends sqltable {
     }
 
     public function action_edit($id) {
-        if (!Auth::getInstance()->getRights($this->getName(), 'edit'))
+        if (!Auth::getInstance()->getRights($this->getName(), 'edit')) {
             return $this->view->getMessage('Нет прав на редактирование');
-        extract($_SESSION[Auth::$lss]);
-        $rec = $this->model->getRecord($id);
-        $rec[createlink] = $this->actUri('createrass', $id)->url();
-        return $this->getMessage($this->view->showrec($rec));
+        }
+        extract($_SESSION[Auth::$lss]); // тут данные выбранных до сих пор заказа и тз
+        if (empty($id)) {
+            // добавить плату в ТЗ
+            if (empty($tz_id)) {
+                return $this->getMessage('Не известно куда добавлять выбери ТЗ!');
+            } else { 
+                return parent::action_edit($id);
+            }
+        } else {
+            // выбрана плата - вывести предложение создать рассчет
+            $rec[createlink] = $this->actUri('createras', $id)->url();
+            return $this->getMessage($this->view->showbutton($rec));
+        }
     }
 
-    public function action_createrass($id) {
-        $rec[rasslink] = 'http://habr.ru';
-        return $this->view->showrec($rec);
+    public function action_createras($id) {
+        return 'А вот не создался!';
+    }
+    
+    public function action_addposintz($id) {
+        return 'Добавилась!';
     }
 
 }

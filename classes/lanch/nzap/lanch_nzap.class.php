@@ -31,7 +31,7 @@ class lanch_nzap extends sqltable {
             $mpp=$rec[party][$i][type]=="mpp"||$mpp;
         }
         if ($mpp) {
-            $rec[block][boardinorder] = "<input value='{$rec[block][boardinorder]}' size='4' id='boardinorder'/><script>
+            $rec[block][boardinorder] = "<input type='text' value='{$rec[block][boardinorder]}' size='4' id='boardinorder'/><script>
                     $('#boardinorder').change(function(){ 
                     var sstr = $(this).val();
                     $('.partybuttonlink').each(function(){
