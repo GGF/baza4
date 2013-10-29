@@ -1,12 +1,18 @@
 <?php
 
 /**
- * Description of update_model
+ * Получене различных данных из базы для интеактивных действий в ТЗ на excel 
+ * или САМ-файлах (скриптами)
  *
  * @author igor
  */
 class getdata_model extends sqltable_model {
 
+    /**
+     * Для ТЗ или уже не помню
+     * @param array $rec Массив REQUEST
+     * @return json
+     */
     public function block($rec) {
         $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
@@ -24,6 +30,11 @@ class getdata_model extends sqltable_model {
         return $out;
     }
 
+    /**
+     * Текстолит возвращает для ТЗ
+     * @param array $rec Массив $REQUEST из контроллера передается
+     * @return json
+     */
     public function textolite($rec) {
         $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
@@ -63,7 +74,7 @@ class getdata_model extends sqltable_model {
      * keyline - посторочно ключ|значение (default)
      * array - в массиве PHP на всякий случай
      * json - ну понятно
-     * @return variable в зависимости
+     * @return  variable в зависимости
      * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&table=customers&id=5" > res
      * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&object=orders_customers_model&id=5" > res
      * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&object=orders_customers_model&id=5&format=json" > res
