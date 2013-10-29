@@ -53,6 +53,36 @@ class getdata_model extends sqltable_model {
         }
         return $out;
     }
+    
+    /**
+     * Универсальный запрос и возврат
+     * @param array $rec содержит массив REQUEST с параметрами
+     * должны быть $id, $table, $format, соответственно идентификатор в таблице, таблица и формат возврата
+     * Так как используется для запросов из скриптов (САМ, cmd, bash) форматы 
+     * line - посторочно без ключа
+     * keyline - посторочно ключ|значение (default)
+     * array - в массиве PHP на всякий случай
+     * json - ну понятно
+     * @return variable в зависимости
+     */
+    public function uniget($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        extract($rec);
+        if(!isset($format)) {
+            $format = "keyline";
+        }
+        if (isset($id)) {
+            if (isset($table)) {
+            } elseif (isset($object)) {
+                if(class_exists($object)) {
+                    $object = new $object();
+                    if(method_exists($object, "getRecord")) {
+                        
+                    }
+                }
+            }
+        }
+    }
 
 }
 
