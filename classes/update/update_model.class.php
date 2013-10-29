@@ -94,6 +94,7 @@ class update_model {
     public function addblock($rec) {
         $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
+        // определим заказчика
         $sql = "SELECT orders.customer_id AS id
                 FROM tz
                 JOIN (orders) ON (tz.order_id=orders.id)
@@ -105,24 +106,28 @@ class update_model {
         }
         $customer_id = $rs[id];
         // добавление блока
-        $sql = "SELECT id
+       
+        $sql = "SELECT *
                 FROM blocks
                 WHERE customer_id='{$customer_id}' AND blockname='{$blockname}'";
         $rs = sql::fetchOne($sql);
-        if (empty($rs)) {
-            $sql = "INSERT INTO blocks
-                        (id,customer_id,blockname,sizex,sizey,thickness)
-                    VALUES
-                        (NULL,'{$customer_id}','{$blockname}','{$bsizex}','{$bsizey}','{$thickness}')";
-            sql::query($sql);
+        // комментарий к блоку содержит JSON
+        if(!empty($comment)) {
+            $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
+            $params["coment"] = $comment;
+            $comment_id = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
+        }
+        $rs[sizex]=$bsizex;
+        $rs[sizex]=$bsizey;
+        $rs[thickness]=$thickness;
+        $rs[customer_id]=$customer_id;
+        $rs[blockname]=$blockname;
+        $rs[comment_id]=$comment_id;
+        sql::insertUpdate("blocks",array($rs));
+        if (empty($rs["id"])) {
             $block_id = sql::lastId();
         } else {
             $block_id = $rs["id"];
-            $sql = "UPDATE blocks
-                    SET customer_id='{$customer_id}',blockname='{$blockname}',
-                        sizex='{$bsizex}',sizey='{$bsizey}',thickness='{$thickness}'
-                    WHERE id='{$block_id}'";
-            sql::query($sql);
         }
         // удалим позиции с блока потому что они будут добавляться из ТЗ
         $sql = "DELETE FROM blockpos WHERE block_id='{$block_id}'";
@@ -149,9 +154,7 @@ class update_model {
         if (empty($comment)) {
             $comment_id = $rs[comment_id];
         } else {
-            $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
-            $params["coment"] = $comment;
-            $comment_id = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
+            $comment_id = sqltable_model::getCommentId($comment);
         }
         $sql = "REPLACE INTO boards
         (id,board_name,customer_id,sizex,sizey,thickness,
