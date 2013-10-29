@@ -248,8 +248,11 @@ class sqltable_model extends model {
      * @return string
      */
     static public function getComment($id) {
-        $sql = "SELECT * FROM coments WHERE id='{$id}'";
-        $comment=sql::fetchOne($sql);
+        if (!empty($id)) {
+            $sql = "SELECT * FROM coments WHERE id='{$id}'";
+            $comment=sql::fetchOne($sql);
+        } 
+        // нужен ли утт блок иначе? ворнинги будут
         return empty($comment[comment])?"":$comment[comment];
     }
 
