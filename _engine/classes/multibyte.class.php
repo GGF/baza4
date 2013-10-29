@@ -3,10 +3,20 @@
 class multibyte {
 
     static public function is_utf($t) {
-        if (@preg_match('/.+/u', $t))
-            return true;
-        else
-            return false;
+        if (is_array($t)) {
+            foreach ($t as $value) {
+                if(self::is_utf($value)) {
+                    return true;
+                }
+            }
+        } else {
+            if (@preg_match('/.+/u', $t)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
     static public function utf8_to_cp1251($var) {
