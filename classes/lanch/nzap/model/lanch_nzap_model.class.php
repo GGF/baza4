@@ -369,15 +369,13 @@ class lanch_nzap_model extends sqltable_model {
         $rs = multibyte::UTF_encode($rs);
         $rec = array_merge($rec, $rs);
         extract($rs);
-        // коментарий к блоку, содержится с остальными данными
+        // коментарий к блоку, содержится с остальными данными d JSON
         $param = json_decode(multibyte::Unescape(sqltable_model::getComment($comment_id1)),true);
         if(empty($param)) $param = array(); // если коментарий не JSON или неправильный JSON
         $rec[custom]=  html_entity_decode($rec[custom]); // кавычки в названии
         $rec[comment1] = multibyte::UTF_encode($param["coment"]);
-        // комментарий к запуску
-        $comment2 = json_decode(multibyte::Unescape(sqltable_model::getComment($comment_id1)),true);
-        $rec[comment2] = multibyte::UTF_encode($comment2["coment"]);
-        $rec[comment2] = $rec[comment2] == 0?"":$rec[comment2] ;
+        // комментарий к запуску не содержит JSON
+        $rec["comment2"] = sqltable_model::getComment($comment_id2);
 // собрать данные о платах в блоке
         $sql = "SELECT *, board_name AS boardname, sizex AS psizex, sizey AS psizey
                 FROM blockpos
@@ -397,8 +395,10 @@ class lanch_nzap_model extends sqltable_model {
             $class = max($class, $rs['class']);
             $layers = max($layers, $rs['layers']);
             $i++;
-            $comment2 = json_decode(multibyte::Unescape(sqltable_model::getComment($rs[comment_id])),true);
-            $commentp .= multibyte::UTF_encode($comment2["comment"]);
+            // коментарий к плате не должен сожержать JSON, но так получилось, что многие содержат
+            // // потому пока уберу ваще
+            //$comment2 = json_decode(multibyte::Unescape(sqltable_model::getComment($rs[comment_id])),true);
+            //$commentp .= multibyte::UTF_encode($comment2["comment"]);
             foreach ($rs as $key => $val) {
                 $rec[$key . $i] = multibyte::UTF_encode($val);
             }
@@ -492,7 +492,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec[phm2] = $rec[fm2];
         $rec[sizez] = "{$rec[sizex]}x{$rec[sizey]}";
         $rec[frzname] = $rec[drlname];
-        $rec[comment] = $rec[psimat]." ".$rec[comment1]." ".$rec[dozapcoment];
+        $rec[comment] = $rec[comment1].'\r\n'.$rec[dozapcoment];
         $rec[letterldate] = "{$rec[letter]} от {$rec[ldate]}";
         return $rec;
     }
