@@ -4,17 +4,27 @@ Error_Reporting(E_ALL & ~E_NOTICE);
 
 // КОНФИГУРАЦИЯ DEBUG РЕЖИМА
 
-$_SERVER["debug"] = array(
-    "report" => true,
-    "noCache" => array(
-        "php" => true,
-        "js" => true,
-        "css" => true,
-    ),
-    "showNotices" => true,
-    "checkReverse" => false,
-);
-//$_SERVER["debug"] = false;
+// Define application environment
+defined('APPLICATION_ENV')
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? 
+                                  getenv('APPLICATION_ENV') : 
+                                  'production'));
+
+if (APPLICATION_ENV === "development") {
+
+    $_SERVER["debug"] = array(
+        "report" => true,
+        "noCache" => array(
+            "php" => true,
+            "js" => true,
+            "css" => true,
+        ),
+        "showNotices" => true,
+        "checkReverse" => false,
+    );
+} else {
+    $_SERVER["debug"] = false;
+}
 
 $_SERVER[Auth] = true;
 

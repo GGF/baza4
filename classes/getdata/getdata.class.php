@@ -1,12 +1,7 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of getdata
+ * Контроллер как и update по имени действия вызывает из модели метод
  *
  * @author igor
  */
