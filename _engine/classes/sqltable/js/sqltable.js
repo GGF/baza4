@@ -56,7 +56,7 @@ function dialog_modal(info)
         Buttons={
             Ok: function() {
                 if ($('textarea[name="coment"]').length > 0 ) {
-                    if($('textarea[name="coment"]').val().length != 0)
+                    if($('textarea[name="coment"]').val().length !== 0)
                         $('input#sendcomment').click();
                 }
                 $(this).dialog('close');
@@ -76,7 +76,7 @@ function dialog_modal(info)
                 //$(this).dialog('close');
                 //editrecord(type,$('form[name=form_'+type+']').serialize());
                 if ($('textarea[name="coment"]') > 0) {
-                    if($('textarea[name="coment"]').val().length != 0)
+                    if($('textarea[name="coment"]').val().length !== 0)
                         $('input#sendcomment').click();
                 }
                 $("form[name="+formname+"]").submit();
