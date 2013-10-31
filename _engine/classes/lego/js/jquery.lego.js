@@ -6,7 +6,7 @@ var currentState;// = document.location.hash;;
 
 $(function(){
     // Обработка ссылок вида <a data-confirm=... для отображения запроса подтверждения
-    $("a[data-confirm]").live("click.myConfirmEvent", function(){
+    $(document).on("click.myConfirmEvent", "a[data-confirm]", function(){
         var text = $(this).attr("data-confirm");
         if(confirm(text)) {
             return true;
@@ -15,7 +15,7 @@ $(function(){
         }
     });
 
-    $("a.needauth").live("click.myNeedAuthEvent", function(){
+    $(document).on("click.myNeedAuthEvent", "a.needauth", function(){
         var a = this;
         if(Auth.isAuthorized()) return true;
         Auth.authorize(function(){
@@ -25,7 +25,7 @@ $(function(){
     });
 
     // Обработка молчаливых ссылок вида <a data-silent=...
-    $("a[data-silent], input[data-silent]").live("click.mySilentEvent", function(){
+    $(document).on("click.mySilentEvent", "a[data-silent], input[data-silent]", function(){
         var a = this;
         var target_element = $(this).attr("data-silent");
         var action = $(this).attr("data-silent-action");
@@ -63,11 +63,11 @@ $(function(){
                         return;
                 }
                 if ($(target_element).length >0 ) {
-                    if (action == 'html')
+                    if (action === 'html')
                         $(target_element).html(data);
-                    else if (action=='replace')
+                    else if (action==='replace')
                         $(target_element).replaceWith(data);
-                    else if (action=='append')
+                    else if (action==='append')
                         $(target_element).append(data);
                     else
                         $(target_element).html(data);
@@ -82,14 +82,14 @@ $(function(){
             complete: function(){
                 //load.remove();
                 load.hide();
-                $(a).show()
+                $(a).show();
             }
         });
         return false;
     });
 
     // Обработка молчаливых чекбоксов <input data-silent=...
-    $("input[data-silent]").live("change.mySilentEvent", function(){
+    $(document).on("change.mySilentEvent", "input[data-silent]", function(){
         var target = $(this).attr("data-silent");
         var url = jQuery.fn.lego.getAjaxUrl($(this).attr("href"), $(this).lego().attr("name"));
         //var load = $("<div class='ajaxloading'>Loading...</div>");
@@ -280,7 +280,7 @@ var LegoCache = {
 
         // Обработка всех ссылок
         if(!selector) selector = "";
-        $(selector+"*:not(.noajax) a:not(.noajax)").live("click.myEvent", function(e){
+        $(document).on("click.myEvent", selector+"*:not(.noajax) a:not(.noajax)", function(e){
             if($(this).closest(".noajax").length > 0) return true;
             var href = $(this).attr("href");
             if(!href || href.indexOf("#") != -1) return true;
@@ -296,7 +296,7 @@ var LegoCache = {
         });
 
         // Обработка форм
-        $("form:not(.noajax)").livequery("submit", function(e){
+        $("form:not(.noajax)").onquery("submit", function(e){
             var name = $(this).lego().attr("name");
             var legotarget = $(this).attr("legotarget");
             if(typeof legotarget == "undefined") legotarget = name;

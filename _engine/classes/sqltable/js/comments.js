@@ -5,13 +5,13 @@
 
 $(document).ready(
     function(){
-        $('.showcomment').live('click',
+        $(document).on('click','.showcomment',
             function(){
                 $(this).hide();
                 $('div.comments').show();
             }
         );
-        $('#sendcomment').live('click',
+        $(document).on('click','#sendcomment',
             function() {
                 var url = $('#savecommenturl').val();
                 var data = $('form#addcomment').serialize();
@@ -35,7 +35,7 @@ $(document).ready(
                 });
             }
         );
-        $('.delbutton').live('click',
+        $(document).on('click','.delbutton',
             function() {
                 var par = $(this).parent();
                 var url = $(this).attr('url');

@@ -9,7 +9,7 @@ $(document).ready(function(){
         //buttonImage: '/images/calendar.gif',
         //buttonImageOnly: true
     }, $.datepicker.regional["ru"]));
-    $("input[datepicker]").live("focus",function(){
+    $(document).on("focus","input[datepicker]",function(){
         $(this).datepicker();
     });
 });

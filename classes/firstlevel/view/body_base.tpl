@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="/favicon.ico">
 
     {$css}
+    {$scripts}
 </head>
 
 <body>
@@ -28,7 +29,6 @@
 <footer>
 </footer>
 </div>
-{$scripts}
 </body>
 </html>
 <!--   Copyright 2011 Igor Fedoroff   |  g_g_f@mail.ru  -->

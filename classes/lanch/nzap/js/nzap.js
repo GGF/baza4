@@ -1,7 +1,7 @@
 
 $(document).ready(
     function(){
-        $('div#nzapfiles').live('click',
+        $(document).on('click','div#nzapfiles',
             function(){
                 $(this).hide();
                 $('div#hiddenfiles').show();

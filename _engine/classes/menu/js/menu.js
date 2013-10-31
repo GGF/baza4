@@ -7,7 +7,7 @@ function selectmenu(id)
     $('div#'+id+'.menu-item').addClass('menu-item-sel');
 }
 $(document).ready(function() {
-   $('a.menu-item').live('click',function(){
+   $(document).on('click','a.menu-item',function(){
        selectmenu($(this).attr('id'));
    });
 });
