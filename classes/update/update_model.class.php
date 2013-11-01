@@ -118,7 +118,7 @@ class update_model {
             $comment_id = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
         }
         $rs[sizex]=$bsizex;
-        $rs[sizex]=$bsizey;
+        $rs[sizey]=$bsizey;
         $rs[thickness]=$thickness;
         $rs[customer_id]=$customer_id;
         $rs[blockname]=$blockname;

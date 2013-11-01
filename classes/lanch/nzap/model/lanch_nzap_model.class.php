@@ -299,7 +299,7 @@ class lanch_nzap_model extends sqltable_model {
         $sql = "SELECT * FROM boards WHERE id='{$res[board_id]}'";
         $res = sql::fetchOne($sql);
         $rec[dpp] = $res[layers] <= 2;
-        $rec[date] = date("d-m-Y");
+        $rec[date] = date("d.m.Y");
         return $rec;
     }
 
