@@ -151,19 +151,19 @@ $(document).ready(function(){
      */
     $('body').append('<style>.chettr:hover, .nechettr:hover  {background-color: lightyellow;}</style>');
     // а еще когда мышка над строкой сделаем её текущей, чтоб стрелками идти из нужного места
-    $('.nechettr, .chettr').live('hover',function(){
+    $(document).on('hover','.nechettr, .chettr',function(){
         curtr=$(this).attr('id');
     });
 
     // когда нажат enter на  строке поиска, получается посыл формы, а при посыле
     // нужно обновить табличку, а не выполнять POST. Без  скриптов сработает POST и  все будет круто
-    $('form[name=find]').live('submit',function(){
+    $(document).on('submit','form[name=find]',function(){
         $().lego.load($('table.listtable').attr('name'), $(this).attr('action'),$(this).serialize());
         return false;
     });
 
     // а когда фокус поиска потеряется почистим поле ввода
-    $('input[name=find]').live('blur',function(){
+    $(document).on('blur','input[name=find]',function(){
         $(this).val('');
     });
 
@@ -177,14 +177,14 @@ $(document).ready(function(){
     });
 
     // при клике на файловых ссылках вызовем из небезопасно, зато удобно из командного процессора
-    $("a.filelink").live("click", function(){
+    $(document).on("click","a.filelink", function(){
         var link = $(this).attr("href");
             var re = new RegExp('/','gi');
             document.bazaapplet.openfile('\"'+link.split(':')[1].replace(re,'\\')+'\"');
             return false;
     });
     // при клике на ссылках "путь" соответственно запустим программу открытия пути
-    $("a.path").live("click", function(){
+    $(document).on("click", "a.path", function(){
         var link = $(this).attr("href");
             var re = new RegExp('/','gi');
             // а программа хранится в локальном хранилище, и довольно долго
@@ -202,7 +202,6 @@ $(document).ready(function(){
             return false; // чтоб нажатие на ссылку броузер не отработал нормальным способом
     });
 
-    //$('input[type=file]').live('change',function(){alert($(this).val())});
 });
 
 function table_set_keyboard()

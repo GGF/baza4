@@ -5,7 +5,7 @@
 
 $(document).ready(
     function(){
-        $('div#multyfiles').live('click',
+        $(document).on('click','div#multyfiles',
             function(){
                 $(this).hide();
                 $(this).next('div#hiddenfiles').show();
