@@ -1,3 +1,24 @@
+/*
 .ui-button { margin-left: -1px; }
 .ui-button-icon-only .ui-button-text { padding: 0.35em; } 
 .ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; }
+*/
+  .custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: -0.3em;
+    bottom: 0;
+    margin: 0.3em;
+    margin-left: -0.3em;
+    padding: 0.1em;
+    height: 1.3em;
+  }
+  .custom-combobox-input {
+      position: relative;
+      top:-0.3em;
+    margin: 0.3em;
+    padding: 0.1em;
+  }

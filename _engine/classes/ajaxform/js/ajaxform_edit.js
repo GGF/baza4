@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('select[autoupdate]').live('myevent', function() {
+    $(document).on('myevent', 'select[autoupdate]', function() {
         var target = $(this).attr('autoupdate');
         var url = $(this).attr('autoupdate-link');
         var self=this;
