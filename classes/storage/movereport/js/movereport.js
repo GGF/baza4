@@ -1,22 +1,22 @@
 $(document).ready(function(){
-    $('form[name=monthform]').live('submit',function(){
+    $(document).on('submit','form[name=monthform]',function(){
         //log($(this).serialize());
         $().lego.load($('table.listtable').attr('name'), $(this).attr('action'),$(this).serialize());
         return false;
     });
-    $('form[name=peroidreport]').live('submit',function(){
+    $(document).on('submit','form[name=peroidreport]',function(){
         //log($(this).serialize());
         $().lego.load($('table.listtable').attr('name'), $(this).attr('action'),$(this).serialize());
         return false;
     });
 
-    $('#month').live('change',function(){
+    $(document).on('change','#month',function(){
         $('form[name=monthform]').submit();
     });
-    $('#monthbutton').live('click',function(){
+    $(document).on('click','#monthbutton',function(){
         $('form[name=monthform]').submit();
     });
-    $('#rangebutton').live('click',function(){
+    $(document).on('click','#rangebutton',function(){
         $('form[name=peroidreport]').submit();
     });
 });
