@@ -1,10 +1,10 @@
 $(document).ready(function(){
-    $('form[name=requestform]').live('submit',function(){
+    $(document).on('submit','form[name=requestform]',function(){
         //log($(this).serialize());
         window.open($(this).attr('action')+'&'+$(this).serialize(),'_blank');
         return false;
     });
-    $('#selectrequestdate').live('change',function(){
+    $(document).on('change','#selectrequestdate',function(){
         //log('ddate='+$(this).val());
         var date = $(this).val();
         $().lego.load('requestform',$('table.listtable').attr('loaded')+'&ddate='+date);
@@ -14,7 +14,7 @@ $(document).ready(function(){
 //        
 //        return false;
     });
-    $('#requestbutton').live('click',function(){
+    $(document).on('click','#requestbutton',function(){
         $('form[name=requestform]').submit();
     });
 });

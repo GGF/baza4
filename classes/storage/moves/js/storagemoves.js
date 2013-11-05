@@ -14,7 +14,7 @@ function moveschangetype(id) {
 }
 
 $(document).ready(function(){
-    $('select[autohide=1]').live('myevent', function() {
+    $(document).on('myevent','select[autohide=1]', function() {
         moveschangetype($(this).attr('id'));
     });
 });
