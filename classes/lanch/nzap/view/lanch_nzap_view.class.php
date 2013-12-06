@@ -110,7 +110,7 @@ class lanch_nzap_view extends sqltable_view {
             @chmod($filename, 0777);
             $file = @fopen($filename.".txt", "w");
             if ($file) {
-                $date = date("d-m-Y");
+                $date = date("d.m.Y");
                 fwrite($file, sprintf("%08d\n",$rec[mp_id]));
                 fwrite($file, multibyte::utf8_to_cp1251($rec[customer]) . "\n");
                 fwrite($file, multibyte::utf8_to_cp1251($date) . "\n");

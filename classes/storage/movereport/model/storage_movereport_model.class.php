@@ -65,7 +65,7 @@ class storage_movereport_model extends storage_model {
     public function getMonths() {
         $sql = "(SELECT MONTH(ddate) as dmonth, YEAR(ddate) as dyear
                 FROM ({$this->db}sk_{$this->sklad}_dvizh)
-                GROUP BY MONTH(ddate))
+                GROUP BY YEAR(ddate),MONTH(ddate))
                 UNION
                 (SELECT MONTH(ddate) as dmonth, YEAR(ddate) as dyear
                 FROM ({$this->db}sk_{$this->sklad}_dvizh_arc)

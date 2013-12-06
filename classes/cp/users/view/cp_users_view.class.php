@@ -84,8 +84,8 @@ class cp_users_view extends sqltable_view {
             ),
         ));
         $out = $form->getOutput();
-        $out .= "<script>\$('#rrr').live('click',function(){\$(':checkbox[rtype='+\$(this).attr('rtype')+']').prop('checked',true);});</script>";
-        $out .= "<script>\$('#rrr').live('contextmenu',function(){\$(':checkbox[rtype='+\$(this).attr('rtype')+']').prop('checked',false);return false;});</script>";
+        $out .= "<script>\$(document).on('click','#rrr',function(){\$(':checkbox[rtype='+\$(this).attr('rtype')+']').prop('checked',true);});</script>";
+        $out .= "<script>\$(document).on('contextmenu','#rrr',function(){\$(':checkbox[rtype='+\$(this).attr('rtype')+']').prop('checked',false);return false;});</script>";
         return $out;
     }
 
