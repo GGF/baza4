@@ -14,8 +14,8 @@ class cp extends secondlevel {
     }
 
     public function getIndexMenu() {
-        $this->menu->add('users', 'Users', false);
-        $this->menu->add('rights', 'Rights', false);
+        $this->menu->add('users', 'Users');
+        $this->menu->add('rights', 'Rights');
         $this->menu->add('todo', 'TODO', false);
         $this->menu->add('workers', 'Workers', false);
         $this->menu->add('back', 'Назад', false);
