@@ -97,11 +97,15 @@ class sqltable_view extends views {
                     "title='" . ($this->owner->all ? "Последние 20" : "Все") . "' " .
                     "id=allbutton >";
 
-            if ($this->owner->addbutton && $this->owner->edit)
+            if ($this->owner->addbutton && $this->owner->edit) {
                 $ret .= "<input hotkey='Ctrl + e' class='halfbutton noprint' type='button' " .
                         "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
                         "href='{$this->owner->actUri('add')->url()}' " .
                         "value='Добавить' title='Добавить' id=addbutton >";
+            }
+            // добавим невидимую кнопку копировать в Excel
+            $ret .= "<a href='#' type='button' class='nullwidth noprint' hotkey='Ctrl+c' title='Скопировать в Excel' value='Скопировать в Excel' " .
+                    'id="copytablebutton" onclick="copytable();$(\'#copytablebutton\').html(\'Готово\');return false;" >Скопировать в Excel</a>';
             $findurl = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr)->url();
             if ($this->owner->findbutton) {
                 $ret .= "<tr><td colspan=100 class='search'>" .
