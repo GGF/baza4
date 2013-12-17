@@ -351,7 +351,6 @@ class lanch_nzap_model extends sqltable_model {
         blocks.comment_id AS comment_id1,
         posintz.comment_id AS comment_id2,
         pitz_mater AS pmater,
-        pitz_psimat AS ppsimat,
         blocks.thickness AS tolsh,
         posintz.numbers AS numbers,
         posintz.priem AS priem,
@@ -395,10 +394,7 @@ class lanch_nzap_model extends sqltable_model {
             $class = max($class, $rs['class']);
             $layers = max($layers, $rs['layers']);
             $i++;
-            // коментарий к плате не должен сожержать JSON, но так получилось, что многие содержат
-            // // потому пока уберу ваще
-            //$comment2 = json_decode(multibyte::Unescape(sqltable_model::getComment($rs[comment_id])),true);
-            //$commentp .= multibyte::UTF_encode($comment2["comment"]);
+            $commentp .= (empty($commentp)?"":'\r\n') . multibyte::UTF_encode(sqltable_model::getComment($rs[comment_id]));
             foreach ($rs as $key => $val) {
                 $rec[$key . $i] = multibyte::UTF_encode($val);
             }
@@ -479,9 +475,6 @@ class lanch_nzap_model extends sqltable_model {
         $rec[scomp] = sprintf("%3.2f", $rec[scomp] / 10000);
         $rec[ssold] = sprintf("%3.2f", $rec[ssold] / 10000);
         $rec[lamel] = $rec[numlam] > 0 ? "+" : "-";
-        $rec[psimat] = (empty($rec[ppsimat]) ? (empty($rec[psimat]) ? "" : $rec[psimat] . '-' . trim(sprintf("%5.1f", $rec[tolsh]))) :
-                        ($rec[ppsimat] . $tolsh)
-                ) . $rec[commentp];
         // проокоментируем сопроаводительный лист
         $rec[dozapcoment] = $dozap===true ? multibyte::UTF_encode('ДОЗАПУСК') :
                         ($dozap=="zadel"?multibyte::UTF_encode('ИЗ ЗАДЕЛА'):'');
@@ -492,7 +485,10 @@ class lanch_nzap_model extends sqltable_model {
         $rec[phm2] = $rec[fm2];
         $rec[sizez] = "{$rec[sizex]}x{$rec[sizey]}";
         $rec[frzname] = $rec[drlname];
-        $rec[comment] = $rec[comment1].'\r\n'.$rec[dozapcoment];
+        // коментарий состоит из коментария к блоку, коментария к запуску, коментария дозапуск
+        $rec[comment] = $rec[comment1].'\r\n'.$rec[comment2].'\r\n'.$rec[dozapcoment];
+        // а коментарий2 только из суммы коментариев к платам
+        $rec[comment2] = $commentp;
         $rec[letterldate] = "{$rec[letter]} от {$rec[ldate]}";
         return $rec;
     }
