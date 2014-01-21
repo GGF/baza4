@@ -172,9 +172,9 @@ $(document).ready(function(){
     /* следующий блок добавляет контекстное меню для копирования ссылок
 	   и для открытия по клику использует applet
 	*/
-    $(document).contextMenu( function () {
-        return CMenu_builder(this.event);
-    });
+//    $(document).contextMenu( function () {
+//        return CMenu_builder(this.event);
+//    });
 
     // при клике на файловых ссылках вызовем из небезопасно, зато удобно из командного процессора
     $(document).on("click","a.filelink", function(){
