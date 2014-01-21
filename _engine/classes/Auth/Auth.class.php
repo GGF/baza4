@@ -138,7 +138,7 @@ class Auth extends lego_abstract {
 	$this->rights = $rec["rights"];
 	$mes = $rec["mes"];
 	$this->success = $rec["success"];
-	console::getInstance()->out($this->success == 'Auth.session.success'.'...'.print_r($rec,true));
+	//console::getInstance()->out($this->success == 'Auth.session.success'.'...'.print_r($rec,true));
         if($this->success == 'Auth.session.success') {
 	    $this->success = true; // именно  по не success рисуется  окно
 	    return true;

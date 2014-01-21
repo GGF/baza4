@@ -68,6 +68,7 @@ class sqltable_model extends model {
         // файлы к таблице привязать
         $files = $data["files"];
         $files = $this->storeFiles($files, $this->maintable);
+        // TODO: отработать false значение $files
         $curfile = $data["curfile"];
         if (!isset($curfile)) {
             $curfile = array();

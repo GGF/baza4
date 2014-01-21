@@ -1,6 +1,7 @@
 <?php
 
-Error_Reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT );
+
 
 // КОНФИГУРАЦИЯ DEBUG РЕЖИМА
 
@@ -10,7 +11,7 @@ defined('APPLICATION_ENV')
                                   getenv('APPLICATION_ENV') : 
                                   'production'));
 
-if (APPLICATION_ENV === "development") {
+if  (APPLICATION_ENV === "development") {
 
     $_SERVER["debug"] = array(
         "report" => true,
@@ -40,10 +41,10 @@ $_SERVER['CACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 // База данных
 $_SERVER["mysql"] = array(
     "lang" => array(
-        "host" => "servermpp.mpp",
+        "host" => "localhost",
         "base" => "zaompp",
         "name" => "root",
-        "pass" => "MMnnHs",
+        "pass" => "MMnnHsafL",
         "log" => array(
             "query" => true,
             "notice" => true,
