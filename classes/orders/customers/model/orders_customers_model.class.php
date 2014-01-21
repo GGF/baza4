@@ -46,15 +46,7 @@ class orders_customers_model extends sqltable_model {
         sql::query($sql);
         $affected += sql::affected();
         // удаление связей
-        // удалить и платы заказчика
-        $sql = "SELECT * FROM plates WHERE customer_id='{$delete}'";
-        $res = sql::fetchAll($sql);
-        foreach ($res as $rs) {
-            $sql = "DELETE FROM plates WHERE id='{$rs["id"]}'";
-            sql::query($sql);
-            $affected += sql::affected();
-            // надо бы удалить и блоки т.п.
-        }
+        // TODO: Удаллить блоки и позиции в блоках, а также платы
         // удалить вязанные заказы и тз
         $sql = "SELECT * FROM orders WHERE customer_id='{$delete}'";
         $res = sql::fetchAll($sql);
