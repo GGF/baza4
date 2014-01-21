@@ -168,13 +168,13 @@ class update_model {
         '{$glasscloth}' ,'{$class}' ,'{$complexity_factor}' ,'{$frez_factor}','{$comment_id}')";
         sql::query($sql);
 
-        $plate_id = sql::lastId();
+        $board_id = sql::lastId();
 
         // позицию к блоку
-        $sql = "INSERT INTO blockpos (block_id,board_id,nib,nx,ny) VALUES ('{$block_id}','{$plate_id}','{$num}','{$bnx}','{$bny}')";
+        $sql = "INSERT INTO blockpos (block_id,board_id,nib,nx,ny) VALUES ('{$block_id}','{$board_id}','{$num}','{$bnx}','{$bny}')";
         sql::query($sql);
 
-        return $plate_id;
+        return $board_id;
     }
 
     public function addposintz($rec) {
@@ -201,16 +201,6 @@ class update_model {
         }
 
         // определим плату
-        $sql = "SELECT id FROM plates WHERE customer_id='{$customer_id}' AND plate='{$board}'";
-        $rs = sql::fetchOne($sql);
-        if (!empty($rs)) {
-            $plate_id = $rs["id"];
-        } else {
-            $sql = "INSERT INTO plates (customer_id,plate) VALUES ('{$customer_id}','{$board}')";
-            sql::query($sql) or die(sql::error(true));
-            $plate_id = sql::lastId();
-        }
-        // определим плату
         $sql = "SELECT id FROM boards WHERE customer_id='{$customer_id}' AND board_name='{$board}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
@@ -226,12 +216,12 @@ class update_model {
         $rs = sql::fetchOne($sql);
         if (empty($rs)) {
             $sql = "INSERT INTO posintz
-                    (tz_id,posintz,plate_id,board_id,block_id,numbers,first,
+                    (tz_id,posintz,block_id,numbers,first,
                         srok,priem,constr,template_check,template_make,
                         eltest,numpl1,numpl2,numpl3,numpl4,numpl5,numpl6,numbl,
                         pitz_mater,pitz_psimat,comment_id)
                     VALUES
-                        ('{$tznumber}','{$posintz}','{$plate_id}','{$board_id}',
+                        ('{$tznumber}','{$posintz}',
                         '{$block_id}','{$numbers}','{$first}','{$srok}','{$priem}',
                         '{$constr}','{$template_check}','{$template_make}',
                         '{$eltest}','{$numpl1}','{$numpl2}','{$numpl3}',
