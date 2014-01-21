@@ -44,7 +44,7 @@ class console extends lego_abstract {
                     "Используйте статический метод getInstance()", E_USER_ERROR);
         }
         parent::__construct($name);
-        $this->html = '';
+        self::$html = '';
     }
 
     /**
@@ -61,7 +61,7 @@ class console extends lego_abstract {
      * Почистить буфер вывода
      */
     public function clear() {
-        $this->html = '';
+        self::$html = '';
     }
 
     /**
@@ -138,13 +138,13 @@ class console extends lego_abstract {
         if (is_array($msg))
             $msg = print_r($msg,true);
 
-        $this->instanse->html .= "<script> cmsConsole{$type}('" .
+        self::$html .= "<script> cmsConsole{$type}('" .
                 sql::check($msg) .
                 "', '{$pane}'); </script>";
 
         if ($print)
-            echo $this->html; else
-            return $this->html;
+            echo self::$html; else
+            return self::$html;
     }
 
     /**
@@ -179,7 +179,7 @@ class console extends lego_abstract {
                     floor(profiler::$full * 1000) .
                     " мс</u>.</b>", "", "notice");
             $this->out("");
-            return $this->instanse->html;
+            return self::$html;
         } else {
             return '';
         }
@@ -321,6 +321,6 @@ if ($_SERVER[debug][report]) {
         }
     }
 
-    set_error_handler("cmsErrorHandler", E_ALL);
+    set_error_handler("cmsErrorHandler", E_ALL & ~E_STRICT);
 }
 ?>
