@@ -79,7 +79,8 @@ abstract class JsCSS implements IJsCSS {
         $js[] = self::getWebDir(__DIR__) . '/js/jquery.ui.widget.min.js';
         $js[] = self::getWebDir(__DIR__) . '/js/jquery.ui.mouse.min.js';
         $js[] = self::getWebDir(__DIR__) . '/js/jquery.ui.effect.min.js';
-        $js = $js + self::getDirDeep(__DIR__ . '/js/' , "/(\.js|\.js\.php)$/i", true);
+        $files = self::getDirDeep(__DIR__ . '/js/' , "/(\.js|\.js\.php)$/i", true);
+        $js = array_merge($js,$files);
         foreach (self::$all_jscss as $one) {
             $js = array_merge($js, $one->getJavascripts());
         }

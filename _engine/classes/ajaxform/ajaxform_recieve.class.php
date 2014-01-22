@@ -44,10 +44,11 @@ class ajaxform_recieve {
      */
     public static function process($content) {
 
-        return multibyte::Json_encode(array(
+        $json = multibyte::Json_encode(array(
             "js" => self::$result,
             "text" => "{$content}",
                 ), self::$entityDecode);
+        return $json;
     }
 
     /**
