@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `users__settings_types` (
   `key` varchar(50) NOT NULL COMMENT 'Название типа',
   `description` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Дамп данных таблицы `users__settings_types`

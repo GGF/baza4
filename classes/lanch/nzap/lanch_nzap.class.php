@@ -55,14 +55,18 @@ class lanch_nzap extends sqltable {
         $rec[party] = $partyornumbdozap;
         $rec[dozap] = $dozap;
         $rec = $this->model->getParty($rec);
-        $rec = $this->model->getSl($rec);
-        $out = $this->view->createsl($rec);
-        if ($out) {
-            $this->model->lanchsl($rec);
-            // если был использован задел, его нужно вычеркнуть
-            if($dozap==="zadel") {
-                $this->model->usezadel($partyornumbdozap);
+        if ($rec) {
+            $rec = $this->model->getSl($rec);
+            $out = $this->view->createsl($rec);
+            if ($out) {
+                $this->model->lanchsl($rec);
+                // если был использован задел, его нужно вычеркнуть
+                if($dozap==="zadel") {
+                    $this->model->usezadel($partyornumbdozap);
+                }
             }
+        } else {
+            $out = "Ошибка!!!";
         }
         return $out;
     }
