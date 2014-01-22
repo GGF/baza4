@@ -106,7 +106,9 @@ class lanch_nzap_model extends sqltable_model {
         if (count($res) > 1 ) {
             // боольше одной платы в блоке, не получится использовать задел
             $rec[zadel] = 0;
+            $i=0;
             foreach ($res as $rs1) {
+                $i++;
                 $board[name] = $rs1["board_name"];
                 $board[sizex] = $rs1["psizex"];
                 $board[sizey] = $rs1["psizey"];
@@ -116,8 +118,8 @@ class lanch_nzap_model extends sqltable_model {
                 $board[layers] = $rs1["layers"];
                 $board[mask] = $rs1["mask"];
                 $board[mark] = $rs1["mark"];
-                $sql = "SELECT numbers FROM posintz WHERE tz_id='{$rs["tzid"]}'
-                        AND board_id='{$rs1["bid"]}'";
+                $sql = "SELECT numpl{$i} FROM posintz WHERE tz_id='{$rs["tzid"]}'
+                        AND block_id='{$rs1["bid"]}'";
                 $rs2 = sql::fetchOne($sql);
                 $nz = max($nz, ceil($rs2["numbers"] / $rs1["nib"]));
                 $nl = max($nl, $rs1["layers"]);
@@ -139,7 +141,7 @@ class lanch_nzap_model extends sqltable_model {
                 $board[mask] = $rs1["mask"];
                 $board[mark] = $rs1["mark"];
                 $sql = "SELECT numbers FROM posintz WHERE tz_id='{$rs["tzid"]}'
-                        AND board_id='{$rs1["bid"]}'";
+                        AND block_id='{$rs1["bid"]}'";
                 $rs2 = sql::fetchOne($sql);
                 $nz = ceil($rs2["numbers"] / $rs1["nib"]);
                 $nl = $rs1["layers"];
@@ -266,15 +268,17 @@ class lanch_nzap_model extends sqltable_model {
             $lanch_id = $rs["id"];
         }
         */
-            // Определим идентификатор коментария
-            $comment_id = 1; //пустой            
-            $sql = "INSERT INTO lanch
-            (ldate, user_id,pos_in_tz_id,comment_id)
-            VALUES (NOW(),'" . Auth::getInstance()->getUser('userid') . "','{$posid}','{$comment_id}')";
-            sql::query($sql);
-            $lanch_id = sql::lastId();
+        // Определим идентификатор коментария
+        $comment_id = 1; //пустой
+        $file_link_id=1; //пустой! обяязательно указать для нормальной работы внешних ключей
+        $sql = "INSERT INTO lanch
+        (ldate, user_id,pos_in_tz_id,comment_id,file_link_id)
+        VALUES (NOW(),'" . Auth::getInstance()->getUser('userid') . "','{$posid}','{$comment_id}','{$file_link_id}')";
+        sql::query($sql);
+        $lanch_id = sql::lastId();
 
         // вернем вызывальщику
+        if (!empty($lanch_id)) {
         $rec[lanch_id] = $lanch_id;
         // заказчик и имя блока
         $sql = "SELECT *
@@ -288,19 +292,25 @@ class lanch_nzap_model extends sqltable_model {
         $rec[block_id] = $rs[block_id];
 
         return $rec;
+        } else {
+            return false;
+        }
     }
 
     public function getParty($rec) {
         extract($rec);
         $rec = $this->getPartyfile($rec);
-        // определимся с типом ДПП или МПП
-        $sql = "SELECT * FROM blockpos WHERE block_id='{$rec[block_id]}'";
-        $res = sql::fetchOne($sql);
-        $sql = "SELECT * FROM boards WHERE id='{$res[board_id]}'";
-        $res = sql::fetchOne($sql);
-        $rec[dpp] = $res[layers] <= 2;
-        $rec[date] = date("d.m.Y");
+        if($rec) {
+            // определимся с типом ДПП или МПП
+            $sql = "SELECT * FROM blockpos WHERE block_id='{$rec[block_id]}'";
+            $res = sql::fetchOne($sql);
+            $sql = "SELECT * FROM boards WHERE id='{$res[board_id]}'";
+            $res = sql::fetchOne($sql);
+            $rec[dpp] = $res[layers] <= 2;
+            $rec[date] = date("d.m.Y");
+        }
         return $rec;
+        
     }
 
     public function getSl($rec) {
