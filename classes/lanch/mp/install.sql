@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.2
+-- version 4.1.5
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Июл 07 2011 г., 14:25
--- Версия сервера: 5.1.56
--- Версия PHP: 5.3.6
+-- Время создания: Янв 23 2014 г., 09:34
+-- Версия сервера: 5.5.35
+-- Версия PHP: 5.4.24
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -26,19 +26,27 @@ SET time_zone = "+00:00";
 -- Структура таблицы `masterplate`
 --
 
-DROP TABLE IF EXISTS `masterplate`;
 CREATE TABLE IF NOT EXISTS `masterplate` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
-  `tz_id` bigint(10) NOT NULL DEFAULT '0',
-  `posintz` int(11) NOT NULL DEFAULT '0',
   `mpdate` date NOT NULL DEFAULT '0000-00-00',
-  `user_id` bigint(10) NOT NULL DEFAULT '0',
-  `posid` bigint(20) NOT NULL DEFAULT '0',
-  `customer_id` bigint(20) NOT NULL COMMENT 'Идентификатор заказчика',
-  `block_id` bigint(20) NOT NULL COMMENT 'Идентификатор блока',
+  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `posid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'Идентификатор позиции в ТЗ',
+  `block_id` bigint(20) unsigned NOT NULL COMMENT 'Идентификатор блока',
   PRIMARY KEY (`id`),
-  KEY `customer_id` (`customer_id`,`block_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Мастерплаты' AUTO_INCREMENT=397 ;
+  KEY `customer_id` (`block_id`),
+  KEY `mpdate` (`mpdate`),
+  KEY `block_id` (`block_id`),
+  KEY `user_id` (`user_id`),
+  KEY `posid` (`posid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Мастерплаты' ;
+
+--
+-- Ограничения внешнего ключа таблицы `masterplate`
+--
+ALTER TABLE `masterplate`
+  ADD CONSTRAINT `masterplate_ibfk_1` FOREIGN KEY (`block_id`) REFERENCES `blocks` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `masterplate_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `masterplate_ibfk_3` FOREIGN KEY (`posid`) REFERENCES `posintz` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

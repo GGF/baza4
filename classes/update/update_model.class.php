@@ -219,27 +219,27 @@ class update_model {
                     (tz_id,posintz,block_id,numbers,first,
                         srok,priem,constr,template_check,template_make,
                         eltest,numpl1,numpl2,numpl3,numpl4,numpl5,numpl6,numbl,
-                        pitz_mater,pitz_psimat,comment_id)
+                        pitz_mater,comment_id)
                     VALUES
                         ('{$tznumber}','{$posintz}',
                         '{$block_id}','{$numbers}','{$first}','{$srok}','{$priem}',
                         '{$constr}','{$template_check}','{$template_make}',
                         '{$eltest}','{$numpl1}','{$numpl2}','{$numpl3}',
                         '{$numpl4}','{$numpl5}','{$numpl6}','{$numbl}',
-                        '{$textolite}','{$textolitepsi}','{$comment_id}')";
+                        '{$textolite}','{$comment_id}')";
             sql::query($sql);
             $pit_id = sql::lastId();
         } else {
             $sql = "UPDATE posintz
-                        SET numbers='{$numbers}', plate_id='{$board_id}',
-                            plate_id='{$board_id}', block_id='{$block_id}',
+                        SET numbers='{$numbers}', 
+                            block_id='{$block_id}',
                             first='{$first}',srok='{$srok}',priem='{$priem}',
                             constr='{$constr}',template_check='{$template_check}',
                             template_make='{$template_make}', eltest='{$eltest}',
                             numpl1='{$numpl1}', numpl2='{$numpl2}', numpl3='{$numpl3}',
                             numpl4='{$numpl4}', numpl5='{$numpl5}', numpl6='{$numpl6}',
                             numbl='{$numbl}', pitz_mater='{$textolite}',
-                            pitz_psimat='{$textolitepsi}', comment_id='{$comment_id}'
+                            comment_id='{$comment_id}'
                   WHERE id='{$rs[id]}'";
             sql::query($sql);
             $pit_id = $rs["id"];
