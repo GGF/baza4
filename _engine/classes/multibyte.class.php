@@ -81,8 +81,7 @@ class multibyte {
         //array_walk_recursive($var, create_function('&$item,$key', '{$item=multibyte::Escape($item);;}'));
 //        array_walk_recursive($var, create_function('&$item,$key', '{$item=htmlentities($item);}'));
         
-        if ($_SERVER [Encoding] != "UTF-8")
-            $var = self::UTF_encode($var);
+        if ($_SERVER [Encoding] != "UTF-8") $var = self::UTF_encode($var);
         $json = json_encode($var,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
 
 //        if ($removeEntities)

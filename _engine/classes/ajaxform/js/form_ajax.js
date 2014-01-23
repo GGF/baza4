@@ -259,23 +259,15 @@ var ajaxform = {
         var form = $("#" + formID);
         var self = this; // anti-jQuery
         var i;// counter for FOR
-        //log(JSON.stringify(self)+'formname='+formName+'formid='+formID);
-        log(res);
-        // следующее для того чтобы отрезать тег добавляемый хромом
-        if (res.search('}$') == -1) {
-            res = res.substring(0,res.search('}[^}]*$')+1);
-            log('fuck');
-        }
+        // выреежем всё кроме JSON
+        res = String(res.substring(res.search('{'),res.search('}[^}]*$')+1));
         var text;
         try {
             text= JSON.parse(res).text;
+            res = JSON.parse(res).js;
         } catch(e) {
             log('Can not parse json!' + res);
         }
-        //log(text);
-        //log(JSON.stringify(res));
-        res = JSON.parse(res).js;
-        //log(JSON.stringify(res));
 			
         $("#" + formID + "_html").hide();
 			
@@ -361,8 +353,7 @@ var ajaxform = {
             // в тексте есть консольные команды
 
             if (text!=null) {
-                //log(text);
-                $(document).append(text);
+                $('body').append(text);
             }
 
 				
