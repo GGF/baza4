@@ -58,7 +58,7 @@ class lanch_nzap_model extends sqltable_model {
 
     public function delete($id) {
         //$sql = "DELETE FROM posintz WHERE id='{$id}'";
-        $sql = "UPDATE posintz SET ldate=NOW(),luser_id='" . Auth::getInstance()->getUser('id') . "' WHERE id='{$id}'";
+        $sql = "UPDATE posintz SET ldate=NOW() WHERE id='{$id}'";
         sql::query($sql);
         return sql::affected();
     }
@@ -202,15 +202,12 @@ class lanch_nzap_model extends sqltable_model {
     public function getMasterplate($tzposid) {
         $sql = "SELECT * FROM posintz JOIN (tz,orders) ON (tz.id=tz_id AND orders.id=tz.order_id) WHERE posintz.id='{$tzposid}'";
         $rs = sql::fetchOne($sql);
-        $posintz = $rs[posintz];
-        $tzid = $rs[tz_id];
         $block_id = $rs[block_id];
-        $customer_id = $rs[customer_id];
-        $sql = "SELECT * FROM masterplate WHERE tz_id='{$tzid}' AND posintz='{$posintz}'";
+        $sql = "SELECT * FROM masterplate WHERE posid='{$tzposid}'";
         $res = sql::fetchOne($sql);
         if (empty($res)) {
-            $sql = "INSERT INTO masterplate (tz_id,posintz,mpdate,user_id,posid,customer_id,block_id)
-                    VALUES ('{$tzid}','{$posintz}',Now(),'" . Auth::getInstance()->getUser('userid') . "','{$tzposid}','{$customer_id}','{$block_id}')";
+            $sql = "INSERT INTO masterplate (mpdate,user_id,posid,block_id)
+                    VALUES (Now(),'" . Auth::getInstance()->getUser('userid') . "','{$tzposid}','{$block_id}')";
             sql::query($sql);
             $rec[mp_id] = sql::lastId();
         } else {
@@ -663,8 +660,7 @@ class lanch_nzap_model extends sqltable_model {
             GROUP BY pos_in_tz_id";
             $rs = sql::fetchOne($sql);
             if ($rs[snumbz] >= $zagotovokvsego) {
-                $sql = "UPDATE posintz SET ldate=NOW(), luser_id='{$userid}'
-         WHERE id='{$posid}'";
+                $sql = "UPDATE posintz SET ldate=NOW(), WHERE id='{$posid}'";
                 sql::query($sql);
             }
         }
