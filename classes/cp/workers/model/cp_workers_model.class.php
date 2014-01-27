@@ -15,7 +15,7 @@ class cp_workers_model extends sqltable_model {
         $ret = array();
         $sql = "SELECT *
                 FROM workers " .
-                (!empty($find) ? "WHERE (fio LIKE '%{$find}%' OR dr LIKE '%{$find}%') " : "") .
+                (!empty($find) ? "WHERE (fio LIKE '%{$find}%' OR DATE_FORMAT(dr,'%Y-%m-%d') LIKE '%{$find}%') " : "") .
                 (!empty($order) ? "ORDER BY " . $order . " " : "ORDER BY fio ") .
                 ($all ? "" : "LIMIT 20");
         $ret = sql::fetchAll($sql);
