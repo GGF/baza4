@@ -12,13 +12,13 @@ class lanch_pt_model extends sqltable_model {
     }
     public function getData($all=false,$order='',$find='',$idstr='') {
         $ret = array();
-	$sql="SELECT *,unix_timestamp(ts) AS uts,phototemplates.id AS ptid,phototemplates.id 
+	$sql="SELECT *,unix_timestamp(ts) AS uts, phototemplates.id AS ptid,phototemplates.id 
               FROM phototemplates
               JOIN users
               ON phototemplates.user_id=users.id " .
-              (!empty($find)?"WHERE filenames LIKE '%{$find}%' OR ts LIKE '%{$find}%' ":"") .
+              (!empty($find)?"WHERE filenames LIKE '%{$find}%' OR DATE_FORMAT(ts,'%Y-%m-%d') LIKE '%{$find}%' ":"") .
               (!empty($order)?"ORDER BY {$order} ":"ORDER BY ts DESC ") .
-              ($all?"LIMIT 50":"LIMIT 20");
+              ($all?"LIMIT 150":"LIMIT 20");
         $ret = sql::fetchAll($sql);
         return $ret;
     }
