@@ -111,18 +111,19 @@ class update_model {
                 FROM blocks
                 WHERE customer_id='{$customer_id}' AND blockname='{$blockname}'";
         $rs = sql::fetchOne($sql);
-        // комментарий к блоку содержит JSON
-        if(!empty($comment)) {
-            $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
-            $params["coment"] = $comment;
-            $comment_id = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
-        }
         $rs[sizex]=$bsizex;
         $rs[sizey]=$bsizey;
         $rs[thickness]=$thickness;
         $rs[customer_id]=$customer_id;
         $rs[blockname]=$blockname;
-        $rs[comment_id]=$comment_id;
+        // комментарий к блоку содержит JSON
+        if(!empty($comment)) {
+            $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
+            $params["coment"] = $comment;
+            // запишем в $rs[comment_id], если не было коментария то в нём и так будет старый коментарий
+            // предыдущий вариант стирал в пустое место комент
+            $rs[comment_id] = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
+        } 
         sql::insertUpdate("blocks",array($rs));
         if (empty($rs["id"])) {
             $block_id = sql::lastId();
@@ -149,26 +150,21 @@ class update_model {
         $customer_id = $rs[id];
         // плату
         // коментарий
-        $sql = "SELECT id FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
+        $sql = "SELECT * FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
         $rs = sql::fetchOne($sql);
-        if (empty($comment)) {
-            $comment_id = $rs[comment_id];
-        } else {
-            $comment_id = sqltable_model::getCommentId($comment);
+        if (!empty($comment)) {
+            $rs[comment_id] = sqltable_model::getCommentId($comment);
         }
-        $sql = "REPLACE INTO boards
-        (id,board_name,customer_id,sizex,sizey,thickness,
-        textolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
-        pallad,immer,aurum,numlam,lsizex,lsizey,mask,mark,glasscloth,
-        class,complexity_factor,frez_factor,comment_id)
-        VALUES ('{$rs["id"]}' , '{$board}' ,'{$customer_id}' ,'{$sizex}' ,'{$sizey}' ,
-        '{$thickness}' ,'{$textolite}' ,'{$textolitepsi}' ,'{$thick_tol}' ,
-        '{$rmark}' ,'{$frezcorner}' ,'{$layers}' ,'{$razr}' ,'{$pallad}' ,'{$immer}' ,
-        '{$aurum}' ,'{$numlam}' ,'{$lsizex}' ,'{$lsizey}' ,'{$mask}' ,'{$mark}' ,
-        '{$glasscloth}' ,'{$class}' ,'{$complexity_factor}' ,'{$frez_factor}','{$comment_id}')";
-        sql::query($sql);
+        $rs[board_name]=$board;
+        $rs= array_merge($rs, compact('customer_id','sizex','sizey','thickness','textolite','textolitepsi','thick_tol','rmark','frezcorner','layers','razr',
+        'pallad','immer','aurum','numlam','lsizex','lsizey','mask','mark','glasscloth','class','complexity_factor','frez_factor'));
+        sql::insertUpdate("boards",array($rs));
 
-        $board_id = sql::lastId();
+        if (empty($rs[id])) {
+            $board_id = sql::lastId();
+        } else {
+            $board_id = $rs[id];
+        }
 
         // позицию к блоку
         $sql = "INSERT INTO blockpos (block_id,board_id,nib,nx,ny) VALUES ('{$block_id}','{$board_id}','{$num}','{$bnx}','{$bny}')";

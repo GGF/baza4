@@ -440,7 +440,7 @@ class lanch_nzap_model extends sqltable_model {
         $rec[number] = sprintf("%08d", $lanch_id);
         $rec[zagotovokvsego] = $rec[zzak] = $zagotovokvsego;
         $rec[zag] = $rec[zppart] = $zag;
-        $rec[marktype]=stristr($rec[mark], multibyte::UTF_encode('PR')) ? multibyte::UTF_encode('PRINTAR') : multibyte::UTF_encode('Фотомаркировка');
+        $rec[marktype]=stristr($rec[mark], multibyte::UTF_encode('PR')) ? multibyte::UTF_encode('Маркировка на PRINTARе') : multibyte::UTF_encode('Фотомаркировка');
         $rec[fm1] = (strstr($rec[mark], '1') || strstr($rec[mark], '2') ? "+" : "-");
         $rec[fm2] = (strstr($rec[mark], '2') ? "+" : "-");
         $rec[rmark] = ($rec[rmark] == '1' ? "+" : "-");
@@ -597,7 +597,7 @@ class lanch_nzap_model extends sqltable_model {
         
         $rec[znumbers] = "{$zag} ({$zagotovokvsego})";
         
-        $rec[marktype]=stristr($rec[mark], multibyte::UTF_encode('PR')) ? multibyte::UTF_encode('PRINTAR') : multibyte::UTF_encode('Фотомаркировка');
+        $rec[marktype]=stristr($rec[mark], multibyte::UTF_encode('PR')) ? multibyte::UTF_encode('Маркировка на PRINTARе') : multibyte::UTF_encode('Фотомаркировка');
         $rec[phm1] = (strstr($rec[mark], '1') || strstr($rec[mark], '2') ? "+" : "-");
         $rec[phm2] = (strstr($rec[mark], '2') ? "+" : "-");
         $rec[rmark] = ($rec[rmark] == '1' ? "+" : "-");
