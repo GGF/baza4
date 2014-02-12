@@ -35,7 +35,9 @@ class sqltable_model extends model {
      */
     public function getData($all=false, $order='', $find='', $idstr='') {
         $this->idstr = $idstr;
-        return array();
+        $sql="SELECT * FROM {$this->maintable}";
+        $ret = sql::fetchAll($sql);
+        return $ret;
     }
 
     public function getCols() {
