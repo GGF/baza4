@@ -115,14 +115,20 @@ class update_model {
         if(!empty($comment)) {
             $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
             $params["coment"] = $comment;
-            $comment_id = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
-        }
+            $rs[comment_id] = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
+        } 
+        /*
+         * логика  исправления такая, в базе связал коментарии forignkey
+         * то есть пустой долже быть единицей, если блок новый и передан 
+         * пустой комент, то такого поля и не будет
+         * в rs, если не пустой комент то получится новый JSON, а если не новый 
+         * блок то поменяется в JSON только коментарий
+         */
         $rs[sizex]=$bsizex;
         $rs[sizey]=$bsizey;
         $rs[thickness]=$thickness;
         $rs[customer_id]=$customer_id;
         $rs[blockname]=$blockname;
-        $rs[comment_id]=$comment_id;
         sql::insertUpdate("blocks",array($rs));
         if (empty($rs["id"])) {
             $block_id = sql::lastId();

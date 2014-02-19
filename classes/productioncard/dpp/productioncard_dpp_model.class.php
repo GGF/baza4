@@ -43,6 +43,11 @@ class productioncard_dpp_model extends sqltable_model {
         foreach ($res as $value) {
                 $rec[operations][$value[id]] = $value[operation];
         }
+        $operation = array_shift($res);
+        $operations = multibyte::Json_decode(sqltable_model::getComment($rec[coment_id]));
+        $coment_id = $operations[$operation[id]][comment_id];
+        $rec[comment] = sqltable_model::getComment($coment_id);
+        $rec[action_date] = $operations[$operation[id]][date];
         return $rec;
     }
     

@@ -34,13 +34,13 @@ class productioncard_dpp_view extends sqltable_view {
                 "name" => "action_date",
                 "label" => 'Дата',
                 "options" => array("html" => ' datepicker=1 '),
-                "value" => '',
+                "value" => $rec[action_date],
             ),
             array(
                 "type" => AJAXFORM_TYPE_TEXTAREA,
                 "name" => "comment",
                 "label" => 'Коментарий',
-                "value" => '',
+                "value" => $rec[comment],
                 "options" => array("html" => " commentid=1 "),
             ),
 
