@@ -2,24 +2,28 @@
 
 class productioncard_dpp_model extends sqltable_model {
 
+    public $blocktype;
+    
     public function __construct() {
         parent::__construct();
         $this->maintable = 'move_in_production';
+        $this->blocktype = 'dpp';
     }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         //$res = parent::getData($all, $order, $find, $idstr);
         $sql = "SELECT *,{$this->maintable}.id FROM {$this->maintable} "
-        . "JOIN (lanch, blocks, customers) "
-                . "ON lanch.id=lanch_id AND blocks.id=lanch.block_id AND customers.id=blocks.customer_id " .
-                    (!empty($find) ? "WHERE (lanch_id LIKE '%{$find}%' OR blockname LIKE '%{$find}%' OR customer LIKE '%{$find}%') " 
+        . "JOIN (lanch, blocks, customers, coments) "
+                . "ON lanch.id=lanch_id AND blocks.id=lanch.block_id AND customers.id=blocks.customer_id AND coments.id=coment_id " .
+                    (!empty($find) ? "WHERE blocktype='{$this->blocktype}' AND "
+                                    . "(lanch_id LIKE '%{$find}%' OR blockname LIKE '%{$find}%' OR customer LIKE '%{$find}%') " 
                                         . ($all?"":" AND lastoperation<>'-1' ")
-                            : " WHERE lastoperation<>'-1' ") .
+                            : " WHERE blocktype='{$this->blocktype}' AND lastoperation<>'-1' ") .
                     (!empty($order) ? " ORDER BY {$order} " : " ORDER BY {$this->maintable}.id DESC ") .
                     ($all ? "" : "LIMIT 20");;
         $res = sql::fetchAll($sql);
         foreach ($res as &$val) {
-            $coment = multibyte::Json_decode(sqltable_model::getComment($val[coment_id]));
+            $coment = multibyte::Json_decode($val[comment]);
             foreach ($coment as $key => $value) {
                 $val["oper{$key}"] = $value[date];
             }
@@ -32,7 +36,7 @@ class productioncard_dpp_model extends sqltable_model {
         $cols[lanch_id] = array("ID","Номер сопроводительного листа");
         $cols[customer] = array("Заказчик","Заказчик");
         $cols[blockname] = array("Блок","Номер блока");
-        $sql = "SELECT * FROM operations WHERE block_type='dpp' OR block_type='both' ORDER BY priority,id";
+        $sql = "SELECT * FROM operations WHERE block_type='{$this->blocktype}' OR block_type='both' ORDER BY priority,id";
         $res = sql::fetchAll($sql);
         foreach ($res as $key => $value) {
             //$cols["oper{$value[id]}"] = "<span id='verticalText'>{$value[operation]}</span>";
@@ -49,7 +53,7 @@ class productioncard_dpp_model extends sqltable_model {
     
     public function getRecord($edit) {
         $rec = parent::getRecord($edit);
-        $sql = "SELECT id,operation FROM operations WHERE block_type='dpp' OR block_type='both' ORDER BY priority,id";
+        $sql = "SELECT id,operation FROM operations WHERE block_type='{$this->blocktype}' OR block_type='both' ORDER BY priority,id";
         $res = sql::fetchAll($sql);
         foreach ($res as $value) {
                 $rec[operations][$value[id]] = $value[operation];
@@ -63,6 +67,7 @@ class productioncard_dpp_model extends sqltable_model {
     }
     
     public function setRecord($data) {
+        $data[blocktype] =  $this->blocktype;
         $operation[$data[operation_id]]=array(
                     'date' => $data[action_date],
                     'comment_id' =>  sqltable_model::getCommentId($data[comment]),
