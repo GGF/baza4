@@ -10,7 +10,9 @@ class cp_operations_model extends sqltable_model {
     public function getCols() {
         $cols = array();
         $cols[block_type] = "Тип";
+        $cols[shortname] = "Заголовок";
         $cols[operation] = "Операция";
+        $cols[priority] = "Приоритет";
         return $cols;
     }
 

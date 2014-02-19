@@ -1,6 +1,6 @@
 <?php
 
-class productioncard_mpp_model extends sqltable_model {
+class productioncard_dpp_model extends sqltable_model {
 
     public function __construct() {
         parent::__construct();
@@ -8,66 +8,59 @@ class productioncard_mpp_model extends sqltable_model {
     }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
-        $ret = array();
-        $sql = "SELECT * FROM move_in_production GROUP BY lanch_id " .
-                ($all ? "LIMIT 50" : "LIMIT 20");
-        $res = sql::fetchAll($sql);
-        foreach ($res as $val) {
-            $lid = $val[lanch_id];
-            $ret[$lid][slnumber] = $lid;
-            $sql = "SELECT * FROM move_in_production WHERE lanch_id='{$lid}' ORDER BY operation_id";
-            $res1 = sql::fetchAll($sql);
-            foreach ($res1 as $val1) {
-                $ret[$lid]["oper{$val1[operation_id]}"] = $val1["action_date"];
-                $sql = "SELECT * FROM coments WHERE id='{$val1["coment_id"]}'";
-                $coment = sql::fetchOne($sql);
-                $coment = $coment["comment"];
-                $ret[$lid]["oper{$val1[operation_id]}"] .= "<br>{$coment}";
+        $res = parent::getData($all, $order, $find, $idstr);
+        foreach ($res as &$val) {
+            $coment = multibyte::Json_decode(sqltable_model::getComment($val[coment_id]));
+            foreach ($coment as $key => $value) {
+                $val["oper{$key}"] = $value[date];
             }
-            $sql = "SELECT * " .
-                    "FROM lanch " .
-                    "JOIN (blocks,customers,coments) " .
-                    "ON ( " .
-                    "lanch.block_id=blocks.id " .
-                    "AND blocks.customer_id=customers.id " .
-                    "AND lanch.comment_id=coments.id " .
-                    ") " .
-                    " WHERE lanch.id = '{$lid}' ";
-            $res1 = sql::fetchAll($sql);
-            foreach ($res1[0] as $key => $val1) {
-                $ret[$lid][$key] = $val1; 
-            }
-            //$ret[$lid][released] = print_r($res1,true);
         }
-        return $ret;
+        return $res;
     }
 
     public function getCols() {
-        $sql = "SELECT * FROM operations WHERE block_type='mpp' OR block_type='both' ORDER BY id";
         $cols = array();
-        $cols[released] = "V";
-        $cols[customer] = "Заказчик";
-        $cols[order] = "Заказ";
-        $cols[slnumber] = "# СЛ";
-        $cols[blockname] = "Плата";
-        $cols[ldate] = "Дата запуска";
-        $cols[numbz] = "Заготовок";
-        $cols[numbp] = "Плат";
+        $cols[lanch_id] = array("ID","Номер сопроводительного листа");
+        $sql = "SELECT * FROM operations WHERE block_type='dpp' OR block_type='both' ORDER BY priority,id";
         $res = sql::fetchAll($sql);
         foreach ($res as $key => $value) {
             //$cols["oper{$value[id]}"] = "<span id='verticalText'>{$value[operation]}</span>";
-            $cols["oper{$value[id]}"] = $value[operation];
+            $cols["oper{$value[id]}"] = array(short => $value[shortname],title => $value[operation]);
         }
-        $cols[comment] = "Примечание";
-        $cols[put] = "Выдача";
-        $cols[put1] = "Выдача1";
         return $cols;
     }
 
     public function delete($id) {
-//        $sql = "DELETE FROM masterplate WHERE id='{$id}'";
-//	sql::query($sql);
-//        return sql::affected();
+        $sql = "DELETE FROM {$this->maintable} WHERE id='{$id}'";
+	sql::query($sql);
+        return sql::affected();
+    }
+    
+    public function getRecord($edit) {
+        $rec = parent::getRecord($edit);
+        $sql = "SELECT id,operation FROM operations WHERE block_type='dpp' OR block_type='both' ORDER BY priority,id";
+        $res = sql::fetchAll($sql);
+        foreach ($res as $value) {
+                $rec[operations][$value[id]] = $value[operation];
+        }
+        return $rec;
+    }
+    
+    public function setRecord($data) {
+        $operation[$data[operation_id]]=array(
+                    'date' => $data[action_date],
+                    'comment_id' =>  sqltable_model::getCommentId($data[comment]),
+                       );
+        if (empty($data[coment_id])) {
+            $data[coment_id] = sqltable_model::getCommentId(multibyte::Json_encode($operation));
+        } else {
+            $coment = multibyte::Json_decode(sqltable_model::getComment($data[coment_id]));
+            $coment[$data[operation_id]] = $operation[$data[operation_id]]; // заменить старый по ключу
+            sql::insertUpdate('coments',array(array("id"=>$data[coment_id],"comment"=>  multibyte::Json_encode($coment))));
+            //$sql = "UPDATE coments SET comment = '".multibyte::Json_encode($coment)."' WHERE id='{$data[coment_id]}'";
+        }
+        parent::setRecord($data);
+        return true;
     }
 
 }

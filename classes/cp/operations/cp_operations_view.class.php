@@ -18,10 +18,24 @@ class cp_operations_view extends sqltable_view {
             ),
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "shortname",
+                "label" => 'Заголовок',
+                "value" => $rec["shortname"],
+            ),
+            array(
+                "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "operation",
                 "label" => 'Операция',
                 "value" => $rec["operation"],
             ),
+            array(
+                "type" => AJAXFORM_TYPE_TEXT,
+                "name" => "priority",
+                "label" => 'Приоритет',
+                "check" => array( type => AJAXFORM_CHECK_NUMERIC ),
+                "value" => $rec["priority"] ,
+            ),
+
         );
         $rec[files] = false;
         return parent::showrec($rec);

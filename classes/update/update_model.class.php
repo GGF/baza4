@@ -149,26 +149,21 @@ class update_model {
         $customer_id = $rs[id];
         // плату
         // коментарий
-        $sql = "SELECT id FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
+        $sql = "SELECT id, comment_id FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
         $rs = sql::fetchOne($sql);
-        if (empty($comment)) {
-            $comment_id = $rs[comment_id];
-        } else {
-            $comment_id = sqltable_model::getCommentId($comment);
+        if (!empty($comment)) {
+            $rs[comment_id] = sqltable_model::getCommentId($comment);
         }
-        $sql = "REPLACE INTO boards
-        (id,board_name,customer_id,sizex,sizey,thickness,
-        textolite,textolitepsi,thick_tol,rmark,frezcorner,layers,razr,
-        pallad,immer,aurum,numlam,lsizex,lsizey,mask,mark,glasscloth,
-        class,complexity_factor,frez_factor,comment_id)
-        VALUES ('{$rs["id"]}' , '{$board}' ,'{$customer_id}' ,'{$sizex}' ,'{$sizey}' ,
-        '{$thickness}' ,'{$textolite}' ,'{$textolitepsi}' ,'{$thick_tol}' ,
-        '{$rmark}' ,'{$frezcorner}' ,'{$layers}' ,'{$razr}' ,'{$pallad}' ,'{$immer}' ,
-        '{$aurum}' ,'{$numlam}' ,'{$lsizex}' ,'{$lsizey}' ,'{$mask}' ,'{$mark}' ,
-        '{$glasscloth}' ,'{$class}' ,'{$complexity_factor}' ,'{$frez_factor}','{$comment_id}')";
-        sql::query($sql);
 
-        $board_id = sql::lastId();
+        $rs[board_name] = $board;
+        $rs = array_merge($rs,compact('customer_id','sizex','sizey','thickness',
+                'textolite','rmark','frezcorner',
+                'layers','razr','immer','numlam','lsizex',
+                'lsizey','mask','mark','glasscloth','class','complexity_factor',
+                'frez_factor'));
+        sql::insertUpdate('boards',array($rs));
+
+        $board_id = empty($rs["id"]) ? sql::lastId() : $rs["id"]; // если редактура ластид возвращает нуль
 
         // позицию к блоку
         $sql = "INSERT INTO blockpos (block_id,board_id,nib,nx,ny) VALUES ('{$block_id}','{$board_id}','{$num}','{$bnx}','{$bny}')";

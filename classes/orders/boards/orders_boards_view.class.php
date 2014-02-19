@@ -24,7 +24,7 @@ class orders_boards_view extends sqltable_view {
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
             "name" => "board_name",
-            "label" => "Наименование блока",
+            "label" => "Наименование платы",
             "value" => $rec[board_name],
             "options" => array("readonly" => true),
         ));
@@ -83,9 +83,9 @@ class orders_boards_view extends sqltable_view {
             "value" => $rec[rmark],
         ));
         array_push($fields, array(
-            "type" => AJAXFORM_TYPE_CHECKBOX,
+            "type" => AJAXFORM_TYPE_TEXT,
             "name" => "frezcorner",
-            "label" => "Фрезеровка углов",
+            "label" => "Фрез.(0-нет,1-контур,2-углы)",
             "value" => $rec[frezcorner],
         ));
         array_push($fields, array(
@@ -99,12 +99,6 @@ class orders_boards_view extends sqltable_view {
             "name" => "razr",
             "label" => "Разрубка",
             "value" => $rec[razr],
-        ));
-        array_push($fields, array(
-            "type" => AJAXFORM_TYPE_CHECKBOX,
-            "name" => "pallad",
-            "label" => "Паладирование",
-            "value" => $rec[pallad],
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_CHECKBOX,

@@ -45,7 +45,7 @@ class productioncard_mpp_model extends sqltable_model {
     public function getCols() {
         $sql = "SELECT * FROM operations WHERE block_type='mpp' OR block_type='both' ORDER BY id";
         $cols = array();
-        $cols[released] = "V";
+        $cols[released] = array("V","Готово");
         $cols[customer] = "Заказчик";
         $cols[order] = "Заказ";
         $cols[slnumber] = "# СЛ";

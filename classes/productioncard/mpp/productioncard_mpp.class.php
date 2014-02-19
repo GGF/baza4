@@ -1,6 +1,6 @@
 <?php
 
-class productioncard_mpp extends sqltable {
+class productioncard_dpp extends sqltable {
 
     // обязательно определять для модуля
     public function getDir() {
@@ -9,7 +9,7 @@ class productioncard_mpp extends sqltable {
 
     public function init() {
         parent::init();
-        $this->addbutton = false;
+        //$this->addbutton = false;
     }
 }
 
