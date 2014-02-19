@@ -14,12 +14,14 @@ class productioncard_dpp_view extends sqltable_view {
                 "name" => "coment_id",
                 "label" => 'Сопроводительный лист',
                 "value" => $rec["coment_id"],
+
             ),
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "lanch_id",
                 "label" => 'Сопроводительный лист',
                 "value" => $rec["lanch_id"],
+                "options" => empty($rec["lanch_id"])?array():array("readonly" => true,),
             ),
             array(
                 "type" => AJAXFORM_TYPE_SELECT,
