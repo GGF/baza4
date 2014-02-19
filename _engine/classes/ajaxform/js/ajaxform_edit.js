@@ -9,7 +9,7 @@ $(document).ready(function(){
             url: url,
             data: 'idstr='+$(self).val(),
             success: function(recieved){
-                $('select['+target+']').html(recieved);
+                $('*['+target+']').html(recieved);
             },
             error: function(x){
                 $().lego.log("Can not load url: "+url);

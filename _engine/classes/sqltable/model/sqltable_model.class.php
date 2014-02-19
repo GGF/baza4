@@ -35,7 +35,11 @@ class sqltable_model extends model {
      */
     public function getData($all=false, $order='', $find='', $idstr='') {
         $this->idstr = $idstr;
-        return array();
+        $sql="SELECT * FROM {$this->maintable}" .
+                (!empty($order) ? " ORDER BY {$order} " : " ") .
+                ($all ? "" : " LIMIT 20");
+        $ret = sql::fetchAll($sql);
+        return $ret;
     }
 
     public function getCols() {

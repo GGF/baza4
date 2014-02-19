@@ -59,20 +59,28 @@ class sqltable_view extends views {
             reset($cols);
 
             while (list($key, $val) = each($cols)) {
+                if (is_array($val)) {
+                    $title = empty($val[title])?$val[1]:$val[title];
+                    $shortname   = empty($val[short])?$val[0]:$val[short];
+                    $nosort = empty($val[nosort])?$val[2]:$val[nosort];
+                } else {
+                    $title=$val;
+                    $shortname = $val;
+                }
                 if ($this->owner->buttons) {
                     $cord = ($this->owner->order == $key ? ($key . " DESC") : $key);
                     $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->url();
                     $ret .= "<th>" .
-                            (($key == 'check' or $key == "№" ) ? $val :
+                            (($key == 'check' or $key == "№" or $nosort ) ? "<label title='{$title}'>".hypher::addhypher($shortname)."</label>" :
                                     "<a " .
                                     "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
-                                    "href='{$url}' " .
+                                    "href='{$url}' title='{$title}' " .
                                     ">" .
-                                    hypher::addhypher($val) .
+                                    hypher::addhypher($shortname) .
                                     (($key == 'check' or $key == "№") ? "" : ($this->owner->order == $key ? "&darr;" : (($this->owner->order == $key . ' DESC') ? "&uarr;" : ""))) .
                                     "</a>");
                 } else {
-                    $ret .= "<th>" . $val;
+                    $ret .= "<th>" . $shortname;
                 }
             }
         }

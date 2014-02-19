@@ -249,7 +249,7 @@ class ajaxform extends JsCSS {
                     $this->error(AJAXFORM_ERROR_FORMAT, $format[name], $html);
                 } elseif ($res === null) {
 
-                    $this->errorCritical("Для поля «{$name}» не найден формат «{$format[type]}».");
+                    $this->errorCritical("Для поля «{$format[name]}» не найден формат «{$format[type]}».");
                 }
             }
 
@@ -1726,11 +1726,11 @@ class ajaxform extends JsCSS {
     }
 
     // 2 функции преобразования даты для пикера и базы
-    public function date2datepicker($date) {
+    public static function date2datepicker($date) {
         return!empty($date) ? date("d.m.Y", mktime(0, 0, 0, ceil(substr($date, 5, 2)), ceil(substr($date, 8, 2)), ceil(substr($date, 0, 4)))) : date("d.m.Y");
     }
 
-    public function datepicker2date($date) {
+    public static function datepicker2date($date) {
         return substr($date, 6, 4) . "-" . substr($date, 3, 2) . "-" . substr($date, 0, 2);
     }
 

@@ -111,11 +111,28 @@ class update_model {
                 FROM blocks
                 WHERE customer_id='{$customer_id}' AND blockname='{$blockname}'";
         $rs = sql::fetchOne($sql);
+<<<<<<< HEAD
+=======
+        // комментарий к блоку содержит JSON
+        if(!empty($comment)) {
+            $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
+            $params["coment"] = $comment;
+            $rs[comment_id] = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
+        } 
+        /*
+         * логика  исправления такая, в базе связал коментарии forignkey
+         * то есть пустой долже быть единицей, если блок новый и передан 
+         * пустой комент, то такого поля и не будет
+         * в rs, если не пустой комент то получится новый JSON, а если не новый 
+         * блок то поменяется в JSON только коментарий
+         */
+>>>>>>> operations
         $rs[sizex]=$bsizex;
         $rs[sizey]=$bsizey;
         $rs[thickness]=$thickness;
         $rs[customer_id]=$customer_id;
         $rs[blockname]=$blockname;
+<<<<<<< HEAD
         // комментарий к блоку содержит JSON
         if(!empty($comment)) {
             $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
@@ -124,6 +141,8 @@ class update_model {
             // предыдущий вариант стирал в пустое место комент
             $rs[comment_id] = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
         } 
+=======
+>>>>>>> operations
         sql::insertUpdate("blocks",array($rs));
         if (empty($rs["id"])) {
             $block_id = sql::lastId();
@@ -150,11 +169,16 @@ class update_model {
         $customer_id = $rs[id];
         // плату
         // коментарий
+<<<<<<< HEAD
         $sql = "SELECT * FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
+=======
+        $sql = "SELECT id, comment_id FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
+>>>>>>> operations
         $rs = sql::fetchOne($sql);
         if (!empty($comment)) {
             $rs[comment_id] = sqltable_model::getCommentId($comment);
         }
+<<<<<<< HEAD
         $rs[board_name]=$board;
         $rs= array_merge($rs, compact('customer_id','sizex','sizey','thickness','textolite','textolitepsi','thick_tol','rmark','frezcorner','layers','razr',
         'pallad','immer','aurum','numlam','lsizex','lsizey','mask','mark','glasscloth','class','complexity_factor','frez_factor'));
@@ -165,6 +189,18 @@ class update_model {
         } else {
             $board_id = $rs[id];
         }
+=======
+
+        $rs[board_name] = $board;
+        $rs = array_merge($rs,compact('customer_id','sizex','sizey','thickness',
+                'textolite','rmark','frezcorner',
+                'layers','razr','immer','numlam','lsizex',
+                'lsizey','mask','mark','glasscloth','class','complexity_factor',
+                'frez_factor'));
+        sql::insertUpdate('boards',array($rs));
+
+        $board_id = empty($rs["id"]) ? sql::lastId() : $rs["id"]; // если редактура ластид возвращает нуль
+>>>>>>> operations
 
         // позицию к блоку
         $sql = "INSERT INTO blockpos (block_id,board_id,nib,nx,ny) VALUES ('{$block_id}','{$board_id}','{$num}','{$bnx}','{$bny}')";
