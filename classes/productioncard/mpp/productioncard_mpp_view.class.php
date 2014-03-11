@@ -11,3 +11,5 @@ class productioncard_mpp_view extends productioncard_dpp_view {
         return __DIR__;
     }
 }
+
+?>

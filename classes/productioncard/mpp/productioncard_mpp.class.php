@@ -12,3 +12,5 @@ class productioncard_mpp extends productioncard_dpp {
         return __DIR__;
     }
 }
+
+?>

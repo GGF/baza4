@@ -12,3 +12,5 @@ class productioncard_mpp_model extends productioncard_dpp_model {
     }
     
 }
+
+?>
