@@ -1,1 +1,1 @@
-<a class='filelink' href='{$rasslink}'>Рассчет</a>
+<a class='filelink' href='{$rasslink}'>Расчет</a>

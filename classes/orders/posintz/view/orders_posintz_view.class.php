@@ -53,6 +53,28 @@ class orders_posintz_view extends sqltable_view {
         return parent::showrec($rec);
     }
 
+    public function getRasschet($rec) {
+        extract($rec);
+        $filelink = fileserver::createdironserver($filename);
+        $excel = file_get_contents($this->getDir() . "/" . $template );
+        if (fileserver::savefile($filelink.".txt", $rec)) {
+            // сохранить 
+            if (fileserver::savefile($filelink, $excel)) {
+                Output::assign('rlink', fileserver::sharefilelink($filelink));
+                $out = $this->fetch('rlink.tpl');
+                $res[filename] = $filename;
+                $res[result] = true;
+            } else {
+                $out = "Не удалось записать файл xls";
+                $res[result] = false;
+            }
+        } else {
+            $out = "Не удалось создать файл txt";
+            $res[result] = false;
+        }
+        $res[out] = $out;
+        return $res;
+    }
 }
 
 ?>

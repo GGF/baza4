@@ -112,23 +112,29 @@ class update_model {
                 WHERE customer_id='{$customer_id}' AND blockname='{$blockname}'";
         $rs = sql::fetchOne($sql);
         // комментарий к блоку содержит JSON
+        $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
         if(!empty($comment)) {
-            $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
             $params["coment"] = $comment;
-            $rs[comment_id] = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
         } 
+        // добавим туда электроконтроль
+        $params[eltest] = $eltest;
+        $params[etpib] = $etpib;
+        $params[etpoints] = $etpoints;
+        $params[etcompl] = $etcompl;
+        $rs[comment_id] = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
         /*
          * логика  исправления такая, в базе связал коментарии forignkey
          * то есть пустой долже быть единицей, если блок новый и передан 
          * пустой комент, то такого поля и не будет
          * в rs, если не пустой комент то получится новый JSON, а если не новый 
-         * блок то поменяется в JSON только коментарий
+         * блок то поменяется в JSON только коментарий и электроконтроль
          */
         $rs[sizex]=$bsizex;
         $rs[sizey]=$bsizey;
         $rs[thickness]=$thickness;
         $rs[customer_id]=$customer_id;
         $rs[blockname]=$blockname;
+        $rs[auarea] = $gold;
         sql::insertUpdate("blocks",array($rs));
         if (empty($rs["id"])) {
             $block_id = sql::lastId();

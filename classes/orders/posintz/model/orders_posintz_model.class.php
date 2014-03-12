@@ -196,7 +196,8 @@ class orders_posintz_model extends sqltable_model {
         sql::insertUpdate($this->maintable,array($newpos));
         // дозаполнить newpos
         $newpos[blockname] = $block[blockname];
-        $newpos[type] = "ДПП"; // пока будет так
+        $newpos[type] = $board[layers]==1?"ОПП":"ДПП"; // пока будет так
+        $newpos[layers] = $board[layers];
         $newpos["class"] = $board["class"];
         $newpos[complexity_factor] = $board[complexity_factor]>0?$board[complexity_factor]:"";
         $newpos[boardsizex] = $board[sizex];
@@ -206,20 +207,29 @@ class orders_posintz_model extends sqltable_model {
         $newpos[numonblock] = $board[nib];
         $newpos[drills] = "{$block[smalldrill]}/{$block[bigdrill]}";
         $newpos[textolite] = $board[textolite];
+        $newpos[glasscloth] = $board[glasscloth];
         $newpos[thickness] = $board[thickness];
-        $newpos[mask] = $board[mask];
+        preg_match('/(?P<nummask>[+0-9]*)(?P<mask>.*)/i', $board[mask], $matches);
+        $newpos[mask]=$matches[mask];
+        $newpos[nummask]=empty($matches[nummask])?2:$matches[nummask];
         $newpos[mark] = $board[mark];
         $newpos[rmark] = $board[rmark];
         $newpos[razr] = $board[razr];
         $newpos[frezcorner] = $board[frezcorner];
         $newpos[frez_factor] = $board[frez_factor]>0?$board[frez_factor]:"";
-        $newpos[lamel] = $board[numlam]>0?"1":"0";
+        $newpos[lamel] = $board[numlam]>0?"{$board[numlam]} {$board[lsizex]}x{$board[lsizey]}":"0 0.0x0.0";
         $newpos[numlam] = $board[numlam];
         $newpos[lsizex] = $board[lsizex];
         $newpos[lsizey] = $board[lsizex];
         $newpos[immer] = $board[immer];
         $newpos[auarea] = $board[immer]==1?$block[auarea]:"";
-        $newpos[boardcomment] = $this->getComment($block[comment_id]);
+        // блоки с JSON
+        $params = json_decode(multibyte::Unescape(sqltable_model::getComment($block["comment_id"])),true); //получим текщий комент из блока
+        $newpos[boardcomment] = $params[coment];
+        $newpos[eltest] = $params[eltest];
+        $newpos[etpib] = $params[etpib];
+        $newpos[etpoints] = $params[etpoints];
+        $newpos[etcompl] = $params[etcompl];
         $newpos[posintcomment] = $this->getComment($pos[comment_id]);
         // сохранить данные в файл
         $tz = new orders_tz_model();
@@ -232,6 +242,58 @@ class orders_posintz_model extends sqltable_model {
         return $res;
     }
 
+    public function getDataForCalc($id) {
+        $rec = array();
+        $sql = "SELECT *,CONCAT (number,' от ',DATE_FORMAT(orderdate,'%d.%m.%Y')) as letter, "
+                . "boards.sizex/100.0 as psizex, "
+                . "boards.sizey/100.0 as psizey, "
+                . "blocks.sizex/100.0 as bsizex, "
+                . "blocks.sizey/100.0 as bsizey, "
+                . "immer*auarea as gold, "
+                . "CONCAT(numlam,' ',lsizex,'x',lsizey) as lamel, "
+                . "blocks.comment_id as bcid "
+                . "FROM posintz JOIN (tz,orders,customers,blocks,blockpos,boards) "
+                . "ON (posintz.tz_id=tz.id "
+                . "AND tz.order_id=orders.id "
+                . "AND posintz.block_id=blocks.id "
+                . "AND orders.customer_id=customers.id "
+                . "AND blockpos.block_id=blocks.id "
+                . "AND blockpos.board_id=boards.id )  "
+                . "WHERE posintz.id='{$id}'";
+        $rec = sql::fetchOne($sql);
+        $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rec["bcid"])),true); //получим текщий комент из блока
+        $rec[eltest] = $params[eltest];
+        $rec[etpib] = $params[etpib];
+        $rec[etpoints] = $params[etpoints];
+        $rec[etcompl] = $params[etcompl];
+        $rec[thickness] = (float)$rec[thickness];
+        $rec[type] = $rec[layers]>2 ? 'mpp' : 'dpp';
+        $rec[template] = "r{$rec[type]}.xls";
+        preg_match('/(?P<nummask>[+0-9]*)(?P<mask>.*)/i', $rec[mask], $matches);
+        $rec[mask]=$matches[mask];
+        $rec[nummask]=empty($matches[nummask])?2:$matches[nummask];
+        $orderstring = fileserver::removeOSsimbols($rec[letter]." tz{$rec[tz_id]}");
+        $rec[filename] = "t:\\\\Расчет стоимости плат\\\\{$rec[customer]}\\\\{$rec[blockname]}\\\\{$orderstring}.xls";
+        return $rec;
+    }
+    
+    public function saveFileLinkForRaschet($rec) {
+        // сохранить ссылку на расчет в posint
+        extract($rec);
+        $filelink = $this->getFileId($filename);
+        $this->storeFilesInTable(array($filelink=>$filename), 'posintz', $id);
+        return;
+    }
+    
+    public function getFileLinkForRaschet($rec) {
+        extract($rec);
+        $res = $this->getFilesForId('posintz', $id);
+        if (empty($res[link])) {
+            return false;
+        } else {
+            return $res[file][0][file_link];
+        }
+    }
 }
 
 ?>
