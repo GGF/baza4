@@ -71,7 +71,7 @@ class sqltable_view extends views {
                     $cord = ($this->owner->order == $key ? ($key . " DESC") : $key);
                     $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->url();
                     $ret .= "<th>" .
-                            (($key == 'check' or $key == "№" or $nosort ) ? "<label title='{$title}'>".hypher::addhypher($shortname)."</label>" :
+                            (($key == 'check' or $key == "№" or (isset($nosort) and $nosort) ) ? "<label title='{$title}'>".hypher::addhypher($shortname)."</label>" :
                                     "<a " .
                                     "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
                                     "href='{$url}' title='{$title}' " .

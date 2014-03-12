@@ -35,13 +35,24 @@ class orders_posintz extends sqltable {
             }
         } else {
             // выбрана плата - вывести предложение создать рассчет
-            $rec[createlink] = $this->actUri('createras', $id)->url();
+            $url = $this->model->getFileLinkForRaschet(array(id=>$id));
+            if ($url) {
+                $rec[rasslink] = $url;
+            } else {
+                $rec[createlink] = $this->actUri('createras', $id)->url();
+            }
             return $this->getMessage($this->view->showbutton($rec));
         }
     }
 
     public function action_createras($id) {
-        return 'А вот не создался!';
+        $rec = $this->model->getDataForCalc($id);
+        $res = $this->view->getRasschet($rec);
+        if ($res[result]) {
+            $res[id] = $id;
+            $this->model->saveFileLinkForRaschet($res);
+        }
+        return $res[out];
     }
     
     public function action_addposintz($id) {
