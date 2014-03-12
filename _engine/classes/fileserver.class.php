@@ -67,7 +67,7 @@ class fileserver {
                     // использем в качестве разделителя вертикальную черту, скорее всего её не будет в данных
                     // если же, паче чаяния, она там окажется придется использовать тройную, скажем, и
                     //  переписывать скрипты в xls файле
-                    fwrite($file, sprintf("%s|%s\n",multibyte::utf8_to_cp1251($key),multibyte::utf8_to_cp1251($value)));
+                    fwrite($file, sprintf("%s|%s\n",multibyte::utf8_to_cp1251($key),multibyte::utf8_to_cp1251(html_entity_decode($value))));
                 }
             } else {
                 // иначе просто запишем текст
