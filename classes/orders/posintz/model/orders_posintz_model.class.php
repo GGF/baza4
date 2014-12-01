@@ -216,7 +216,7 @@ class orders_posintz_model extends sqltable_model {
         $newpos[rmark] = $board[rmark];
         $newpos[razr] = $board[razr];
         $newpos[frezcorner] = $board[frezcorner];
-        $newpos[frez_factor] = $board[frez_factor]>0?$board[frez_factor]:"";
+        $newpos[frez_factor] = $board[frez_factor]>0?$board[frez_factor]:"1.0";
         $newpos[lamel] = $board[numlam]>0?"{$board[numlam]} {$board[lsizex]}x{$board[lsizey]}":"0 0.0x0.0";
         $newpos[numlam] = $board[numlam];
         $newpos[lsizex] = $board[lsizex];
@@ -272,6 +272,7 @@ class orders_posintz_model extends sqltable_model {
         preg_match('/(?P<nummask>[+0-9]*)(?P<mask>.*)/i', $rec[mask], $matches);
         $rec[mask]=$matches[mask];
         $rec[nummask]=empty($matches[nummask])?2:$matches[nummask];
+        $rec[frez_factor]=$rec[frez_factor]>0?$rec[frez_factor]:1.0;
         $orderstring = fileserver::removeOSsimbols($rec[letter]." tz{$rec[tz_id]}");
         $rec[filename] = "t:\\\\Расчет стоимости плат\\\\{$rec[customer]}\\\\{$rec[blockname]}\\\\{$orderstring}.xls";
         return $rec;

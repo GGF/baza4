@@ -100,11 +100,11 @@ class storage_moves_model extends storage_model {
                 // приход
                 if ($price != 0) {
                     // цена указана
-                    if ($comment != "***" ) {
+                    //if ($comment != "***" ) {
                         // мне лучше не знать, но наверное цена не правильная
                         $sql = "UPDATE {$this->db}sk_{$this->sklad}_spr SET spr_price = '{$price}'  WHERE id='{$spr_id}'";
                         sql::query($sql);
-                    }
+                    //}
                 }
             }
         }
