@@ -95,7 +95,8 @@ class storage_moves_model extends storage_model {
         /*
         * Актуализация цены
         */
-        if ($this->sklad == "mat_" ) { // только для материала
+        //if ($this->sklad == "mat_" ) { // только для материала
+        // 02-12-2014 для всех
             if ($type == 1) {
                 // приход
                 if ($price != 0) {
@@ -107,7 +108,7 @@ class storage_moves_model extends storage_model {
                     //}
                 }
             }
-        }
+        //}
         //console::getInstance()->out(print_r($data,true));
         // отредактировано
         // найдем поставщика

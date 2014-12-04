@@ -52,6 +52,7 @@ class storage extends secondlevel {
         $this->menu->add('archive', 'Архив', false);
         $this->menu->add('archivemoves', 'Движения Архив', false);
         $this->menu->add('movereport', 'Движение отчет', false, true);
+        $this->menu->add('pricechangereport', 'Изменение цен отчет', false, true);
         $this->menu->add('request', 'Требование', false, true);
         if ($this->need_yaer_arc)
             $this->menu->add('year', 'Годовая архивация', false);
