@@ -95,19 +95,20 @@ class storage_moves_model extends storage_model {
         /*
         * Актуализация цены
         */
-        if ($this->sklad == "mat_" ) { // только для материала
+        //if ($this->sklad == "mat_" ) { // только для материала
+        // 02-12-2014 для всех
             if ($type == 1) {
                 // приход
                 if ($price != 0) {
                     // цена указана
-                    if ($comment != "***" ) {
+                    //if ($comment != "***" ) {
                         // мне лучше не знать, но наверное цена не правильная
                         $sql = "UPDATE {$this->db}sk_{$this->sklad}_spr SET spr_price = '{$price}'  WHERE id='{$spr_id}'";
                         sql::query($sql);
-                    }
+                    //}
                 }
             }
-        }
+        //}
         //console::getInstance()->out(print_r($data,true));
         // отредактировано
         // найдем поставщика

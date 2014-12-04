@@ -1035,7 +1035,7 @@ class ajaxform extends JsCSS {
         $cls = ($options[date]) ? " date" : $cls;
         $cls = ($options[readonly]) ? "{$cls} readonly" : $cls;
 
-        echo "<input type='{$type}' class='text{$cls}' name='" . $this->getName($name) . "' id='" . $this->getId($name) . "' value='{$value}'{$optionsHTML}>";
+        echo "<input type='{$type}' class='text{$cls}' name='" . $this->getName($name) . "' id='" . $this->getId($name) . "' value='{$value}' {$optionsHTML}>";
 
         return ob_get_clean();
     }

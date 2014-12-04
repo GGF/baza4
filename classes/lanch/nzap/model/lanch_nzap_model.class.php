@@ -475,7 +475,7 @@ class lanch_nzap_model extends sqltable_model {
 
         $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . $tolsh;
         $rec[tolsh] = $tolsh;
-        $rec[smask] = strstr($rec[mask], multibyte::UTF_encode('КМ')) ? "+" : "-";
+        $rec[smask] = (strstr($rec[mask], multibyte::UTF_encode('КМ')) || strstr($rec[mask], multibyte::UTF_encode('KM')))? "+" : "-";
         $rec[zmask] = strstr($rec[mask], multibyte::UTF_encode('ЖМ')) ? "+" : "-";
         $rec[aurum] = ($rec[immer] == '1' ? "+" : "-");
         $rec[priemz] = strstr($priem, multibyte::UTF_encode('ПЗ')) ? "+" : "-";
