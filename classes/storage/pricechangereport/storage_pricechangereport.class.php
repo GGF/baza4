@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * Класс отчета по изменению цен, практически тот ифейс как и другого отчета
@@ -18,3 +18,5 @@ class storage_pricechangereport extends storage_movereport {
     */
     
 }
+
+?>

@@ -125,7 +125,7 @@ class orders_tz_model extends sqltable_model {
         $tzid = sql::lastId();
 
         do {
-            $filetype = $typetz == "mpp" ? "МПП" : ($typetz == "dpp" ? "ДПП" : "ДПП-Блок");
+            $filetype = $typetz == "mpp" ? "МПП" : ($typetz == "dpp" ? "ДПП" : ($typetz == "mppb" ? "МПП-Блок" : "ДПП-Блок"));
             $orderstring = fileserver::removeOSsimbols($rs["number"]);
             $file_link = "t:\\\\Расчет стоимости плат\\\\ТехЗад\\\\{$customer}\\\\{$tzid}-{$filetype}-{$pos_in_order}-{$orderstring} от {$rs["orderdate"]}.xls";
             $filename = fileserver::createdironserver($file_link);
