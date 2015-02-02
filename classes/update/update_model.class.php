@@ -76,6 +76,7 @@ class update_model {
             sql::query($sql);
         }
         // а тепрерь созадидим фал копирования сверловок
+        /*
         $sql = "SELECT kdir FROM customers WHERE id='{$customer_id}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
@@ -89,6 +90,7 @@ class update_model {
             $out .= "copy /Y .\\{$drillname}.frz k:\\" . $rs[kdir] . ($mpp != -1 ? "\\MPP" : "") . "\\\n";
             return $out;
         }
+        */
     }
 
     public function addblock($rec) {
@@ -337,6 +339,7 @@ class update_model {
             $out .= "copy /Y .\\{$drillname}.mk4 k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.frz k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.ex2 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.sch k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.mx1 k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.prl k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.fx2 k:\\" . $rs[kdir] . "\\\n";
@@ -344,6 +347,7 @@ class update_model {
             $out .= "copy /Y .\\{$drillname}-2.mk4 k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}-2.frz k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}-2.ex2 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-2.sch k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}-2.mx1 k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}-2.prl k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}-2.fx2 k:\\" . $rs[kdir] . "\\\n";
