@@ -13,7 +13,7 @@ class update_model {
         $sql = "SELECT id FROM users WHERE nik='{$user}'";
         $rs = sql::fetchOne($sql);
         if (empty($rs)) {
-            $sql = "INSERT INTO users (nik) VALUES ('$user')";
+            $sql = "INSERT INTO users (nik,password) VALUES ('$user',now())";
             sql::query($sql);
             $userid = sql::lastId();
         } else {

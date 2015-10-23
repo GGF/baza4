@@ -38,10 +38,9 @@ class storage_request_view extends sqltable_view {
                 <option value='Егорычева Т.В.' style='color:blue;'>Егорычева Т.В.</option>
                 <option value='Курочкина М.А.' style='color:blue;'>Курочкина М.А.</option>
                 <option value='Левитская Н.П.' style='color:blue;'>Левитская Н.П.</option>
-                <option value='Разина Е.П.' style='color:blue;'>Разина Е.П.</option>
                 <option value='Угдыжекова И.В.' style='color:blue;'>Угдыжекова И.В.</option>
                 <option value='Ходина Е.А.' style='color:blue;'>Ходина Е.А.</option>
-                <option value='Шамарина В.В.' style='color:blue;'>Шамарина В.В.</option>
+                <option value='Мракова Л.В.' style='color:blue;'>Ходина Е.А.</option>
                 <option value='Горницкий И.В.' style='color:blue;'>Горницкий И.В.</option>
                 </optgroup>
                 <optgroup label='Зеленая группа'>
@@ -58,10 +57,8 @@ class storage_request_view extends sqltable_view {
                 <option value='Китуничев Д.С.' style='color:black;'>Китуничев Д.С.</option>
                 <option value='Легоньков В.А.' style='color:black;'>Легоньков В.А.</option>
                 <option value='Сисина Л.А.' style='color:black;'>Сисина Л.А.</option>
-                <option value='Разин В.Ю.' style='color:black;'>Разин В.Ю.</option>
                 <option value='Салангина И.Г.' style='color:black;'>Салангина И.Г.</option>
                 <option value='Соковнин С.А.' style='color:black;'>Соковнин С.А.</option>
-                <option value='Солпанов С.П.' style='color:black;'>Солпанов С.П.</option>
                 <option value='Соколов С.Б.' style='color:black;'>Соколов С.Б.</option>
                 <option value='Трудолюбова Р.А.' style='color:black;'>Трудолюбова Р.А.</option>
                 </optgroup>
