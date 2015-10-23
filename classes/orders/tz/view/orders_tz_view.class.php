@@ -15,7 +15,7 @@ class orders_tz_view extends sqltable_view {
 
     public function savefiletz($rec) {
         extract($rec);
-        $excel = file_get_contents($this->getDir() .($typetz == "mpp" ? "/tzmpp.xls" : ($typetz == "dpp" ? "/tzdpp.xls" : "/tzdppm.xls")));
+        $excel = file_get_contents($this->getDir() .($typetz == "mpp" ? "/tzmpp.xls" : ($typetz == "dpp" ? "/tzdpp.xls" : ($typetz == "mppb" ? "/tzmppm.xls" : "/tzdppm.xls"))));
         if (fileserver::savefile($filename, $excel)) {
             if (!fileserver::savefile($filename . ".txt", $rec)) {
                 return "Не удалось создать файл txt";
@@ -27,6 +27,7 @@ class orders_tz_view extends sqltable_view {
     }
 
     public function selecttype($data) {
+        Output::assign('mppblink', $data[mppblink]);
         Output::assign('mpplink', $data[mpplink]);
         Output::assign('dppblink', $data[dppblink]);
         Output::assign('dpplink', $data[dpplink]);

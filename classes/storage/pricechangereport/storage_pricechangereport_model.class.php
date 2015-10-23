@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * Модель для отчета по изменению цен
@@ -82,3 +82,5 @@ class storage_pricechangereport_model extends storage_movereport_model {
     }
   
 }
+
+?>

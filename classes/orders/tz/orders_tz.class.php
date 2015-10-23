@@ -31,6 +31,7 @@ class orders_tz extends sqltable {
                 //не известен тип задания - спросим
                 $data[idstr] = $this->idstr;
                 $data[mpplink] = $this->actUri('addtz', 'mpp')->url();
+                $data[mppblink] = $this->actUri('addtz', 'mppb')->url();
                 $data[dpplink] = $this->actUri('addtz', 'dpp')->url();
                 $data[dppblink] = $this->actUri('addtz', 'dppb')->url();
                 return $this->getMessage($this->view->selecttype($data));

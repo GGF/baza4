@@ -50,6 +50,7 @@ class lanch_nzap_model extends sqltable_model {
         $cols["blockname"] = "Плата";
         $cols["boardtype"] = "Тип";
         $cols["numbers"] = "Кол-во";
+        $cols["numbl"] = "Заг.";
         $cols["new"] = "Новая";
         $cols["lastdate"] = "Посл. зап";
         $cols["zadelnum"] = "Взаделе";
