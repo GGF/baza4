@@ -407,6 +407,25 @@ class update_model {
          * wideandgaps вызывается для готовых блоков, не вижу смысла отрабатывать ситуацию когда блока нет
          */
      }
+     
+     /**
+      * Сохраняет или обновляет данные о расчете цены в таблице orderformoney
+     * @param array $rec
+     * @return var
+      */
+     public function moneyfororder($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        extract($rec);
+        $rec[hash] = hash('md5',$customer.$order.$board.$mater.$trud);
+        $sql = "SELECT * FROM moneyfororder WHERE hash='{$rec[hash]}'";
+        $rs = sql::fetchOne($sql);
+        if (!empty($rs)) {
+            $rec[id] = $rs[id];
+        }
+        //echo $sql;
+        sql::insertUpdate("moneyfororder", array($rec));
+        return true;
+     }
 }
 
 ?>
