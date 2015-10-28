@@ -15,7 +15,7 @@ class orders_money_model extends sqltable_model {
         $ret = parent::getData($all, $order, $find, $idstr);
         $sql = "SELECT * 
                     FROM moneyfororder " .
-                (!empty($find) ? "WHERE (number LIKE '%{$find}%' OR orderdate LIKE '%{$find}%' ) " : "") .
+                (!empty($find) ? "WHERE (`customer` LIKE '%{$find}%' OR `order` LIKE '%{$find}%' ) " : "") .
                         "GROUP BY `customer`, `order`,`mater`,`trud` ".
                 (!empty($order) ? "ORDER BY {$order} " : "ORDER BY customer DESC ") .
                 ($all ? "LIMIT 500" : "LIMIT 20");
