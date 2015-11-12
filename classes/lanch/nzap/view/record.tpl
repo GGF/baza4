@@ -1,7 +1,7 @@
 <div id="multyfiles">Файлы</div>
 <div id="hiddenfiles">
 <a class="filelink" href="{$filelink}">Тех.Задание</a><br>
-<a class="path" href="{$zpath}">Путь  к блоку</a><br>
+<a class="path" href="{$zpath}" onclick="return false;">Путь  к блоку</a><br>
 {$orderfiles}
 </div>
 <br>
