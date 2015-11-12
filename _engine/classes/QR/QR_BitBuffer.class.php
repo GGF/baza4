@@ -105,3 +105,4 @@ class QR_BitBuffer
     $this->length++;
   }
 }
+?>

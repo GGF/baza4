@@ -143,3 +143,5 @@ final class QR_Math
     throw new QR_MathException ( "gexp($n)" );
   }
 } 
+
+?>

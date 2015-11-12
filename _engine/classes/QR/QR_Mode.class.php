@@ -18,3 +18,4 @@ abstract class QR_Mode
   const MODE_8BIT_BYTE = 4;
   const MODE_KANJI = 8;
 }
+?>

@@ -654,3 +654,4 @@ class QR_Code
     return $data;
   }
 }
+?>
