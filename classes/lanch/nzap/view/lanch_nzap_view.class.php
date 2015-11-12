@@ -63,10 +63,24 @@ class lanch_nzap_view extends sqltable_view {
             // а шаблон может быть и xls файлом, 
             if (fileserver::savefile("{$filename}.txt", $rec)) {
                 $url="http://baza3.mpp/?level=getdata&getdata[act]=checksl&slid={$number}";
-                $barcode = new BarcodeQR();
+                try {
+                    $barcode = new QR_Code(-1,QR_ErrorCorrectLevel::H);
+                    $barcode->addData($url);
+                    $barcode->make();
+                    
+                    $imgbarcode = new QR_CodeImage($barcode,150,150,10);
+                    $imgbarcode->draw();
+                    $imgbarcode->store("{$filename}.jpg");
+                    $imgbarcode->finish();
+                    @chmod("{$filename}.jpg", 0777);
+                } catch (Exception $ex) {
+                    console::getInstance()->out($ex->getMessage());
+                    console::getInstance()->out($ex->getTraceAsString());
+                }
+                /*$barcode = new BarcodeQR();
                 $barcode->url($url);
                 $barcode->draw(150, "{$filename}.png");
-                @chmod("{$filename}.png", 0777);
+                */
             } else {
                 $out = "Не удалось создать файл txt";
                 return false;
