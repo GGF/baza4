@@ -79,3 +79,4 @@ class QR_8bitByte implements QR_Byte
     $this->mode = QR_Mode::MODE_8BIT_BYTE;
   }
 }
+?>

@@ -185,3 +185,5 @@ class QR_CodeImage
     }
   }
 }
+
+?>

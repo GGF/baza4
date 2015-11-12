@@ -501,3 +501,4 @@ class QR_RSBlock
     file_put_contents($file, serialize($this->RS_BLOCK_TABLE));
   }
 }
+?>

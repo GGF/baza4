@@ -12,3 +12,5 @@
  * @package phpQr
  */
 class QR_CodeException extends ErrorException {};
+
+?>

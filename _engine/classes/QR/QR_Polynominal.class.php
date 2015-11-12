@@ -143,3 +143,4 @@ class QR_Polynominal
     return $result;
   }
 }
+?>

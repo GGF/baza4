@@ -18,3 +18,5 @@ abstract class QR_ErrorCorrectLevel
   const Q = 3;
   const H = 2;
 }
+
+?>
