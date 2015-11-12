@@ -39,3 +39,4 @@ interface QR_Byte
    */
   public function write(QR_BitBuffer $buffer);
 }
+?>
