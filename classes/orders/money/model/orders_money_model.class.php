@@ -13,7 +13,11 @@ class orders_money_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = parent::getData($all, $order, $find, $idstr);
-        $sql = "SELECT * 
+        $sql = "SELECT *,
+                    SUM(matcost) AS summatcost,
+                    SUM(matras) AS summatras,
+                    SUM(trudcost) AS sumtrudcost,
+                    SUM(trudem) AS sumtrudem
                     FROM moneyfororder " .
                 (!empty($find) ? "WHERE (`customer` LIKE '%{$find}%' OR `order` LIKE '%{$find}%' ) " : "") .
                         "GROUP BY `customer`, `order`,`mater`,`trud` ".
@@ -28,11 +32,11 @@ class orders_money_model extends sqltable_model {
         $cols[customer] = "Заказчик";
         $cols[order] = "Заказ";
         $cols[mater] = "Материал";
-        $cols[matras] = "Расход";
-        $cols[matcost] = "Стоимость";
+        $cols[summatras] = "Расход";
+        $cols[summatcost] = "Стоимость";
         $cols[trud] = "Операция";
-        $cols[trudem] = "Трудоемкость";
-        $cols[trudcost] = "Стоимость";
+        $cols[sumtrudem] = "Трудоемкость";
+        $cols[sumtrudcost] = "Стоимость";
         return $cols;
     }
 
