@@ -32,6 +32,7 @@ class orders_money_model extends sqltable_model {
         $cols[customer] = "Заказчик";
         $cols[order] = "Заказ";
         $cols[mater] = "Материал";
+        $cols[matedizm] = "ед.изм.";
         $cols[summatras] = "Расход";
         $cols[summatcost] = "Стоимость";
         $cols[trud] = "Операция";

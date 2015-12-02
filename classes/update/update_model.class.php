@@ -416,7 +416,7 @@ class update_model {
      public function moneyfororder($rec) {
         $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
-        if (empty($position)) $position = 0;
+        if (empty($position)) $position = 0; // для совместимости
         $rec[hash] = hash('md5',$customer.$order.$board.$position.$mater.$trud);
         $sql = "SELECT * FROM moneyfororder WHERE hash='{$rec[hash]}'";
         $rs = sql::fetchOne($sql);
