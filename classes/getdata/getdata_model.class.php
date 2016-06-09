@@ -53,7 +53,10 @@ class getdata_model extends sqltable_model {
     public function moneyfororder($req) {
         $rec = multibyte::cp1251_to_utf8($req);
         extract($req);
-        $out = '';    
+        $out = '';
+        $sql = "SELECT count(*) as records, `customer`, `order` as ordernumber FROM `moneyfororder`  ";
+        $rs = sql::fetchAll($sql);
+        $resarr[orderdata] = $rs;
         $sql = "SELECT board,trud,mater,SUM(matcost) AS summatcost,SUM(matras) AS summatras,SUM(trudcost) AS sumtrudcost,SUM(trudem) AS sumtrudem FROM `moneyfororder` GROUP BY `board`,`mater`,`trud` ";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
         $rs = sql::fetchAll($sql);
         $resarr[datas] = $rs;

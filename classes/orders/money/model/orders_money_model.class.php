@@ -41,6 +41,33 @@ class orders_money_model extends sqltable_model {
         return $cols;
     }
 
+    /**
+     * В остальных удаляет выбранную запись, а здесь чистит всю таблице, потому 
+     * как весь этот класс используется для переноса в таблицы эксель и проще 
+     * было там написать функции, которые забирают всё и загонять данные по 
+     * каждому заказу. Ну будет там 50-70 позиций - займет загнать минут 10.
+     * @param type $delete
+     * @return bool
+     */
+    public function delete($delete) {
+        $sql = "TRUNCATE TABLE `moneyfororder`";
+        return sql::query($sql);
+    }
+    
+    /**
+     * Вместо редактирования я просто сделаю у всех записей одинаковые заказчика
+     *  и заказ. Редактировать тут нечего, а изза ручного заполнения параметров 
+     * они получаются разные и н сгруппировать в выборке.
+     * @param type $edit
+     */
+    public function getRecord($edit) {
+        $sql="SELECT `customer`, `order` FROM `moneyfororder` LIMIT 1";
+        $rs = sql::fetchOne($sql);
+        $sql = "UPDATE `moneyfororder` SET `customer`='{$rs["customer"]}',`order`='{$rs["order"]}'";
+        sql::query($sql);
+        return true; 
+    }
+    
 }
 
 ?>
