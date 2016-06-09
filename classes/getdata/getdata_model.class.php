@@ -46,6 +46,43 @@ class getdata_model extends sqltable_model {
     }
     
     /**
+     * moneyfororder возвращает данные для расчетов на одну плату
+     * @param array $req Массив $REQUEST из контроллера передается
+     * @return json
+     */
+    public function moneyfororder($req) {
+        $rec = multibyte::cp1251_to_utf8($req);
+        extract($req);
+        $out = '';    
+        $sql = "SELECT board,trud,mater,SUM(matcost) AS summatcost,SUM(matras) AS summatras,SUM(trudcost) AS sumtrudcost,SUM(trudem) AS sumtrudem FROM `moneyfororder` GROUP BY `board`,`mater`,`trud` ";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
+        $rs = sql::fetchAll($sql);
+        $resarr[datas] = $rs;
+        $sql = "SELECT board FROM `moneyfororder` GROUP BY `board`";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
+        $rs = sql::fetchAll($sql);
+        $resarr[boards] = $rs;
+        
+        //return print_r($rs);
+        /*$board = $rs[0][board];
+        foreach ($rs as $res) {
+            if ($res[board] != $board ) {
+                $resarr[$board] = $arr;
+                $arr = array();
+                $board = $res[board];     
+            }
+            if ($res[trud] == '' ) {
+                $arr[$res[mater]][ras] = $res[summatras];
+                $arr[$res[mater]][cost] = $res[summatcost];
+            } else {
+                $arr[$res[trud]][ras] = $res[sumtrudem];
+                $arr[$res[trud]][cost] = $res[sumtrudcost];
+            }
+        }
+        $resarr1[boards] = $resarr;*/
+        $out .= json_encode($resarr,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
+        return $out;
+    }
+    
+    /**
      * Возвращает данные по сопроводительному листу
      * @param array $rec массив $REQUEST а в нем нас интересует параметр slid
      * @return string html код с информацией
