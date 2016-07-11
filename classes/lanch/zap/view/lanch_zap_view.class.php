@@ -24,6 +24,7 @@ class lanch_zap_view extends sqltable_view {
         Output::assign('slid', $rec[tz][id]);
         $out .= $this->fetch('link.tpl');
         $out .= "Письма:&nbsp;".$rec[letter][link];
+        if ($rec[zadel]>0) $out .= "В&nbsp;заделе&nbsp;{$rec[zadel]}&nbsp;шт.";
         // Добавить информацию о платах в блоке
         foreach ($rec[boards] as $value) {
             $files = $value[filelinks][link];
