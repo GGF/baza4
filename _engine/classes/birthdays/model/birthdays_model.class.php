@@ -19,6 +19,7 @@ class birthdays_model {
             if (!$filetime || (date('d',$filetime)!=date('d'))) {
                 $data = preg_replace("/\x01/","",file_get_contents('http://www.calend.ru/img/export/calend.rss'));
                 @file_put_contents ($filenamerss, $data);
+                @chmod($filenamerss, 0777);
             }
             $rss = simplexml_load_file($filenamerss);
             $count = 0;

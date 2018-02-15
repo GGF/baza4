@@ -24,7 +24,7 @@ class orders_blocks_model extends sqltable_model {
                     (!empty($find) ? "WHERE blockname LIKE '%{$find}%' OR board_name LIKE '%{$find}%' " : "") .
                     " GROUP BY blockid " .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY blockname  DESC ") .
-                    ($all ? "LIMIT 50" : "LIMIT 20");
+                    ($all ? "LIMIT 250" : "LIMIT 20");
         } else {
             $cusid = $_SESSION[customer_id];
             $customer = $_SESSION[customer];
@@ -37,7 +37,7 @@ class orders_blocks_model extends sqltable_model {
                     (!empty($find) ? "WHERE (blockname LIKE '%{$find}%'  OR board_name LIKE '%{$find}%') AND customers.id='{$_SESSION[customer_id]}' " : " WHERE customers.id='{$_SESSION[customer_id]}' ") .
                     " GROUP BY blockid " .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY blockname DESC ") .
-                    ($all ? "LIMIT 50" : "LIMIT 20");
+                    ($all ? "LIMIT 150" : "LIMIT 20");
         }
         $ret = sql::fetchAll($sql);
         foreach ($ret as &$value) {

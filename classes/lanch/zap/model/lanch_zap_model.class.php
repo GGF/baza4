@@ -142,6 +142,20 @@ class lanch_zap_model extends sqltable_model {
         return $rec;
     }
 
+    public function getZadel($id) {
+        $sql = "SELECT * FROM lanch WHERE id='{$id}'";
+        $res = sql::fetchOne($sql);
+        if (empty ($res))
+            return false;
+        $sql = "SELECT count(*) as numbers,board_id FROM `blockpos` WHERE block_id='{$res[block_id]}' ";
+        $res = sql::fetchOne($sql);
+        if (empty ($res))
+            return false;
+        if ($res[numbers]>1) return false;
+        $sql = "SELECT sum(`number`) as numbers FROM `zadel`  WHERE `board_id`='{$res[board_id]}' GROUP BY `board_id`";
+        $res = sql::fetchOne($sql);
+        return $res[numbers];
+    }
     public function getPath($id) {
         $sql = "SELECT customer,blockname
             FROM lanch JOIN (blocks,customers)
