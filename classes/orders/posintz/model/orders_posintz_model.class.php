@@ -273,8 +273,9 @@ class orders_posintz_model extends sqltable_model {
         $rec[mask]=$matches[mask];
         $rec[nummask]=empty($matches[nummask])?2:$matches[nummask];
         $rec[frez_factor]=$rec[frez_factor]>0?$rec[frez_factor]:1.0;
-        $orderstring = fileserver::removeOSsimbols($rec[letter]." tz{$rec[tz_id]} posintz{$id}");
-        $rec[filename] = "t:\\\\Расчет стоимости плат\\\\{$rec[customer]}\\\\{$rec[blockname]}\\\\{$orderstring}.xls";
+        $blockstring = fileserver::removeOSsimbols($rec[blockname]." tz {$rec[tz_id]} posintz {$id}");
+        $orderstring = fileserver::removeOSsimbols($rec[letter]);
+        $rec[filename] = "t:\\\\Расчет стоимости плат\\\\{$rec[customer]}\\\\{$orderstring}\\\\{$blockstring}.xls";
         return $rec;
     }
     
@@ -292,7 +293,12 @@ class orders_posintz_model extends sqltable_model {
         if (empty($res[link])) {
             return false;
         } else {
-            return $res[file][0][file_link];
+            if (file_exists(fileserver::serverfilelink($res[file][0][file_link]))) {
+                return $res[file][0][file_link];
+            } else {
+                return false;
+            }
+            
         }
     }
 }
