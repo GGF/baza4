@@ -264,7 +264,7 @@ class orders_posintz_model extends sqltable_model {
         $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rec["bcid"])),true); //получим текщий комент из блока
         $rec[eltest] = $params[eltest];
         $rec[etpib] = $params[etpib];
-        $rec[etpoints] = $params[etpoints];
+        $rec[etpoints] = $params[etpoints]*$params[etpib];// В ТЗ используется количество точек на заготовку
         $rec[etcompl] = $params[etcompl];
         $rec[thickness] = (float)$rec[thickness];
         $rec[type] = $rec[layers]>2 ? 'mpp' : 'dpp';

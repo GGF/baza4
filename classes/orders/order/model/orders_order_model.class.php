@@ -23,7 +23,7 @@ class orders_order_model extends sqltable_model {
                         ON customers.id=customer_id " .
                     (!empty($find) ? "WHERE (number LIKE '%{$find}%' OR orderdate LIKE '%{$find}%' ) " : "") .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY orders.orderdate DESC ") .
-                    ($all ? "LIMIT 50" : "LIMIT 20");
+                    ($all ? "LIMIT 150" : "LIMIT 20");
         } else {
             // sql
             $sql = "SELECT *, orders.id AS oid, orders.id
@@ -31,7 +31,7 @@ class orders_order_model extends sqltable_model {
                             JOIN customers ON customers.id=customer_id " .
                     (!empty($find) ? "WHERE (number LIKE '%{$find}%' OR orderdate LIKE '%{$find}%' ) AND customer_id='{$customer_id}' " : "WHERE customer_id='{$customer_id}' ") .
                     (!empty($order) ? "ORDER BY {$order} " : "ORDER BY orders.orderdate DESC ") .
-                    ($all ? "LIMIT 50" : "LIMIT 20");
+                    ($all ? "LIMIT 150" : "LIMIT 20");
         }
         $ret = sql::fetchAll($sql);
         foreach ($ret as &$value) {
