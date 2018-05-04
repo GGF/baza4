@@ -1,1 +1,1 @@
-<a class='filelink' href='{$sllink}'>СЛ-{$slid}</a>&nbsp;&nbsp;&nbsp;
+<a class='filelink' href='{$sllink}' id='sl{$slid}'>СЛ-{$slid}</a>&nbsp;&nbsp;&nbsp;
