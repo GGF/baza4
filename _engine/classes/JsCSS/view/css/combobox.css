@@ -1,0 +1,25 @@
+select {
+    padding:    0;
+}
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+}
+.custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+}
+
+.custom-combobox-input {
+    margin: 0;
+    width: 85%;
+}
+
+/* чтобы на модальном диалоге видно было*/
+.ui-menu {
+    /* диалог 101 */
+    z-index: 102;
+}

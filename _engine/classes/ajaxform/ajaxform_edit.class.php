@@ -122,7 +122,7 @@ class ajaxform_edit {
         $out = '';
         if ($field->type != AJAXFORM_TYPE_HIDDEN) {
             $out .= "<div id='tr{$field->name}'>";
-            $out .= "<div style='float: right;' class=nobreak>" . $this->form->add($field->name) . "</div><label class=nobreak>{$field->label}:</label><div style='float:none;clear:both;'></div></div>";
+            $out .= "<label class=nobreak>{$field->label}:</label><div style='float: right;' class=nobreak>" . $this->form->add($field->name) . "</div><div style='float:none;clear:both;'></div></div>";
         } else {
             $out .= "<div class='hidden'>" . $this->form->add($field->name)."</div>";
         }

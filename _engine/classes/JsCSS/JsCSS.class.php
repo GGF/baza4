@@ -21,8 +21,9 @@ abstract class JsCSS implements IJsCSS {
     }
 
     public function getWebDir($dir=false) {
-        $dir = $dir ? $dir : str_replace('\\', '/', $this->dir);
-        return str_ireplace($_SERVER['DOCUMENT_ROOT'], "", $dir);
+        /* @var $gwddir string */
+        $gwddir = $dir ? $dir : str_replace('\\', '/', $this->dir);
+        return str_ireplace($_SERVER['DOCUMENT_ROOT'], "", $gwddir);
     }
 
     public function getJavascripts() {
@@ -74,11 +75,9 @@ abstract class JsCSS implements IJsCSS {
 
     static public function getAllJavascripts() {
         $js = array();
-        $js[] = self::getWebDir(__DIR__) . '/js/jquery.js';
-        $js[] = self::getWebDir(__DIR__) . '/js/jquery.ui.core.min.js';
-        $js[] = self::getWebDir(__DIR__) . '/js/jquery.ui.widget.min.js';
-        $js[] = self::getWebDir(__DIR__) . '/js/jquery.ui.mouse.min.js';
-        $js[] = self::getWebDir(__DIR__) . '/js/jquery.ui.effect.min.js';
+        // Список нужно начинать в определенном порядке: сначала саму ждейквери, потом ядро
+        $js[] = self::getWebDir(__DIR__) . '/js/jquery-3.3.1.js';
+        $js[] = self::getWebDir(__DIR__) . '/js/jquery-ui.js';
         $files = self::getDirDeep(__DIR__ . '/js/' , "/(\.js|\.js\.php)$/i", true);
         $js = array_merge($js,$files);
         foreach (self::$all_jscss as $one) {
@@ -127,17 +126,19 @@ abstract class JsCSS implements IJsCSS {
     }
 
     public function getDeepAllHeaderBlock($dir=false) {
-        $csses = $this->getAllStylesheets();
-        $csses = $csses + self::getDirDeep($dir ? $dir : $this->getDir(),"/(\.css|\.css\.php)$/i",true);
-        $csses = array_unique($csses);
-        $jses = $this->getAllJavascripts();
-        $jses = $jses + self::getDirDeep($dir ? $dir : $this->getDir(), "/(\.js|\.js\.php)$/i", true);
-        $jses = array_unique($jses);
+        $nucsses = $this->getAllStylesheets();
+        $nucsses += self::getDirDeep($dir ? $dir : $this->getDir(),"/(\.css|\.css\.php)$/i",true);
+        $csses = array_unique($nucsses);
+        $nujses = $this->getAllJavascripts();
+        $nujses += self::getDirDeep($dir ? $dir : $this->getDir(), "/(\.js|\.js\.php)$/i", true);
+        $jses = array_unique($nujses);
         $ret = "";
-        foreach ($csses as $one)
+        foreach ($csses as $one) {
             $ret .= "<style media='all' type='text/css' >@import url(/{$one}?{$this->getVersion()});</style> \n";
-        foreach ($jses as $one)
+        }
+        foreach ($jses as $one) {
             $ret .= "<script type='text/javascript' src='/{$one}?{$this->getVersion()}'></script>\n";
+        }
         return $ret;
     }
 

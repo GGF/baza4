@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="head">
+</Property><Property Name="Файл решения" Value="P:\win32\tools\getpcbtype\head.sln">
+</Property><Property Name="Файл параметров пользователя" Value="P:\win32\tools\getpcbtype\head.suo">
+</Property><Property Name="Date" Value="19 января 2010 г.">
+</Property><Property Name="Time" Value="10:45">
+</Property><Property Name="Номер записи" Value="2">
+</Property></Properties><Event ErrorLevel="2" Project="" Source="head.sln" Description="Ошибка при создании резервного файла: P:\win32\tools\getpcbtype\head.sln.old">
+</Event><Event ErrorLevel="2" Project="" Source="head.suo" Description="Ошибка при создании резервного файла: P:\win32\tools\getpcbtype\head.suo.old">
+</Event><Event ErrorLevel="0" Project="head" Source="head.vcproj" Description="Веб-развертывание на локальном IIS-сервере больше не поддерживается. Инструмент веб-развертывания был удален из параметров проекта.">
+</Event><Event ErrorLevel="1" Project="head" Source="head.vcproj" Description="Приложение было обновлено, чтобы включить параметры, связанные с контролем учетных записей пользователей (UAC), появившемся в Windows Vista. По умолчанию, в Windows Vista при включенном UAC, приложение запускается с теми же привилегиями, что и запустивший его процесс. Это также делает невозможным запуск приложений с технологией виртуализации. Параметры, связанные с UAC можно поменять на странице свойств проекта.">
+</Event><Event ErrorLevel="0" Project="head" Source="head.vcproj" Description="Из проектного файла была успешно сделана резервная копия &quot;P:\win32\tools\getpcbtype\head.vcproj.8.00.old&quot;.">
+</Event><Event ErrorLevel="0" Project="head" Source="head.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="head" Source="head.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="fork" Source="..\fork\fork.vcproj" Description="Веб-развертывание на локальном IIS-сервере больше не поддерживается. Инструмент веб-развертывания был удален из параметров проекта.">
+</Event><Event ErrorLevel="1" Project="fork" Source="..\fork\fork.vcproj" Description="Приложение было обновлено, чтобы включить параметры, связанные с контролем учетных записей пользователей (UAC), появившемся в Windows Vista. По умолчанию, в Windows Vista при включенном UAC, приложение запускается с теми же привилегиями, что и запустивший его процесс. Это также делает невозможным запуск приложений с технологией виртуализации. Параметры, связанные с UAC можно поменять на странице свойств проекта.">
+</Event><Event ErrorLevel="0" Project="fork" Source="..\fork\fork.vcproj" Description="Из проектного файла была успешно сделана резервная копия &quot;P:\win32\tools\fork\fork.vcproj.8.00.old&quot;.">
+</Event><Event ErrorLevel="0" Project="fork" Source="..\fork\fork.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="fork" Source="..\fork\fork.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="head.sln" Description="Преобразование решения успешно завершено">
+</Event><Event ErrorLevel="3" Project="" Source="head.sln" Description="Converted">
+</Event></UpgradeLog>

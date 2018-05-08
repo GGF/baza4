@@ -1,0 +1,9 @@
+PCAD2000	C:\Workspaces\GGF\main.c	/^#define PCAD2000 2000$/;"	macro	line:32
+PCAD4	C:\Workspaces\GGF\main.c	/^#define PCAD4 4$/;"	macro	line:33
+PCAD85	C:\Workspaces\GGF\main.c	/^#define PCAD85 85$/;"	macro	line:34
+CAM7	C:\Workspaces\GGF\main.c	/^#define CAM7 7$/;"	macro	line:35
+CAM8	C:\Workspaces\GGF\main.c	/^#define CAM8 8$/;"	macro	line:36
+CAM9	C:\Workspaces\GGF\main.c	/^#define CAM9 9$/;"	macro	line:37
+CAM10	C:\Workspaces\GGF\main.c	/^#define CAM10 10$/;"	macro	line:38
+usage	C:\Workspaces\GGF\main.c	/^void usage(){$/;"	function	line:40	signature:()
+main	C:\Workspaces\GGF\main.c	/^int main(int argc, char* argv[])$/;"	function	line:43	signature:(int argc, char* argv[])

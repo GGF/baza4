@@ -92,6 +92,7 @@ class lanch_nzap_view extends sqltable_view {
         }
         // сохранить 
         if (fileserver::savefile($filename, $excel)) {
+            Output::assign('party', $party);
             Output::assign('sllink', fileserver::sharefilelink($filename));
             Output::assign('slid', $lanch_id);
             $out = $this->fetch('partylink.tpl') . ($last ? '<script>reload_table();</script>' : '');
