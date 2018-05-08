@@ -28,7 +28,10 @@ $(function(){
     $(document).on("click.mySilentEvent", "a[data-silent], input[data-silent]", function(){
         var a = this;
         var target_element = $(this).attr("data-silent");
+
         var action = $(this).attr("data-silent-action");
+        /* const потому как иммутабельная& посмотрим как обрабатывается этот код ES-6*/
+        const after_action = $(this).attr("data-silent-afteraction");
         var url = jQuery.fn.lego.getAjaxUrl($(this).attr("href"), $(this).attr("legotarget"));
         //var load = $("<div class='ajaxloading'>Loading...</div>");
         var load = $('.ajaxloading');
@@ -83,6 +86,10 @@ $(function(){
                 //load.remove();
                 load.hide();
                 $(a).show();
+                /* выполнить последействие (небезопасно)*/
+                console.log(after_action);
+                jQuery.globalEval(after_action);
+
             }
         });
         return false;
