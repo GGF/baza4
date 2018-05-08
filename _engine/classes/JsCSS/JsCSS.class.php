@@ -21,8 +21,9 @@ abstract class JsCSS implements IJsCSS {
     }
 
     public function getWebDir($dir=false) {
-        $dir = $dir ? $dir : str_replace('\\', '/', $this->dir);
-        return str_ireplace($_SERVER['DOCUMENT_ROOT'], "", $dir);
+        /* @var $gwddir string */
+        $gwddir = $dir ? $dir : str_replace('\\', '/', $this->dir);
+        return str_ireplace($_SERVER['DOCUMENT_ROOT'], "", $gwddir);
     }
 
     public function getJavascripts() {
@@ -125,17 +126,21 @@ abstract class JsCSS implements IJsCSS {
     }
 
     public function getDeepAllHeaderBlock($dir=false) {
-        $csses = $this->getAllStylesheets();
-        $csses = $csses + self::getDirDeep($dir ? $dir : $this->getDir(),"/(\.css|\.css\.php)$/i",true);
-        $csses = array_unique($csses);
-        $jses = $this->getAllJavascripts();
-        $jses = $jses + self::getDirDeep($dir ? $dir : $this->getDir(), "/(\.js|\.js\.php)$/i", true);
-        $jses = array_unique($jses);
+        $nucsses = $this->getAllStylesheets();
+        $nucsses += self::getDirDeep($dir ? $dir : $this->getDir(),"/(\.css|\.css\.php)$/i",true);
+        $csses = array_unique($nucsses);
+        $nujses = $this->getAllJavascripts();
+        $nujses += self::getDirDeep($dir ? $dir : $this->getDir(), "/(\.js|\.js\.php)$/i", true);
+        $jses = array_unique($nujses);
         $ret = "";
-        foreach ($csses as $one)
-            $ret .= "<style media='all' type='text/css' >@import url(/{$one}?{$this->getVersion()});</style> \n";
-        foreach ($jses as $one)
-            $ret .= "<script type='text/javascript' src='/{$one}?{$this->getVersion()}'></script>\n";
+        foreach ($csses as $one) {
+            //$ret .= "<style media='all' type='text/css' >@import url(/{$one}?{$this->getVersion()});</style> \n";
+            $ret .= "<style media='all' type='text/css' >@import url(/{$one});</style> \n";
+        }
+        foreach ($jses as $one) {
+            //$ret .= "<script type='text/javascript' src='/{$one}?{$this->getVersion()}'></script>\n";
+            $ret .= "<script type='text/javascript' src='/{$one}'></script>\n";
+        }
         return $ret;
     }
 

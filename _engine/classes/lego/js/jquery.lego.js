@@ -87,7 +87,6 @@ $(function(){
                 load.hide();
                 $(a).show();
                 /* выполнить последействие (небезопасно)*/
-                console.log(after_action);
                 jQuery.globalEval(after_action);
 
             }

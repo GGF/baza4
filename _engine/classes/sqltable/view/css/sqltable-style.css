@@ -152,7 +152,7 @@ p {
     -moz-transform: rotate(90deg);
     -webkit-transform: rotate(90deg);
     -o-transform: rotate(90deg);
-    writing-mode: tb-rl;
+    writing-mode: vertical-rl;
 }
 
 #calcbutton {
@@ -161,4 +161,11 @@ p {
     margin:0;
     font-size:12px;
     font-family: 'trebuchet ms', tahoma, arial, sans-serif;
+}
+
+a.printlink {
+    background: url(img/b_print.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    padding: 8px;
 }
