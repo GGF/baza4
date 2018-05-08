@@ -134,12 +134,10 @@ abstract class JsCSS implements IJsCSS {
         $jses = array_unique($nujses);
         $ret = "";
         foreach ($csses as $one) {
-            //$ret .= "<style media='all' type='text/css' >@import url(/{$one}?{$this->getVersion()});</style> \n";
-            $ret .= "<style media='all' type='text/css' >@import url(/{$one});</style> \n";
+            $ret .= "<style media='all' type='text/css' >@import url(/{$one}?{$this->getVersion()});</style> \n";
         }
         foreach ($jses as $one) {
-            //$ret .= "<script type='text/javascript' src='/{$one}?{$this->getVersion()}'></script>\n";
-            $ret .= "<script type='text/javascript' src='/{$one}'></script>\n";
+            $ret .= "<script type='text/javascript' src='/{$one}?{$this->getVersion()}'></script>\n";
         }
         return $ret;
     }
