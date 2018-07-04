@@ -58,7 +58,8 @@ class lanch_nzap_model extends sqltable_model {
     }
 
     public function delete($id) {
-        //$sql = "DELETE FROM posintz WHERE id='{$id}'";
+        // для того чтобы удалить из незапущенных, нужно пометить запущенной, 
+        // то есть поставить дату запуска, одна сопроводительного листа в запущенных не появится
         $sql = "UPDATE posintz SET ldate=NOW() WHERE id='{$id}'";
         sql::query($sql);
         return sql::affected();
