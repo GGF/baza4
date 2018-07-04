@@ -65,7 +65,7 @@ class lanch_nzap_model extends sqltable_model {
     }
 
     public function getRecord($id) {
-        $sql = "SELECT *,tz.id AS tzid, blocks.sizex AS bsizex,
+        $sql = "SELECT *,tz.id AS tzid, blocks.sizex AS bsizex, posintz.id as pos_in_tz_id,
             blocks.sizey AS bsizey,
             blocks.id AS bid
             FROM posintz JOIN (tz,filelinks)
@@ -183,8 +183,7 @@ class lanch_nzap_model extends sqltable_model {
             $party = false;
             $sql = "SELECT lanch.id as lid,file_link FROM lanch
                         JOIN filelinks ON (file_link_id=filelinks.id)
-                        WHERE tz_id='{$rs["tz_id"]}'
-                            AND pos_in_tz='{$rs["posintz"]}' AND part='{$i}'";
+                        WHERE pos_in_tz_id='{$rs["pos_in_tz_id"]}' AND part='{$i}'";
             $rs3 = sql::fetchOne($sql);
             if (!empty($rs3)) {
                 $party[sllink] = fileserver::sharefilelink($rs3["file_link"]);
