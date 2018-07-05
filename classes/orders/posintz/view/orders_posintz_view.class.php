@@ -35,7 +35,7 @@ class orders_posintz_view extends sqltable_view {
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_SELECT,
             "name" => "block_id",
-            "label" => "Плата:",
+            "label" => "Плата",
             "values" => $rec["blocks"],
             "value" => '',
             "options" => array("html" => " boardid=1 "),

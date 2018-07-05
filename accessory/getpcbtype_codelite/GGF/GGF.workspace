@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Workspace Name="GGF" Database=".\GGF.tags">
+  <Project Name="testqt" Path="testqt.project" Active="No"/>
+  <Project Name="pcbtype" Path="pcbtype.project" Active="Yes"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="no">
+      <Project Name="testqt" ConfigName="Debug"/>
+      <Project Name="pcbtype" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="testqt" ConfigName="Release"/>
+      <Project Name="pcbtype" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

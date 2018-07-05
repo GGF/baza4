@@ -183,6 +183,14 @@ $(document).ready(function(){
             document.bazaapplet.openfile('\"'+link.split(':')[1].replace(re,'\\')+'\"');
             return false;
     });
+    // Ссылки "печатать"
+    $(document).on("click","a.printlink", function(){
+        var link = $(this).attr("href");
+            var re = new RegExp('/','gi');
+            // программа лежит в аксессуарах, скопирована с http://www.robvanderwoude.com/csharpexamples.php#PrintAny
+            document.bazaapplet.openfile('printany.exe \"'+link.split(':')[1].replace(re,'\\')+'\"');
+            return false;
+    });
     // при клике на ссылках "путь" соответственно запустим программу открытия пути
     $(document).on("click", "a.path", function(){
         var link = $(this).attr("href");
@@ -190,7 +198,7 @@ $(document).ready(function(){
             // а программа хранится в локальном хранилище, и довольно долго
             var totalcmd = localStorage.getItem('total_cmd_path'); // 'd:\\Total Commander XP\\TOTALCMD.EXE';
 
-            if (totalcmd == null) {
+            if (totalcmd === null) {
                 // если не хранится пошлем настраивать
                 alert(Lang.get('sqltable.warnings.nototalfind'));
                 $(this).attr("href","/?level=setting");
@@ -199,6 +207,7 @@ $(document).ready(function(){
             //alert('\"mkdir \"'+link+'\"\"');
             //document.bazaapplet.openfile('\"mkdir \"'+link+'\"\"');
             var res = document.bazaapplet.openfile('\"\"'+totalcmd+'\" \"'+link+'\"\"');
+            $().lego.log(res);
             return false; // чтоб нажатие на ссылку броузер не отработал нормальным способом
     });
 
@@ -335,7 +344,7 @@ function CMenu_builder(oEvent) {
          * который мы, например, можем хотеть скопировать/вставить при помощи основного меню :-)*/
         case (document.getSelection().length > 0) :
             break;
-        case oEvent.target.nodeName == 'A' && oEvent.target.className.search('filelink')>-1 :
+        case oEvent.target.nodeName === 'A' && oEvent.target.className.search('filelink')>-1 :
             /* генерируем данные для одного случая в массив objMenu */
             objMenu.push({
                 'Скопировать в буффер' : function () {
@@ -344,10 +353,10 @@ function CMenu_builder(oEvent) {
                 }
             });
             break;
-        case oEvent.target.nodeName == 'BUTTON' && oEvent.target.className.search('subElems')>-1 :
+        case oEvent.target.nodeName === 'BUTTON' && oEvent.target.className.search('subElems')>-1 :
             /* генерируем данные для другого случая objMenu */
             break;
-        case oEvent.target.nodeName == 'a' && oEvent.target.parentNode.id =='footer' :
+        case oEvent.target.nodeName === 'a' && oEvent.target.parentNode.id ==='footer' :
             /* генерируем данные для другого случая objMenu из статичного набора*/
             objMenu.push({
                 'Действие №1' : function () {
@@ -379,7 +388,7 @@ function copytable() {
     // для каждой строчки
     $('table.listtable>tbody>tr').each(function(){
         $(this).find('td').each(function(){
-            if ( str == '') {
+            if ( str === '') {
                 // для пустой добавляем
                 str = $(this).text() ;
             } else {
