@@ -2,12 +2,12 @@
     $.fn.keyboard = function () {
         $k.bind(this, arguments);
         return this;
-    }
+    };
 
     $.keyboard = function () {
         $k.bind($(document), arguments);
         return this;
-    }
+    };
 	
     var $k = {
         keyboardBinds : {}, // смотри коментарий к bind
@@ -26,7 +26,7 @@
                 return codes;
             },
             add : function (e) {
-                if (e.keyCode == 0) {
+                if (e.keyCode === 0) {
                 // throw 'ZeroKeyCodeException';
                 } else {
                     $k.keys.rm(e);
@@ -36,7 +36,7 @@
             },
             rm : function (e) {
                 for (var i = 0; i < $k.keys.cont.length; i++) {
-                    if ($k.keys.cont[i].keyCode == e.keyCode) {
+                    if ($k.keys.cont[i].keyCode === e.keyCode) {
                         $k.keys.cont.splice(i,1); 
                         // delete тут не проходит изза 
                         // невозможности перевести в объект
@@ -164,13 +164,13 @@
             adown:40
         },
         parseArgs : function (args) {
-            if (typeof args[0] == 'object') {
+            if (typeof args[0] === 'object') {
                 return {
                     setup : args[0]
                 };
             } else {
-                var secondIsFunc = (typeof args[1] == 'function');
-                var isDelete = !secondIsFunc && (typeof args[2] != 'function');
+                var secondIsFunc = (typeof args[1] === 'function');
+                var isDelete = !secondIsFunc && (typeof args[2] !== 'function');
                 var argsObj = {};
                 argsObj.keys = args[0];
                 if ($.isArray(argsObj.keys)) {
@@ -183,7 +183,7 @@
                 {
                     argsObj.func = secondIsFunc ? args[1] : args[2];
                     argsObj.cfg  = secondIsFunc ? args[2] : args[1];
-                    if (typeof argsObj.cfg != 'object') {
+                    if (typeof argsObj.cfg !== 'object') {
                         argsObj.cfg = {};
                     }
                     argsObj.cfg = $.extend(clone($k.setup), argsObj.cfg);
@@ -192,7 +192,7 @@
             }
         },
         getIndex : function (keyCodes, order) {
-            return (order == 'strict') ?
+            return (order === 'strict') ?
             's.' + keyCodes.join('.') :
             'f.' + clone(keyCodes).sort().join('.');
         },
@@ -443,9 +443,9 @@
                 }
             // тут хорошо бы проверить на наличие событий и сделать unbind если пусто
             // с $(document) не понятно делать unbind или нет
-            // if (empty($k.keyboardBinds[uid][args.cfg.event])) {
-            // 	$obj.unbind(args.cfg.event);
-            // }
+             if (empty($k.keyboardBinds[uid][args.cfg.event])) {
+             	$obj.unbind(args.cfg.event);
+             }
             }
         },
         init : function () {
@@ -453,7 +453,7 @@
             .keydown ($k.keys.add)
             .keyup (function (e) {
                 setTimeout(function () {
-                    $k.keys.rm(e)
+                    $k.keys.rm(e);
                 }, 0);
             })
             .blur ( $k.keys.clear );// работает только в FF
@@ -462,11 +462,11 @@
 
     var inArrayR = function (value, array) {
         for (var i = 0; i < array.length; i++) {
-            if (typeof array[i] == 'object' || $.isArray(array[i])) {
+            if (typeof array[i] === 'object' || $.isArray(array[i])) {
                 if (inArrayR(value, array[i])) {
                     return true;
                 }
-            } else if (value == array[i]) {
+            } else if (value === array[i]) {
                 return true;
             }
         }
@@ -474,14 +474,14 @@
     }
 
     var inArray = function (value, array) {
-        return ($.inArray(value, array) != -1);
+        return ($.inArray(value, array) !== -1);
     };
 
     var range = function (from, to) {
         var r = [];
         do {
             r.push(from);
-        } while (from++ < to)
+        } while (from++ < to);
         return r;
     };
 
@@ -490,13 +490,13 @@
         if ($.isArray(obj)) {
             newObj = [];
             for (i = 0; i < obj.length; i++) {
-                newObj[i] = (typeof obj[i] == 'object' || $.isArray(obj[i]))
+                newObj[i] = (typeof obj[i] === 'object' || $.isArray(obj[i]))
                 ? clone(obj[i]) : obj[i];
             }
         } else {
             newObj = {};
             for (i in obj) {
-                newObj[i] = (typeof obj[i] == 'object' || $.isArray(obj[i]))
+                newObj[i] = (typeof obj[i] === 'object' || $.isArray(obj[i]))
                 ? clone(obj[i]) : obj[i];
             }
         }
@@ -517,7 +517,7 @@
             return true;
         }
 
-        if (typeof mixed_var == 'object') {
+        if (typeof mixed_var === 'object') {
             for (key in mixed_var) {
                 return false;
             }
@@ -527,7 +527,7 @@
         return false;
     }
     var keybdebug = function (text) {
-        //log(text);
+        log(text);
     }
 
     $k.init();
