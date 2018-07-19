@@ -2,6 +2,18 @@
 // Для работы требуется JQuery. Автор: Олег Йожик Дубров
 
 $(function(){
+    
+    /**
+     * Для отладки, пишет в консоль что попрошу, потом можно закоментировать 
+     * вывод только здесь, а не по всему файлу
+     * 
+     * @param {string} what
+     * @returns none
+     */
+    let dump = (what) => {
+      //console.log('lego hotkeys.js => '+ what);
+    };
+    
     // Задаем псевдоними для каждой кнопки,
     // создав специальный ассоциативный массив:
     var keyCodes = {
@@ -142,7 +154,7 @@ $(function(){
             p.css("left", $(this).position().left - p.width());
             p.css("top", $(this).position().top - p.height());
         });
-    }
+    };
 
     // скрыть эти подсказки
     var hideHotPrompts = function(){
@@ -150,22 +162,29 @@ $(function(){
         $("a[hotkey], input[hotkey]").each(function(a){
             $(".hotprompt").remove();
         });
-    }
+    };
 
     // просто функция, проверяющая массив на предмет существования элемента
     var in_array = function(needle, haystack){
-        for (key in haystack)
-            if (haystack[key] == needle) return true;
+        var key;
+        for (key in haystack) {
+            if (haystack[key] === needle) { 
+                return true;
+            }
+        }
         return false;
-    }
+    };
 
     var Handled;
+    dump("Start");
     $(document).keypress(function(ev) {
+        dump("hotkeys.js keypress");
         if (Handled) return false;
         return true;
     });
     // Если нажата клавиша на странице
     $(document).keydown(function(e){
+        dump("document keydown");
         var lastGood = false;
         Handled = false;
         // то перебираем все ссылки и инпуты, у которых есть атрибут hotkey
@@ -180,7 +199,7 @@ $(function(){
             // Оставшиеся в массиве клавиши
             // считаются системными (Ctrl, Alt, Shift)
             for(var i in words) syskeys.push(words[i].replace(/\s+/g,""));
-            if(keyCodes[key] != e.keyCode) return;
+            if(keyCodes[key] !== e.keyCode) return;
             //код клавиши не подошел - прочь
             if(in_array('Ctrl', syskeys)    && !e.ctrlKey) return;
             ////Ctrl не подошел - прочь
@@ -197,7 +216,7 @@ $(function(){
         //(или инпут) таки найдена:
         if(lastGood){
             // то если это форма, то субмитим:
-            if(lastGood.attr("type") == 'submit')
+            if(lastGood.attr("type") === 'submit')
                 $(lastGood.context.form).submit();
             else{ // а если ссылка, то кликаем
                 var href = lastGood.attr("href");
@@ -214,7 +233,7 @@ $(function(){
 
         // А это для прочих случаев:
         // если нажата клавиша CTRL - то показываем оранжевую карту клавиш
-        if(e.keyCode == keyCodes.ctrl){
+        if(e.keyCode === keyCodes.ctrl){
             showHotMap();
             showHotPrompts(); //и подсказки
         }
@@ -223,7 +242,8 @@ $(function(){
 
     // на отпускание любой клавиши - скрываем подсказки и карту клавиш
     $("html").keyup(function(e){
-        if(e.keyCode == keyCodes.ctrl){
+        dump("html keyup");
+        if(e.keyCode === keyCodes.ctrl){
             hideHotPrompts();
             hideHotMap();
         }
@@ -263,11 +283,11 @@ $(function(){
             hotmap.append("<b>"+hotkey+"</b> "+display_text+"<br />");
         });
         hotmap.append('<style>@media print { .hotsitemap {display:none;} .hotprompt {display:none;}}</style>');
-    }
+    };
 
     // скрыть эту карту
     var hideHotMap = function(){
         $(".hotsitemap").remove();
-    }
+    };
 
 });

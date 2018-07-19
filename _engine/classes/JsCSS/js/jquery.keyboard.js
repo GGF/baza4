@@ -1,3 +1,5 @@
+/* global clone */
+
 (function ($) {	
     $.fn.keyboard = function () {
         $k.bind(this, arguments);
@@ -46,12 +48,11 @@
                 }
             },
             clear : function () {
-                $k.keys.dump('clear');
                 $k.keys.cont = [];
                 $k.keys.dump('clear');
             },
             dump : function (what) {
-            //keybdebug(what+':'+$k.keys.getCodes().join('; '));
+                keybdebug('jq.keyboard.js '+what+':'+$k.keys.getCodes().join('; '));
             }
         },
         keyCodes : {
@@ -228,7 +229,7 @@
                 case 'printable':
                     return f('letters').concat(
                     f('allnum') .concat(
-                        f('symbols')))
+                        f('symbols')));
                 default         :
                     throw 'No such range: В«' + title + 'В»';
             }
@@ -243,7 +244,7 @@
                 .replace(/\s/, '')
                 .split('|');
                 for (var i = 0; i < parts.length; i++) {
-                    var p = $k.stringGetCodes(parts[i])
+                    var p = $k.stringGetCodes(parts[i]);
                     codes = codes.concat(p);
                 }
                 return codes;
@@ -252,7 +253,7 @@
                 .substring(1, str.length-1)
                 .replace(/\s/, '')
                 .split('-');
-                if(parts.length == 2) {
+                if(parts.length === 2) {
                     return range(
                         $k.getIndexCode(parts[0]),
                         $k.getIndexCode(parts[1])
@@ -271,7 +272,7 @@
                 var key = keys[i];
                 if (!isNaN(key)) { // is_numeric
                     key = [1 * key];
-                } else if (typeof key == 'string') {
+                } else if (typeof key === 'string') {
                     key = $k.stringGetCodes(key);
                 } else {
                     throw 'Wrong key type: В«' + (typeof key) + 'В»';
@@ -287,7 +288,7 @@
                 parts[i] = {};
                 parts[i].order = string.indexOf('+') >= 0 ? 'strict' : 'float';
                 parts[i].codes = $k.getCodes(
-                    string.split(parts[i].order == 'strict' ? '+' : ' ')
+                    string.split(parts[i].order === 'strict' ? '+' : ' ')
                     );
                 parts[i].index = $k.getIndex(parts[i].codes, parts[i].order);
                 parts[i].group = i;
@@ -299,12 +300,12 @@
             var cont  = $k.keys.getCodes();
             var codes = clone(bind.keys.codes);
             var eventIndexes = [];
-            if (codes.length == 0) {
+            if (codes.length === 0) {
                 return false;
             }
             keybdebug('нажаты'+':'+cont.join('; '));
             keybdebug('Нужны'+':'+codes.join('; '));
-            if (bind.keys.order == 'strict') 
+            if (bind.keys.order === 'strict') 
             {
                 for (i = 0; i < cont.length; i++) {
                     if (!codes.length) {
@@ -358,7 +359,7 @@
         },
         hasCurrent : function (bind, e) {
             var last = bind.keys.codes.length - 1;
-            return (bind.keys.order == 'strict') ?
+            return (bind.keys.order === 'strict') ?
             inArray  (e.keyCode, bind.keys.codes[last]) :
             inArrayR (e.keyCode, bind.keys.codes);
         },
@@ -370,7 +371,7 @@
             var ei;
             var okb = $k.keyboardBinds[uid][e.originalEvent.type]; // окб по типу события
 			
-            if (e.originalEvent.type=='keydown') {
+            if (e.originalEvent.type === 'keydown') {
                 $k.keys.add(e); // нажата добавить в cont
             } else {
             //setTimeout(function () {$k.keys.rm(e)}, 0);
@@ -383,7 +384,7 @@
                 if ( ei && $k.hasCurrent(bind, e) ) {
                     var events = [];
                     for (var k in ei) {
-                        events.push($k.keys.cont[ei[k]])
+                        events.push($k.keys.cont[ei[k]]);
                     }
                     $obj.keyboardFunc = bind.func;
                     $obj.keyboardFunc(events, bind);
@@ -414,8 +415,8 @@
                     uid = String(date.getTime())+'_'+String(Math.ceil(Math.random()*100)); // uniqid - уникальный индекс в массиве
                     keybdebug('set uid:'+uid);
                     $obj.attr("keyboardid",uid); // сохраним в объекте
-                    keybdebug('seted uid:'+(uid==$obj.attr("keyboardid")));
-                    if (uid != $obj.attr("keyboardid")) {
+                    keybdebug('seted uid:'+(uid===$obj.attr("keyboardid")));
+                    if (uid !== $obj.attr("keyboardid")) {
                         // 1.4.3 не дает поставить аттрибут документу
                         uid = jQuery.expando;
                     }
@@ -457,8 +458,9 @@
                 }, 0);
             })
             .blur ( $k.keys.clear );// работает только в FF
+            keybdebug("keyb init");
         }
-    }
+    };
 
     var inArrayR = function (value, array) {
         for (var i = 0; i < array.length; i++) {
@@ -471,7 +473,7 @@
             }
         }
         return false;
-    }
+    };
 
     var inArray = function (value, array) {
         return ($.inArray(value, array) !== -1);
@@ -481,7 +483,8 @@
         var r = [];
         do {
             r.push(from);
-        } while (from++ < to);
+            from++;
+        } while (from < to)
         return r;
     };
 
@@ -525,10 +528,11 @@
         }
 
         return false;
-    }
+    };
+    
     var keybdebug = function (text) {
-        log(text);
-    }
+        //console.log(text);
+    };
 
     $k.init();
     $.keyb = $k;
