@@ -53,7 +53,7 @@ class Menu extends lego_abstract {
             } else {
                 $uri = new UriConstructor();
                 $uri->clear();
-                Output::assign('hotkey', $fkey++<11?"Ctrl + f{$fkey }":"");
+                Output::assign('hotkey', $fkey++<11?"Ctrl + Shift + f{$fkey }":"");
                 Output::assign('text',$text);
                 Output::assign('hyphertext',hypher::addhypher($text));
                 Output::assign('ajax',($item[noajax]?'':"data-silent='{$this->parent->getMainTarget()}' legotarget='{$this->parent->getName()}'"));

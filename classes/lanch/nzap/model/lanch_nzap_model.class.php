@@ -474,7 +474,7 @@ class lanch_nzap_model extends sqltable_model {
         $shpin = $zagotovokvsego>4?2:1;
         $millcomment = "По $pack в пакете на $shpin шпинделях";
 
-        $rec[mater] = ($rec[pmater] == '' ? $rec[mater] : $rec[pmater]) . $tolsh;
+        $rec[mater] = ($rec[pmater] == '' ? ($rec[mater]==''?'DE104-18/18':$rec[mater]) : $rec[pmater]) . $tolsh;
         $rec[tolsh] = $tolsh;
         $rec[smask] = (strstr($rec[mask], multibyte::UTF_encode('КМ')) || strstr($rec[mask], multibyte::UTF_encode('KM')))? "+" : "-";
         $rec[zmask] = strstr($rec[mask], multibyte::UTF_encode('ЖМ')) ? "+" : "-";
