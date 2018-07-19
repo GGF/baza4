@@ -4,8 +4,9 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-if (empty($_REQUEST["level"]))
+if (empty($_REQUEST["level"])) {
     $_REQUEST["level"] = 'baza';
+}
 
 include "_setup.php";
 
@@ -21,9 +22,11 @@ if ($_SERVER[Auth]) { // update и getdata делается без автори�
 
 $classname = $_REQUEST["level"];
 $m = new $classname();
-if ($m->run())
-    if (!Ajax::isAjaxRequest())
+if ($m->run()) {
+    if (!Ajax::isAjaxRequest()) {
         echo $m->getOutput();
+    }
+}
 
 //    echo "<script>";
 //    echo "storeSetting(".multibyte::Json_encode($_SESSION["user_setting"]).");";
@@ -32,7 +35,8 @@ if ($m->run())
 if ($_SERVER[debug][report]) {
     if (Ajax::isAjaxRequest()) {
         echo console::getInstance()->getScripts();
-    } else
+    } else {
         echo console::getInstance()->run()->getOutput();
+    }
 }
 ?>
