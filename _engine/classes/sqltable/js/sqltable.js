@@ -24,6 +24,14 @@ var lasttr = '';
 
 
 /**
+ * Объект для копирования в буффер данных, должен быть глобальным, потому как меняется в разных местах.
+ * 
+ * @type Object
+ */
+var filelinkclipboard;
+
+
+/**
  * Функция перезагрузки-обновления таблицы, после, скажем, удаления-добавления
  * или просто проверить что поменялось. Можно вызывать по таймеру...
  */
@@ -113,6 +121,9 @@ function dialog_modal(info)
         $('div.comments').hide().before('<a hotkey="Ctrl + x" Title="Показать коменатрии" class="showcomment"><div >-----------</div></a>');
         $('.showcomment').hide();
     }
+    
+    // а вот тут диалог уже есть и можно поменять контейнер в filelinkclipboard
+    filelinkclipboard.container = document.getElementById("dialog");
 }
 
 // Focus first element
@@ -178,11 +189,32 @@ $(document).ready(function(){
 
     // при клике на файловых ссылках вызовем из небезопасно, зато удобно из командного процессора
     $(document).on("click","a.filelink", function(){
-        var link = $(this).attr("href");
-            var re = new RegExp('/','gi');
-            document.bazaapplet.openfile('\"'+link.split(':')[1].replace(re,'\\')+'\"');
-            return false;
+        var re = new RegExp('/','gi');
+        var link = $(this).attr("href").split(':')[1].replace(re,'\\');
+        document.bazaapplet.openfile('\"'+link+'\"');
+        return false;
     });
+    // добавим копирование команды в буффер с помощью clipboard.js
+    // Глобальная переменная
+    filelinkclipboard = new ClipboardJS('a.filelink', {
+        text: function(trigger) {
+            var re = new RegExp('/','gi');
+            var link = trigger.href.split(':')[1].replace(re,'\\');
+            return 'mppapp-commandOPENFILE'+'\"'+link+'\"';
+        } 
+      // , container: document.getElementById('dialog') // В этот момент диалога еще нет
+    });
+
+    filelinkclipboard.on('success', function(e) {
+        console.log("filelinkclipboard success");
+        console.log(e);
+    });
+    
+    filelinkclipboard.on('error', function(e) {
+        console.log("filelinkclipboard error");
+        console.log(e);
+    });
+    
     // Ссылки "печатать"
     $(document).on("click","a.printlink", function(){
         var link = $(this).attr("href");
