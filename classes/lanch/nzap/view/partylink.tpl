@@ -1,1 +1,1 @@
-<a class='filelink' href='{$sllink}'>СЛ-{$slid}</a><a class='printlink' href='{$sllink}' id='sl{$party}'>o</a>&nbsp;&nbsp;&nbsp;
+<a class='filelink' href='{$sllink}' onclick='return false;'>СЛ-{$slid}</a><a class='printlink' href='{$sllink}' id='sl{$party}'>o</a>&nbsp;&nbsp;&nbsp;
