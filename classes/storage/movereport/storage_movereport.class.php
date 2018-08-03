@@ -29,10 +29,12 @@ class storage_movereport extends sqltable {
         }
 
         if (empty($idstr) || !empty($sdate)) {
-            if (empty($sdate))
+            if (empty($sdate)) {
                 $sdate = date("d.m.Y");
-            if (empty($edate))
+            }
+            if (empty($edate)) {
                 $edate = date("d.m.Y");
+            }
 
             $this->title.="<form method=get name=peroidreport id=form_peroidreport action='" . $this->actUri('index')->url() . "'>";
             $this->title.="Отчет за период: с ";
@@ -42,7 +44,6 @@ class storage_movereport extends sqltable {
             $this->title.="<input type=button id=rangebutton class='noprint' value='Отчет'>";
             $this->title.="</form>";
         }
-        if (!empty($idstr)) $this->title .= '<input type="button" class="noprint" value="Скопировать для  excel" id="copytable" onclick="copytable();$(\'#copytable\').val(\'Готово\')">';
         //$this->title.= $this->getHeaderBlock();
         return parent::action_index($all, $order, $find, $idstr);
     }

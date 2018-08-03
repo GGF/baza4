@@ -1,1 +1,1 @@
-<a class='filelink' href='{$mplink}'>MP-{$mpid}</a><br>
+<a class='filelink' href='{$mplink}' onclick='return false;'>MP-{$mpid}</a><br>

@@ -94,8 +94,7 @@ class sqltable_view extends views {
         }
         if ($this->owner->buttons) {
             $url = $this->owner->actUri('index', !$this->owner->all)->url();
-            $ret .= "<tr><td colspan=100 class='buttons'>" .
-                    //"<input hotkey='Ctrl + a' class='" .
+            $ret .= "<tr><td colspan=100 class='buttons'><div id='buttons'>" .
                     "<input class='" .
                     (($this->owner->addbutton && $this->owner->edit) ? "half" : "full") .
                     "button noprint' type=button " .
@@ -111,9 +110,12 @@ class sqltable_view extends views {
                         "href='{$this->owner->actUri('add')->url()}' " .
                         "value='Добавить' title='Добавить' id=addbutton >";
             }
+            $ret .= "</div>"; // закроем див чтобы потом добавить кнопку копирования, для всех и всегда
             // добавим невидимую кнопку копировать в Excel
-            $ret .= "<a href='#' type='button' class='nullwidth noprint' hotkey='Ctrl+c' title='Скопировать в Excel' value='Скопировать в Excel' " .
-                    'id="copytablebutton" onclick="copytable();$(\'#copytablebutton\').html(\'Готово\');return false;" >Скопировать в Excel</a>';
+            // Из-за безопасности копировать в буффер можно только если пользователь чтото нажал, потому кнопку пидется делать видимой и без хоткея
+            $ret .= "<input  class='noprint'  alt='Скопировать в Excel' title='Скопировать в Excel' type='button' " .
+                    "id='copytablebutton' />";
+            $ret .= "</td></tr>"; // закроем строчку кнопок
             $findurl = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr)->url();
             if ($this->owner->findbutton) {
                 $ret .= "<tr><td colspan=100 class='search'>" .
@@ -213,13 +215,14 @@ class sqltable_view extends views {
         if (!empty($this->owner->firsttrid)) {
             $out .= "<script>firsttr = '{$this->owner->firsttrid}';curtr = firsttr;lasttr = '{$this->owner->lasttrid}';</script>";
         }
+        $out .="<applet code='zaompp.bazaApplet' archive='".str_ireplace($_SERVER['DOCUMENT_ROOT'], "", __DIR__)."/BazaApplet.jar' width=1 height=1 name='bazaapplet'><param name='cmd' value='cmd.exe /c'><!--Applet for open files and clipboard (if you see it java-plugin not started)--></applet>";
         return $out;
     }
 
     public function getMessage($message, $form = false) {
-        if (Ajax::isAjaxRequest())
+        if (Ajax::isAjaxRequest()) {
             $out = "<div id=dialog>{$message}</div><script>dialog_modal(" . ($form ? "false" : "true") . ");</script>";
-        else {
+        } else {
             Output::assign('message', $message);
             Output::assign('oklink', $this->owner->actUri('index', $this->owner->all, $this->owner->order, $this->owner->find, $this->owner->idstr)->url());
             // шаблон message.tpl не сможет быть изменен потомками
@@ -268,13 +271,11 @@ class sqltable_view extends views {
     public function addFileButton() {
         // тут не используем шаблон изза неправильного наследования шаблонов
         $name = $this->owner->getName();
-        $link = $this->owner->actUri('addfilefield')->ajaxurl($name);
         $out = '<a  data-silent="#editformtable" legotarget="' . $name .
-                '" data-silent-action="append" href="' . $link .
+                '" data-silent-action="append" href="' . $this->owner->actUri('addfilefield')->ajaxurl($name) .
                 '"><input type="button" id="addfilebutton" value="Добавить файлов" ></a>';
-        $link = $this->owner->actUri('addfilelink')->ajaxurl($name);
         $out .= '<a  data-silent="#editformtable" legotarget="' . $name .
-                '" data-silent-action="append" href="' . $link .
+                '" data-silent-action="append" href="' . $this->owner->actUri('addfilelink')->ajaxurl($name) .
                 '" id=addfilelinkbutton><input type="button" id="addfilebutton" value="Добавить линки на файлы" ></a>';
         $out .= "<script>
                 $('#addfilelinkbutton').click(function(){
@@ -293,7 +294,6 @@ class sqltable_view extends views {
     }
 
     public function addComments($id,$table='') {
-        $out = '';
         $rec = $this->owner->model->getCommentsForId($id,$table);
         foreach ($rec[comments] as $coment) {
             $out .= $this->showcoment($coment);
