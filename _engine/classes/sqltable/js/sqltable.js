@@ -210,9 +210,9 @@ $(document).ready(function(){
     
     // прверка на апплет
     try {
-            document.bazaapplet.copytoclipboard('');
+            document.applets.bazaapplet.copytoclipboard('');
         } catch (exception) {
-            console.log(exception);
+            $().lego.log(exception);
             Noapplet = true;
     }
 
@@ -223,7 +223,7 @@ $(document).ready(function(){
             text: function(trigger) {
                 var re = new RegExp('/','gi');
                 var link = trigger.href.split(':')[1].replace(re,'\\');
-                return 'mppapp-commandOPENFILE'+'\"\"'+decodeURIComponent(link)+'\"\"';
+                return 'mppapp-commandOPENFILE'+'\"\"'+Url.decode(link)+'\"\"';
             } 
           // , container: document.getElementById('dialog') // В этот момент диалога еще нет
         });
@@ -280,7 +280,7 @@ $(document).ready(function(){
         $(document).on("click","a.filelink", function(){
             var re = new RegExp('/','gi');
             var link = $(this).attr("href").split(':')[1].replace(re,'\\');
-            document.bazaapplet.openfile('\"'+link+'\"');
+            document.applets.bazaapplet.openfile('\"'+link+'\"');
             return false;
         });
         // Ссылки "печатать"
@@ -288,7 +288,7 @@ $(document).ready(function(){
             var link = $(this).attr("href");
                 var re = new RegExp('/','gi');
                 // программа лежит в аксессуарах, скопирована с http://www.robvanderwoude.com/csharpexamples.php#PrintAny
-                document.bazaapplet.openfile('printany.exe \"'+link.split(':')[1].replace(re,'\\')+'\"');
+                document.applets.bazaapplet.openfile('printany.exe \"'+link.split(':')[1].replace(re,'\\')+'\"');
                 return false;
         });
         // при клике на ссылках "путь" соответственно запустим программу открытия пути
@@ -304,7 +304,7 @@ $(document).ready(function(){
                     $(this).attr("href","/?level=setting");
                     return true;
                 }
-                var res = document.bazaapplet.openfile('\"\"'+totalcmd+'\" \"'+link+'\"\"');
+                var res = document.applets.bazaapplet.openfile('\"\"'+totalcmd+'\" \"'+link+'\"\"');
                 $().lego.log(res);
                 return false; // чтоб нажатие на ссылку броузер не отработал нормальным способом
         });
@@ -329,7 +329,7 @@ $(document).ready(function(){
                 str = '';
             });
             // скормим буфер апплету
-            document.bazaapplet.copytoclipboard(buffer);
+            document.applets.bazaapplet.copytoclipboard(buffer);
             // надпись на кнопке поменяем
             $('#copytablebutton').hide();
             return false;

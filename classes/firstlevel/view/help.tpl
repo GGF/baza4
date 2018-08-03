@@ -1,5 +1,5 @@
   Для того чтобы запускать файлы эксель по ссылкам нужно установить программу 
-  <a href="nncron193b3.exe"> nncron.</a>
+  <a href="http://www.nncron.ru/download/nncron193b3.exe"> nncron.</a>
   
 Создать в ней задачу c именем clipboard
 и текстом
@@ -19,6 +19,7 @@ IF
 	8 /STRING \ отрезать команду
 	2DUP
 	TYPE CR \ показать
+        SWHide \ Скрытое окно
 	START-APP \ запустить
 ELSE
 	TYPE CR
@@ -29,3 +30,4 @@ CLIPBOARD!
 )#
 </pre>
 
+Если не работает, проверьте в русском ли режиме клавиатура в броузере.
