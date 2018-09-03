@@ -21,7 +21,8 @@ class fileserver {
     static public function sharefilelink($filename) {
         $filename = str_replace(SHARE_ROOT_DIR, "", $filename);
         $filename = self::normalizefile(str_replace(":", "", str_replace("\\", "/", $filename)));
-        $filename = multibyte::UTF_decode("file://" . NETBIOS_SERVERNAME . "/{$filename}");
+        // огнелис хочет три а не две палки 
+        $filename = multibyte::UTF_decode("file:///" . NETBIOS_SERVERNAME . "/{$filename}");
         return $filename;
     }
 

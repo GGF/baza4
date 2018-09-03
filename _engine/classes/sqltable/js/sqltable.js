@@ -222,8 +222,10 @@ $(document).ready(function(){
         filelinkclipboard = new ClipboardJS('a.filelink', {
             text: function(trigger) {
                 var re = new RegExp('/','gi');
-                var link = trigger.href.split(':')[1].replace(re,'\\');
-                return 'mppapp-commandOPENFILE'+'\"\"'+Url.decode(link)+'\"\"';
+                // огнелисные три палки нужно менять на две
+                var re1 = new RegExp('///','gi');
+                var link = trigger.href.split(':')[1].replace(re1,'//').replace(re,'\\');
+                return 'mppapp-commandOPENFILE'+'\"\"'+decodeURI(link)+'\"\"';
             } 
           // , container: document.getElementById('dialog') // В этот момент диалога еще нет
         });
@@ -231,7 +233,9 @@ $(document).ready(function(){
         printlinkclipboard = new ClipboardJS('a.printlink', {
             text : (trigger) => {
                 var re = new RegExp('/','gi');
-                var link = trigger.href.split(':')[1].replace(re,'\\');
+                // огнелисные три палки нужно менять на две
+                var re1 = new RegExp('///','gi');
+                var link = trigger.href.split(':')[1].replace(re1,'//').replace(re,'\\');
                 return 'mppapp-commandOPENFILE'+'printany.exe \"\"'+decodeURI(link)+'\"\"';
             }
         });
