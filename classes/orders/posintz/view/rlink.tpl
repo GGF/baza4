@@ -1,1 +1,1 @@
-<a class='filelink' href='{$rlink}'>Расчет</a>
+<a class='filelink' href='{$rlink}' onclick="return false;">Расчет</a>
