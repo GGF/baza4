@@ -50,3 +50,14 @@ div.glavmenu {
     font-size: 1em;
 }
 
+@media print {
+    header { display:none; }
+    footer { display:none; }
+    a,
+    a:visited {
+        text-decoration: none;
+    }
+    a[href]:after {
+        content: "";
+    }
+}
