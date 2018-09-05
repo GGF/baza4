@@ -216,14 +216,15 @@ $(document).ready(function(){
             Noapplet = true;
     }
 
+    var re = new RegExp('/','gi');
+    // огнелисные три палки нужно менять на две
+    var re1 = new RegExp('///','gi');
+
     if (Noapplet) {
         // добавим копирование команды в буффер с помощью clipboard.js
         // Глобальная переменная
         filelinkclipboard = new ClipboardJS('a.filelink', {
             text: function(trigger) {
-                var re = new RegExp('/','gi');
-                // огнелисные три палки нужно менять на две
-                var re1 = new RegExp('///','gi');
                 var link = trigger.href.split(':')[1].replace(re1,'//').replace(re,'\\');
                 return 'mppapp-commandOPENFILE'+'\"\"'+decodeURI(link)+'\"\"';
             } 
@@ -232,9 +233,6 @@ $(document).ready(function(){
 
         printlinkclipboard = new ClipboardJS('a.printlink', {
             text : (trigger) => {
-                var re = new RegExp('/','gi');
-                // огнелисные три палки нужно менять на две
-                var re1 = new RegExp('///','gi');
                 var link = trigger.href.split(':')[1].replace(re1,'//').replace(re,'\\');
                 return 'mppapp-commandOPENFILE'+'printany.exe \"\"'+decodeURI(link)+'\"\"';
             }
@@ -282,23 +280,20 @@ $(document).ready(function(){
     } else {
         // при клике на файловых ссылках вызовем из небезопасно, зато удобно из командного процессора
         $(document).on("click","a.filelink", function(){
-            var re = new RegExp('/','gi');
-            var link = $(this).attr("href").split(':')[1].replace(re,'\\');
+            var link = $(this).attr("href").split(':')[1].replace(re1,'//').replace(re,'\\');
             document.applets.bazaapplet.openfile('\"'+link+'\"');
             return false;
         });
         // Ссылки "печатать"
         $(document).on("click","a.printlink", function(){
             var link = $(this).attr("href");
-                var re = new RegExp('/','gi');
                 // программа лежит в аксессуарах, скопирована с http://www.robvanderwoude.com/csharpexamples.php#PrintAny
-                document.applets.bazaapplet.openfile('printany.exe \"'+link.split(':')[1].replace(re,'\\')+'\"');
+                document.applets.bazaapplet.openfile('printany.exe \"'+link.split(':')[1].replace(re1,'//').replace(re,'\\')+'\"');
                 return false;
         });
         // при клике на ссылках "путь" соответственно запустим программу открытия пути
         $(document).on("click", "a.path", function(){
                 var link = $(this).attr("href");
-                var re = new RegExp('/','gi');
                 // а программа хранится в локальном хранилище, и довольно долго
                 var totalcmd = localStorage.getItem('total_cmd_path'); // 'd:\\Total Commander XP\\TOTALCMD.EXE';
 
