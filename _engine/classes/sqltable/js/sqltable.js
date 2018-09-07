@@ -354,30 +354,10 @@ function table_set_keyboard()
     $(document).keydown(function(event){
         tskHandled = false;
 
-        // все буквы и цифры передаем ввод в строку поиска
-        // правда исключаются символы типа двоеточия
-        if ($.inArray(event.keyCode,$.keyb.getRange('letters')) !== -1 ||
-            $.inArray(event.keyCode,$.keyb.getRange('allnum')) !== -1) {
-            // для ввода в строку поиска
-            // если в поиске уже чтото есть
-            //if ($('#dialog').length>0 && $('#dialog').is(':visible')) {
-            // если есть элементы ввода кроме find в таблице
-            if ($('input[type=text]').length>$('input[name=find]').length) {
-                return true; // то продолжим
-            } else {
-                // иначе найдем строку поиска
-                var find=$('input[name=find]');
-                if (find.val().length===0) {
-                    // и кинем туда фокус ввода
-                    find.focus();
-                    return true;
-                } else {
-                    //log(find.val().length);
-                    return true;
-                }
-            }
-            return true;
-        } else if (event.keyCode===$.keyb.getIndexCode('enter')) {
+        // Поменяю логику, если не клавиши верх-них и не ентер будем переходить 
+        // в строку поиска, а то глючит и клавиша девять и если минус набираешь, 
+        // а это всё в поиск
+        if (event.keyCode===$.keyb.getIndexCode('enter')) {
             // если ентер
             // то проверяем в поиске и мы
             if ($('input.find').last().val().length>0) {
@@ -409,7 +389,8 @@ function table_set_keyboard()
                 */
             }
             return true;
-        } else if (event.keyCode===$.keyb.getIndexCode('aup')) {
+        } 
+        else if (event.keyCode===$.keyb.getIndexCode('aup')) {
             // клавиши верх-низ
             if ($('#dialog').length<=0 || $('#dialog').is(':hidden')) {
                 // желтим-нежелтим
@@ -427,7 +408,8 @@ function table_set_keyboard()
                 }
             }
             return false;
-        } else if (event.keyCode===$.keyb.getIndexCode('adown')) {
+        } 
+        else if (event.keyCode===$.keyb.getIndexCode('adown')) {
             // клавиши верх-низ
             if ($('#dialog').length<=0 || $('#dialog').is(':hidden')) {
                 // желтим-нежелтим
@@ -441,15 +423,31 @@ function table_set_keyboard()
                 }
             }
             return false;
-        }  // а вот делит по кнопке оказался опасной клавишей
-        // сделаешь дырку - потом не запломбируешь
-        /*else if (event.keyCode==$.keyb.getIndexCode('delete')) {
-			if ($('#dialog').is(':hidden')) {
-				$('#'+curtr+' #dellink').click();
-			}
-			return false;
+        } 
+        else {
+            // вот тут весь ввод пощлем в строку поиска
 
-		}*/
+            // для ввода в строку поиска
+            // если в поиске уже чтото есть
+            //if ($('#dialog').length>0 && $('#dialog').is(':visible')) {
+            // если есть элементы ввода кроме find в таблице
+            if ($('input[type=text]').length>$('input[name=find]').length) {
+                return true; // то продолжим
+            } else {
+                // иначе найдем строку поиска
+                var find=$('input[name=find]');
+                if (find.val().length===0) {
+                    // и кинем туда фокус ввода
+                    find.focus();
+                    return true;
+                } else {
+                    //log(find.val().length);
+                    return true;
+                }
+            }
+            return true;
+
+        }
         return true;
 
     });

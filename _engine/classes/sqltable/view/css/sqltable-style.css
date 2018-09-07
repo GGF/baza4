@@ -67,6 +67,9 @@ div.fullwidth .filelink {
     padding:0px;
     padding-left: 5px;
     padding-right: 5px;
+    /* некоторые яцейки изза длинных названий заставляют таблицу выходить за экран*/
+    overflow:hidden;
+    max-width: 350px; /* экспериментальное значение '*/
 }
 
 .listtable td.search, .listtable td.buttons {
