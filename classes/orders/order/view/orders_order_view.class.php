@@ -37,6 +37,18 @@ class orders_order_view extends sqltable_view {
             "options" => array("html" => "size=30",),
             "obligatory" => true,
         ));
+        array_push($fields, array(
+            "type" => AJAXFORM_TYPE_CHECKBOX,
+            "name" => "onlycalc",
+            "label" => "Запускать",
+            "value" => $rec["onlycalc"],
+            "obligatory" => true,
+        ));
+        array_push($fields, array(
+            "type" => AJAXFORM_TYPE_HIDDEN,
+            "name" => "filelink",
+            "value" => $rec["filelink"],
+        ));
         $rec[fields] = $fields;
         //$rec[files]=$this->owner->model->getFiles;
         return parent::showrec($rec);
