@@ -1,6 +1,6 @@
 <?php
 
-class lanch_nzap extends sqltable {
+class lanch_onlycalc extends sqltable {
 
     // обязательно определять для модуля
     public function getDir() {
