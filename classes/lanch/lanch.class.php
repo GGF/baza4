@@ -16,9 +16,11 @@ class lanch extends secondlevel {
         $this->menu->add('pt', 'Шаблоны');
         $this->menu->add('boards', 'Платы', false);
         $this->menu->add('blocks', 'Заготовки', false);
+        $this->menu->add('onlycalc', 'Не запускаемые'); // только посчитать, которые
         $this->menu->add('back', 'Назад', false);
-        if ($this->menu->run())
+        if ($this->menu->run()) {
             return $this->menu->getOutput();
+        }
     }
 
     public function action_boards() {

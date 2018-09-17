@@ -16,6 +16,7 @@ class lanch_nzap extends sqltable {
         if (!Auth::getInstance()->getRights($this->getName(),'view')) // тут можно смотреть, но редактирование(запуск) проверяется в виде(view)
             return $this->view->getMessage('Нет прав на редактирование');
         $rec = $this->model->getRecord($id);
+        $rec[onlycalclink] = $this->actUri('ordertoonclycalc', $id)->url();
         if ($rec[mp]) {
             $rec[mp][mplink] = $this->actUri('masterplate', $id)->url();
         }
@@ -95,6 +96,17 @@ class lanch_nzap extends sqltable {
         return $this->action_sl($id, $zadel, "zadel") ;
     }
 
+    /**
+     * Отправляет этот заказ в только расчитываемые
+     * @param идентификатор позиции запуска $id
+     * @return string Текст для кнопки "Только расчет"
+     */
+    public function action_ordertoonclycalc($id) {
+        if ($this->model->setonlycalc($id)) {
+            return "Готово<script>reload_table();</script>";
+        } 
+        return "Не получилось";
+    }
 }
 
 ?>

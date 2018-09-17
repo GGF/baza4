@@ -11,26 +11,29 @@ class orders_order_model extends sqltable_model {
         $this->maintable = 'orders';
     }
 
-    public function getData($all=false, $order='', $find='', $idstr='') {
-        $ret = parent::getData($all, $order, $find, $idstr);
-        $order = strstr($order, 'files') ? '' : $order; // не удается отсортировать по файлам
+ 
+    public function getData($all=false, $sort_order='', $find='', $idstr='') {
+        //$ret = parent::getData($all, $sort_order, $find, $idstr); // родительский несипользуется
+        
+        $sort_order = strstr($sort_order, 'files') ? '' : $sort_order; // не удается отсортировать по файлам
         extract($_SESSION[Auth::$lss]);
         if (empty($customer_id)) {
-            $sql = "SELECT *, orders.id AS oid,
+            $sql = "SELECT *, orders.id AS oid, IF(onlycalc,'&#8730;','') as onlycalc,
                         orders.id
                         FROM orders
                         JOIN customers
                         ON customers.id=customer_id " .
                     (!empty($find) ? "WHERE (number LIKE '%{$find}%' OR orderdate LIKE '%{$find}%' ) " : "") .
-                    (!empty($order) ? "ORDER BY {$order} " : "ORDER BY orders.orderdate DESC ") .
+                    (!empty($sort_order) ? "ORDER BY {$sort_order} " : "ORDER BY orders.orderdate DESC ") .
                     ($all ? "LIMIT 150" : "LIMIT 20");
         } else {
             // sql
-            $sql = "SELECT *, orders.id AS oid, orders.id
-                            FROM orders
-                            JOIN customers ON customers.id=customer_id " .
+            $sql = "SELECT *, orders.id AS oid, IF(onlycalc,'&#8730;','') as onlycalc,
+                        orders.id
+                        FROM orders
+                        JOIN customers ON customers.id=customer_id " .
                     (!empty($find) ? "WHERE (number LIKE '%{$find}%' OR orderdate LIKE '%{$find}%' ) AND customer_id='{$customer_id}' " : "WHERE customer_id='{$customer_id}' ") .
-                    (!empty($order) ? "ORDER BY {$order} " : "ORDER BY orders.orderdate DESC ") .
+                    (!empty($sort_order) ? "ORDER BY {$sort_order} " : "ORDER BY orders.orderdate DESC ") .
                     ($all ? "LIMIT 150" : "LIMIT 20");
         }
         $ret = sql::fetchAll($sql);
@@ -52,8 +55,9 @@ class orders_order_model extends sqltable_model {
             $cols[customer] = "Заказчик";
         }
         $cols[oid] = "ID";
-        $cols[number] = "Номер заказа";
         $cols[orderdate] = "Дата заказа";
+        $cols[number] = "Номер заказа";
+        $cols[onlycalc] = "Только считать";
         $cols[files] = "Файлы";
         return $cols;
     }
@@ -93,13 +97,18 @@ class orders_order_model extends sqltable_model {
             $rec[customers] = $this->getCustomers();
             return $rec;
         }
-        $sql = "SELECT * FROM orders WHERE id='$edit'";
+        $sql = "SELECT * FROM orders WHERE id='{$edit}'";
         $rec = sql::fetchOne($sql);
         $rec[files] = $this->getFilesForId('orders', $edit);
         return $rec;
     }
 
-
+      public function setRecord($data) {
+          //console::getInstance()->out(var_dump($data, false));
+          // onlycalc если не отмечен, то вообще сюда не пеедается
+          $data["onlycalc"] = empty($data["onlycalc"])?0:1;
+        return parent::setRecord($data);
+    }
 
 }
 
