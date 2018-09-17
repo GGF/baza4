@@ -12,3 +12,4 @@ class lanch_onlycalc_model extends lanch_nzap_model {
     }
 }
 
+?>
