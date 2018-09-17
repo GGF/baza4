@@ -12,6 +12,7 @@ class lanch_nzap_view extends sqltable_view {
         foreach ($rec[block] as $key => $block) {
             Output::assign($key, $block);
         }
+        Output::assign('onlycalclink', $rec[onlycalclink]);
         $out = $this->fetch('record.tpl');
         foreach ($rec[boards] as $board) {
             foreach ($board as $key => $val) {
