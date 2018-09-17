@@ -6,9 +6,16 @@
 
 class lanch_nzap_model extends sqltable_model {
 
+    /**
+     * Показывает только ли расчеты показывать
+     * @var int $onlycalc
+     */
+    protected $onlycalc;
+    
     public function __construct() {
         parent::__construct();
         $this->maintable = 'posintz';
+        $this->onlycalc = 0; // тут имеется ввиду показывать не расчитываемые
     }
 
     public function getData($all=false, $order='', $find='', $idstr='') {
@@ -28,7 +35,7 @@ class lanch_nzap_model extends sqltable_model {
             AND blockpos.board_id = boards.id
             )
         LEFT JOIN (zadel) ON zadel.board_id = boards.id
-        WHERE posintz.ldate = '0000-00-00' "
+        WHERE posintz.ldate = '0000-00-00' AND orders.onlycalc = '{$this->onlycalc}' "
                 . (!empty($find) ? "AND (blocks.blockname LIKE '%{$find}%'
             OR board_name LIKE '%{$find}%'
             OR filelinks.file_link LIKE '%{$find}%'
@@ -722,6 +729,21 @@ class lanch_nzap_model extends sqltable_model {
         }
         $rec["use"] = min($rec[zadel],$rec[zakaz]);
         return $rec;
+    }
+    
+    /**
+     * Устанавливает поле "только расчет" для всего заказа
+     * @param int $id - идетификатор позиции запуска
+     * @return bool - успешность операциb
+     */
+    public function setonlycalc($id) {
+        $sql = "SELECT tz_id FROM posintz WHERE id='{$id}'";
+        $res = sql::fetchOne($sql);
+        $sql1 = "SELECT order_id FROM tz WHERE id='{$res[tz_id]}'";
+        $res1 = sql::fetchOne($sql1);
+        $sql2 =  "UPDATE orders SET `onlycalc` = '1' WHERE id='{$res1[order_id]}'";
+        sql::query($sql2);
+        return true;
     }
 }
 

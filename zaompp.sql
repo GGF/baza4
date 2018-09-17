@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Сен 13 2018 г., 11:35
+-- Время создания: Сен 13 2018 г., 13:29
 -- Версия сервера: 5.5.36
 -- Версия PHP: 5.4.24
 
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `files` (
   `rec_id` bigint(20) NOT NULL COMMENT 'Идентификатор записи к которой относятся файлы',
   `fileid` bigint(10) NOT NULL COMMENT 'Идентификатор файловой ссылки из таблицы filelinks',
   `type` varchar(50) NOT NULL DEFAULT 'http' COMMENT 'тип ссылки, в принципе только вэб или шара'
-) ENGINE=InnoDB AUTO_INCREMENT=6377 DEFAULT CHARSET=utf8 COMMENT='Для прикрепления множества файлов к одному документу';
+) ENGINE=InnoDB AUTO_INCREMENT=6380 DEFAULT CHARSET=utf8 COMMENT='Для прикрепления множества файлов к одному документу';
 
 -- --------------------------------------------------------
 
@@ -256,7 +256,7 @@ CREATE TABLE IF NOT EXISTS `moneyfororder` (
   `trud` varchar(250) DEFAULT NULL COMMENT 'Название операции текстовый',
   `trudem` float(7,4) DEFAULT NULL COMMENT 'Трудоемкость нормочасов',
   `trudcost` float(10,2) DEFAULT NULL COMMENT 'Стоимость труда'
-) ENGINE=InnoDB AUTO_INCREMENT=203 DEFAULT CHARSET=utf8mb4 COMMENT='Заказ и Заказчик текстовые потому как заполняя расчет могут набрать по разному';
+) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8mb4 COMMENT='Заказ и Заказчик текстовые потому как заполняя расчет могут набрать по разному';
 
 -- --------------------------------------------------------
 
@@ -298,7 +298,8 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `orderdate` date NOT NULL DEFAULT '0000-00-00',
   `number` varchar(50) NOT NULL DEFAULT '',
   `customer_id` bigint(10) NOT NULL DEFAULT '0',
-  `filelink` bigint(10) NOT NULL DEFAULT '1' COMMENT '13-09-2018  С сегодняшнего дня я буду использовать его как набор флагов для заказа. Пока ввожу единственный флаг, будет ли заказ запускаться в производство или только посчитается. Это для того чтобы почистить раздел незапущщеные. Если установлен второй бит, то это только расчет.'
+  `filelink` bigint(10) NOT NULL DEFAULT '1' COMMENT '13-09-2018  С сегодняшнего дня я буду использовать его как набор флагов для заказа. Пока ввожу единственный флаг, будет ли заказ запускаться в производство или только посчитается. Это для того чтобы почистить раздел незапущщеные. Если установлен второй бит, то это только расчет.',
+  `onlycalc` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Тут буду хранить что только расчет, с флагами в filelink сложно и неочевидно почему filelink'
 ) ENGINE=InnoDB AUTO_INCREMENT=5754 DEFAULT CHARSET=utf8 COMMENT='Заказы';
 
 -- --------------------------------------------------------
@@ -312,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `phototemplates` (
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `filenames` longtext NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=17502 DEFAULT CHARSET=utf8 COMMENT='Фотошаблоны отправленные на рисование';
+) ENGINE=InnoDB AUTO_INCREMENT=17504 DEFAULT CHARSET=utf8 COMMENT='Фотошаблоны отправленные на рисование';
 
 -- --------------------------------------------------------
 
@@ -588,7 +589,7 @@ ALTER TABLE `operations`
 -- Индексы таблицы `orders`
 --
 ALTER TABLE `orders`
- ADD PRIMARY KEY (`id`), ADD KEY `customer_id` (`customer_id`), ADD KEY `filelink` (`filelink`);
+ ADD PRIMARY KEY (`id`), ADD KEY `customer_id` (`customer_id`), ADD KEY `filelink` (`filelink`), ADD KEY `onlycalc` (`onlycalc`);
 
 --
 -- Индексы таблицы `phototemplates`
@@ -715,7 +716,7 @@ MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=50596;
 -- AUTO_INCREMENT для таблицы `files`
 --
 ALTER TABLE `files`
-MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6377;
+MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6380;
 --
 -- AUTO_INCREMENT для таблицы `lanch`
 --
@@ -730,7 +731,7 @@ MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1930;
 -- AUTO_INCREMENT для таблицы `moneyfororder`
 --
 ALTER TABLE `moneyfororder`
-MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'идентификатор записи',AUTO_INCREMENT=203;
+MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'идентификатор записи',AUTO_INCREMENT=144;
 --
 -- AUTO_INCREMENT для таблицы `move_in_production`
 --
@@ -750,7 +751,7 @@ MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5754;
 -- AUTO_INCREMENT для таблицы `phototemplates`
 --
 ALTER TABLE `phototemplates`
-MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17502;
+MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17504;
 --
 -- AUTO_INCREMENT для таблицы `posintz`
 --

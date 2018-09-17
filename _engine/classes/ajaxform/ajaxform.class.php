@@ -1190,7 +1190,10 @@ class ajaxform extends JsCSS {
             foreach ($values as $id => $label) {
 
                 echo $line[begin];
-                $val = (@in_array($id, $value) || !empty($value[$id])) ? 1 : 0;
+                // вот следующая строка непонятна совсем, если у меня не пустой, 
+                // но нулевой, она всё равно ставит единицу
+                // поменяю на своё видение сегодняшнего момента
+                $val = !empty($value[$id]) ? $value[$id] : 0;
                 echo $this->checkbox($name . "|" . $id, $label, $val, $options, true);
                 echo $line[end];
             }

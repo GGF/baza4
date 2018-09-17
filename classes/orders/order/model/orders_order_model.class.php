@@ -11,25 +11,14 @@ class orders_order_model extends sqltable_model {
         $this->maintable = 'orders';
     }
 
-    const ONLYCALC = 2; // собственно бит того, что заказ только для расчета
-    
+ 
     public function getData($all=false, $sort_order='', $find='', $idstr='') {
         //$ret = parent::getData($all, $sort_order, $find, $idstr); // родительский несипользуется
         
-        /**
-         * 13-09-2018 В базе данных есть параметр filelink для заказов, 
-         * по умолчанию он равен одному и неспользуется с тех пор как я сделал 
-         * привязку нескольких файлов к одному объекту.
-         * С сегодняшнего дня я буду использовать его как набор флагов для 
-         * заказа. 
-         * Пока ввожу единственный флаг, будет ли заказ запускаться в 
-         * производство или только посчитается. Это для того чтобы почистить
-         * раздел незапущщеные. Если установлен второй бит, то это только расчет.
-         */
         $sort_order = strstr($sort_order, 'files') ? '' : $sort_order; // не удается отсортировать по файлам
         extract($_SESSION[Auth::$lss]);
         if (empty($customer_id)) {
-            $sql = "SELECT *, orders.id AS oid, filelink & ".self::ONLYCALC." as onlycalc,
+            $sql = "SELECT *, orders.id AS oid, IF(onlycalc,'&#8730;','') as onlycalc,
                         orders.id
                         FROM orders
                         JOIN customers
@@ -39,7 +28,7 @@ class orders_order_model extends sqltable_model {
                     ($all ? "LIMIT 150" : "LIMIT 20");
         } else {
             // sql
-            $sql = "SELECT *, orders.id AS oid, filelink & ".self::ONLYCALC." as onlycalc,
+            $sql = "SELECT *, orders.id AS oid, IF(onlycalc,'&#8730;','') as onlycalc,
                         orders.id
                         FROM orders
                         JOIN customers ON customers.id=customer_id " .
@@ -68,7 +57,7 @@ class orders_order_model extends sqltable_model {
         $cols[oid] = "ID";
         $cols[orderdate] = "Дата заказа";
         $cols[number] = "Номер заказа";
-        $cols[onlycalc] = "Запускать";
+        $cols[onlycalc] = "Только считать";
         $cols[files] = "Файлы";
         return $cols;
     }
@@ -108,21 +97,18 @@ class orders_order_model extends sqltable_model {
             $rec[customers] = $this->getCustomers();
             return $rec;
         }
-        $sql = "SELECT *, IF(filelink & ".self::ONLYCALC.",1,0) as onlycalc FROM orders WHERE id='{$edit}'";
+        $sql = "SELECT * FROM orders WHERE id='{$edit}'";
         $rec = sql::fetchOne($sql);
         $rec[files] = $this->getFilesForId('orders', $edit);
         return $rec;
     }
 
-    public function setRecord($data) {
-        if ($data["onlycalc"]) {
-            $data["filelink"] |= self::ONLYCALC; // установить признак
-        } else {
-            $data["filelink"] &= ~self::ONLYCALC; // сбросить
-        }
+      public function setRecord($data) {
+          //console::getInstance()->out(var_dump($data, false));
+          // onlycalc если не отмечен, то вообще сюда не пеедается
+          $data["onlycalc"] = empty($data["onlycalc"])?0:1;
         return parent::setRecord($data);
     }
-
 
 }
 
