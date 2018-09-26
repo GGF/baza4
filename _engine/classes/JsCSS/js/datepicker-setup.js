@@ -1,10 +1,10 @@
 $(document).ready(function(){
-    $.datepicker.setDefaults( $.datepicker.regional[ "ru" ] );
+    //$.datepicker.setDefaults( $.datepicker.regional[ "ru" ] );
     $.datepicker.setDefaults($.extend({
-        showMonthAfterYear: false,
+        //showMonthAfterYear: false,
         showOn: 'button',
         numberOfMonths: [2,1],
-        showCurrentAtPos: 1,
+        //showCurrentAtPos: 1,
         //showOtherMonths: true,
         //selectOtherMonths: true,
         //buttonImage: '/images/calendar.gif',
