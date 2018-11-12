@@ -29,6 +29,13 @@ class orders_blocks_view extends sqltable_view {
         ));
         array_push($fields, array(
             "type" => AJAXFORM_TYPE_TEXT,
+            "name" => "drlname",
+            "label" => "Имя сверловки",
+            "value" => $rec[drlname],
+            //"options" => array("readonly" => true),
+        ));
+        array_push($fields, array(
+            "type" => AJAXFORM_TYPE_TEXT,
             "name" => "size",
             "label" => "Размер блока",
             "value" => "{$rec[sizex]}x{$rec[sizey]}",
