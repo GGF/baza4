@@ -1,15 +1,30 @@
 <?php
-
+/**
+ * Класс для представления данных в виде таблицы
+ */
 class sqltable_view extends views {
 
-    // обязательно определять для модуля
+    // 
+    /**
+     * Возвращет текущий каталог для подключения прочих файлов j,]trnf
+     * обязательно определять для модуля
+     * @return string
+     */
     public function getDir() {
         return __DIR__;
     }
 
+    /**
+     * Получает данные из базы в массиве и возвращает html для отображения записи.
+     * Перегружаемая.
+     * @param array $rec
+     * @return string
+     */
     public function showrec($rec) {
-        if (empty($rec[fields]))
+        if (empty($rec[fields])) {
             return false; // заглушка для нередактируемых
+        }
+        // вытащить из массива в просто переменные
         extract($rec);
         $form = new ajaxform_edit($this->owner->getName(), $action);
         $form->init($edit);
@@ -29,12 +44,17 @@ class sqltable_view extends views {
         }
         $form->addFields($fields);
         $out = $form->getOutput();
-        if ($rec[files])
+        if ($rec[files]) {
             $out .= $this->addFileButton();
+        }
         $out .= $this->addComments($edit,$rec[maintable]);
         return $out;
     }
 
+    /**
+     * Возвращает таблицу в html
+     * @return string
+     */
     public function show() {
         $out = $this->get_header();
         $out .= $this->get_table();
@@ -42,6 +62,10 @@ class sqltable_view extends views {
         return $out;
     }
 
+    /**
+     * Возвращает заголовок таблицы
+     * @return string
+     */
     private function get_header() {
         $ret = "<table class='listtable lego' id='{$this->owner->tid}' " .
                 " name='{$this->owner->type}' loaded='{$this->owner->uri()->url()}'" .
@@ -51,41 +75,11 @@ class sqltable_view extends views {
             $ret .= "<tr><th colspan=100 align=center>{$this->owner->title}";
         }
         $ret .= "<tr>";
-        $cfind = urlencode($this->owner->find);
-        $cidstr = urlencode($this->owner->idstr);
-        $ccord = urlencode($this->owner->order);
         $cols = $this->owner->cols;
         if (!empty($cols)) {
-            reset($cols);
-
-            while (list($key, $val) = each($cols)) {
-                if (is_array($val)) {
-                    $title = empty($val[title])?$val[1]:$val[title];
-                    $shortname   = empty($val[short])?$val[0]:$val[short];
-                    $nosort = empty($val[nosort])?$val[2]:$val[nosort];
-                } else {
-                    $title=$val;
-                    $shortname = $val;
-                }
-                if ($this->owner->buttons) {
-                    $cord = ($this->owner->order == $key ? ($key . " DESC") : $key);
-                    $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->url();
-                    $ret .= "<th>" .
-                            (($key == 'check' or $key == "№" or (isset($nosort) and $nosort) ) ? "<label title='{$title}'>".hypher::addhypher($shortname)."</label>" :
-                                    "<a " .
-                                    "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
-                                    "href='{$url}' title='{$title}' " .
-                                    ">" .
-                                    hypher::addhypher($shortname) .
-                                    (($key == 'check' or $key == "№") ? "" : ($this->owner->order == $key ? "&darr;" : (($this->owner->order == $key . ' DESC') ? "&uarr;" : ""))) .
-                                    "</a>");
-                } else {
-                    $ret .= "<th>" . $shortname;
-                }
-            }
+            $ret .= $this->get_header_cols($cols);
         }
-        // пустое поле см.ниже)
-        //echo "<th width='100%' >&nbsp;"; //получилось интересно, но нафиг
+
         if ($this->owner->edit) {
             $ret .= "<th>&nbsp;";
         }
@@ -93,45 +87,107 @@ class sqltable_view extends views {
             $ret .= "<th>&nbsp;";
         }
         if ($this->owner->buttons) {
-            $url = $this->owner->actUri('index', !$this->owner->all)->url();
-            $ret .= "<tr><td colspan=100 class='buttons'><div id='buttons'>" .
-                    "<input class='" .
-                    (($this->owner->addbutton && $this->owner->edit) ? "half" : "full") .
-                    "button noprint' type=button " .
-                    "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
-                    "href='{$url}' " .
-                    "value='" . ($this->owner->all ? "Последние 20" : "Все") . "' " .
-                    "title='" . ($this->owner->all ? "Последние 20" : "Все") . "' " .
-                    "id=allbutton >";
-
-            if ($this->owner->addbutton && $this->owner->edit) {
-                $ret .= "<input hotkey='Ctrl + e' class='halfbutton noprint' type='button' " .
-                        "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
-                        "href='{$this->owner->actUri('add')->url()}' " .
-                        "value='Добавить' title='Добавить' id=addbutton >";
-            }
-            $ret .= "</div>"; // закроем див чтобы потом добавить кнопку копирования, для всех и всегда
-            // добавим невидимую кнопку копировать в Excel
-            // Из-за безопасности копировать в буффер можно только если пользователь чтото нажал, потому кнопку пидется делать видимой и без хоткея
-            $ret .= "<input  class='noprint'  alt='Скопировать в Excel' title='Скопировать в Excel' type='button' " .
-                    "id='copytablebutton' />";
-            $ret .= "</td></tr>"; // закроем строчку кнопок
-            $findurl = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr)->url();
-            if ($this->owner->findbutton) {
-                $ret .= "<tr><td colspan=100 class='search'>" .
-                        "<form name='find' method='post' action='{$findurl}'>" .
-                        "<input type=text class='find noprint' " .
-                        "placeholder='" . (!empty($this->owner->find) ? $this->owner->find : "Искать...") . "' " .
-                        "name='find' id='findtext{$this->owner->tid}' " .
-                        ">" .
-                        "</form>" .
-                        "";
-            }
+            $ret .= $this->get_header_buttons();
         }
         $ret .= "<tbody>";
         return $ret;
     }
 
+    /**
+     * Разбиваем заголовок на подфункции, а то длинный
+     * Тут получаем колонки
+     * @var array $cols - колонки
+     * 
+     * @return string
+     */
+    private function get_header_cols($cols) {
+        $ret = '';
+        $cfind = urlencode($this->owner->find);
+        $cidstr = urlencode($this->owner->idstr);
+
+        reset($cols);
+
+        while (list($key, $val) = each($cols)) {
+            if (is_array($val)) {
+                $title = empty($val[title])?$val[1]:$val[title];
+                $shortname   = empty($val[short])?$val[0]:$val[short];
+                $nosort = empty($val[nosort])?$val[2]:$val[nosort];
+            } else {
+                $title=$val;
+                $shortname = $val;
+            }
+            if ($this->owner->buttons) {
+                $cord = ($this->owner->order == $key ? ($key . " DESC") : $key);
+                $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->url();
+                $ret .= "<th>" .
+                        (($key == 'check' or $key == "№" or (isset($nosort) and $nosort) ) ? "<label title='{$title}'>".hypher::addhypher($shortname)."</label>" :
+                                "<a " .
+                                "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
+                                "href='{$url}' title='{$title}' " .
+                                ">" .
+                                hypher::addhypher($shortname) .
+                                (($key == 'check' or $key == "№") ? "" : ($this->owner->order == $key ? "&darr;" : (($this->owner->order == $key . ' DESC') ? "&uarr;" : ""))) .
+                                "</a>");
+            } else {
+                $ret .= "<th>" . $shortname;
+            }
+        }
+        return $ret;
+    }
+    
+    
+    /**
+     * Возвращает кнопки "редактировать" и "удалить"
+     * @return string
+     */
+    private function get_header_buttons() {
+        $ret ='';
+        $cfind = urlencode($this->owner->find);
+        $cidstr = urlencode($this->owner->idstr);
+        $ccord = urlencode($this->owner->order);
+
+        $url = $this->owner->actUri('index', !$this->owner->all)->url();
+        $ret .= "<tr><td colspan=100 class='buttons'><div id='buttons'>" .
+                "<input class='" .
+                (($this->owner->addbutton && $this->owner->edit) ? "half" : "full") .
+                "button noprint' type=button " .
+                "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
+                "href='{$url}' " .
+                "value='" . ($this->owner->all ? "Последние 20" : "Все") . "' " .
+                "title='" . ($this->owner->all ? "Последние 20" : "Все") . "' " .
+                "id=allbutton >";
+
+        if ($this->owner->addbutton && $this->owner->edit) {
+            $ret .= "<input hotkey='Ctrl + e' class='halfbutton noprint' type='button' " .
+                    "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
+                    "href='{$this->owner->actUri('add')->url()}' " .
+                    "value='Добавить' title='Добавить' id=addbutton >";
+        }
+        $ret .= "</div>"; // закроем див чтобы потом добавить кнопку копирования, для всех и всегда
+        // добавим невидимую кнопку копировать в Excel
+        // Из-за безопасности копировать в буффер можно только если пользователь чтото нажал, потому кнопку пидется делать видимой и без хоткея
+        $ret .= "<input  class='noprint'  alt='Скопировать в Excel' title='Скопировать в Excel' type='button' " .
+                "id='copytablebutton' />";
+        $ret .= "</td></tr>"; // закроем строчку кнопок
+        $findurl = $this->owner->actUri('index', $this->owner->all, $ccord, $cfind, $cidstr)->url();
+        if ($this->owner->findbutton) {
+            $ret .= "<tr><td colspan=100 class='search'>" .
+                    "<form name='find' method='post' action='{$findurl}'>" .
+                    "<input type=text class='find noprint' " .
+                    "placeholder='" . (!empty($this->owner->find) ? $this->owner->find : "Искать...") . "' " .
+                    "name='find' id='findtext{$this->owner->tid}' " .
+                    ">" .
+                    "</form>" .
+                    "";
+        }
+        return ret;
+    }
+
+
+    /**
+     * Возвращиет строки данных в html
+     * @return string
+     */
     private function get_table() {
 
         $i = 0;
@@ -163,13 +219,14 @@ class sqltable_view extends views {
                     $trid = $netrid;
                     $netrid = uniqid('tr');
                 }
-                //$trid = uniqid('tr');
-                if (!($i++ % 2))
+
+                if (!($i++ % 2)) {
                     $out .= "<tr class='chettr' parent='{$this->owner->tid}' id='{$trid}'" .
                             " prev='{$prtrid}' next='{$netrid}'>";
-                else
+                } else {
                     $out .= "<tr class='nechettr' parent='{$this->owner->tid}' id='{$trid}'" .
                             " prev='$prtrid' next='$netrid'>";
+                }
                 $rs["№"] = $i;
 
                 $url = $urli->set($this->owner->getName(), 'open', $rs['id'])->url();
@@ -188,8 +245,6 @@ class sqltable_view extends views {
                             ($disablelink ? "" : $linkend);
                     $delstr .= $rs["$key"] . ' - ';
                 }
-                // вставим пустое поле 100% ширины
-                //echo "<td width='100%' >&nbsp;"; //получилось интересно, но нафиг
                 if ($this->owner->edit) {
                     $out .= "<td class='edit'><a title='Редактировать'" .
                             "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
@@ -197,10 +252,11 @@ class sqltable_view extends views {
                             "id=editlink>&nbsp;</a>";
                 }
                 if ($this->owner->del) {
+                    $delstr = addslashes(htmlentities(preg_replace("/&#?[a-z0-9]+;/i","",$delstr)));
                     $out .= "<td class='del'><a title='Удалить' " .
-                            "data-need-confirm='Удалить " . addslashes(htmlspecialchars($delstr)) . "' " .
+                            "data-need-confirm='Удалить {$delstr}' " .
                             "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
-                            "href='{$this->owner->actUri('delete', $rs['id'], false, addslashes(htmlspecialchars($delstr)))->url()}' " .
+                            "href='{$this->owner->actUri('delete', $rs['id'], false, $delstr)->url()}' " .
                             "id=dellink>&nbsp;</a><div></div>";
                 }
             }
@@ -209,6 +265,10 @@ class sqltable_view extends views {
         return $out;
     }
 
+    /**
+     * Возвращает закрытие таблицы html
+     * @return string
+     */
     private function get_footer() {
         $out = '';
         $out .= "</table>";
