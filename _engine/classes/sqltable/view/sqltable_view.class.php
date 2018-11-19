@@ -180,7 +180,7 @@ class sqltable_view extends views {
                     "</form>" .
                     "";
         }
-        return ret;
+        return $ret;
     }
 
 
