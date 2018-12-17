@@ -33,7 +33,7 @@ class birthdays_model {
         } else {
 
             foreach ($rs as $res) {
-                $dr .= "<div>День рождения - {$res["fio"]} - {$res["dr"]} - {$res["let"]} лет</div>";
+                $dr .= "<div>Празднуем - {$res["fio"]} - {$res["dr"]} - {$res["let"]} лет</div>";
             }
         }
         @file_put_contents ($filename, $dr);
