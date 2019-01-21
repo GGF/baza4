@@ -40,6 +40,7 @@ class orders_posintz extends sqltable {
                 $rec[rasslink] = $url;
             } else {
                 $rec[createlink] = $this->actUri('createras', $id)->url();
+                $rec[createalllinks] = $this->actUri('createallras', $id)->url();
             }
             return $this->getMessage($this->view->showbutton($rec));
         }
@@ -53,6 +54,19 @@ class orders_posintz extends sqltable {
             $this->model->saveFileLinkForRaschet($res);
         }
         return $res[out];
+    }
+
+    /**
+     * Последовательно вызавыет создание рассчетов для всего заказа
+     * @param integer $id - идентификатор одной из позиций в заказе
+     * @return string строка об успешности
+     */
+    public function action_createallras($id) {
+        $ids = $this->model->getPosintzIdsByOneId($id);
+        foreach($ids as $posid ) {
+            $res .= $this->action_createras($posid[0]);
+        }
+        return $res;
     }
     
     public function action_addposintz($id) {
