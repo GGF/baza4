@@ -301,6 +301,18 @@ class orders_posintz_model extends sqltable_model {
             
         }
     }
+
+    /**
+     * Возвращает список идентификаторов позиций в заказе по одному из них, для создания всех рассчетов
+     * @param int $id - один из идентификаторов
+     * @return array - массив идентификаторов
+     */
+    public function getPosintzIdsByOneId($id) {
+        //$res = sql::fetchOne("SELECT tz_id FROM posintz WHERE id='{$id}'");
+        $tzid = sql::fetchOne("SELECT tz_id FROM posintz WHERE id='{$id}'")[tz_id];
+        $orderid = sql::fetchOne("SELECT order_id FROM tz WHERE id='{$tzid}'")[order_id];
+        return sql::fetchAll("SELECT id FROM posintz WHERE tz_id in (SELECT id FROM tz WHERE order_id = '{$orderid}')");
+    }
 }
 
 ?>

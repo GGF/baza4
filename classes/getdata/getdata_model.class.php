@@ -57,7 +57,10 @@ class getdata_model extends sqltable_model {
         $sql = "SELECT count(*) as records, `customer`, `order` as ordernumber FROM `moneyfororder`  ";
         $rs = sql::fetchAll($sql);
         $resarr[orderdata] = $rs;
-        $sql = "SELECT board,trud,mater,SUM(matcost) AS summatcost,SUM(matras) AS summatras,SUM(trudcost) AS sumtrudcost,SUM(trudem) AS sumtrudem FROM `moneyfororder` GROUP BY `board`,`mater`,`trud` ";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
+        $sql = "SELECT board,trud,mater, matedizm AS edizm,SUM(matcost) AS summatcost,SUM(matras) AS summatras,
+                    SUM(trudcost) AS sumtrudcost,
+                    SUM(trudem) AS sumtrudem 
+                        FROM `moneyfororder` GROUP BY `board`,`mater`,`trud` ";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
         $rs = sql::fetchAll($sql);
         $resarr[datas] = $rs;
         $sql = "SELECT board FROM `moneyfororder` GROUP BY `board`";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";

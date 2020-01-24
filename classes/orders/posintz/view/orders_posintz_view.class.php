@@ -16,6 +16,7 @@ class orders_posintz_view extends sqltable_view {
         extract($rec);
         if (empty($rasslink)) {
             Output::assign('createlink', $createlink);
+            Output::assign('createalllinks', $createalllinks);
             return $this->fetch('createbutton.tpl');
         } else {
             Output::assign('rasslink', fileserver::sharefilelink($rasslink));

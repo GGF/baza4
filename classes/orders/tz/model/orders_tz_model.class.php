@@ -11,7 +11,7 @@ class orders_tz_model extends sqltable_model {
         extract($_SESSION[Auth::$lss]);
         if (!empty($customer_id)) {
             if (empty($order_id)) {
-                $sql = "SELECT *,IF(instr(file_link,'МПП')>0, 'МПП', IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
+                $sql = "SELECT *,IF(instr(file_link,'-МПП-')>0, IF(instr(file_link,'Блок')>0,'МПП(Блок)','МПП'), IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
                             tz.id as tzid,tz.id
                         FROM `tz`
                         JOIN (orders, customers, users,filelinks)
@@ -23,7 +23,7 @@ class orders_tz_model extends sqltable_model {
                         ($all ? "LIMIT 50" : "LIMIT 20");
             } else {
                 $orderid = $order_id;
-                $sql = "SELECT *,IF(instr(file_link,'МПП')>0, 'МПП', IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
+                $sql = "SELECT *,IF(instr(file_link,'-МПП-')>0, IF(instr(file_link,'Блок')>0,'МПП(Блок)','МПП'), IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
                         tz.id as tzid,tz.id FROM `tz`
                         JOIN (orders, customers, users,filelinks)
                         ON ( tz.order_id = orders.id AND orders.customer_id = customers.id
@@ -33,7 +33,7 @@ class orders_tz_model extends sqltable_model {
                         ($all ? "" : "LIMIT 20");
             }
         } else {
-            $sql = "SELECT *,IF(instr(file_link,'МПП')>0, 'МПП', IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
+            $sql = "SELECT *,IF(instr(file_link,'-МПП-')>0, IF(instr(file_link,'Блок')>0,'МПП(Блок)','МПП'), IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
                     tz.id as tzid,tz.id
                     FROM `tz`
                     JOIN (orders, customers, users,filelinks)

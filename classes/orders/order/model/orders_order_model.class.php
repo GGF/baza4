@@ -62,30 +62,23 @@ class orders_order_model extends sqltable_model {
         return $cols;
     }
 
-    public function delete($delete) {
+    public function delete($orderid) {
+        // TODO: транзакцию бы сюда с откатом
         $affected = 0;
-        $sql = "DELETE FROM orders WHERE id='{$delete}'";
-        sql::query($sql);
+        sql::query("DELETE FROM orders WHERE id='{$orderid}'");
         $affected += sql::affected();
         // удаление связей
-        $sql = "DELETE FROM files WHERE `table`='orders' AND rec_id='{$delete}'";
-        sql::query($sql);
+        sql::query("DELETE FROM files WHERE `table`='orders' AND rec_id='{$orderid}'");
         $affected += sql::affected();
-        $sql = "SELECT * FROM tz WHERE order_id='{$delete}'";
-        $res = sql::fetchAll($sql);
-        foreach ($res as $rs) {
+        $tzs = sql::fetchAll("SELECT * FROM tz WHERE order_id='{$orderid}'");
+        foreach ($tzs as $tz) {
             // удаление
-            $delete = $rs["id"];
-            $sql = "DELETE FROM tz WHERE id='{$delete}'";
-            sql::query($sql);
+            sql::query("DELETE FROM tz WHERE id='{$tz[id]}'");
             $affected += sql::affected();
             // удаление связей
-            $sql = "SELECT * FROM posintz WHERE tz_id='{$delete}'";
-            $res1 = sql::fetchAll($sql);
-            foreach ($res1 as $rs1) {
-                $delete = $rs1["id"];
-                $sql = "DELETE FROM posintz WHERE id='{$delete}'";
-                sql::query($sql);
+            $posintzs = sql::fetchAll("SELECT * FROM posintz WHERE tz_id='{$tz[id]}'");
+            foreach ($posintzs as $pos) {
+                sql::query("DELETE FROM posintz WHERE id='{$pos[id]}'");
                 $affected += sql::affected();
             }
         }
@@ -97,8 +90,7 @@ class orders_order_model extends sqltable_model {
             $rec[customers] = $this->getCustomers();
             return $rec;
         }
-        $sql = "SELECT * FROM orders WHERE id='{$edit}'";
-        $rec = sql::fetchOne($sql);
+        $rec = sql::fetchOne("SELECT * FROM orders WHERE id='{$edit}'");
         $rec[files] = $this->getFilesForId('orders', $edit);
         return $rec;
     }
