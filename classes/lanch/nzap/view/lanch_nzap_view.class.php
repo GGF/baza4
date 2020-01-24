@@ -9,17 +9,19 @@ class lanch_nzap_view extends sqltable_view {
 
     public function showrec($rec) {
 
+        $boardsinfo = '';
+        foreach ($rec[boards] as $board) {
+            foreach ($board as $key => $val) {
+                Output::assign($key, $val);
+            }
+            $boardsinfo .= $this->fetch('boardinfo.tpl');
+        }
+        Output::assign("boardsinfo", $boardsinfo);
         foreach ($rec[block] as $key => $block) {
             Output::assign($key, $block);
         }
         Output::assign('onlycalclink', $rec[onlycalclink]);
         $out = $this->fetch('record.tpl');
-        foreach ($rec[boards] as $board) {
-            foreach ($board as $key => $val) {
-                Output::assign($key, $val);
-            }
-            $out .= $this->fetch('boardinfo.tpl');
-        }
         if ($rec[mp]) {
             Output::assign('mplink', $rec[mp][mplink]);
             $out .= $this->fetch('mp.tpl');
@@ -133,7 +135,7 @@ class lanch_nzap_view extends sqltable_view {
      */
 
     public function showzadel($rec) {
-        return "<b>Заддел использован! Отккройте плату снова!</b>"; //заглушка
+        return "<b>Задел использован! Отккройте плату снова!</b>"; //заглушка
     }
 
 }

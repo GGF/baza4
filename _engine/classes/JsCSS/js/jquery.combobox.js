@@ -26,7 +26,7 @@ $( function() {
           .attr( "title", "" )
           .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
           .autocomplete({
-            delay: 0,
+            delay: 1000,
             minLength: 0,
             source: $.proxy( this, "_source" )
           })
