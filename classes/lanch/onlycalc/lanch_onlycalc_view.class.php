@@ -16,3 +16,4 @@ class lanch_onlycalc_view extends lanch_nzap_view
 
   }
 }
+?>
