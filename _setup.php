@@ -41,10 +41,10 @@ $_SERVER['CACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 // База данных
 $_SERVER["mysql"] = array(
     "lang" => array(
-        "host" => "localhost",
-        "base" => "zaompp",
-        "name" => "root",
-        "pass" => "MMnnHsafL",
+        "host" => getenv('APPLICATION_DBHOST') ,
+        "base" => getenv('APPLICATION_DB') ,
+        "name" => getenv('APPLICATION_DBUSER') ,
+        "pass" => getenv('APPLICATION_DBPASS') ,
         "log" => array(
             "query" => true,
             "notice" => true,
@@ -56,7 +56,7 @@ $_SERVER["mysql"] = array(
     ),
 );
 
-$_SERVER["storagebase"] = "zaomppsklads";
+$_SERVER["storagebase"] = getenv('APPLICATION_DB2');
 
 // Временная зона
 date_default_timezone_set("Europe/Moscow");
