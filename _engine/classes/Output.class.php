@@ -53,7 +53,7 @@ class Output {
 
     static public function fetch($resource_name) {
         $ret = "\n<!-- begin $resource_name -->\n";
-        $ret = self::$teplate_compiler->fetch($resource_name);
+        $ret .= self::$teplate_compiler->fetch($resource_name);
         $ret .= "\n<!-- end $resource_name -->\n";
         return $ret;
     }

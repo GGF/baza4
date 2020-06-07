@@ -20,7 +20,7 @@ abstract class JsCSS implements IJsCSS {
         return 0;
     }
 
-    static public function getWebDir($dir=false) {
+    public function getWebDir($dir=false) {
         /* @var $gwddir string */
         $gwddir = $dir ? $dir : str_replace('\\', '/', $this->dir);
         return str_ireplace($_SERVER['DOCUMENT_ROOT'], "", $gwddir);
@@ -75,9 +75,9 @@ abstract class JsCSS implements IJsCSS {
 
     static public function getAllJavascripts() {
         $js = array();
-        // Список нужно начинать в определенном порядке: сначала саму ждейквери, потом ядро
-        $js[] = self::getWebDir(__DIR__) . '/js/jquery-3.3.1.js';
-        $js[] = self::getWebDir(__DIR__) . '/js/jquery-ui.js';
+        // Список нужно начинать в определенном порядке: сначала саму джейквери, потом ядро
+        $js[] = str_ireplace($_SERVER['DOCUMENT_ROOT'], "", __DIR__) . '/js/jquery-3.3.1.js';
+        $js[] = str_ireplace($_SERVER['DOCUMENT_ROOT'], "", __DIR__) . '/js/jquery-ui.js';
         $files = self::getDirDeep(__DIR__ . '/js/' , "/(\.js|\.js\.php)$/i", true);
         $js = array_merge($js,$files);
         foreach (self::$all_jscss as $one) {

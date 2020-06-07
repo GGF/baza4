@@ -1,6 +1,6 @@
 <?
 interface IJsCSS {    
-    static public function getWebDir($dir=false);
+    public function getWebDir($dir=false);
     public function getJavascripts();
     public function getStylesheets();
     public function getHeaderBlock();

@@ -103,10 +103,11 @@ if (!$_SERVER["debug"]["noCache"]["php"]) {
             cache::buildScript($_SESSION["cache"], 'php');
     }
 }
-/*
- * пожалуй уберу строчку из файла autoload и поставлю включение сюда
- */
-//include_once __DIR__ . '/_engine/autoload.php'; // инклудим автозагрузку модулей
+
+
+// здесь уже определен автозагрузчик классов, я стал использовать новый смарти и ему бы установить каталог для готовых шаблонов
+Output::getTemplateCompiler()->setCompileDir($_SERVER['DOCUMENT_ROOT'] . '/tmp');
+
 
 ob_get_clean();
 /*
