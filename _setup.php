@@ -27,12 +27,12 @@ if  (APPLICATION_ENV === "development") {
     $_SERVER["debug"] = false;
 }
 
-$_SERVER[Auth] = true;
+$_SERVER["Auth"] = true;
 
-if ($_REQUEST[level] == 'update' || $_REQUEST[level] == 'getdata') { //update лучше не выводить отладочный текст. как нить так отлажу
+if ($_REQUEST["level"] == 'update' || $_REQUEST["level"] == 'getdata') { //update лучше не выводить отладочный текст. как нить так отлажу
     $_SERVER["debug"]["noCache"]["php"] = true;
     $_SERVER["debug"]["report"] = false;
-    $_SERVER[Auth] = false;
+    $_SERVER["Auth"] = false;
 }
 
 $_SERVER['SYSCACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
@@ -56,16 +56,16 @@ $_SERVER["mysql"] = array(
     ),
 );
 
-$_SERVER[storagebase] = "zaomppsklads";
+$_SERVER["storagebase"] = "zaomppsklads";
 
 // Временная зона
 date_default_timezone_set("Europe/Moscow");
 
 // Кодировки
-$_SERVER[Encoding] = "UTF-8";     // HTML
-$_SERVER[EncodingSQL] = 'utf8';   // SQL
-$_SERVER[EncodingCP] = 'UTF-8';   // 
-$_SERVER[EncodingFS] = "UTF-8";   // File system
+$_SERVER["Encoding"] = "UTF-8";     // HTML
+$_SERVER["EncodingSQL"] = 'utf8';   // SQL
+$_SERVER["EncodingCP"] = 'UTF-8';   // 
+$_SERVER["EncodingFS"] = "UTF-8";   // File system
 
 // настройки файлового сервера
 // на каком сервере файлы шарятся
@@ -115,7 +115,7 @@ ob_get_clean();
 Lang::getInstance()->setLang('ru');
 
 // перехватим ошибки
-if ($_SERVER[debug][report]) {
+if ($_SERVER["debug"]["report"]) {
     console::getInstance();//->out(print_r($_REQUEST, true));
     profiler::add('Autoexec', 'Выполнение начальных установок');
 }

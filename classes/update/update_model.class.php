@@ -335,22 +335,22 @@ class update_model {
             $rs[kdir] .=  "\\{$drillname}\\{$date}";
             //$rs[kdir] .= ($mpp != -1 ? "\\MPP" : "\\DPP") . "\\{$drillname}\\{$date}";
             $out = "mkdir k:\\{$rs[kdir]}" . "\\\n";
-            $out .= "copy /Y .\\{$drillname}.mk2 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}.mk4 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}.frz k:\\" . $rs[kdir] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}.mk2 k:\\" . $rs[kdir] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}.mk4 k:\\" . $rs[kdir] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}.frz k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.ex2 k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.sch k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.mx1 k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.prl k:\\" . $rs[kdir] . "\\\n";
             $out .= "copy /Y .\\{$drillname}.fx2 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-2.mk2 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-2.mk4 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-2.frz k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-2.ex2 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-2.sch k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-2.mx1 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-2.prl k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-2.fx2 k:\\" . $rs[kdir] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}-2.mk2 k:\\" . $rs[kdir] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}-2.mk4 k:\\" . $rs[kdir] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}-2.frz k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-*.ex2 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-*.sch k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-*.mx1 k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-*.prl k:\\" . $rs[kdir] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-*.fx2 k:\\" . $rs[kdir] . "\\\n";
             return $out;
         }        
     }

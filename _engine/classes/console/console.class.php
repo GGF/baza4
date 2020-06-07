@@ -187,7 +187,7 @@ class console extends lego_abstract {
 
 }
 
-if ($_SERVER[debug][report]) {
+if ($_SERVER["debug"]["report"]) {
 
     /*
      * ERROR HANDLING

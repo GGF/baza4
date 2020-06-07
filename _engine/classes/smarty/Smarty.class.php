@@ -565,7 +565,7 @@ class _Smarty
     /**
      * The class constructor.
      */
-    function _Smarty()
+    function __construct()
     {
       $this->assign('SCRIPT_NAME', isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME']
                     : @$GLOBALS['HTTP_SERVER_VARS']['SCRIPT_NAME']);

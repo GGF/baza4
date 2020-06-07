@@ -20,7 +20,7 @@ abstract class JsCSS implements IJsCSS {
         return 0;
     }
 
-    public function getWebDir($dir=false) {
+    static public function getWebDir($dir=false) {
         /* @var $gwddir string */
         $gwddir = $dir ? $dir : str_replace('\\', '/', $this->dir);
         return str_ireplace($_SERVER['DOCUMENT_ROOT'], "", $gwddir);
