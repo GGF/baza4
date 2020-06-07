@@ -107,7 +107,7 @@ class sqltable_view extends views {
 
         reset($cols);
 
-        while (list($key, $val) = each($cols)) {
+        foreach ($cols as $key => $val) {
             if (is_array($val)) {
                 $title = empty($val[title])?$val[1]:$val[title];
                 $shortname   = empty($val[short])?$val[0]:$val[short];
@@ -120,12 +120,12 @@ class sqltable_view extends views {
                 $cord = ($this->owner->order == $key ? ($key . " DESC") : $key);
                 $url = $this->owner->actUri('index', $this->owner->all, $cord, $cfind, $cidstr)->url();
                 $ret .= "<th>" .
-                        (($key == 'check' or $key == "№" or (isset($nosort) and $nosort) ) ? "<label title='{$title}'>".hypher::addhypher($shortname)."</label>" :
+                        (($key == 'check' or $key == "№" or (isset($nosort) and $nosort) ) ? "<label title='{$title}'>".(new phpHypher('conf/hyph_ru_RU.conf'))->hyphenate($shortname,'UTF-8')."</label>" :
                                 "<a " .
                                 "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='replace' " .
                                 "href='{$url}' title='{$title}' " .
                                 ">" .
-                                hypher::addhypher($shortname) .
+                                (new phpHypher('conf/hyph_ru_RU.conf'))->hyphenate($shortname,'UTF-8') .
                                 (($key == 'check' or $key == "№") ? "" : ($this->owner->order == $key ? "&darr;" : (($this->owner->order == $key . ' DESC') ? "&uarr;" : ""))) .
                                 "</a>");
             } else {
@@ -237,7 +237,7 @@ class sqltable_view extends views {
                 $rs["file_link"] = substr($rs["file_link"], strrpos($rs["file_link"], "\\") + 1);
                 $delstr = '';
                 reset($cols);
-                while (list($key, $val) = each($cols)) {
+                foreach ($cols as $key => $val) {
                     $disablelink = strstr($rs["$key"], 'href=');
                     $disablelink |= ( $key == 'check' or $key == "№");
                     $out .= "<td>" . ($disablelink ? "" : $link ) .

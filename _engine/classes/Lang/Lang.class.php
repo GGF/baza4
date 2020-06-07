@@ -96,8 +96,8 @@ Lang::add(array(
             "en" => "This letter is automatically-generated."
         ),
         "robot" => array(
-            "ru" => "{$_SERVER[project][name]}",
-            "en" => "{$_SERVER[project][name]}",
+            "ru" => "{$_SERVER["project"]["name"]}",
+            "en" => "{$_SERVER["project"]["name"]}",
         ),
     ),
     "paging" => array(
