@@ -16,23 +16,23 @@ class lanch_nzap extends sqltable {
         if (!Auth::getInstance()->getRights($this->getName(),'view')) // тут можно смотреть, но редактирование(запуск) проверяется в виде(view)
             return $this->view->getMessage('Нет прав на редактирование');
         $rec = $this->model->getRecord($id);
-        $rec[onlycalclink] = $this->actUri('ordertoonclycalc', $id)->url();
-        if ($rec[mp]) {
-            $rec[mp][mplink] = $this->actUri('masterplate', $id)->url();
+        $rec['onlycalclink'] = $this->actUri('ordertoonclycalc', $id)->url();
+        if ($rec['mp']) {
+            $rec['mp']['mplink'] = $this->actUri('masterplate', $id)->url();
         }
-        if ($rec[zadel]>0) { 
-            $rec[zadellink] = $this->actUri('zadel', $id)->url(); // создать AJAX ссылку для кнопки
+        if ($rec['zadel']>0) { 
+            $rec['zadellink'] = $this->actUri('zadel', $id)->url(); // создать AJAX ссылку для кнопки
         } 
         $mpp=false;
-        for ($i = 0; $i < $rec[parties]; $i++) {
-            if ($rec[party][$i][party]) {
+        for ($i = 0; $i < $rec['parties']; $i++) {
+            if ($rec['party'][$i]['party']) {
                 // в дозапуске указываем количество запуска и меняем его если надо скриптом см. ниже
-                $rec[party][$i][sllink] = $this->actUri('sl', $id, $rec[party][$i][party], $rec[block][boardinorder])->url();
+                $rec['party'][$i]['sllink'] = $this->actUri('sl', $id, $rec['party'][$i]['party'], $rec['block']['boardinorder'])->url();
             }
-            $mpp=$rec[party][$i][type]=="mpp"||$mpp;
+            $mpp=$rec['party'][$i]['type']=="mpp"||$mpp;
         }
         if ($mpp) {
-            $rec[block][boardinorder] = "<input type='text' value='{$rec[block][boardinorder]}' size='4' id='boardinorder'/><script>
+            $rec['block']['boardinorder'] = "<input type='text' value='{$rec['block']['boardinorder']}' size='4' id='boardinorder'/><script>
                     $('#boardinorder').change(function(){ 
                     var sstr = $(this).val();
                     $('.partybuttonlink').each(function(){
@@ -52,9 +52,9 @@ class lanch_nzap extends sqltable {
     }
 
     public function action_sl($id, $partyornumbdozap, $dozap=false) {
-        $rec[posid] = $id;
-        $rec[party] = $partyornumbdozap;
-        $rec[dozap] = $dozap;
+        $rec['posid'] = $id;
+        $rec['party'] = $partyornumbdozap;
+        $rec['dozap'] = $dozap;
         $rec = $this->model->getParty($rec);
         if ($rec) {
             $rec = $this->model->getSl($rec);
@@ -78,7 +78,7 @@ class lanch_nzap extends sqltable {
      * @return string Текст html ссылки на сопроведительный лист
      */
     public function action_dozap($lanchid) {
-        return '<div class="lego">' . $this->action_sl($lanchid, $_REQUEST[dozapnumbers], true) . '</div>';
+        return '<div class="lego">' . $this->action_sl($lanchid, $_REQUEST['dozapnumbers'], true) . '</div>';
     }
     
     /**

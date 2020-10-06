@@ -30,11 +30,11 @@ class lanch_mp_model extends sqltable_model {
 
     public function getCols() {
         $cols = array();
-        $cols[mpid]="ID";
-        $cols[mpdate]="Дата";
-        $cols[nik]="Кто запустил";
-        $cols[customer]="Заказчик";
-        $cols[blockname]="Плата";
+        $cols['mpid']="ID";
+        $cols['mpdate']="Дата";
+        $cols['nik']="Кто запустил";
+        $cols['customer']="Заказчик";
+        $cols['blockname']="Плата";
         return $cols;
     }
 
@@ -51,8 +51,8 @@ class lanch_mp_model extends sqltable_model {
      */
     public function getRecord($id) {
         $rec = parent::getRecord($id);
-        $rec["block"] = $this->getBlock($rec["block_id"]);
-        $rec["customer"] = $this->getCustomer($rec["block"]["customer_id"]);
+        $rec['block'] = $this->getBlock($rec['block_id']);
+        $rec['customer'] = $this->getCustomer($rec['block']['customer_id']);
         return $rec;
     }
 
