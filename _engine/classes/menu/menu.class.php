@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Menu extends lego_abstract {
 

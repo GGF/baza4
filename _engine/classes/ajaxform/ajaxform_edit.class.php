@@ -1,4 +1,4 @@
-<?
+<?php
 
 class ajaxform_edit_field {
 

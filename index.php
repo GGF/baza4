@@ -10,9 +10,9 @@ if (empty($_REQUEST["level"])) {
 
 include "_setup.php";
 
-header("Content-Type: text/html; charset={$_SERVER[Encoding]}");
+header("Content-Type: text/html; charset={$_SERVER["Encoding"]}");
 
-if ($_SERVER[Auth]) { // update и getdata делается без авторизации
+if ($_SERVER["Auth"]) { // update и getdata делается без авторизации
     if (!Auth::getInstance()->run()->success) {
         echo Auth::getInstance()->getOutput();
         echo console::getInstance()->run()->getOutput();
@@ -32,7 +32,7 @@ if ($m->run()) {
 //    echo "storeSetting(".multibyte::Json_encode($_SESSION["user_setting"]).");";
 //    echo "</script>";
 
-if ($_SERVER[debug][report]) {
+if ($_SERVER["debug"]["report"]) {
     if (Ajax::isAjaxRequest()) {
         echo console::getInstance()->getScripts();
     } else {

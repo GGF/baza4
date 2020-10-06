@@ -1,4 +1,4 @@
-<?
+<?php
 class Ajax{
 	static private $key = 'ajax';
 	static public function key(){ return self::$key; }

@@ -1,4 +1,4 @@
-<?
+<?php
 
 abstract class JsCSS implements IJsCSS {
 

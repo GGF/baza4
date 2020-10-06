@@ -1,4 +1,4 @@
-<?
+<?php
 interface IJsCSS {    
     public function getWebDir($dir=false);
     public function getJavascripts();

@@ -1,4 +1,4 @@
-<?
+<?php
 interface ITemplateCompiler{
 	public function assign($var_name, $var_value);
 	public function fetch($resource_name);

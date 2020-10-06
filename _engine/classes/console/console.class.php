@@ -1,4 +1,4 @@
-<?
+<?php
 
 define("CMSCONSOLE_DEFAULT", "");
 define("CMSCONSOLE_ERROR", "error");

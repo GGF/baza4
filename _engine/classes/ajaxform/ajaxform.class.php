@@ -1,4 +1,4 @@
-<?
+<?php
 
 define("AJAXFORM_TYPE_CODE", "code");
 define("AJAXFORM_TYPE_HIDDEN", "hidden");

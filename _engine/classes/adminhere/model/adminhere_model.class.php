@@ -1,4 +1,4 @@
-<?
+<?php
 class adminhere_model {
 	public function userwin() {
 		$sql="SELECT *,(UNIX_TIMESTAMP()-UNIX_TIMESTAMP(MAX(ts))) AS lt FROM session JOIN users ON session.u_id=users.id GROUP BY u_id";
