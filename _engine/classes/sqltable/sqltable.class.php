@@ -190,13 +190,21 @@ class sqltable extends lego_abstract {
             return $this->view->getMessage('Нет прав на редактирование');
         }
         $rec = $this->model->getRecord($id);
-        $rec[idstr] = $this->idstr;
-        $rec[isnew] = empty($id);
-        $rec[edit] = $id;
-        $rec[action] = $this->actUri('processingform')->ajaxurl($this->getName());
+        $rec["idstr"] = $this->idstr;
+        $rec["isnew"] = empty($id);
+        $rec["edit"] = $id;
+        if ($rec["isnew"]) {
+            $rec["customers"] = $this->model->getCustomers();
+            $rec["boardlink"] = $this->actUri('getboards')->ajaxurl($this->getName());
+        }
+        $rec["action"] = $this->actUri('processingform')->ajaxurl($this->getName());
         $out = $this->view->showrec($rec);
         if ($out) {
-            return $this->view->getForm($out);
+            if (is_array($out)) {
+                return $this->view->getForm($out);
+            } else {
+                return $this->view->getMessage($out);    
+            }
         } else {
             $out = "Не радактируется!";
             return $this->view->getMessage($out);

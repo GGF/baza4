@@ -21,8 +21,8 @@ class sqltable_view extends views {
      * @return string
      */
     public function showrec($rec) {
-        if (empty($rec[fields])) {
-            return false; // заглушка для нередактируемых
+        if (!is_array($rec)) {
+            return $rec; // заглушка для нередактируемых
         }
         // вытащить из массива в просто переменные
         extract($rec);

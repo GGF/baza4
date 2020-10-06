@@ -7,10 +7,6 @@ class lanch_mp extends sqltable {
         return __DIR__;
     }
 
-    public function init() {
-        parent::init();
-        $this->addbutton = false;
-    }
 }
 
 ?>

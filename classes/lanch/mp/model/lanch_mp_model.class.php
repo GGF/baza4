@@ -30,19 +30,41 @@ class lanch_mp_model extends sqltable_model {
 
     public function getCols() {
         $cols = array();
-	$cols[mpid]="ID";
-	$cols[mpdate]="Дата";
-	$cols[nik]="Кто запустил";
-	$cols[customer]="Заказчик";
-	$cols[blockname]="Плата";
+        $cols[mpid]="ID";
+        $cols[mpdate]="Дата";
+        $cols[nik]="Кто запустил";
+        $cols[customer]="Заказчик";
+        $cols[blockname]="Плата";
         return $cols;
     }
 
     public function delete($id) {
         $sql = "DELETE FROM masterplate WHERE id='{$id}'";
-	sql::query($sql);
+	    sql::query($sql);
         return sql::affected();
     }
+
+    /**
+     * Получение записи
+     * 
+     * @var int $id - идентификатор 
+     */
+    public function getRecord($id) {
+        $rec = parent::getRecord($id);
+        $rec["block"] = $this->getBlock($rec["block_id"]);
+        $rec["customer"] = $this->getCustomer($rec["block"]["customer_id"]);
+        return $rec;
+    }
+
+    /**
+     * Сохранение записи
+     * 
+     * @var array $data - массив сохранения данных полученные из формы
+     */
+    public function setRecord($data) {
+        return true;
+    }
+    
 }
 
 ?>

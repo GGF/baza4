@@ -145,6 +145,11 @@ class sqltable_model extends model {
         return sql::fetchOne($sql);
     }
 
+    public function getBlock($id) {
+        $sql = "SELECT * FROM blocks WHERE id='{$id}'";
+        return sql::fetchOne($sql);
+    }
+
     public function getOrder($id) {
         $sql = "SELECT * FROM orders WHERE id='{$id}'";
         return sql::fetchOne($sql);
