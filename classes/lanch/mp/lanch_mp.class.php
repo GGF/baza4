@@ -23,7 +23,9 @@ class lanch_mp extends sqltable {
      */
     public function getMPLink(int $tzposid = 0)
     {
-        return $this->view->createMPFile($this->model->newByTZposid($tzposid));
+        $mp = $this->model->newByTZposid($tzposid);
+        $link =$this->view->createMPFile($mp);
+        return $link;
     }
 
 }

@@ -7,6 +7,14 @@
  */
 class lanch_mp_view extends sqltable_view {
 
+
+    /** 
+     * обязательно определять для модуля 
+    */
+    public function getDir() {
+        return __DIR__;
+    }
+
     /**
      * Показ записи
      * @var array $rec - передает данные из модели
