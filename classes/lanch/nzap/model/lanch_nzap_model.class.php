@@ -208,33 +208,6 @@ class lanch_nzap_model extends sqltable_model {
         return $rec;
     }
 
-    public function getMasterplate($tzposid) {
-        $sql = "SELECT * FROM posintz JOIN (tz,orders) ON (tz.id=tz_id AND orders.id=tz.order_id) WHERE posintz.id='{$tzposid}'";
-        $rs = sql::fetchOne($sql);
-        $block_id = $rs['block_id'];
-        $sql = "SELECT * FROM masterplate WHERE posid='{$tzposid}'";
-        $res = sql::fetchOne($sql);
-        if (empty($res)) {
-            $sql = "INSERT INTO masterplate (mpdate,user_id,posid,block_id)
-                    VALUES (Now(),'" . Auth::getInstance()->getUser('userid') . "','{$tzposid}','{$block_id}')";
-            sql::query($sql);
-            $rec['mp_id'] = sql::lastId();
-        } else {
-            $sql = "UPDATE masterplate SET mpdate=NOW(), user_id='" . Auth::getInstance()->getUser('userid') . "' WHERE id='{$res['id']}'";
-            $rs = sql::fetchOne($res);
-            $rec['mp_id'] = $res['id'];
-        }
-        $sql = "SELECT * FROM blocks JOIN customers ON blocks.customer_id=customers.id WHERE blocks.id='{$block_id}'";
-        $rs = sql::fetchOne($sql);
-        $rec['customer'] = $rs['customer'];
-        $rec['blockname'] = $rs['blockname'];
-        $rec['sizex'] = $rs['sizex'];
-        $rec['sizey'] = $rs['sizey'];
-        $rec['drlname'] = $rs['drlname'];
-        $rec['date'] = date("Y-m-d");
-        return $rec;
-    }
-
     public function getPartyfile($rec) {
         extract($rec);
         if ($dozap===true) {

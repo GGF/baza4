@@ -107,27 +107,6 @@ class lanch_nzap_view extends sqltable_view {
         return $out;
     }
 
-    public function showmplink($rec) {
-        $filename = "z:\\Заказчики\\{$rec['customer']}\\{$rec['blockname']}\\Мастерплаты\\МП-{$rec['date']}-{$rec['mp_id']}.xls";
-        $filename = fileserver::createdironserver($filename);
-        $excel = file_get_contents($this->getDir() . "/mp.xls");
-        if (fileserver::savefile($filename,$excel)) {
-            $mp['_date_'] = date("d.m.Y");
-            $mp['_number_'] = sprintf("%08d\n",$rec['mp_id']);
-            if (fileserver::savefile($filename.".txt",$mp)) {
-                Output::assign('mplink', fileserver::sharefilelink($filename));
-                Output::assign('mpid', $rec['mp_id']);
-                $out = $this->fetch('mplink.tpl');
-            } else {
-                $out = "Не удалось создать файл txt";
-            }
-        } else {
-            $out = "Не удалось создать файл xls" . print_r($rec,true);
-        }
-
-        return $out;
-    }
-
     /**
      * Создает лист запуска из раздела и возвращает текст для кнопки использования раздела
      * @param mixed $rec масссив с данными для создани СЛ

@@ -14,33 +14,9 @@ class lanch_mp_view extends sqltable_view {
      */
     public function showrec($rec) {
         $fields = array(); // пустые поля
-        if (!$rec['isnew']) { //если запись не новая то просто пропише заказчика и плату
-            array_push($fields, array(
-                "type" => AJAXFORM_TYPE_HIDDEN,
-                "name" => "customer_id",
-                "value" => $rec['cusid'],
-            ));
-            array_push($fields, array(
-                "type" => AJAXFORM_TYPE_HIDDEN,
-                "name" => "board_id",
-                "value" => $rec['board_id'],
-            ));
-            array_push($fields, array(
-                "type" => AJAXFORM_TYPE_TEXT,
-                "name" => "customer",
-                "label" => "Заказчик:",
-                "value" => $rec['customer']['customer'],
-                "options" => array("readonly" => true,),
-            ));
-            array_push($fields, array(
-                "type" => AJAXFORM_TYPE_TEXT,
-                "name" => "plate",
-                "label" => "Плата:",
-                "value" => $rec['block']['blockname'],
-                "options" => array("readonly" => true,),
-            ));
+        if (!$rec['isnew']) { //если запись не новая то просто пропишем заказчика и плату
+            //тут бы выдать ссылку на файл мастерплаты, но он не записан
             $rec = $rec['customer']['customer'] . " - " . $rec['block']['blockname'];
-
         } else { // иначе выберем
             array_push($fields,array(
                 "type" => AJAXFORM_TYPE_SELECT,
@@ -62,6 +38,33 @@ class lanch_mp_view extends sqltable_view {
         }
        
         return parent::showrec($rec);
-    }}
+    }
+
+    /**
+     * Создает файл мастерплаты и возвращает на него ссылку
+     * @param array $rec данные из модели для формирования файла
+     * @return string html с ссылкой или неудачным результатом
+    */
+    public function createMPFile($rec) {
+        $filename = "z:\\Заказчики\\{$rec['customer']}\\{$rec['blockname']}\\Мастерплаты\\МП-{$rec['date']}-{$rec['mp_id']}.xls";
+        $filename = fileserver::createdironserver($filename);
+        $excel = file_get_contents($this->getDir() . "/mp.xls");
+        if (fileserver::savefile($filename,$excel)) {
+            $mp['_date_'] = date("d.m.Y");
+            $mp['_number_'] = sprintf("%08d\n",$rec['mp_id']);
+            if (fileserver::savefile($filename.".txt",$mp)) {
+                Output::assign('mplink', fileserver::sharefilelink($filename));
+                Output::assign('mpid', $rec['mp_id']);
+                $out = $this->fetch('mplink.tpl');
+            } else {
+                $out = "Не удалось создать файл txt";
+            }
+        } else {
+            $out = "Не удалось создать файл xls" . print_r($rec,true);
+        }
+
+        return $out;
+    }
+}
 
 ?>

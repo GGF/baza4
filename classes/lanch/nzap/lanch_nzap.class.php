@@ -2,6 +2,17 @@
 
 class lanch_nzap extends sqltable {
 
+
+    /**
+     * @var lanch_nzap_model
+     */
+    protected $model;
+    
+    /**
+     * @var lanch_nzap_view
+     */
+    protected $view;
+
     // обязательно определять для модуля
     public function getDir() {
         return __DIR__;
@@ -47,8 +58,8 @@ class lanch_nzap extends sqltable {
     }
 
     public function action_masterplate($id) {
-        $rec = $this->model->getMasterplate($id);
-        return $this->view->showmplink($rec);
+        $mp = new lanch_mp();
+        return $mp->getMPLink($id);
     }
 
     public function action_sl($id, $partyornumbdozap, $dozap=false) {
