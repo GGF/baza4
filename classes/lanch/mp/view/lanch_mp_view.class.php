@@ -52,6 +52,7 @@ class lanch_mp_view extends sqltable_view {
         $out = parent::showrec($rec);
         Output::assign('mplink', $rec['mp']['mplink']);
         $button =  $this->fetch('mp.tpl');
+        return $out;
         
     }
 

@@ -266,7 +266,7 @@ class sqltable extends lego_abstract {
                 return $this->view->getMessage($out);    
             }
         } else {
-            $out = Lang::getString('messsage.uneditable');
+            $out = Lang::getString('message.uneditable');
             return $this->view->getMessage($out);
         }
     }
