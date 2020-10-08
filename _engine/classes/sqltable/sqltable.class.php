@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  *  Класс Таблица для вывода данных из базы
  */
 
@@ -55,12 +55,34 @@ class sqltable extends lego_abstract {
      */
     protected $cols;
 
+    /**
+     * @var int - идентификатор первой строки таблицы
+     */
     public $firsttrid;
+
+    /**
+     * @var int - идентификатор послендей строки таблицы
+     */
     public $lasttrid;
-    public $index;
+
+    /**
+     * @var string - стока поиска
+     */
     public $find;
+
+    /**
+     * @var string - дорядок сортировки
+     */
     public $order;
+
+    /**
+     * @var string - дополнительные идентификаторы
+     */
     public $idstr;
+
+    /**
+     * @var string - Показывать ли все записи
+     */
     public $all;
 
     /**
@@ -72,21 +94,33 @@ class sqltable extends lego_abstract {
      * @var sqltable_view
      */
     protected $view;
+
+    /**
+     * @var ajaxform - форма
+     */
     protected $form;
 
     /*
      * Initialization
      */
 
-    // обязательно определять для модуля
+    /**
+     * Наследуется от абстрактного, нужно переопределять чтобы объект знал где брать дополнительные файлы
+     */
     public function getDir() {
         return __DIR__;
     }
 
+    /**
+     * Конструктор
+     */
     public function __construct($name=false) {
         parent::__construct($name);
     }
 
+    /**
+     * Инициализация объекта
+     */
     public function init() {
         $this->type = $this->getName();
         $this->tid = uniqid($this->type);
@@ -155,6 +189,14 @@ class sqltable extends lego_abstract {
      * Controller
      */
 
+     /**
+      * Обработка основного события
+      * @param string $all - показывать ли все
+      * @param string $order - сортировка
+      * @param string $find - строка поиска
+      * @param string $idstr - строка с идентификаторами, тут сложнее
+      * @return string - HTML
+      */
     public function action_index($all='', $order='', $find='', $idstr='') {
         $all = empty($all) ? $this->all : $all;
         $order = empty($order) ? $this->order : $order;
@@ -179,20 +221,33 @@ class sqltable extends lego_abstract {
         return $this->view == null ? "" : $this->view->show();
     }
 
+    /**
+     * Удаление записи
+     * @param int $id - идентификатор записи
+     * @param bool $confirmed - подтвержденая ли уже АЯКСом
+     * @param string $delstr - Строка запроса
+     * @return string HTML
+     */
+
     public function action_delete($id, $confirmed=false, $delstr='') {
         if (Ajax::isAjaxRequest() || $confirmed) {
             // в этом случае уже подтверждено иначе надо проверить
         } else {
-            $out = empty($delstr) ? "Удалить {$id}?" : "Удалить {$delstr}?";
+            $out = Lang::getString('question.deleteit') . (empty($delstr) ? " {$id}?" : " {$delstr}?");
             return $this->view->getConfirm($out, 'delete', $id, true);
         }
         $this->model->delete($id);
         return $this->action_index();
     }
 
+    /**
+     * Обрабатывает редактирование 
+     * @param int $id - идентификатор редактируемой записи, если новая то 0
+     * @return string - HTML для диалогового окна
+     */
     public function action_edit($id) {
         if (!Auth::getInstance()->getRights($this->getName(), 'edit')) {
-            return $this->view->getMessage('Нет прав на редактирование');
+            return $this->view->getMessage(Lang::getString('message.hasntright'));
         }
         $rec = $this->model->getRecord($id);
         $rec['idstr'] = $this->idstr;
@@ -211,19 +266,31 @@ class sqltable extends lego_abstract {
                 return $this->view->getMessage($out);    
             }
         } else {
-            $out = "Не радактируется!";
+            $out = Lang::getString('messsage.uneditable');
             return $this->view->getMessage($out);
         }
     }
 
+    /**
+     * Обработка открытия записи
+     * @param int $id - идентификатор записи
+     * @return string - HTML для диалогового окна
+     */
     public function action_open($id) {
         return $this->action_edit($id);
     }
 
+    /**
+     * Обработка добавления записи
+     * @return string - HTML для диалогового окна
+     */
     public function action_add() {
         return $this->action_edit(0);
     }
 
+    /**
+     * Обработка формы
+     */
     public function action_processingform() {
         // хидер переключим
         ajaxform_recieve::init();
@@ -260,18 +327,30 @@ class sqltable extends lego_abstract {
         return $this->view->getMessage($message);
     }
 
+    /**
+     * Обработка получения списка плат для комбобоксов выбора
+     * @return string - HTML
+     */
     public function action_getboards() {
         $customerid = $_REQUEST['idstr'];
         $data = $this->model->getBoards($customerid);
         return $this->view->getSelect($data);
     }
 
+    /**
+     * Обработка получения списка блоков для комбобоксов
+     * @return string - HTML
+     */
     public function action_getblocks() {
         $customerid = $_REQUEST['idstr'];
         $data = $this->model->getBlocks($customerid);
         return $this->view->getSelect($data);
     }
 
+    /**
+     * Обработка добаления в форму поля
+     * @return string - HTML 
+     */
     public function action_addfilefield() {
         $edit = new ajaxform_edit($this->getName());
         $edit->restore();
@@ -287,6 +366,10 @@ class sqltable extends lego_abstract {
         return $out;
     }
 
+    /**
+     * Обработка добавения в форму ссылки на файл
+     * @return string - HTML
+     */
     public function action_addfilelink() {
         $edit = new ajaxform_edit($this->getName());
         $edit->restore();
@@ -308,12 +391,20 @@ class sqltable extends lego_abstract {
         return $out;
     }
 
+    /**
+     * Обработка записи комментария
+     * @return string - HTML
+     */
     public function action_savecomment() {
         $rec = $this->model->saveComment();
         $out = $this->view->addComments($rec['record_id'],$rec['table']);
         return $out;
     }
 
+    /**
+     * Обработка удаления коментария
+     * @return string - HTML
+     */
     public function action_deletecomment($id) {
         $this->model->deleteComment($id);
         return '';

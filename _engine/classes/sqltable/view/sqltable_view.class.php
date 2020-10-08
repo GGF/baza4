@@ -17,7 +17,7 @@ class sqltable_view extends views {
     /**
      * Получает данные из базы в массиве и возвращает html для отображения записи.
      * Перегружаемая.
-     * @param array $rec
+     * @param mixed $rec - может быть масивом полей формы, а может строкой для отображения сообщения
      * @return string
      */
     public function showrec($rec) {
@@ -28,10 +28,10 @@ class sqltable_view extends views {
         extract($rec);
         $form = new ajaxform_edit($this->owner->getName(), $action);
         $form->init($edit);
-        if ($rec[files][file]) {
-            foreach ($rec[files][file] as $file) {
-                $values[$file[id]] = basename($file[file_link]);
-                $value[$file[id]] = 1;
+        if ($rec['files']['file']) {
+            foreach ($rec['files']['file'] as $file) {
+                $values[$file['id']] = basename($file['file_link']);
+                $value[$file['id']] = 1;
             }
             array_push($fields, array(
                 "type" => AJAXFORM_TYPE_CHECKBOXES,
@@ -44,10 +44,10 @@ class sqltable_view extends views {
         }
         $form->addFields($fields);
         $out = $form->getOutput();
-        if ($rec[files]) {
+        if ($rec['files']) {
             $out .= $this->addFileButton();
         }
-        $out .= $this->addComments($edit,$rec[maintable]);
+        $out .= $this->addComments($edit,$rec['maintable']);
         return $out;
     }
 
@@ -96,8 +96,7 @@ class sqltable_view extends views {
     /**
      * Разбиваем заголовок на подфункции, а то длинный
      * Тут получаем колонки
-     * @var array $cols - колонки
-     * 
+     * @param array $cols - колонки
      * @return string
      */
     private function get_header_cols($cols) {
@@ -109,9 +108,9 @@ class sqltable_view extends views {
 
         foreach ($cols as $key => $val) {
             if (is_array($val)) {
-                $title = empty($val[title])?$val[1]:$val[title];
-                $shortname   = empty($val[short])?$val[0]:$val[short];
-                $nosort = empty($val[nosort])?$val[2]:$val[nosort];
+                $title = empty($val['title'])?$val[1]:$val['title'];
+                $shortname   = empty($val['short'])?$val[0]:$val['short'];
+                $nosort = empty($val['nosort'])?$val[2]:$val['nosort'];
             } else {
                 $title=$val;
                 $shortname = $val;
@@ -314,12 +313,22 @@ class sqltable_view extends views {
         return $out;
     }
 
+    /**
+     * Return JSON from array
+     * @param array $data - data from model
+     * @return none - just print header and JSON
+     */
     public function getJson($data) {
-        //header("CONTENT-TYPE: TEXT/X-JSON; CHARSET={$_SERVER[Encoding]}");
-        header("CONTENT-TYPE: APPLICATION/JSON; CHARSET={$_SERVER[Encoding]}");
+        //header("CONTENT-TYPE: TEXT/X-JSON; CHARSET={$_SERVER['Encoding']}");
+        header("CONTENT-TYPE: APPLICATION/JSON; CHARSET={$_SERVER['Encoding']}");
         echo multibyte::Json_encode($data, true);
     }
 
+    /**
+     * Return "option" for select from data
+     * @param array $data - data from model
+     * @return string - HTML
+     */
     public function getSelect($data) {
         $out = '';
         foreach ($data as $key => $value) {
@@ -328,6 +337,10 @@ class sqltable_view extends views {
         return $out;
     }
 
+    /**
+     * Show control for add files
+     * @return string - HTML
+     */
     public function addFileButton() {
         // тут не используем шаблон изза неправильного наследования шаблонов
         $name = $this->owner->getName();
@@ -353,9 +366,16 @@ class sqltable_view extends views {
         return $out;
     }
 
+    /**
+     * Show control for add comment
+     * @param int $id - ID of record
+     * @param string $table - maintable for record
+     * @return string - HTML
+     */
     public function addComments($id,$table='') {
+        $out='';
         $rec = $this->owner->model->getCommentsForId($id,$table);
-        foreach ($rec[comments] as $coment) {
+        foreach ($rec['comments'] as $coment) {
             $out .= $this->showcoment($coment);
         }
         Output::assign('comments', $out);
@@ -368,6 +388,11 @@ class sqltable_view extends views {
         return $out;
     }
 
+    /**
+     * Показ коментариев
+     * @param array $rec - data form model
+     * @return dtring - HTML
+     */
     public function showcoment($rec) {
         Output::assignAll($rec);
         Output::assign('deleteurl', $this->owner->actUri('deletecomment',$rec["id"])->ajaxurl($this->owner->getName()));

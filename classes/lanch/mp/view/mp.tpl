@@ -1,0 +1,1 @@
+<br><a data-silent="self" legotarget="lanch_nzap" href="{$mplink}"><input type="button" class="partybutton" id="mp" value="Мастерплата" ></a>

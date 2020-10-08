@@ -69,7 +69,7 @@ $_SERVER["EncodingFS"] = "UTF-8";   // File system
 
 // настройки файлового сервера
 // на каком сервере файлы шарятся
-define("NETBIOS_SERVERNAME", "servermpp");
+define("NETBIOS_SERVERNAME", "pcbshop");
 // коренвой катлог  для share [z] и [t]
 define("SHARE_ROOT_DIR", "/home/common/");
 // каталог сохранения файлов относительно DOCUMENT_ROOT
@@ -114,6 +114,7 @@ ob_get_clean();
  * Делать хоть один инстанс нужно для включения скриптов в заголовки
  */
 Lang::getInstance()->setLang('ru');
+require_once("_i18n.php");
 
 // перехватим ошибки
 if ($_SERVER["debug"]["report"]) {

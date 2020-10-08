@@ -23,8 +23,12 @@ class lanch_mp_view extends sqltable_view {
     public function showrec($rec) {
         $fields = array(); // пустые поля
         if (!$rec['isnew']) { //если запись не новая то просто пропишем заказчика и плату
-            //тут бы выдать ссылку на файл мастерплаты, но он не записан
-            $rec = $rec['customer']['customer'] . " - " . $rec['block']['blockname'];
+            $rec['mp_id'] = $rec['id'];
+            $rec['customer'] = $rec['customer']['customer'];
+            $rec['date'] = $rec['mpdate'];
+            $rec['blockname'] = $rec['block']['blockname'];
+            $rec['filename'] = $this->getMPFlieName($rec);
+            $rec = $this->getMPLink($rec); // пишу в ту же переменную, но так уж получилось что родитель может принимать mixed
         } else { // иначе выберем
             array_push($fields,array(
                 "type" => AJAXFORM_TYPE_SELECT,
@@ -45,7 +49,10 @@ class lanch_mp_view extends sqltable_view {
             $rec['fields'] = $fields;
         }
        
-        return parent::showrec($rec);
+        $out = parent::showrec($rec);
+        Output::assign('mplink', $rec['mp']['mplink']);
+        $button =  $this->fetch('mp.tpl');
+        
     }
 
     /**
@@ -54,25 +61,46 @@ class lanch_mp_view extends sqltable_view {
      * @return string html с ссылкой или неудачным результатом
     */
     public function createMPFile($rec) {
-        $filename = "z:\\Заказчики\\{$rec['customer']}\\{$rec['blockname']}\\Мастерплаты\\МП-{$rec['date']}-{$rec['mp_id']}.xls";
-        $filename = fileserver::createdironserver($filename);
+        $rec['filename'] = $this->getMPFlieName($rec);
         $excel = file_get_contents($this->getDir() . "/mp.xls");
-        if (fileserver::savefile($filename,$excel)) {
+        if (fileserver::savefile($rec['filename'],$excel)) {
             $mp['_date_'] = date("d.m.Y");
             $mp['_number_'] = sprintf("%08d\n",$rec['mp_id']);
-            if (fileserver::savefile($filename.".txt",$mp)) {
-                Output::assign('mplink', fileserver::sharefilelink($filename));
-                Output::assign('mpid', $rec['mp_id']);
-                $out = $this->fetch('mplink.tpl');
+            if (fileserver::savefile($rec['filename'].".txt",$mp)) {
+                $out = $this->getMPLink($rec);
             } else {
-                $out = "Не удалось создать файл txt";
+                $out = Lang::getString('error.cantcreatefile') . ' txt';
             }
         } else {
-            $out = "Не удалось создать файл xls" . print_r($rec,true);
+            $out = Lang::getString('error.cantcreatefile') . ' xls' . print_r($rec,true);
         }
 
         return $out;
     }
+
+    /**
+     * Возвращает имя файла мастерплаты по данным из модели, вспомогательная для создания мастерплаты
+     * @param array $rec - данные из модели
+     * @return string - имя файла
+     */
+    private function getMPFlieName(array $rec) {
+        $filename = "z:\\".Lang::getString('folders.customer')."\\{$rec['customer']}\\{$rec['blockname']}\\".Lang::getString('folders.masterboard')."\\МП-{$rec['date']}-{$rec['mp_id']}.xls";
+        return fileserver::createdironserver($filename);
+    }
+
+    /**
+     * Возвращает ссылку на файл мастерплаты
+     * @param array $rec - данные из модели
+     * @return string - HTML ссылки на файл
+     */
+    private function getMPLink($rec) {
+        Output::assign('mplink', fileserver::sharefilelink($rec['filename']));
+        Output::assign('mpid', $rec['mp_id']);
+        $out = $this->fetch('mplink.tpl');
+        if (empty($out)) $out = Lang::getString('error.nofoundtemplate');
+        return $out;
+    }
+
 }
 
 ?>
