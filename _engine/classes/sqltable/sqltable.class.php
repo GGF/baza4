@@ -257,6 +257,7 @@ class sqltable extends lego_abstract {
         if ($rec['isnew']) {
             $rec['customers'] = $this->model->getCustomers();
             $rec['boardlink'] = $this->actUri('getboards')->ajaxurl($this->getName());
+            $rec['blocklink'] = $this->actUri('getblocks')->ajaxurl($this->getName());
         }
         $rec['action'] = $this->actUri('processingform')->ajaxurl($this->getName());
         $out = $this->view->showrec($rec);

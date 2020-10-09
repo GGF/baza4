@@ -25,6 +25,9 @@ class lanch_mp_view extends sqltable_view {
         $fields = array(); // пустые поля
         if (!$rec['isnew']) { //если запись не новая то просто пропишем заказчика и плату
             $rec['filename'] = $this->getMPFlieName($rec);
+            if (!file_exists($rec['filename'])) {
+                $this->createMPFile($rec);
+            }
             $rec = $this->getMPLink($rec); // пишу в ту же переменную, но так уж получилось что родитель может принимать mixed
         } else { // иначе выберем
             array_push($fields,array(
@@ -33,25 +36,28 @@ class lanch_mp_view extends sqltable_view {
                 "label" => "Заказчик:",
                 "values" => $rec['customers'],
                 "value" => '',
-                "options" => array("html" => " autoupdate-link='{$rec['boardlink']}' autoupdate=boardid ",),
+                "options" => array("html" => " autoupdate-link='{$rec['blocklink']}' autoupdate=blockid ",),
             ));
             array_push($fields,array(
                 "type" => AJAXFORM_TYPE_SELECT,
-                "name" => "board_id",
+                "name" => "block_id",
                 "label" => "Плата:",
-                "values" => $rec['boards'],
+                "values" => '', //  новая же, при выборе заказчика запишутся
                 "value" => '',
-                "options" => array("html" => " boardid "),
+                "options" => array("html" => " blockid "),
             ));
+            /*
             array_push($fields,array(
+                'name' => 'create_button',
                 "type" => AJAXFORM_TYPE_BUTTON,
                 'value' => Lang::getString('masterboard.create'),
+                'options' => array('html'=>'data-silent="self"'),
             ));
+            */
             $rec['fields'] = $fields;
         }
        
-        $out = parent::showrec($rec);
-        return $out;
+        return parent::showrec($rec);
         
     }
 

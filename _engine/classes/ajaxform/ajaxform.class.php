@@ -6,6 +6,7 @@ define("AJAXFORM_TYPE_TEXT", "text");
 define("AJAXFORM_TYPE_PASSWORD", "password");
 define("AJAXFORM_TYPE_TEXTAREA", "textarea");
 define("AJAXFORM_TYPE_BUTTON", "button");
+define("AJAXFORM_TYPE_LINKBUTTON", "linkbutton");
 define("AJAXFORM_TYPE_SUBMIT", "submit");
 define("AJAXFORM_TYPE_RESET", "reset");
 define("AJAXFORM_TYPE_IMAGE", "image");
@@ -1083,7 +1084,7 @@ class ajaxform extends JsCSS {
 
         $html = $options['submit'] ? "name='" . $this->getName($name) . "'" : "";
 
-        echo "<input type='" . $type . "' class='submit' {$html} id='" . $this->getId($name) . "' value='{$value}'{$optionsHTML}>";
+        echo "<input type='" . $type . "' class='submit' {$html} id='" . $this->getId($name) . "' value='{$value}' {$optionsHTML}>";
         if ($options['submit'])
             echo "<script> $(\"#" . $this->getId($name) . "\").click(function() { ajaxform.clicked = \"{$name}\"; }); /* вручную ловим клик, чтобы передать value в запрос */ </script>";
 
