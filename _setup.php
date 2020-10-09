@@ -114,7 +114,6 @@ ob_get_clean();
  * Делать хоть один инстанс нужно для включения скриптов в заголовки
  */
 Lang::getInstance()->setLang('ru');
-require_once("_i18n.php");
 
 // перехватим ошибки
 if ($_SERVER["debug"]["report"]) {

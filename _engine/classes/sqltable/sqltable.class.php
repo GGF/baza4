@@ -108,6 +108,7 @@ class sqltable extends lego_abstract {
      * Наследуется от абстрактного, нужно переопределять чтобы объект знал где брать дополнительные файлы
      */
     public function getDir() {
+        require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'i18n.php'; //всё равноперреопределяется и вызывается, почему не тут вставлять
         return __DIR__;
     }
 

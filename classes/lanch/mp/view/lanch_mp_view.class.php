@@ -12,6 +12,7 @@ class lanch_mp_view extends sqltable_view {
      * обязательно определять для модуля 
     */
     public function getDir() {
+        require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'i18n.php'; //всё равноперреопределяется и вызывается, почему не тут вставлять
         return __DIR__;
     }
 
@@ -23,10 +24,6 @@ class lanch_mp_view extends sqltable_view {
     public function showrec($rec) {
         $fields = array(); // пустые поля
         if (!$rec['isnew']) { //если запись не новая то просто пропишем заказчика и плату
-            $rec['mp_id'] = $rec['id'];
-            $rec['customer'] = $rec['customer']['customer'];
-            $rec['date'] = $rec['mpdate'];
-            $rec['blockname'] = $rec['block']['blockname'];
             $rec['filename'] = $this->getMPFlieName($rec);
             $rec = $this->getMPLink($rec); // пишу в ту же переменную, но так уж получилось что родитель может принимать mixed
         } else { // иначе выберем
@@ -46,12 +43,14 @@ class lanch_mp_view extends sqltable_view {
                 "value" => '',
                 "options" => array("html" => " boardid "),
             ));
+            array_push($fields,array(
+                "type" => AJAXFORM_TYPE_BUTTON,
+                'value' => Lang::getString('masterboard.create'),
+            ));
             $rec['fields'] = $fields;
         }
        
         $out = parent::showrec($rec);
-        Output::assign('mplink', $rec['mp']['mplink']);
-        $button =  $this->fetch('mp.tpl');
         return $out;
         
     }

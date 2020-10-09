@@ -1,6 +1,12 @@
 <?php
 
 Lang::add(array(
+    'masterboard' => array(
+        'create' => array(
+            'ru' => 'Создать файл',
+            'en' => 'Create file'
+        ),
+    ),
     'error' => array(
         'cantcreatefile' => array(
             'ru' => 'Не удалось создать файл',
@@ -20,22 +26,6 @@ Lang::add(array(
             'ru' => 'Мастерплаты',
             'en' => 'MP'
         ), 
-    ),
-    'question' => array(
-        'deleteit' => array(
-            'ru' => 'Удалить',
-            'en' => 'Delete'
-        ),
-    ),
-    'message' => array(
-        'uneditable' => array(
-            'ru' => 'Не редактируется',
-            'en' => 'Uneditable'
-        ),
-        'hasntright' => array(
-            'ru' => 'Нет прав на редактирование',
-            'en' => 'You haven\'t right'
-        ),
     ),
 ));
 ?>

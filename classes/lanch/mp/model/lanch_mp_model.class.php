@@ -84,6 +84,10 @@ public function newByTZposid($tzposid) {
         $rec = parent::getRecord($id);
         $rec['block'] = $this->getBlock($rec['block_id']);
         $rec['customer'] = $this->getCustomer($rec['block']['customer_id']);
+        $rec['mp_id'] = $rec['id'];
+        $rec['customer'] = $rec['customer']['customer'];
+        $rec['date'] = $rec['mpdate'];
+        $rec['blockname'] = $rec['block']['blockname'];
         return $rec;
     }
 
