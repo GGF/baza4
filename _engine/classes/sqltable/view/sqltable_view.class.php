@@ -285,7 +285,7 @@ class sqltable_view extends views {
      */
     public function getMessage($message, $form = false) {
         if (Ajax::isAjaxRequest()) {
-            $out = "<script>//$('#dialog').remove();</script><div id=dialog>{$message}</div><div id=dialog1>{$message}</div><script>dialog_modal(" . ($form ? "false" : "true") . ");</script>";
+            $out = "<div id=dialog>{$message}</div><script>dialog_modal(" . ($form ? "false" : "true") . ");</script>";
         } else {
             Output::assign('message', $message);
             Output::assign('oklink', $this->owner->actUri('index', $this->owner->all, $this->owner->order, $this->owner->find, $this->owner->idstr)->url());

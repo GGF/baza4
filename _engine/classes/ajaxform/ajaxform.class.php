@@ -493,7 +493,8 @@ class ajaxform extends JsCSS {
         @chmod(AJAXFORM_CACHE, 0777);
         @mkdir(AJAXFORM_CACHE . "/" . session_id());
         @chmod(AJAXFORM_CACHE . "/" . session_id(), 0777);
-        file_put_contents(AJAXFORM_CACHE . "/" . session_id() . "/{$this->name}.php", "<?\n\nreturn " . var_export($this->_session, true) . ";\n\n?>");
+        file_put_contents(AJAXFORM_CACHE . "/" . session_id() . "/{$this->name}.php", "<?php\n\nreturn " . var_export($this->_session, true) . ";\n\n?>");
+        // fuck!!! short tag!!!
     }
 
     /**
