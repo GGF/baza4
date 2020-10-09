@@ -1125,8 +1125,8 @@ class ajaxform extends JsCSS {
         ob_start();
 
         // TODO: заменить на fileserver
-        $path = cmsFile_path($src);
-        $info = getImageSize($path);
+        //$path = cmsFile_path($src); 
+        $info = getImageSize($src); //getImageSize($path);
 
         $options['style'] .= "width: {$info['0']}px; height: {$info['1']}px; background: transparent url({$src}) no-repeat";
         list($optionsHTML, $options) = $this->parseOptions($options);
@@ -1684,7 +1684,7 @@ class ajaxform extends JsCSS {
         if (@is_array($subject)) {
 
             foreach ($subject as $k => $v)
-                $subject[$k] = checkString($v, $type, $maxLength);
+                $subject[$k] = $this->checkString($v, $type, $maxLength);
         } else {
 
             $subject = trim($subject);
@@ -1713,7 +1713,7 @@ class ajaxform extends JsCSS {
                 $subject = mb_substr(preg_replace('/[^-_a-zA-Z0-9]+/', '', str_replace(" ", "_", $subject)), 0, 32);
 
             if ($type == 'file' && $subject == '')
-                $subject = uniqueID();
+                $subject = uniqid('file');
         }
 
         return $subject;

@@ -17,12 +17,12 @@ class sqltable_view extends views {
     /**
      * Получает данные из базы в массиве и возвращает html для отображения записи.
      * Перегружаемая.
-     * @param mixed $rec - может быть масивом полей формы, а может строкой для отображения сообщения
+     * @param array $rec - может быть масивом полей формы, а может строкой для отображения сообщения
      * @return string
      */
     public function showrec($rec) {
         if (!is_array($rec)) {
-            return $rec; // заглушка для нередактируемых
+            return $rec; // просто вернем текст, потомки могут вызывать функцию, поэтому возможно такое поведение
         }
         // вытащить из массива в просто переменные
         extract($rec);
@@ -266,7 +266,7 @@ class sqltable_view extends views {
 
     /**
      * Возвращает закрытие таблицы html
-     * @return string
+     * @return string - HTML
      */
     private function get_footer() {
         $out = '';
@@ -278,9 +278,14 @@ class sqltable_view extends views {
         return $out;
     }
 
+    /**
+     * Создает диалоговое окно с текстом, формой
+     * @param string $message - HTML для отображения
+     * @param bool $form = форма ли это, вывести другие кнопки
+     */
     public function getMessage($message, $form = false) {
         if (Ajax::isAjaxRequest()) {
-            $out = "<div id=dialog>{$message}</div><script>dialog_modal(" . ($form ? "false" : "true") . ");</script>";
+            $out = "<script>//$('#dialog').remove();</script><div id=dialog>{$message}</div><div id=dialog1>{$message}</div><script>dialog_modal(" . ($form ? "false" : "true") . ");</script>";
         } else {
             Output::assign('message', $message);
             Output::assign('oklink', $this->owner->actUri('index', $this->owner->all, $this->owner->order, $this->owner->find, $this->owner->idstr)->url());

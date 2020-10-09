@@ -261,11 +261,7 @@ class sqltable extends lego_abstract {
         $rec['action'] = $this->actUri('processingform')->ajaxurl($this->getName());
         $out = $this->view->showrec($rec);
         if ($out) {
-            if (is_array($out)) {
-                return $this->view->getForm($out);
-            } else {
-                return $this->view->getMessage($out);    
-            }
+                return $this->view->getForm($out);    
         } else {
             $out = Lang::getString('message.uneditable');
             return $this->view->getMessage($out);
