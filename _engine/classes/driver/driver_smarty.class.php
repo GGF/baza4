@@ -1,4 +1,4 @@
-<?
+<?php
 class driver_smarty implements ITemplateCompiler{
 	private $tpl;
 	function __construct(){

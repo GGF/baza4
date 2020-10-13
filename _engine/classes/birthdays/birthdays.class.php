@@ -1,4 +1,4 @@
-<?
+<?php
 class birthdays extends lego_abstract {
 	// обязательно определять для модуля
 	public function getDir(){ return __DIR__; }

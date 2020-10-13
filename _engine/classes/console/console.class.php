@@ -1,4 +1,4 @@
-<?
+<?php
 
 define("CMSCONSOLE_DEFAULT", "");
 define("CMSCONSOLE_ERROR", "error");
@@ -152,7 +152,7 @@ class console extends lego_abstract {
      * @return string
      */
     public function action_index() {
-        if ($_SERVER[debug][report]) {
+        if ($_SERVER['debug']['report']) {
             Output::assign('scripts', $this->getScripts());
             return $this->fetch('console.tpl');
         } else {
@@ -165,7 +165,7 @@ class console extends lego_abstract {
      * @return string
      */
     public function getScripts() {
-        if ($_SERVER[debug][report]) {
+        if ($_SERVER['debug']['report']) {
 
             profiler::add("Завершение", "Вывод кешированной страницы");
 

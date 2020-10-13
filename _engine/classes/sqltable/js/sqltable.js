@@ -68,7 +68,7 @@ function reload_table() {
 
 /**
  * Вызов диалога с текстом
- * @param info boolean инфформационное окно (Ok) или  с формой (ok=cancel)
+ * @param boolean info инфформационное окно (Ok) или  с формой (ok=cancel)
  */
 function dialog_modal(info)
 {
@@ -103,9 +103,7 @@ function dialog_modal(info)
         onesc=false; // тут ESC может использоваться в активных элементах
         Buttons={
             Сохранить: function() {
-                // изза файловых поле тут надо все же делать посылку формы в класс form_ajax
-                //$(this).dialog('close');
-                //editrecord(type,$('form[name=form_'+type+']').serialize());
+                // изза файловых полей тут надо все же делать посылку формы в класс form_ajax
                 if ($('textarea[name="coment"]') > 0) {
                     if($('textarea[name="coment"]').val().length !== 0)
                         $('input#sendcomment').click();

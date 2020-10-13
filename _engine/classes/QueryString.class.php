@@ -1,4 +1,4 @@
-<?
+<?php
 
 class QueryString{
     private $data = array();

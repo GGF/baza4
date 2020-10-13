@@ -1,4 +1,4 @@
-<?
+<?php
 $GLOBALS["debugAPI"] = false;
 include_once $GLOBALS["DOCUMENT_ROOT"]."/lib/sql.php"; // это нужно при добавлении так как не вызывается заголовк html
 

@@ -1,4 +1,4 @@
-<?
+<?php
 require $_SERVER["DOCUMENT_ROOT"] . "/lib/config.php";
 $_SERVER["debug"] = false;
 require $_SERVER["DOCUMENT_ROOT"] . "/lib/core.php";

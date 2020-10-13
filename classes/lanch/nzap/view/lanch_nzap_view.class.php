@@ -10,34 +10,34 @@ class lanch_nzap_view extends sqltable_view {
     public function showrec($rec) {
 
         $boardsinfo = '';
-        foreach ($rec[boards] as $board) {
+        foreach ($rec['boards'] as $board) {
             foreach ($board as $key => $val) {
                 Output::assign($key, $val);
             }
             $boardsinfo .= $this->fetch('boardinfo.tpl');
         }
         Output::assign("boardsinfo", $boardsinfo);
-        foreach ($rec[block] as $key => $block) {
+        foreach ($rec['block'] as $key => $block) {
             Output::assign($key, $block);
         }
-        Output::assign('onlycalclink', $rec[onlycalclink]);
+        Output::assign('onlycalclink', $rec['onlycalclink']);
         $out = $this->fetch('record.tpl');
-        if ($rec[mp]) {
-            Output::assign('mplink', $rec[mp][mplink]);
+        if ($rec['mp']) {
+            Output::assign('mplink', $rec['mp']['mplink']);
             $out .= $this->fetch('mp.tpl');
         }
-        if ($rec[zadel]>=($rec[block][boardinorder]*1) && ($rec[block][boardinorder]*1)>0 ) {
+        if ($rec['zadel']>=($rec['block']['boardinorder']*1) && ($rec['block']['boardinorder']*1)>0 ) {
             // показать кнопку использования задела
-            Output::assign('zadellink', $rec[zadellink]);
+            Output::assign('zadellink', $rec['zadellink']);
             $out .= $this->fetch('zadel.tpl');
         } else {
             $out .= '<br>';
-            foreach ($rec[party] as $party) {
+            foreach ($rec['party'] as $party) {
                 foreach ($party as $key => $val) {
                     Output::assign($key, $val);
                 }
                 if (Auth::getInstance()->getRights('lanch_nzap', 'edit')) {
-                    if ($party[slid]) {
+                    if ($party['slid']) {
                         $out .= $this->fetch('partylink.tpl');
                     } else {
                         $out .= $this->fetch('partybutton.tpl');
@@ -48,7 +48,7 @@ class lanch_nzap_view extends sqltable_view {
         }
         //$out .= print_r($rec,true);
         // комментарии покажем
-        $out .= $this->addComments($rec["edit"],'posintz');
+        $out .= $this->addComments($rec['edit'],'posintz');
         return $out;
     }
 
@@ -104,27 +104,6 @@ class lanch_nzap_view extends sqltable_view {
             $out = false;
         }
         // вернуть ссылку на файл
-        return $out;
-    }
-
-    public function showmplink($rec) {
-        $filename = "z:\\Заказчики\\{$rec[customer]}\\{$rec[blockname]}\\Мастерплаты\\МП-{$rec[date]}-{$rec[mp_id]}.xls";
-        $filename = fileserver::createdironserver($filename);
-        $excel = file_get_contents($this->getDir() . "/mp.xls");
-        if (fileserver::savefile($filename,$excel)) {
-            $mp["_date_"] = date("d.m.Y");
-            $mp["_number_"] = sprintf("%08d\n",$rec[mp_id]);
-            if (fileserver::savefile($filename.".txt",$mp)) {
-                Output::assign('mplink', fileserver::sharefilelink($filename));
-                Output::assign('mpid', $rec[mp_id]);
-                $out = $this->fetch('mplink.tpl');
-            } else {
-                $out = "Не удалось создать файл txt";
-            }
-        } else {
-            $out = "Не удалось создать файл xls" . print_r($rec,true);
-        }
-
         return $out;
     }
 

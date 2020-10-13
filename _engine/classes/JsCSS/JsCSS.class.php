@@ -1,4 +1,4 @@
-<?
+<?php
 
 abstract class JsCSS implements IJsCSS {
 
@@ -76,7 +76,7 @@ abstract class JsCSS implements IJsCSS {
     static public function getAllJavascripts() {
         $js = array();
         // Список нужно начинать в определенном порядке: сначала саму джейквери, потом ядро
-        $js[] = str_ireplace($_SERVER['DOCUMENT_ROOT'], "", __DIR__) . '/js/jquery-3.3.1.js';
+        $js[] = str_ireplace($_SERVER['DOCUMENT_ROOT'], "", __DIR__) . '/js/jquery-3.5.1.min.js';
         $js[] = str_ireplace($_SERVER['DOCUMENT_ROOT'], "", __DIR__) . '/js/jquery-ui.js';
         $files = self::getDirDeep(__DIR__ . '/js/' , "/(\.js|\.js\.php)$/i", true);
         $js = array_merge($js,$files);
@@ -84,7 +84,7 @@ abstract class JsCSS implements IJsCSS {
             $js = array_merge($js, $one->getJavascripts());
         }
         $js = array_unique($js); // не работает. по разным каталогам. надо смотреть хэш файлов
-        if (!$_SERVER[debug][noCache][js]) {
+        if (!$_SERVER['debug']['noCache']['js']) {
             $js = array(cache::buildScript($js, 'js'));
         }
         return $js;
@@ -97,7 +97,7 @@ abstract class JsCSS implements IJsCSS {
             $css = array_merge($css, $one->getStylesheets());
         }
         $css = array_unique($css); // не работает. по разным каталогам. надо смотреть хэш файлов
-        if (!$_SERVER[debug][noCache][css]) {
+        if (!$_SERVER['debug']['noCache']['css']) {
             $css = array(cache::buildScript($css, 'css'));
         }
         return $css;

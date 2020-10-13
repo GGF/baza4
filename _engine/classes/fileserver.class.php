@@ -1,12 +1,17 @@
-<?
+<?php
 
-/*
- * Перекодирует файловые ссылки в нужные
+/**
+ * Перекодирует файловые ссылки в нужные. Так уж получилось, что имена не в камелстиле. TODO:Refactor later
  * $filelink имеет вид z:\dir\file.ext
  */
 
 class fileserver {
 
+    /**
+     * нормализует имена файлов
+     * @param string $filename - имя файла
+     * @return string - то же имя файла, но с нормальным количеством разных слешей
+     */
     static public function normalizefile($filename) {
         $count=0;
         do {
@@ -18,6 +23,11 @@ class fileserver {
         } while ($count!=0);
         return $filename;
     }
+
+    /**
+     * @param string $filename - имя файла
+     * @return string - то же имя файла в виде ссылки на шару
+     */
     static public function sharefilelink($filename) {
         $filename = str_replace(SHARE_ROOT_DIR, "", $filename);
         $filename = self::normalizefile(str_replace(":", "", str_replace("\\", "/", $filename)));
@@ -26,15 +36,28 @@ class fileserver {
         return $filename;
     }
 
+    /**
+     * @param string $filename - имя файла
+     * @return string - то же имя файла в виде пути  на сервере
+     */
     static public function serverfilelink($filename) {
         return multibyte::UTF_encode(self::normalizefile(SHARE_ROOT_DIR . str_replace(":", "", str_replace("\\", "/", $filename))));
     }
 
+    /**
+     * @param string $filename - имя файла
+     * @return string - то же имя файла без невозможных в винде символов
+     */
     static public function removeOSsimbols($filename) {
         // для удаления из имен заказов спецсимволов ОС
         return str_replace("'", "-", str_replace("`", "-", str_replace("?", "-", str_replace(":", "-", str_replace("\'", "-", str_replace("\"", "-", str_replace("*", "-", str_replace("/", "-", str_replace("\\", "-", $filename)))))))));
     }
 
+    /**
+     * Создает каталог на сервере по переданному файлу, возвращает имя файла в этом каталоге относительно файловой системы сервера
+     * @param string $filename - имя файла в любом виде, то есть на сетевом диске z: или /home/common/z
+     * @return string - имя файла на в файловой системе 
+     */
     static public function createdironserver($filelink) {
         $filelink = self::normalizefile($filelink);
         list($disk, $path) = explode(":", $filelink);
@@ -50,13 +73,28 @@ class fileserver {
                 $dir = multibyte::UTF_encode($serpath . $cats);
                 if (!is_dir($dir)) {
                     mkdir($dir);
-                    chmod($dir, 0777);
+                    chmod($dir, 0775); //security hole
                 }
             }
         }
         return $dir . multibyte::UTF_encode($filename);
     }
 
+    /**
+     * вызов создания каталога, потому что он возвращает имя на сервере
+     * @param string $filename - имя файла в любом виде, то есть на сетевом диске z: или /home/common/z
+     * @return string - имя файла на в файловой системе 
+     */
+    static public function getFileOnServer($filename) {
+        return fileserver::createdironserver($filename);
+    }
+
+    /**
+     * Записывает в файл на сервере переданные данные
+     * @param string $filename - ну очевидно же, хотя тут бы надо написать в каком виде, то есть путь относительно сервера или путь с виндовым диском
+     * @param mixed $content - массив или строка которые нужно сохранить в файле
+     * @return bool - удачность операции
+     */
     static public function savefile($filename, $content) {
         // записать файл
         $file = @fopen($filename, "w");
@@ -75,7 +113,7 @@ class fileserver {
                 fwrite($file, $content);
             }
             fclose($file);
-            chmod($filename, 0777);
+            chmod($filename, 0777); //очевидная дырка в безопастности
             return true;
         } else {
             return false;

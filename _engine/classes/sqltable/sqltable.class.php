@@ -1,100 +1,140 @@
 <?php
 
-/*
+/**
  *  Класс Таблица для вывода данных из базы
  */
 
 class sqltable extends lego_abstract {
-    /*
-     * @var $type string тип таблицы, то есть тип отображаемых данных
+    /**
+     * @var string тип таблицы, то есть тип отображаемых данных
      */
-
     public $type;
-    /*
+
+    /**
      * @var $tid string уникальный идентификатор для замены AJAX
      */
     public $tid;
 
-    /*
+    /**
      * @var $data array массив данных, ключ - колонка, значение клетка
      */
-    protected $data;
-    /*
+     protected $data;
+
+     /**
      * @var string Заголовок таблицы
      */
-    protected $title;
-    /*
+     protected $title;
+
+     /**
      * @var bool можно ли удалять записи
      */
-    protected $del;
-    /*
+     protected $del;
+
+     /**
      * @var bool можно ли редактировать записи
      */
     protected $edit;
-    /*
+
+    /**
      * @var bool Есть ли кнопки, делать ли сортировку в заголовках
      */
     protected $buttons;
-    /*
+
+    /**
      * @var bool нужна ли кнопка добавления записи
      */
     protected $addbutton;
-    /*
+
+    /**
      * @var bool нужна ли кнопка поиска
      */
     protected $findbutton;
 
-    /*
+    /**
      * @var array массив названий колонок имя - имя поля, значение - загголовок
      */
     protected $cols;
+
+    /**
+     * @var int - идентификатор первой строки таблицы
+     */
     public $firsttrid;
+
+    /**
+     * @var int - идентификатор послендей строки таблицы
+     */
     public $lasttrid;
-    public $index;
+
+    /**
+     * @var string - стока поиска
+     */
     public $find;
+
+    /**
+     * @var string - дорядок сортировки
+     */
     public $order;
+
+    /**
+     * @var string - дополнительные идентификаторы
+     */
     public $idstr;
+
+    /**
+     * @var string - Показывать ли все записи
+     */
     public $all;
 
-    /*
-     *
-     */
-    /*
+    /**
      * @var sqltable_model
      */
     protected $model;
-    /*
+    
+    /**
      * @var sqltable_view
      */
     protected $view;
+
+    /**
+     * @var ajaxform - форма
+     */
     protected $form;
 
     /*
      * Initialization
      */
 
-    // обязательно определять для модуля
+    /**
+     * Наследуется от абстрактного, нужно переопределять чтобы объект знал где брать дополнительные файлы
+     */
     public function getDir() {
+        require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'i18n.php'; //всё равноперреопределяется и вызывается, почему не тут вставлять
         return __DIR__;
     }
 
+    /**
+     * Конструктор
+     */
     public function __construct($name=false) {
         parent::__construct($name);
     }
 
+    /**
+     * Инициализация объекта
+     */
     public function init() {
         $this->type = $this->getName();
         $this->tid = uniqid($this->type);
 
 
-        if (!empty($_POST[find])) {
-            $_GET[$this->getName()][index][2] = multibyte::UTF_decode($_POST[find]);
+        if (!empty($_POST['find'])) {
+            $_GET[$this->getName()]['index'][2] = multibyte::UTF_decode($_POST['find']);
         }
 
         $param = $this->getLegoParam('index');
         $this->all = (bool) $param[0];
         $this->order = $param[1];
-        $this->find = $param[2]; //empty($_REQUEST[find])?$param[2]:  multibyte::UTF_decode($_REQUEST[find]);
+        $this->find = $param[2]; //empty($_REQUEST['find'])?$param[2]:  multibyte::UTF_decode($_REQUEST['find']);
         $this->idstr = $param[3];
 
         $this->del = Auth::getInstance()->getRights($this->type, 'del');
@@ -150,10 +190,18 @@ class sqltable extends lego_abstract {
      * Controller
      */
 
+     /**
+      * Обработка основного события
+      * @param string $all - показывать ли все
+      * @param string $order - сортировка
+      * @param string $find - строка поиска
+      * @param string $idstr - строка с идентификаторами, тут сложнее
+      * @return string - HTML
+      */
     public function action_index($all='', $order='', $find='', $idstr='') {
         $all = empty($all) ? $this->all : $all;
         $order = empty($order) ? $this->order : $order;
-        $find = empty($_REQUEST[find]) ? (empty($find) ? $this->find : $find) : multibyte::UTF_decode($_REQUEST[find]);
+        $find = empty($_REQUEST['find']) ? (empty($find) ? $this->find : $find) : multibyte::UTF_decode($_REQUEST['find']);
 
         $idstr = empty($idstr) ? $this->idstr : $idstr;
 
@@ -174,43 +222,77 @@ class sqltable extends lego_abstract {
         return $this->view == null ? "" : $this->view->show();
     }
 
+    /**
+     * Удаление записи
+     * @param int $id - идентификатор записи
+     * @param bool $confirmed - подтвержденая ли уже АЯКСом
+     * @param string $delstr - Строка запроса
+     * @return string HTML
+     */
+
     public function action_delete($id, $confirmed=false, $delstr='') {
         if (Ajax::isAjaxRequest() || $confirmed) {
             // в этом случае уже подтверждено иначе надо проверить
         } else {
-            $out = empty($delstr) ? "Удалить {$id}?" : "Удалить {$delstr}?";
+            $out = Lang::getString('question.deleteit') . (empty($delstr) ? " {$id}?" : " {$delstr}?");
             return $this->view->getConfirm($out, 'delete', $id, true);
         }
         $this->model->delete($id);
         return $this->action_index();
     }
 
+    /**
+     * Обрабатывает редактирование 
+     * @param int $id - идентификатор редактируемой записи, если новая то 0
+     * @return string - HTML для диалогового окна
+     */
     public function action_edit($id) {
         if (!Auth::getInstance()->getRights($this->getName(), 'edit')) {
-            return $this->view->getMessage('Нет прав на редактирование');
+            return $this->view->getMessage(Lang::getString('message.hasntright'));
         }
         $rec = $this->model->getRecord($id);
-        $rec[idstr] = $this->idstr;
-        $rec[isnew] = empty($id);
-        $rec[edit] = $id;
-        $rec[action] = $this->actUri('processingform')->ajaxurl($this->getName());
+        $rec['idstr'] = $this->idstr;
+        $rec['isnew'] = empty($id);
+        $rec['edit'] = $id;
+        if ($rec['isnew']) {
+            $rec['customers'] = $this->model->getCustomers();
+            $rec['boardlink'] = $this->actUri('getboards')->ajaxurl($this->getName());
+            $rec['blocklink'] = $this->actUri('getblocks')->ajaxurl($this->getName());
+        }
+        $rec['action'] = $this->actUri('processingform')->ajaxurl($this->getName());
         $out = $this->view->showrec($rec);
         if ($out) {
-            return $this->view->getForm($out);
+            if (stristr($out,'<div class="editdiv">')) { //жутко криво определять форма это или сообщение, но пусть пока так
+                return $this->view->getForm($out);    
+            } else {
+                return $this->view->getMessage($out);
+            }
         } else {
-            $out = "Не радактируется!";
+            $out = Lang::getString('message.uneditable');
             return $this->view->getMessage($out);
         }
     }
 
+    /**
+     * Обработка открытия записи
+     * @param int $id - идентификатор записи
+     * @return string - HTML для диалогового окна
+     */
     public function action_open($id) {
         return $this->action_edit($id);
     }
 
+    /**
+     * Обработка добавления записи
+     * @return string - HTML для диалогового окна
+     */
     public function action_add() {
         return $this->action_edit(0);
     }
 
+    /**
+     * Обработка формы
+     */
     public function action_processingform() {
         // хидер переключим
         ajaxform_recieve::init();
@@ -219,9 +301,9 @@ class sqltable extends lego_abstract {
 
         if (!$form->errors) {
             // сохранение
-            $res = $this->model->setRecord(array_merge($form->request, array("files" => $form->files)));
-            if ((!is_array($res) && $res == 0) || (is_array($res) && !$res[affected])) {
-                $alert = empty($res[alert]) ? "Не обработано ни одной записи" : $res[alert];
+            $res = $this->model->setRecord(array_merge($form->request, array('files' => $form->files)));
+            if ((!is_array($res) && $res == 0) || (is_array($res) && !$res['affected'])) {
+                $alert = empty($res['alert']) ? "Не обработано ни одной записи" : $res['alert'];
                 $form->alert($alert);
                 $form->processed();
             } else {
@@ -229,14 +311,6 @@ class sqltable extends lego_abstract {
                 $form->processed("$('#dialog').dialog('close').remove();reload_table();");
             }
         } else {
-//            foreach ($form->errors as $err) {
-//                if ($err[type]=='obligatory') {
-//                    //$form->html("Поле {$err[name]} обязательно");
-//                    $form->errorHTML($err["name"]);
-//                } else {
-//                    $form->alert(print_r($err, true));
-//                }
-//            }
             // в случае ошибок обработка без закрытия
             $form->processed('');
         }
@@ -247,18 +321,30 @@ class sqltable extends lego_abstract {
         return $this->view->getMessage($message);
     }
 
+    /**
+     * Обработка получения списка плат для комбобоксов выбора
+     * @return string - HTML
+     */
     public function action_getboards() {
-        $customerid = $_REQUEST[idstr];
+        $customerid = $_REQUEST['idstr'];
         $data = $this->model->getBoards($customerid);
         return $this->view->getSelect($data);
     }
 
+    /**
+     * Обработка получения списка блоков для комбобоксов
+     * @return string - HTML
+     */
     public function action_getblocks() {
-        $customerid = $_REQUEST[idstr];
+        $customerid = $_REQUEST['idstr'];
         $data = $this->model->getBlocks($customerid);
         return $this->view->getSelect($data);
     }
 
+    /**
+     * Обработка добаления в форму поля
+     * @return string - HTML 
+     */
     public function action_addfilefield() {
         $edit = new ajaxform_edit($this->getName());
         $edit->restore();
@@ -270,14 +356,18 @@ class sqltable extends lego_abstract {
                     "label" => $filename,
         );
         $edit->addFieldAsArray($field);
-        $out = $edit->getFieldOut($edit->fields[$field[name]]);
+        $out = $edit->getFieldOut($edit->fields[$field['name']]);
         return $out;
     }
 
+    /**
+     * Обработка добавения в форму ссылки на файл
+     * @return string - HTML
+     */
     public function action_addfilelink() {
         $edit = new ajaxform_edit($this->getName());
         $edit->restore();
-        $filename = multibyte::UTF_decode($_REQUEST[filename]);
+        $filename = multibyte::UTF_decode($_REQUEST['filename']);
         $id = $this->model->getFileId($filename);
         $values[$id] = basename($this->model->getFileNameById($id));
         $value[$id] = 1;
@@ -291,16 +381,24 @@ class sqltable extends lego_abstract {
         );
         $edit->addFieldAsArray($field);
         $edit->form->SessionSet();
-        $out = $edit->getFieldOut($edit->fields[$field[name]]);
+        $out = $edit->getFieldOut($edit->fields[$field['name']]);
         return $out;
     }
 
+    /**
+     * Обработка записи комментария
+     * @return string - HTML
+     */
     public function action_savecomment() {
         $rec = $this->model->saveComment();
-        $out = $this->view->addComments($rec["record_id"],$rec["table"]);
+        $out = $this->view->addComments($rec['record_id'],$rec['table']);
         return $out;
     }
 
+    /**
+     * Обработка удаления коментария
+     * @return string - HTML
+     */
     public function action_deletecomment($id) {
         $this->model->deleteComment($id);
         return '';

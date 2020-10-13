@@ -1,4 +1,4 @@
-<?
+<?php
 
 define("AJAXFORM_TYPE_CODE", "code");
 define("AJAXFORM_TYPE_HIDDEN", "hidden");
@@ -6,6 +6,7 @@ define("AJAXFORM_TYPE_TEXT", "text");
 define("AJAXFORM_TYPE_PASSWORD", "password");
 define("AJAXFORM_TYPE_TEXTAREA", "textarea");
 define("AJAXFORM_TYPE_BUTTON", "button");
+define("AJAXFORM_TYPE_LINKBUTTON", "linkbutton");
 define("AJAXFORM_TYPE_SUBMIT", "submit");
 define("AJAXFORM_TYPE_RESET", "reset");
 define("AJAXFORM_TYPE_IMAGE", "image");
@@ -42,8 +43,8 @@ define("AJAXFORM_FORMAT_LOGIN", "format_login");
 
 define("AJAXFORM_SESSION_PARTIAL", true);
 define("AJAXFORM_TEMP", "temp");
-define("AJAXFORM_CACHE", isset($_SERVER[modForm][cachePath]) ? $_SERVER[modForm][cachePath] : $_SERVER[CACHE] . "/form_ajax");
-define("AJAXFORM_CACHE_LIFETIME", isset($_SERVER[modForm][cacheLifetime]) ? $_SERVER[modForm][cacheLifetime] : 60 * 60 * 12); // half day
+define("AJAXFORM_CACHE", isset($_SERVER['modForm']['cachePath']) ? $_SERVER['modForm']['cachePath'] : $_SERVER['CACHE'] . "/form_ajax");
+define("AJAXFORM_CACHE_LIFETIME", isset($_SERVER['modForm']['cacheLifetime']) ? $_SERVER['modForm']['cacheLifetime'] : 60 * 60 * 12); // half day
 
 include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'i18n.php';
 
@@ -113,23 +114,23 @@ class ajaxform extends JsCSS {
 
             if (ajaxform::$registered[$name])
                 console::getInstance()->warning("FORM_REGISTERED: Форма «{$name}» уже зарегистрирована на этой странице. Скрипт продолжил работу, но работоспособность не гарантируется.");
-            ajaxform::$registered[registered][$name] = true;
+            ajaxform::$registered['registered'][$name] = true;
         }
 
-        $this->name = "form_" . $name; //$_SERVER[ajaxform];
+        $this->name = "form_" . $name; //$_SERVER['ajaxform'];
         $this->action = $action;
         $this->class = $class;
         $this->options = $options;
         $this->_result = &ajaxform_recieve::$result;
         ;
 
-        $this->options[debug] = isset($options[debug]);
-        $this->options[ajax] = isset($options[ajax]) ? $options[ajax] : !isset($options[noAjax]);
-        $this->options[raw] = isset($options[raw]);
-        $this->options[method] = $options[method] == "get" ? "get" : "post";
+        $this->options['debug'] = isset($options['debug']);
+        $this->options['ajax'] = isset($options['ajax']) ? $options['ajax'] : !isset($options['noAjax']);
+        $this->options['raw'] = isset($options['raw']);
+        $this->options['method'] = $options['method'] == "get" ? "get" : "post";
 
-        if ($this->options[raw])
-            $this->options[ajax] = false;
+        if ($this->options['raw'])
+            $this->options['ajax'] = false;
 
         if ($name != AJAXFORM_TEMP) {
 
@@ -184,40 +185,40 @@ class ajaxform extends JsCSS {
         // в массив пишем только известные значения, никакой левой фигни
         foreach ($this->fields as $field) {
 
-            if (@isset($_REQUEST[$this->name][$field[name]]))
-                $req[$field[name]] = $_REQUEST[$this->name][$field[name]];
+            if (@isset($_REQUEST[$this->name][$field['name']]))
+                $req[$field['name']] = $_REQUEST[$this->name][$field['name']];
 
-            if ($field[type] == AJAXFORM_TYPE_CHECKBOXES) {
+            if ($field['type'] == AJAXFORM_TYPE_CHECKBOXES) {
 
-                foreach ($field[values] as $k => $v)
-                    if (@isset($_REQUEST[$this->name][$field[name] . "|" . $k]))
-                        $req[$field[name] . "|" . $k] = true;
+                foreach ($field['values'] as $k => $v)
+                    if (@isset($_REQUEST[$this->name][$field['name'] . "|" . $k]))
+                        $req[$field['name'] . "|" . $k] = true;
             }
-            if ($field[type] == AJAXFORM_TYPE_DATE) {
-                $req[$field[name]] = $this->datepicker2date($_REQUEST[$this->name][$field[name]]);
+            if ($field['type'] == AJAXFORM_TYPE_DATE) {
+                $req[$field['name']] = $this->datepicker2date($_REQUEST[$this->name][$field['name']]);
             }
         }
         //$req = $_REQUEST[$this->name];
         //$this->alert(print_r($req, true));
 
-        if (count($_FILES[$this->name][name])) {
+        if (count($_FILES[$this->name]['name'])) {
 
-            foreach ($_FILES[$this->name][name] as $file => $name) {
+            foreach ($_FILES[$this->name]['name'] as $file => $name) {
 
                 $this->files[$file] = array(
-                    "name" => $_FILES[$this->name][name][$file],
-                    "error" => $_FILES[$this->name][errors][$file],
-                    "errors" => $_FILES[$this->name][errors][$file], // compatibility
-                    "type" => $_FILES[$this->name][type][$file],
-                    "size" => $_FILES[$this->name][size][$file],
-                    "tmp" => $_FILES[$this->name][tmp_name][$file],
-                    "tmp_name" => $_FILES[$this->name][tmp_name][$file], // compatibility
-                    "uploaded" => strlen($_FILES[$this->name][tmp_name][$file]) > 0 ? true : false,
+                    "name" => $_FILES[$this->name]['name'][$file],
+                    "error" => $_FILES[$this->name]['errors'][$file],
+                    "errors" => $_FILES[$this->name]['errors'][$file], // compatibility
+                    "type" => $_FILES[$this->name]['type'][$file],
+                    "size" => $_FILES[$this->name]['size'][$file],
+                    "tmp" => $_FILES[$this->name]['tmp_name'][$file],
+                    "tmp_name" => $_FILES[$this->name]['tmp_name'][$file], // compatibility
+                    "uploaded" => strlen($_FILES[$this->name]['tmp_name'][$file]) > 0 ? true : false,
                 );
             }
         }
 
-        $this->uid = $this->checkString($req[uid], "id");
+        $this->uid = $this->checkString($req['uid'], "id");
 
         // Ошибки обнуляем, чтобы они не пришли из сессии, так, на всякий случай.
         // А также кладем все новое г в сессию. Если что-то провалится —
@@ -228,10 +229,10 @@ class ajaxform extends JsCSS {
         // Проверяем длину
         foreach ($this->fields as $field) {
 
-            if ($field[options][length] && mb_strlen($req[$field[name]]) > $field[options][length]) {
+            if ($field['options']['length'] && mb_strlen($req[$field['name']]) > $field['options']['length']) {
 
-                $this->error(AJAXFORM_ERROR_FORMAT, $field[name], Lang::getString("Form.error.length") . ": " . $field[options][length]);
-                $req[$field[name]] = mb_substr($req[$field[name]], 0, $field[options][length]);
+                $this->error(AJAXFORM_ERROR_FORMAT, $field['name'], Lang::getString("Form.error.length") . ": " . $field['options']['length']);
+                $req[$field['name']] = mb_substr($req[$field['name']], 0, $field['options']['length']);
             }
         }
 
@@ -239,17 +240,17 @@ class ajaxform extends JsCSS {
         if (count($this->formats))
             foreach ($this->formats as $format) {
 
-                $res = $this->checkFormat($req[$format[name]], $format[type], $format[pregPattern]);
+                $res = $this->checkFormat($req[$format['name']], $format['type'], $format['pregPattern']);
 
-                //$this->alert("FORMAT: " . var_export($format, true) . "\nREQ: " . $req[$format[name]] . "\nSTATUS: " . var_export($res, true));
+                //$this->alert("FORMAT: " . var_export($format, true) . "\nREQ: " . $req[$format['name']] . "\nSTATUS: " . var_export($res, true));
 
-                if ($res === false && $req[$format[name]]) {
+                if ($res === false && $req[$format['name']]) {
 
-                    $html = ($format[type] == AJAXFORM_FORMAT_CUSTOM) ? $format[html] : Lang::getString("Form.error.format.{$format[type]}");
-                    $this->error(AJAXFORM_ERROR_FORMAT, $format[name], $html);
+                    $html = ($format['type'] == AJAXFORM_FORMAT_CUSTOM) ? $format['html'] : Lang::getString("Form.error.format.{$format['type']}");
+                    $this->error(AJAXFORM_ERROR_FORMAT, $format['name'], $html);
                 } elseif ($res === null) {
 
-                    $this->errorCritical("Для поля «{$format[name]}» не найден формат «{$format[type]}».");
+                    $this->errorCritical("Для поля «{$format['name']}» не найден формат «{$format['type']}».");
                 }
             }
 
@@ -263,7 +264,7 @@ class ajaxform extends JsCSS {
             // Проверяем должным образом
             foreach ($this->checkers as $checker) {
 
-                $req[$checker[name]] = $this->checkField($req[$checker[name]], $checker[name], $checker[type], $checker[pregPattern], $checker[pregReplace]);
+                $req[$checker['name']] = $this->checkField($req[$checker['name']], $checker['name'], $checker['type'], $checker['pregPattern'], $checker['pregReplace']);
             }
 
             $errors = array();
@@ -271,16 +272,16 @@ class ajaxform extends JsCSS {
             // Второй проход — смотрим что стало отличаться
             foreach ($this->checkers as $checker) {
 
-                $name = $checker[name];
+                $name = $checker['name'];
                 $field = $this->fields[$name];
 
                 //$this->alert("Проверка значения: «mb_strtolower($req[$name]) . "» —> «" . mb_strtolower($this->session[$name]) . "»");
                 // после обработки чекером значение стало пустым, или в массиве элемента не нашлось сопоставления значению
-                if (mb_strtolower($req[$name]) != mb_strtolower($this->session[$name])) { // || (($field[type] == AJAXFORM_TYPE_SELECT || $field[type] == AJAXFORM_TYPE_RADIO) && $this->value($name, $req[$name])) === null
+                if (mb_strtolower($req[$name]) != mb_strtolower($this->session[$name])) { // || (($field['type'] == AJAXFORM_TYPE_SELECT || $field['type'] == AJAXFORM_TYPE_RADIO) && $this->value($name, $req[$name])) === null
                     // НЕ ЗАПОЛНЕННОЕ ПОЛЕ ДЛЯ ЧЕКЕРА НЕ ВАЖНО — ЗДЕСЬ ГЛАВНОЕ, ЧТОБЫ НЕ ЧЕКЕР ЕГО ТАКИМ СДЕЛАЛ
                     // если стало пустым после чекеров или не нашлось
-                    if ($checker[type] != AJAXFORM_CHECK_DEFAULT)
-                        $this->error(AJAXFORM_ERROR_CHECK, $name, ($checker[type] == AJAXFORM_CHECK_CUSTOM) ? $checker[html] : Lang::getString ("Form.error.checker." . $checker[type]));
+                    if ($checker['type'] != AJAXFORM_CHECK_DEFAULT)
+                        $this->error(AJAXFORM_ERROR_CHECK, $name, ($checker['type'] == AJAXFORM_CHECK_CUSTOM) ? $checker['html'] : Lang::getString ("Form.error.checker." . $checker['type']));
                     $errors[$name] = true;
                 }
             }
@@ -294,15 +295,15 @@ class ajaxform extends JsCSS {
 
                 $field = $this->fields[$name];
 
-                //$this->alert("Obligatory check: {$field[name]}, " . var_export($this->value($name, $req[$name]), 1));
+                //$this->alert("Obligatory check: {$field['name']}, " . var_export($this->value($name, $req[$name]), 1));
                 // после обработки чекером значение стало пустым, или в массиве элемента не нашлось сопоставления значению
                 if ($this->value($name, $req[$name]) === null) {
 
-                    $html = ($field[type] == AJAXFORM_TYPE_CHECKBOX 
-                            || $field[type] == AJAXFORM_TYPE_RADIO 
-                            || $field[type] == AJAXFORM_TYPE_SELECT 
-                            || $field[type] == AJAXFORM_TYPE_FILE) ?
-                                Lang::getString("Form.error.obligatory." . $field[type]) :
+                    $html = ($field['type'] == AJAXFORM_TYPE_CHECKBOX 
+                            || $field['type'] == AJAXFORM_TYPE_RADIO 
+                            || $field['type'] == AJAXFORM_TYPE_SELECT 
+                            || $field['type'] == AJAXFORM_TYPE_FILE) ?
+                                Lang::getString("Form.error.obligatory." . $field['type']) :
                                 Lang::getString("Form.error.obligatory.empty");
 //                endif;
 //                endif;
@@ -312,8 +313,8 @@ class ajaxform extends JsCSS {
 
                 // проверим массив, есть ли там вообще такое значение (достаточно проверить тип —
                 // если СЕЛЕКТ или РАДИО, то null в условии только поэтому может появиться
-                if (($field[type] == AJAXFORM_TYPE_SELECT 
-                        || $field[type] == AJAXFORM_TYPE_RADIO) 
+                if (($field['type'] == AJAXFORM_TYPE_SELECT 
+                        || $field['type'] == AJAXFORM_TYPE_RADIO) 
                      && $this->value($name, $req[$name]) === null 
                      && !empty($req[$name])) { // было выше в чекерах
                         $this->error(AJAXFORM_ERROR_OBLIGATORY, $name, 
@@ -323,14 +324,14 @@ class ajaxform extends JsCSS {
             }
 
         // проверяем код, если таковой есть в массиве
-        if ($this->fields[confirm]) {
+        if ($this->fields['confirm']) {
 
-            $req[confirm] = $this->confirmReplace($req[confirm]);
+            $req['confirm'] = $this->confirmReplace($req['confirm']);
 
-            if ($req[confirm] != $this->fields[confirm][value]) {
+            if ($req['confirm'] != $this->fields['confirm']['value']) {
 
                 $this->error(AJAXFORM_ERROR_CONFIRM, "confirm", Lang::getString("Form.error.code"));
-                //$this->alert($req[confirm] . "|" . $this->fields[confirm][value]);
+                //$this->alert($req['confirm'] . "|" . $this->fields['confirm']['value']);
             }
         }
 
@@ -339,11 +340,11 @@ class ajaxform extends JsCSS {
         foreach ($this->fields as $field) {
 
 
-            if (($field[type] == AJAXFORM_TYPE_TEXT || $field[type] == AJAXFORM_TYPE_TEXTAREA || $field[type] == AJAXFORM_TYPE_HIDDEN || $field[type] == AJAXFORM_TYPE_PASSWORD) && !$field[options][allowHTML]) {
+            if (($field['type'] == AJAXFORM_TYPE_TEXT || $field['type'] == AJAXFORM_TYPE_TEXTAREA || $field['type'] == AJAXFORM_TYPE_HIDDEN || $field['type'] == AJAXFORM_TYPE_PASSWORD) && !$field['options']['allowHTML']) {
 
-                if (!$field[options][raw])
-                    $req[$field[name]] = htmlSpecialChars($req[$field[name]]);
-                //$this->alert($field[type] . " — " . $field[name] . " — " . $req[$field[name]]);
+                if (!$field['options']['raw'])
+                    $req[$field['name']] = htmlSpecialChars($req[$field['name']]);
+                //$this->alert($field['type'] . " — " . $field['name'] . " — " . $req[$field['name']]);
             }
         }
 
@@ -364,12 +365,12 @@ class ajaxform extends JsCSS {
 
         foreach ($this->fields as $name => $array) {
 
-            if ($array[type] != AJAXFORM_TYPE_BUTTON && $array[type] != AJAXFORM_TYPE_RESET) {
+            if ($array['type'] != AJAXFORM_TYPE_BUTTON && $array['type'] != AJAXFORM_TYPE_RESET) {
 
-                $json[$array[name]] = array(
-                    "name" => $array[name],
-                    "type" => $array[type],
-                    "values" => @array_keys($array[values]),
+                $json[$array['name']] = array(
+                    "name" => $array['name'],
+                    "type" => $array['type'],
+                    "values" => @array_keys($array['values']),
                 );
             }
         }
@@ -421,17 +422,17 @@ class ajaxform extends JsCSS {
 
         if (count($this->_session)) {
 
-            $this->errors = $this->_session[errors];
-            $this->session = $this->_session[session];
-            $this->html = $this->_session[html];
-            $this->alert = $this->_session[alert];
+            $this->errors = $this->_session['errors'];
+            $this->session = $this->_session['session'];
+            $this->html = $this->_session['html'];
+            $this->alert = $this->_session['alert'];
 
             if (!$partial) {
 
-                $this->fields = $this->_session[fields];
-                $this->obligatory = $this->_session[obligatory];
-                $this->checkers = $this->_session[checkers];
-                $this->formats = $this->_session[formats];
+                $this->fields = $this->_session['fields'];
+                $this->obligatory = $this->_session['obligatory'];
+                $this->checkers = $this->_session['checkers'];
+                $this->formats = $this->_session['formats'];
             }
 
             return true;
@@ -473,11 +474,11 @@ class ajaxform extends JsCSS {
 
         if ($partial) {
 
-            $this->_session[session] = null;
-            $this->_session[errors] = null;
-            $this->_session[html] = "";
-            $this->_session[alert] = "";
-            //$this->_session[uid]					= "";
+            $this->_session['session'] = null;
+            $this->_session['errors'] = null;
+            $this->_session['html'] = "";
+            $this->_session['alert'] = "";
+            //$this->_session['uid']					= "";
         } else
             $this->_session = array();
 
@@ -493,7 +494,8 @@ class ajaxform extends JsCSS {
         @chmod(AJAXFORM_CACHE, 0777);
         @mkdir(AJAXFORM_CACHE . "/" . session_id());
         @chmod(AJAXFORM_CACHE . "/" . session_id(), 0777);
-        file_put_contents(AJAXFORM_CACHE . "/" . session_id() . "/{$this->name}.php", "<?\n\nreturn " . var_export($this->_session, true) . ";\n\n?>");
+        file_put_contents(AJAXFORM_CACHE . "/" . session_id() . "/{$this->name}.php", "<?php\n\nreturn " . var_export($this->_session, true) . ";\n\n?>");
+        // fuck!!! short tag!!!
     }
 
     /**
@@ -521,18 +523,18 @@ class ajaxform extends JsCSS {
      */
     function processed($data = array()) {
 
-        $this->alert = implode("\n\n", $this->result[alert]);
-        $this->html = implode($this->result[html]);
-        $this->htmlReplace = implode($this->result[htmlReplace]);
+        $this->alert = implode("\n\n", $this->result['alert']);
+        $this->html = implode($this->result['html']);
+        $this->htmlReplace = implode($this->result['htmlReplace']);
 
         if (ajaxform_recieve::$ajaxform_recieve) {
 
-            $this->_result[alert] = $this->alert;
-            $this->_result[html] = $this->html;
-            $this->_result[htmlReplace] = $this->htmlReplace;
-            $this->_result[errors] = $this->errors;
-            $this->_result[redirect] = $this->redirect;
-            $this->_result[data] = $data; // Кастомная переменная, можно и без нее, но так веселее :)
+            $this->_result['alert'] = $this->alert;
+            $this->_result['html'] = $this->html;
+            $this->_result['htmlReplace'] = $this->htmlReplace;
+            $this->_result['errors'] = $this->errors;
+            $this->_result['redirect'] = $this->redirect;
+            $this->_result['data'] = $data; // Кастомная переменная, можно и без нее, но так веселее :)
             // В AJAX backend сессия как таковая не нужна, но нужно хранить ID и CODE, поэтому убиваем не целиком
             $this->sessionEnd(AJAXFORM_SESSION_PARTIAL);
         } else { // if JS disabled, for example
@@ -551,7 +553,7 @@ class ajaxform extends JsCSS {
 
         list($optionsHTML, $options) = $this->parseOptions($this->options);
 
-        return "<form class='{$this->class}' name='{$this->name}' id='{$this->uid}' action='{$this->action}' method='{$this->options[method]}' enctype='multipart/form-data'{$optionsHTML}>";
+        return "<form class='{$this->class}' name='{$this->name}' id='{$this->uid}' action='{$this->action}' method='{$this->options['method']}' enctype='multipart/form-data'{$optionsHTML}>";
     }
 
     function end() {
@@ -568,7 +570,7 @@ class ajaxform extends JsCSS {
 
         // Для борьбы с SimpleModal и двойной отправкой — сначала unbind(), потом заново вешаем событие.
         // Предполагается, что с событиями формы идет работа через коллбэки.
-        //if ($this->options[ajax])	echo "<script type='text/javascript'> $(\"#{$this->uid}\").unbind('submit').submit(function() {ajaxform.submit(this); return false; }); </script>";
+        //if ($this->options['ajax'])	echo "<script type='text/javascript'> $(\"#{$this->uid}\").unbind('submit').submit(function() {ajaxform.submit(this); return false; }); </script>";
         // заблокируем предыдущий для того чтобы использовать jquery.iframe-post-form и вставим
         $out .= "<script>$(function ()
 								{
@@ -605,9 +607,9 @@ class ajaxform extends JsCSS {
         for ($i = 0; $i < 6; $i++)
             $s .= mt_rand(0, 9);
 
-        $this->fields[confirm][value] = $this->confirmReplace(mb_strtoupper($s));
+        $this->fields['confirm']['value'] = $this->confirmReplace(mb_strtoupper($s));
 
-        return $this->fields[confirm][value];
+        return $this->fields['confirm']['value'];
     }
 
     /**
@@ -645,8 +647,8 @@ class ajaxform extends JsCSS {
 
         foreach ($array as $k => $v) {
 
-            $patterns [] = $k;
-            $replaces [] = $v;
+            $patterns [''] = $k;
+            $replaces [''] = $v;
         }
 
         if ($str)
@@ -662,14 +664,14 @@ class ajaxform extends JsCSS {
      */
     function confirmImage() {
 
-        $width = ajaxform::$captcha[width];
-        $height = ajaxform::$captcha[height];
+        $width = ajaxform::$captcha['width'];
+        $height = ajaxform::$captcha['height'];
 
         $multi = 4;
         $xwidth = $width * $multi;
         $xheight = $height * $multi;
 
-        $code = $this->fields[confirm][value];
+        $code = $this->fields['confirm']['value'];
 
         $im = imageCreateTrueColor($xwidth, $xheight);
         $w = imageColorAllocate($im, 255, 255, 255);
@@ -693,7 +695,7 @@ class ajaxform extends JsCSS {
             $s = ($xheight * 0.5) * (96 / 72); // 96 — res
             $a = mt_rand(-20, 20);
 
-            imageTTFText($im, $s, $a, $x, $y, $b, $_SERVER[DOCUMENT_ROOT] . "/lib/core/classes/form_ajax/consolas.ttf", $arr[$i]); //
+            imageTTFText($im, $s, $a, $x, $y, $b, $_SERVER['DOCUMENT_ROOT'] . "/lib/core/classes/form_ajax/consolas.ttf", $arr[$i]); //
         }
 
         $temp = imageCreateTrueColor($xwidth, $xheight);
@@ -737,7 +739,7 @@ class ajaxform extends JsCSS {
      */
     function alert($text) {
 
-        $this->result[alert][] = html_entity_decode(strip_Tags($text));
+        $this->result['alert'][''] = html_entity_decode(strip_Tags($text));
     }
 
     /**
@@ -750,9 +752,9 @@ class ajaxform extends JsCSS {
         if ($html === null) {
 
             // В случае не-Ajax формы выводим html, если совпадает UID
-            return ($this->uid == $this->_session[uid]) ? $this->html : "";
+            return ($this->uid == $this->_session['uid']) ? $this->html : "";
         } else
-            $this->result[html][] = $html;
+            $this->result['html'][''] = $html;
     }
 
     /**
@@ -762,7 +764,7 @@ class ajaxform extends JsCSS {
      */
     function htmlReplace($html) {
 
-        $this->result[htmlReplace][] = $html;
+        $this->result['htmlReplace'][''] = $html;
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -830,12 +832,12 @@ class ajaxform extends JsCSS {
         $text = (!$html) ? "" : strip_tags($html); // для title
         $html = (!$html) ? "" : "<span class='block'>{$html}</span>"; // для span
 
-        $this->errors[] = array(
+        $this->errors[''] = array(
             "type" => $type,
             "id" => $id,
             "name" => $name,
-            "html" => ($options[errors][noSpan]) ? "" : $html,
-            "text" => ($options[errors][noTitle]) ? "" : $text,
+            "html" => ($options['errors']['noSpan']) ? "" : $html,
+            "text" => ($options['errors']['noTitle']) ? "" : $text,
         );
     }
 
@@ -846,8 +848,8 @@ class ajaxform extends JsCSS {
         if (count($this->errors))
             foreach ($this->errors as $error) {
 
-                if ($error[type] == AJAXFORM_ERROR_CUSTOM)
-                    $return[$error[id]] = $error[html];
+                if ($error['type'] == AJAXFORM_ERROR_CUSTOM)
+                    $return[$error['id']] = $error['html'];
             }
 
         return $return;
@@ -877,7 +879,7 @@ class ajaxform extends JsCSS {
 
     function getName($name) {
 
-        if ($this->options[raw]) {
+        if ($this->options['raw']) {
 
             $a = explode("|", $name);
             $b = array_shift($a);
@@ -907,14 +909,14 @@ class ajaxform extends JsCSS {
         // но backend'у что-то не понравилось и при выключенном JS произошел редирект обратно.
         // Естественно при такой схеме, показать надо значение из сессии, а не дефолтовое значение поля.
         // Попутно заменяем символ одинарной кавычки на html-entity
-        return str_replace("'", "&#39;", ($this->session[$name] && $this->_session[uid] == $this->uid) ? $this->session[$name] : $value);
+        return str_replace("'", "&#39;", ($this->session[$name] && $this->_session['uid'] == $this->uid) ? $this->session[$name] : $value);
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------------------------------------- //
 
     function getOptions($name) {
 
-        return $this->fields[$name][options];
+        return $this->fields[$name]['options'];
     }
 
     function parseOptions($options) {
@@ -922,18 +924,18 @@ class ajaxform extends JsCSS {
         $html = array();
 
         // Опции, идущие в optionsHTML
-        $html[autocomplete] = (isset($options[autocomplete])) ? ($options[autocomplete] ? "autocomplete='on'" : "autocomplete='off'") : "";
-        $html[rel] = ($options[rel]) ? "rel='{$options[rel]}'" : "";
-        $html[style] = ($options[style]) ? "style='{$options[style]}'" : "";
-        $html[disabled] = ($options[disabled]) ? "disabled" : "";
-        $html[readonly] = ($options[readonly]) ? "readonly" : "";
-        $html[length] = ($options[length]) ? "maxlength='{$options[length]}'" : "";
-        $html[html] = ($options[html]) ? " " . $options[html] : "";
+        $html['autocomplete'] = (isset($options['autocomplete'])) ? ($options['autocomplete'] ? "autocomplete='on'" : "autocomplete='off'") : "";
+        $html['rel'] = ($options['rel']) ? "rel='{$options['rel']}'" : "";
+        $html['style'] = ($options['style']) ? "style='{$options['style']}'" : "";
+        $html['disabled'] = ($options['disabled']) ? "disabled" : "";
+        $html['readonly'] = ($options['readonly']) ? "readonly" : "";
+        $html['length'] = ($options['length']) ? "maxlength='{$options['length']}'" : "";
+        $html['html'] = ($options['html']) ? " " . $options['html'] : "";
 
         // Самостоятельные опции
-        $options[nobr] = ($options[nobr]) ? true : false;
+        $options['nobr'] = ($options['nobr']) ? true : false;
 
-        $html = implode(" ", array($html[rel], $html[style], $html[disabled], $html[readonly], $html[length], $html[autocomplete], $html[html]));
+        $html = implode(" ", array($html['rel'], $html['style'], $html['disabled'], $html['readonly'], $html['length'], $html['autocomplete'], $html['html']));
         $html = $html ? " " . $html : "";
 
         return array($html, $options);
@@ -951,16 +953,16 @@ class ajaxform extends JsCSS {
 
         if ($nobr) {
 
-            $block[begin] = $defBegin;
-            $block[end] = $defEnd;
+            $block['begin'] = $defBegin;
+            $block['end'] = $defEnd;
         } else {
 
-            $line[begin] = $defBegin;
-            $line[end] = $defEnd;
+            $line['begin'] = $defBegin;
+            $line['end'] = $defEnd;
         }
 
-        $block[begin] = "<span id='{$id}' class='inlineBlock'>" . $block[begin]; // id=id + _block;
-        $block[end] = $block[end] . "</span>";
+        $block['begin'] = "<span id='{$id}' class='inlineBlock'>" . $block['begin']; // id=id + _block;
+        $block['end'] = $block['end'] . "</span>";
 
         return array($block, $line);
     }
@@ -974,7 +976,7 @@ class ajaxform extends JsCSS {
         ob_start();
 
         list($optionsHTML, $options) = $this->parseOptions($options);
-        if ($this->options[ajax]) {
+        if ($this->options['ajax']) {
             // need
             echo "<input type='file' name='" . $this->getName($name) . "' id='" . $this->getId($name) . "'{$optionsHTML}/>";
         } else {
@@ -1012,7 +1014,7 @@ class ajaxform extends JsCSS {
             $xvalue = ""; 
         else
             $xvalue = $this->value($name, $value);
-        $options[html] .= " datepicker=1 ";
+        $options['html'] .= " datepicker=1 ";
 
         echo $this->text($name, $xvalue, $options);
 
@@ -1030,10 +1032,10 @@ class ajaxform extends JsCSS {
 
         $cls = ($name == "confirm") ? " confirm" : "";
         $value = ($name == "confirm") ? "" : $value; // Если поле для кода — его всегда сбрасываем
-        $type = ($options[password]) ? AJAXFORM_TYPE_PASSWORD : AJAXFORM_TYPE_TEXT;
-        $type = ($options[date]) ? AJAXFORM_TYPE_TEXT : $type;
-        $cls = ($options[date]) ? " date" : $cls;
-        $cls = ($options[readonly]) ? "{$cls} readonly" : $cls;
+        $type = ($options['password']) ? AJAXFORM_TYPE_PASSWORD : AJAXFORM_TYPE_TEXT;
+        $type = ($options['date']) ? AJAXFORM_TYPE_TEXT : $type;
+        $cls = ($options['date']) ? " date" : $cls;
+        $cls = ($options['readonly']) ? "{$cls} readonly" : $cls;
 
         echo "<input type='{$type}' class='text{$cls}' name='" . $this->getName($name) . "' id='" . $this->getId($name) . "' value='{$value}' {$optionsHTML}>";
 
@@ -1042,7 +1044,7 @@ class ajaxform extends JsCSS {
 
     function password($name, $value = "", $options = array()) {
 
-        $options[password] = true;
+        $options['password'] = true;
         return $this->text($name, $value, $options);
     }
 
@@ -1052,13 +1054,13 @@ class ajaxform extends JsCSS {
 
         ob_start();
 
-        $options[rows] = ($options[rows]) ? $options[rows] : 4;
-        $options[style] .= "; height: " . ($options[rows] * 16 + 4) . "px";
+        $options['rows'] = ($options['rows']) ? $options['rows'] : 4;
+        $options['style'] .= "; height: " . ($options['rows'] * 16 + 4) . "px";
 
-        if ($options[wysiwyg]) {
+        if ($options['wysiwyg']) {
 
-            $options[rel] = $this->getId($name) . "_parent";
-            $options[raw] = true;
+            $options['rel'] = $this->getId($name) . "_parent";
+            $options['raw'] = true;
         }
 
         $value = $this->getValue($name, $value);
@@ -1077,13 +1079,13 @@ class ajaxform extends JsCSS {
 
         list($optionsHTML, $options) = $this->parseOptions($options);
 
-        $type = $options[submit] ? AJAXFORM_TYPE_SUBMIT : AJAXFORM_TYPE_BUTTON;
-        $type = $options[reset] ? AJAXFORM_TYPE_RESET : $type;
+        $type = $options['submit'] ? AJAXFORM_TYPE_SUBMIT : AJAXFORM_TYPE_BUTTON;
+        $type = $options['reset'] ? AJAXFORM_TYPE_RESET : $type;
 
-        $html = $options[submit] ? "name='" . $this->getName($name) . "'" : "";
+        $html = $options['submit'] ? "name='" . $this->getName($name) . "'" : "";
 
-        echo "<input type='" . $type . "' class='submit' {$html} id='" . $this->getId($name) . "' value='{$value}'{$optionsHTML}>";
-        if ($options[submit])
+        echo "<input type='" . $type . "' class='submit' {$html} id='" . $this->getId($name) . "' value='{$value}' {$optionsHTML}>";
+        if ($options['submit'])
             echo "<script> $(\"#" . $this->getId($name) . "\").click(function() { ajaxform.clicked = \"{$name}\"; }); /* вручную ловим клик, чтобы передать value в запрос */ </script>";
 
         return ob_get_clean();
@@ -1091,13 +1093,13 @@ class ajaxform extends JsCSS {
 
     function submit($name, $value, $options = array()) {
 
-        $options[submit] = true;
+        $options['submit'] = true;
         return $this->button($name, $value, $options);
     }
 
     function reset($name, $value, $options = array()) {
 
-        $options[reset] = true;
+        $options['reset'] = true;
         return $this->button($name, $value, $options);
     }
 
@@ -1110,7 +1112,7 @@ class ajaxform extends JsCSS {
 
         echo $this->text("confirm", "", array("length" => 6, "errors" => array("noSpan" => true), "html" => "autocomplete='off'"));
         echo " ";
-        echo "<img src='/?ajaxform[act]=captcha&ajax=ajaxform&formName={$this->name}&rnd=" . array_sum(explode(" ", microtime())) . "' id='" . $this->getID("captcha") . "' class='captcha Form_captcha' title='CAPTCHA' width='" . ajaxform::$captcha[width] . "' height='" . ajaxform::$captcha[height] . "'>";
+        echo "<img src='/?ajaxform['act']=captcha&ajax=ajaxform&formName={$this->name}&rnd=" . array_sum(explode(" ", microtime())) . "' id='" . $this->getID("captcha") . "' class='captcha Form_captcha' title='CAPTCHA' width='" . ajaxform::$captcha['width'] . "' height='" . ajaxform::$captcha['height'] . "'>";
         echo " ";
         echo "<label><a href='javascript: ajaxform.reloadCaptcha(\"{$this->name}\", \"{$this->uid}\")' class='dashed'>repload...</a></label>";
         echo "<script> $('#" . $this->getID("confirm") . "').keyup(function(e){ ajaxform.cleanCaptcha(e, this); }); </script>";
@@ -1125,10 +1127,10 @@ class ajaxform extends JsCSS {
         ob_start();
 
         // TODO: заменить на fileserver
-        $path = cmsFile_path($src);
-        $info = getImageSize($path);
+        //$path = cmsFile_path($src); 
+        $info = getImageSize($src); //getImageSize($path);
 
-        $options[style] .= "width: {$info[0]}px; height: {$info[1]}px; background: transparent url({$src}) no-repeat";
+        $options['style'] .= "width: {$info['0']}px; height: {$info['1']}px; background: transparent url({$src}) no-repeat";
         list($optionsHTML, $options) = $this->parseOptions($options);
 
         echo "<input type='submit' class='image' id='" . $this->getId($name) . "' value='&nbsp'{$optionsHTML}>";
@@ -1145,28 +1147,28 @@ class ajaxform extends JsCSS {
 
         ob_start();
 
-        $label = $options[label] ? $options[label] : $label;
+        $label = $options['label'] ? $options['label'] : $label;
 
         // позволяет задать нечто кастомное вместо обычной единички
-        $options[value] = $options[value] ? $options[value] : 1;
+        $options['value'] = $options['value'] ? $options['value'] : 1;
 
         $value = $this->getValue($name, $value);
         list($optionsHTML, $options) = $this->parseOptions($options);
-        list($block, $line) = $this->getBlock($options[nobr], $this->getId($name));
+        list($block, $line) = $this->getBlock($options['nobr'], $this->getId($name));
 
-        $checked = ($value == $options[value]) ? " checked" : "";
+        $checked = ($value == $options['value']) ? " checked" : "";
 
         // Это нужно только затем, чтобы различать свой ID от ID блока
         $id = $this->getId($name) . ($multiple ? "" : "_input");
 
         if (!$multiple)
-            echo $block[begin] . $line[begin];
-        echo "<label class='checkboxLabel{$options[disabled]}' for='{$id}'>";
-        echo "<input type='checkbox' class='checkbox' name='" . $this->getName($name) . "' id='{$id}' value='{$options[value]}'{$checked}{$optionsHTML}>";
+            echo $block['begin'] . $line['begin'];
+        echo "<label class='checkboxLabel{$options['disabled']}' for='{$id}'>";
+        echo "<input type='checkbox' class='checkbox' name='" . $this->getName($name) . "' id='{$id}' value='{$options['value']}'{$checked}{$optionsHTML}>";
         echo $label;
         echo "</label>";
         if (!$multiple)
-            echo $line[end] . $block[end];
+            echo $line['end'] . $block['end'];
 
         return ob_get_clean();
     }
@@ -1181,23 +1183,23 @@ class ajaxform extends JsCSS {
         $value = (@!is_array($value)) ? multibyte::Json_decode($value) : $value;
 
         list($optionsHTML, $options) = $this->parseOptions($options);
-        list($block, $line) = $this->getBlock($options[nobr], $this->getId($name));
+        list($block, $line) = $this->getBlock($options['nobr'], $this->getId($name));
 
-        $options[nobr] = true;
+        $options['nobr'] = true;
 
-        echo $block[begin];
+        echo $block['begin'];
         if (is_array($values))
             foreach ($values as $id => $label) {
 
-                echo $line[begin];
+                echo $line['begin'];
                 // вот следующая строка непонятна совсем, если у меня не пустой, 
                 // но нулевой, она всё равно ставит единицу
                 // поменяю на своё видение сегодняшнего момента
                 $val = !empty($value[$id]) ? $value[$id] : 0;
                 echo $this->checkbox($name . "|" . $id, $label, $val, $options, true);
-                echo $line[end];
+                echo $line['end'];
             }
-        echo $block[end];
+        echo $block['end'];
 
         return ob_get_clean();
     }
@@ -1210,25 +1212,25 @@ class ajaxform extends JsCSS {
 
         $value = $this->getValue($name, $value);
         list($optionsHTML, $options) = $this->parseOptions($options);
-        list($block, $line) = $this->getBlock($options[nobr], $this->getId($name));
+        list($block, $line) = $this->getBlock($options['nobr'], $this->getId($name));
 
         $i = 0;
 
-        echo $block[begin];
+        echo $block['begin'];
         if (is_array($values))
             foreach ($values as $id => $label) {
 
                 $i++;
                 $checked = ($value == $id) ? " checked" : "        ";
 
-                echo $line[begin];
-                echo "<label class='label{$options[disabled]}' for='" . $this->getId($name) . "_{$id}'>";
+                echo $line['begin'];
+                echo "<label class='label{$options['disabled']}' for='" . $this->getId($name) . "_{$id}'>";
                 echo "<input type='radio' class='radio' name='" . $this->getName($name) . "' id='" . $this->getId($name) . "_{$id}' value='{$id}'{$checked}{$optionsHTML}>";
                 echo $label;
                 echo "</label>";
-                echo $line[end];
+                echo $line['end'];
             }
-        echo $block[end];
+        echo $block['end'];
 
         return ob_get_clean();
     }
@@ -1274,7 +1276,7 @@ class ajaxform extends JsCSS {
 
     function field($array) {
 
-        switch ($array[type]) {
+        switch ($array['type']) {
 
             case AJAXFORM_TYPE_CODE: break;
             case AJAXFORM_TYPE_HIDDEN: break;
@@ -1291,23 +1293,23 @@ class ajaxform extends JsCSS {
             case AJAXFORM_TYPE_SELECT: break;
             case AJAXFORM_TYPE_FILE: break;
             case AJAXFORM_TYPE_DATE: break;
-            default: trigger_error("Тип «{$array[type]}» для поля {$array[name]} " . print_r($array, 1) . " не зарегистрирован.");
+            default: trigger_error("Тип «{$array['type']}» для поля {$array['name']} " . print_r($array, 1) . " не зарегистрирован.");
         }
 
-        if ($array[type] == AJAXFORM_TYPE_CODE) {
+        if ($array['type'] == AJAXFORM_TYPE_CODE) {
 
             // регистрируем его в проверках
             $this->addObligatory("confirm");
             $this->addChecker("confirm", AJAXFORM_CHECK_CODE);
 
             // влоб задаем имя тому, что сейчас создаем
-            $array[name] = "confirm";
-            $array[value] = $this->confirmGenerate();
-            $array[options] = array("errors" => array("noSpan" => true));
+            $array['name'] = "confirm";
+            $array['value'] = $this->confirmGenerate();
+            $array['options'] = array("errors" => array("noSpan" => true));
         }
 
         // создаем поле
-        $this->fields[$array[name]] = $array;
+        $this->fields[$array['name']] = $array;
     }
 
     function addFields($fields) {
@@ -1329,24 +1331,24 @@ class ajaxform extends JsCSS {
         unset($this->obligatory[$name]);
 
         foreach ($this->checkers as $i => $checker)
-            if ($checker[name] == $name)
+            if ($checker['name'] == $name)
                 unset($this->checkers[$i]);
         foreach ($this->formats as $i => $format)
-            if ($format[name] == $name)
+            if ($format['name'] == $name)
                 unset($this->formats[$i]);
 
-        unset($this->_session[fields][$name]);
-        unset($this->_session[request][$name]);
-        unset($this->_session[obligatory][$name]);
+        unset($this->_session['fields'][$name]);
+        unset($this->_session['request'][$name]);
+        unset($this->_session['obligatory'][$name]);
 
-        foreach ($this->_session[checkers] as $i => $checker)
-            if ($checker[name] == $name)
-                unset($this->_session[checkers][$i]);
-        foreach ($this->_session[formats] as $i => $format)
-            if ($format[name] == $name)
-                unset($this->_session[formats][$i]);
+        foreach ($this->_session['checkers'] as $i => $checker)
+            if ($checker['name'] == $name)
+                unset($this->_session['checkers'][$i]);
+        foreach ($this->_session['formats'] as $i => $format)
+            if ($format['name'] == $name)
+                unset($this->_session['formats'][$i]);
 
-        $this->_result[fieldsDeleted][] = $name;
+        $this->_result['fieldsDeleted'][''] = $name;
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -1360,69 +1362,69 @@ class ajaxform extends JsCSS {
 
         // возможно здесь следует провести проверку, и если значение установлено в реквесте — ставить всеже его
         if ($value)
-            $array[value] = $value;
+            $array['value'] = $value;
         if ($value)
-            $array[src] = $value;
+            $array['src'] = $value;
 
         if (count($this->errors)) {
 
             foreach ($this->errors as $error) {
 
-                if ($this->getID($name) == $error[id]) {
+                if ($this->getID($name) == $error['id']) {
 
                     $errors = true;
 
                     // если ID совпадают, то враппим в блок текст ошибки
-                    $errorsHtml[] = $error[html]; // для span
-                    $errorsText[] = $error[text]; // для title
+                    $errorsHtml[''] = $error['html']; // для span
+                    $errorsText[''] = $error['text']; // для title
                 }
             }
         }
 
 
         $return = null;
-        if (!is_array($array[options]))
-            $array[options] = array();
-        $array[options] = array_merge($array[options], $options);
+        if (!is_array($array['options']))
+            $array['options'] = array();
+        $array['options'] = array_merge($array['options'], $options);
 
         if ($errors) {
-            $array[options][html] .= " title='" . implode(", ", $errorsText) . "'";
+            $array['options']['html'] .= " title='" . implode(", ", $errorsText) . "'";
         } // для title
 
-        switch ($array[type]) {
+        switch ($array['type']) {
 
-            case AJAXFORM_TYPE_CODE: $return = $this->code($array[options]);
+            case AJAXFORM_TYPE_CODE: $return = $this->code($array['options']);
                 break;
-            case AJAXFORM_TYPE_HIDDEN: $return = $this->hidden($array[name], $array[value], $array[options]);
+            case AJAXFORM_TYPE_HIDDEN: $return = $this->hidden($array['name'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_TEXT: $return = $this->text($array[name], $array[value], $array[options]);
+            case AJAXFORM_TYPE_TEXT: $return = $this->text($array['name'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_PASSWORD: $return = $this->password($array[name], $array[value], $array[options]);
+            case AJAXFORM_TYPE_PASSWORD: $return = $this->password($array['name'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_TEXTAREA: $return = $this->textarea($array[name], $array[value], $array[options]);
+            case AJAXFORM_TYPE_TEXTAREA: $return = $this->textarea($array['name'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_BUTTON: $return = $this->button($array[name], $array[value], $array[options]);
+            case AJAXFORM_TYPE_BUTTON: $return = $this->button($array['name'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_SUBMIT: $return = $this->submit($array[name], $array[value], $array[options]);
+            case AJAXFORM_TYPE_SUBMIT: $return = $this->submit($array['name'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_RESET: $return = $this->reset($array[name], $array[value], $array[options]);
+            case AJAXFORM_TYPE_RESET: $return = $this->reset($array['name'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_IMAGE: $return = $this->image($array[name], $array[src], $array[options]);
+            case AJAXFORM_TYPE_IMAGE: $return = $this->image($array['name'], $array['src'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_CHECKBOX: $return = $this->checkbox($array[name], $array[label], $array[value], $array[options]);
+            case AJAXFORM_TYPE_CHECKBOX: $return = $this->checkbox($array['name'], $array['label'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_CHECKBOXES: $return = $this->checkboxes($array[name], $array[values], $array[value], $array[options]);
+            case AJAXFORM_TYPE_CHECKBOXES: $return = $this->checkboxes($array['name'], $array['values'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_RADIO: $return = $this->radio($array[name], $array[values], $array[value], $array[options]);
+            case AJAXFORM_TYPE_RADIO: $return = $this->radio($array['name'], $array['values'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_SELECT: $return = $this->select($array[name], $array[values], $array[value], $array[options]);
+            case AJAXFORM_TYPE_SELECT: $return = $this->select($array['name'], $array['values'], $array['value'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_FILE: $return = $this->file($array[name], $array[options]);
+            case AJAXFORM_TYPE_FILE: $return = $this->file($array['name'], $array['options']);
                 break;
-            case AJAXFORM_TYPE_DATE: $return = $this->date($array[name], $array[value], $array[options]);
+            case AJAXFORM_TYPE_DATE: $return = $this->date($array['name'], $array['value'], $array['options']);
                 break;
             default:
-                console::getInstance()->error("Поле «{$name}» не найдено в массиве или неверно задан тип ({$array[type]}).");
+                console::getInstance()->error("Поле «{$name}» не найдено в массиве или неверно задан тип ({$array['type']}).");
         }
 
         // если есть ошибки — выводим их под поле
@@ -1445,25 +1447,25 @@ class ajaxform extends JsCSS {
         if ($this->fields[$name]) {
 
             $field = $this->fields[$name];
-            $value = $override !== null ? $override : (isset($this->request[$name]) ? $this->request[$name] : $field[value]);
+            $value = $override !== null ? $override : (isset($this->request[$name]) ? $this->request[$name] : $field['value']);
 
             // Радиокнопки
-            if ($field[type] == AJAXFORM_TYPE_RADIO) {
+            if ($field['type'] == AJAXFORM_TYPE_RADIO) {
 
                 if (empty($value))
                     $value = 0;
-                return isset($field[values][$value]) ? $field[values][$value] : null;
+                return isset($field['values'][$value]) ? $field['values'][$value] : null;
 
                 // Селект
-            } elseif ($field[type] == AJAXFORM_TYPE_SELECT) {
+            } elseif ($field['type'] == AJAXFORM_TYPE_SELECT) {
 
                 if (empty($value))
                     $value = 0;
-                if (isset($field[values][$value])) {
+                if (isset($field['values'][$value])) {
 
-                    return $field[values][$value];
+                    return $field['values'][$value];
                 } else { // у селекта могут быть OPTGROUP — вложенные массивы…
-                    foreach ($field[values] as $val => $label) {
+                    foreach ($field['values'] as $val => $label) {
                         if (is_array($label))
                             foreach ($label as $k => $v)
                                 if ($k == $value)
@@ -1474,21 +1476,21 @@ class ajaxform extends JsCSS {
                 }
 
                 // Чекбокс (один)
-            } elseif ($field[type] == AJAXFORM_TYPE_CHECKBOX) {
+            } elseif ($field['type'] == AJAXFORM_TYPE_CHECKBOX) {
 
                 if (empty($value))
                     $value = 0;
 
-                if ($field[options][value]) {
+                if ($field['options']['value']) {
 
-                    return ($field[options][value] == $value) ? $field[label] : null;
+                    return ($field['options']['value'] == $value) ? $field['label'] : null;
                 } else {
 
-                    return (!empty($value)) ? $field[label] : null; // $value == $field[value] — неверно, т.к. $field[value] — это текущее значение, а не возвращаемое
+                    return (!empty($value)) ? $field['label'] : null; // $value == $field['value'] — неверно, т.к. $field['value'] — это текущее значение, а не возвращаемое
                 }
 
                 // Чекбоксы (группа)
-            } elseif ($field[type] == AJAXFORM_TYPE_CHECKBOXES) {
+            } elseif ($field['type'] == AJAXFORM_TYPE_CHECKBOXES) {
 
                 $r = array();
 
@@ -1496,18 +1498,18 @@ class ajaxform extends JsCSS {
                     foreach ($value as $k => $v) {
 
                         if (!empty($v))
-                            $r[] = $field[values][$k];
+                            $r[''] = $field['values'][$k];
                     }
 
                 return implode("; ", $r);
 
                 // Файл
-            } elseif ($field[type] == AJAXFORM_TYPE_FILE) {
+            } elseif ($field['type'] == AJAXFORM_TYPE_FILE) {
 
-                return (isset($this->files[$name]) && $this->files[$name][uploaded]) ? $this->files[$name][name] : null;
+                return (isset($this->files[$name]) && $this->files[$name]['uploaded']) ? $this->files[$name]['name'] : null;
 
                 // Дата
-            } elseif ($field[type] == AJAXFORM_TYPE_DATE) {
+            } elseif ($field['type'] == AJAXFORM_TYPE_DATE) {
 
                 return $this->date2datepicker($value);
 
@@ -1519,13 +1521,13 @@ class ajaxform extends JsCSS {
         } else {
 
             $path = array_reverse(explode("|", $name));
-            $last = $path[0];
-            unset($path[0]);
+            $last = $path['0'];
+            unset($path['0']);
             $path = implode("|", array_reverse($path));
 
-            if ($this->fields[$path] && $this->fields[$path][type] == AJAXFORM_TYPE_CHECKBOXES) {
+            if ($this->fields[$path] && $this->fields[$path]['type'] == AJAXFORM_TYPE_CHECKBOXES) {
 
-                return ($this->fields[$path][values][$last]) ? $this->fields[$path][values][$last] : null;
+                return ($this->fields[$path]['values'][$last]) ? $this->fields[$path]['values'][$last] : null;
             } else {
                 return null;
             }
@@ -1569,7 +1571,7 @@ class ajaxform extends JsCSS {
         } else {
 
             $value = (string) $value;
-            //if ($name && !$this->fields[$name][allowHTML]) $value = htmlSpecialChars($value);
+            //if ($name && !$this->fields[$name]['allowHTML']) $value = htmlSpecialChars($value);
 
             switch ($type) {
 
@@ -1587,7 +1589,7 @@ class ajaxform extends JsCSS {
                     break;
                 case AJAXFORM_CHECK_URL: $value = preg_replace('#[^0-9a-z%/?&@:.+-]#i', '', $value);
                     break;
-                //case AJAXFORM_CHECK_URL:			$value = preg_replace('#[^0-9a-z%/?&@:.-+]#i', ''	, $value); break;
+                //case AJAXFORM_CHECK_URL:			$value = preg_replace('#['^0-9a-z%/?&@:.-+']#i', ''	, $value); break;
                 default: break;
             }
 
@@ -1606,7 +1608,7 @@ class ajaxform extends JsCSS {
             case AJAXFORM_FORMAT_URL: return (!empty($value) || $value == 0) && preg_match('%^((http://|https://|www\.))[a-z0-9-.]+\.[a-z0-9]{2,5}.*%i', $value);
             case AJAXFORM_FORMAT_PHONE: return (!empty($value) || $value == 0) && preg_match('/^(?:\+\d \d{3,5} [\d-]{5,9},? ?)*$/si', $value); // only +7 123 456-78-90
             case AJAXFORM_FORMAT_LOGIN: return (!empty($value) || $value == 0) && preg_match('/^[-_a-z0-9]{3,}?$/i', $value);
-            //case AJAXFORM_FORMAT_PHONE:	return (!empty($value) || $value == 0) && preg_match('/(\+\d{11})|(\d[ -]?\(?\d{3}\)?[ -]?[\d -]{7,9})/si',					$value);
+            //case AJAXFORM_FORMAT_PHONE:	return (!empty($value) || $value == 0) && preg_match('/(\+\d{11})|(\d[ -]?\(?\d{3}\)?[ -]?[\d -]{7,9})/si',	$value);
             default: return null;
         }
     }
@@ -1615,7 +1617,7 @@ class ajaxform extends JsCSS {
 
     function addChecker($name, $type, $pregPattern = false, $pregReplace = false, $html = "") {
 
-        $this->checkers[] = array(
+        $this->checkers[''] = array(
             "name" => $name,
             "type" => $type,
             "pregPattern" => $pregPattern,
@@ -1628,7 +1630,7 @@ class ajaxform extends JsCSS {
 
     function addFormat($name, $type, $pregPattern = false, $html = null) {
 
-        $this->formats[] = array(
+        $this->formats[''] = array(
             "name" => $name,
             "type" => $type,
             "pregPattern" => $pregPattern,
@@ -1684,7 +1686,7 @@ class ajaxform extends JsCSS {
         if (@is_array($subject)) {
 
             foreach ($subject as $k => $v)
-                $subject[$k] = checkString($v, $type, $maxLength);
+                $subject[$k] = $this->checkString($v, $type, $maxLength);
         } else {
 
             $subject = trim($subject);
@@ -1713,14 +1715,14 @@ class ajaxform extends JsCSS {
                 $subject = mb_substr(preg_replace('/[^-_a-zA-Z0-9]+/', '', str_replace(" ", "_", $subject)), 0, 32);
 
             if ($type == 'file' && $subject == '')
-                $subject = uniqueID();
+                $subject = uniqid('file');
         }
 
         return $subject;
     }
     
     public function action_captha() {
-	$form = new ajaxform($_REQUEST[formName]);
+	$form = new ajaxform($_REQUEST['formName']);
 	$form->initConfirm();
 	$form->confirmGenerate();
 	$out = $form->confirmImage();
@@ -1739,6 +1741,6 @@ class ajaxform extends JsCSS {
 
 }
 
-if (!isset($_SERVER[modForm][cacheNoClean]))
+if (!isset($_SERVER['modForm']['cacheNoClean']))
     ajaxform::cleanSessionCache();
 ?>
