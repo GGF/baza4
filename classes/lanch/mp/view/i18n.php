@@ -6,6 +6,12 @@ Lang::add(array(
             'ru' => 'Создать файл',
             'en' => 'Create file'
         ),
+        'errors' => array(
+            'needblock' => array(
+                'ru' => 'Нужно выбрать блок',
+                'en' => 'Can\'t create file'
+            ),
+        ),    
     ),
     'error' => array(
         'cantcreatefile' => array(

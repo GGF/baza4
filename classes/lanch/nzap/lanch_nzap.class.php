@@ -59,7 +59,7 @@ class lanch_nzap extends sqltable {
 
     public function action_masterplate($id) {
         $mp = new lanch_mp();
-        return $mp->getMPLink($id);
+        return $mp->getMP($id);
     }
 
     public function action_sl($id, $partyornumbdozap, $dozap=false) {

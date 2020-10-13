@@ -88,8 +88,12 @@ class ajaxform_edit {
         }
     }
 
+    /**
+     * Выдает HTML формы
+     * @return string - HTML
+     */
     public function getOutput() {
-        $out = '<div class="editdiv">';
+        $out = '<div class="editdiv">'; // ключевая фраза, если она есть значит форма иначе сообщение
         $this->form->init();
         $out .= $this->form->form();
         $out .= $this->form->add("edit");

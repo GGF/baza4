@@ -1,10 +1,25 @@
 <?php
 
 class lanch_mp_model extends sqltable_model {
+    
+    /** 
+     * обязательно определять для модуля 
+    */
+    public function getDir() {
+        return __DIR__;
+    }
+
+    /**
+     * Конструктор
+     */
     public function __construct() {
         parent::__construct();
         $this->maintable = 'masterplate';
     }
+
+    /**
+     * Получение данных для таблицы
+     */
     public function getData($all=false,$order='',$find='',$idstr='') {
         $ret = array();
         if (!empty($find)) {
@@ -28,6 +43,9 @@ class lanch_mp_model extends sqltable_model {
         return $ret;
     }
 
+    /**
+     * Получение имен колонов
+     */
     public function getCols() {
         $cols = array();
         $cols['mpid']="ID";
@@ -38,6 +56,9 @@ class lanch_mp_model extends sqltable_model {
         return $cols;
     }
 
+    /**
+     * Удаление записи
+     */
     public function delete($id) {
         $sql = "DELETE FROM masterplate WHERE id='{$id}'";
 	    sql::query($sql);
@@ -78,6 +99,7 @@ class lanch_mp_model extends sqltable_model {
     /**
      * Получение записи
      * @param int $id - идентификатор 
+     * @return array - массив данных
      */
     public function getRecord($id) {
         $rec = parent::getRecord($id);
@@ -92,16 +114,38 @@ class lanch_mp_model extends sqltable_model {
 
     /**
      * Сохранение записи
-     * 
-     * @var array $data - массив сохранения данных полученные из формы
+     * @param array $data - массив сохранения данных полученных из формы
      */
     public function setRecord($data) {
-        extract($data);
-        $sql = "INSERT INTO masterplate (mpdate,user_id,posid,block_id)
-                VALUES (Now(),'" . Auth::getInstance()->getUser('userid') . "','0','{$block_id}')";
-        sql::query($sql);
-        //$rec['mp_id'] = sql::lastId();
-        return sql::error();
+        return true; // закроем в любом случае
     }
-    
+    /**
+     * Создает файл мастерплаты
+     * @param array $rec данные из модели для формирования файла
+     * @return array - та же запись с удачностью
+    */
+    public function createMPFile($rec) {
+        $excel = file_get_contents($this->getDir() . "/mp.xls");
+        if (fileserver::savefile($rec['filename'],$excel)) {
+            $mp['_date_'] = date("d.m.Y");
+            if (is_numeric($rec['mp_id'])) {
+                // для числовых идентификаторов расширим нулями
+                $mp['_number_'] = sprintf("%08d\n",$rec['mp_id']);
+            } else {
+                $mp['_number_'] = $rec['mp_id'];
+            }
+            if (fileserver::savefile($rec['filename'].".txt",$mp)) {
+                $rec['success'] = true;
+            } else {
+                $rec['success'] = false;
+                $rec['error_string'] = Lang::getString('error.cantcreatefile') . ' txt';
+            }
+        } else {
+            $rec['success'] = false;
+            $rec['error_string'] = Lang::getString('error.cantcreatefile') . ' xls' . print_r($rec,true);
+        }
+
+        return $rec;
+    }
+
 }

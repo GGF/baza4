@@ -2,25 +2,41 @@
 
 class sqltable_model extends model {
 
+    /**
+     * @var string - название главной таблицы для объекта
+     */
     protected $maintable;
+
+    /**
+     * @var string - список идентификаторов для дополнительных нужд
+     */
     public $idstr;
 
+    /**
+     * Конструктор
+     */
     public function __construct() {
         $this->maintable = 'coments';
         $this->idstr = '';
     }
 
+    /**
+     * Необходимо перекрывать потомкам, чтоб знали где искать дополнительные файлы
+     */
     public function getDir() {
-	return __DIR__;
+	    return __DIR__;
     }
 
+    /**
+     * Инициализация
+     */
     public function init() {
         if (empty($this->maintable)) {
             return true;
         } else {
             $sql = "SELECT COUNT(*) FROM {$this->maintable}";
-            if (! sql::query($sql) )
-		$this->install ();
+            if (!sql::query($sql))
+		        $this->install ();
         }
     }
 
@@ -42,11 +58,20 @@ class sqltable_model extends model {
         return $ret;
     }
 
+    /**
+     * Получение выводимых колонок
+     * @return array - 
+     */
     public function getCols() {
         return array();
     }
 
-    public function delete($delete) {
+    /**
+     * Удаление записи
+     * @param int $id - идентификатор
+     * @return bool - удачность
+     */
+    public function delete($id) {
         return true;
     }
 
@@ -69,6 +94,9 @@ class sqltable_model extends model {
         }
     }
 
+    /**
+     * Сохранить запись
+     */
     public function setRecord($data) {
         // поля с именами совпадающими с именами полей таблицы добавляем в базу
         $data["id"] = $data["edit"];

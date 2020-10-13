@@ -296,10 +296,21 @@ class sqltable_view extends views {
         return $out;
     }
 
+    /**
+     * Обертка для вызова формы
+     * @param string $formcontent - HTML of form
+     */
     public function getForm($formcontent) {
         return $this->getMessage($formcontent, true);
     }
 
+    /**
+     * Вывести диалог подтверждения
+     * @param string $message - HTML
+     * @param string $action - действие у владельца по ОК
+     * @param string $cancelaction - действие у владельца по канцель
+     * @return string - HTML 
+     */
     public function getConfirm($message, $action, $cancelaction = 'index') {
         $params = func_get_args();
         array_shift($params);

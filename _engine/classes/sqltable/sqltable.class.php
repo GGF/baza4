@@ -262,7 +262,11 @@ class sqltable extends lego_abstract {
         $rec['action'] = $this->actUri('processingform')->ajaxurl($this->getName());
         $out = $this->view->showrec($rec);
         if ($out) {
+            if (stristr($out,'<div class="editdiv">')) { //жутко криво определять форма это или сообщение, но пусть пока так
                 return $this->view->getForm($out);    
+            } else {
+                return $this->view->getMessage($out);
+            }
         } else {
             $out = Lang::getString('message.uneditable');
             return $this->view->getMessage($out);
@@ -307,14 +311,6 @@ class sqltable extends lego_abstract {
                 $form->processed("$('#dialog').dialog('close').remove();reload_table();");
             }
         } else {
-//            foreach ($form->errors as $err) {
-//                if ($err[type]=='obligatory') {
-//                    //$form->html("Поле {$err['name']} обязательно");
-//                    $form->errorHTML($err['name']);
-//                } else {
-//                    $form->alert(print_r($err, true));
-//                }
-//            }
             // в случае ошибок обработка без закрытия
             $form->processed('');
         }
