@@ -44,7 +44,7 @@ class lanch_mp_model extends sqltable_model {
     }
 
     /**
-     * Получение имен колонов
+     * Получение имен колонок
      */
     public function getCols() {
         $cols = array();
