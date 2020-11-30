@@ -17,7 +17,7 @@ class update_model {
             sql::query($sql);
             $userid = sql::lastId();
         } else {
-            $userid = $rs[id];
+            $userid = $rs['id'];
         }
         $sql = "INSERT INTO phototemplates
                 (ts,user_id,filenames)
@@ -37,7 +37,7 @@ class update_model {
             sql::query($sql);
             $customer_id = sql::lastId();
         } else {
-            $customer_id = $rs[id];
+            $customer_id = $rs['id'];
         }
         $sql = "SELECT id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$board}'";
         $rs = sql::fetchOne($sql);
@@ -72,7 +72,7 @@ class update_model {
                     SET scomp='{$comp}', ssolder='{$solder}', drlname='{$drillname}',
                         sizex='{$sizex}', sizey='{$sizey}',
                         auarea='{$auarea}', smalldrill='{$smalldrill}', bigdrill='{$bigdrill}'
-                WHERE id='{$rs[id]}'";
+                WHERE id='{$rs['id']}'";
             sql::query($sql);
         }
         // а тепрерь созадидим фал копирования сверловок
@@ -106,7 +106,7 @@ class update_model {
             return -1;
             exit;
         }
-        $customer_id = $rs[id];
+        $customer_id = $rs['id'];
         // добавление блока
        
         $sql = "SELECT *
@@ -116,14 +116,14 @@ class update_model {
         // комментарий к блоку содержит JSON
         $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rs["comment_id"])),true); //получим текщий комент
         if(!empty($comment)) {
-            $params["coment"] = $comment;
+            $params['coment'] = $comment;
         } 
         // добавим туда электроконтроль
-        $params[eltest] = $eltest;
-        $params[etpib] = $etpib;
-        $params[etpoints] = $etpoints;
-        $params[etcompl] = $etcompl;
-        $rs[comment_id] = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
+        $params['eltest'] = $eltest;
+        $params['etpib'] = $etpib;
+        $params['etpoints'] = $etpoints;
+        $params['etcompl'] = $etcompl;
+        $rs['comment_id'] = sqltable_model::getCommentId(multibyte::Json_encode(multibyte::recursiveEscape($params)));
         /*
          * логика  исправления такая, в базе связал коментарии forignkey
          * то есть пустой долже быть единицей, если блок новый и передан 
@@ -131,12 +131,12 @@ class update_model {
          * в rs, если не пустой комент то получится новый JSON, а если не новый 
          * блок то поменяется в JSON только коментарий и электроконтроль
          */
-        $rs[sizex]=$bsizex;
-        $rs[sizey]=$bsizey;
-        $rs[thickness]=$thickness;
-        $rs[customer_id]=$customer_id;
-        $rs[blockname]=$blockname;
-        $rs[auarea] = $gold;
+        $rs['sizex']=$bsizex;
+        $rs['sizey']=$bsizey;
+        $rs['thickness']=$thickness;
+        $rs['customer_id']=$customer_id;
+        $rs['blockname']=$blockname;
+        $rs['auarea'] = $gold;
         sql::insertUpdate("blocks",array($rs));
         if (empty($rs["id"])) {
             $block_id = sql::lastId();
@@ -160,15 +160,15 @@ class update_model {
             return -1;
             exit;
         }
-        $customer_id = $rs[id];
+        $customer_id = $rs['id'];
         // плату
         // коментарий
-        $sql = "SELECT id, comment_id FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
+        $sql = "SELECT id, comment_id FROM boards WHERE customer_id='{$customer_id}' AND board_name='{$board}'";
         $rs = sql::fetchOne($sql);
         if (!empty($comment)) {
-            $rs[comment_id] = sqltable_model::getCommentId($comment);
+            $rs['comment_id'] = sqltable_model::getCommentId($comment);
         }
-        $rs[board_name] = $board;
+        $rs['board_name'] = $board;
         $rs = array_merge($rs,compact('customer_id','sizex','sizey','thickness',
                 'textolite','rmark','frezcorner',
                 'layers','razr','immer','numlam','lsizex',
@@ -195,13 +195,13 @@ class update_model {
         if (empty($rs)) {
             return -1;
         }
-        $customer_id = $rs[id];
+        $customer_id = $rs['id'];
 
         // Определим идентификатор пользователя
         $sql = "SELECT id FROM users WHERE nik='{$user}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
-            $user_id = $rs["id"];
+            $user_id = $rs['id'];
         } else {
             $sql = "INSERT INTO users (nik) VALUES ('{$user}')";
             sql::query($sql);
@@ -248,9 +248,9 @@ class update_model {
                             numpl4='{$numpl4}', numpl5='{$numpl5}', numpl6='{$numpl6}',
                             numbl='{$numbl}', pitz_mater='{$textolite}',
                             comment_id='{$comment_id}'
-                  WHERE id='{$rs[id]}'";
+                  WHERE id='{$rs['id']}'";
             sql::query($sql);
-            $pit_id = $rs["id"];
+            $pit_id = $rs['id'];
             // обновить запуски если некоторые позиции уже запускались
             $sql = "SELECT * FROM lanch WHERE pos_in_tz_id='{$pit_id}'";
             $rs = sql::fetchOne($sql);
@@ -275,7 +275,7 @@ class update_model {
                 ";
         $rs = sql::fetchAll($sql);
         foreach ($rs as $res) {
-            $sql = "INSERT INTO lanched SET block_id='{$res[block_id]}', lastdate='{$res[md]}'";
+            $sql = "INSERT INTO lanched SET block_id='{$res['block_id']}', lastdate='{$res['md']}'";
             sql::query($sql);
             $out .= sql::error() . "<br>";
         }
@@ -316,12 +316,12 @@ class update_model {
             sql::query($sql);
             $customer_id = sql::lastId();
         } else {
-            $customer_id = $rs[id];
+            $customer_id = $rs['id'];
         }
         $sql = "SELECT id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$board}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
-            $sql="UPDATE blocks SET sizex='{$sizex}', sizey='{$sizey}' WHERE id='{$rs[id]}'";
+            $sql="UPDATE blocks SET sizex='{$sizex}', sizey='{$sizey}' WHERE id='{$rs['id']}'";
             sql::fetchOne($sql);
         }
         
@@ -332,25 +332,25 @@ class update_model {
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
             $date = date("ymd");
-            $rs[kdir] .=  "\\{$drillname}\\{$date}";
+            $rs['kdir'] .=  "\\{$drillname}\\{$date}";
             //$rs[kdir] .= ($mpp != -1 ? "\\MPP" : "\\DPP") . "\\{$drillname}\\{$date}";
-            $out = "mkdir k:\\{$rs[kdir]}" . "\\\n";
-            //$out .= "copy /Y .\\{$drillname}.mk2 k:\\" . $rs[kdir] . "\\\n";
-            //$out .= "copy /Y .\\{$drillname}.mk4 k:\\" . $rs[kdir] . "\\\n";
-            //$out .= "copy /Y .\\{$drillname}.frz k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}.ex2 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}.sch k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}.mx1 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}.prl k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}.fx2 k:\\" . $rs[kdir] . "\\\n";
-            //$out .= "copy /Y .\\{$drillname}-2.mk2 k:\\" . $rs[kdir] . "\\\n";
-            //$out .= "copy /Y .\\{$drillname}-2.mk4 k:\\" . $rs[kdir] . "\\\n";
-            //$out .= "copy /Y .\\{$drillname}-2.frz k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-*.ex2 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-*.sch k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-*.mx1 k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-*.prl k:\\" . $rs[kdir] . "\\\n";
-            $out .= "copy /Y .\\{$drillname}-*.fx2 k:\\" . $rs[kdir] . "\\\n";
+            $out = "mkdir k:\\{$rs['kdir']}" . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}.mk2 k:\\" . $rs['kdir'] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}.mk4 k:\\" . $rs['kdir'] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}.frz k:\\" . $rs['kdir'] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.ex2 k:\\" . $rs['kdir'] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.sch k:\\" . $rs['kdir'] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.mx1 k:\\" . $rs['kdir'] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.prl k:\\" . $rs['kdir'] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}.fx2 k:\\" . $rs['kdir'] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}-2.mk2 k:\\" . $rs['kdir'] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}-2.mk4 k:\\" . $rs['kdir'] . "\\\n";
+            //$out .= "copy /Y .\\{$drillname}-2.frz k:\\" . $rs['kdir'] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-*.ex2 k:\\" . $rs['kdir'] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-*.sch k:\\" . $rs['kdir'] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-*.mx1 k:\\" . $rs['kdir'] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-*.prl k:\\" . $rs['kdir'] . "\\\n";
+            $out .= "copy /Y .\\{$drillname}-*.fx2 k:\\" . $rs['kdir'] . "\\\n";
             return $out;
         }        
     }
@@ -390,7 +390,7 @@ class update_model {
             sql::query($sql);
             $customer_id = sql::lastId();
         } else {
-            $customer_id = $rs[id];
+            $customer_id = $rs['id'];
         }
         $sql = "SELECT id,comment_id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$board}'";
         $rs = sql::fetchOne($sql);
@@ -417,16 +417,54 @@ class update_model {
         $rec = multibyte::cp1251_to_utf8($rec);
         extract($rec);
         if (empty($position)) $position = 0; // для совместимости
-        $rec[hash] = hash('md5',$customer.$order.$board.$position.$mater.$trud);
-        $sql = "SELECT * FROM moneyfororder WHERE hash='{$rec[hash]}'";
+        $rec['hash'] = hash('md5',$customer.$order.$board.$position.$mater.$trud);
+        $sql = "SELECT * FROM moneyfororder WHERE hash='{$rec['hash']}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
-            $rec[id] = $rs[id];
+            $rec['id'] = $rs['id'];
         }
         //echo $sql;
         sql::insertUpdate("moneyfororder", array($rec));
         return true;
      }
+     
+     /**
+      * Обновление размера платы
+      */
+     public function updatesize($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        extract($rec);
+        $sql = "SELECT id FROM customers WHERE customer='{$customer}'";
+        echo $sql;
+        $rs = sql::fetchOne($sql);
+        if (empty($rs)) {
+            $sql = "INSERT INTO customers (customer) VALUES ('{$customer}')";
+            sql::query($sql);
+            $customer_id = sql::lastId();
+        } else {
+            $customer_id = $rs['id'];
+        }
+        // не заморачиваемся обновлением блоков
+        $sql = "SELECT id FROM boards WHERE customer_id='{$customer_id}' AND board_name='{$board}'";
+        $rs = sql::fetchOne($sql);
+        if (empty($rs)) {
+            $sql = "INSERT INTO boards
+                        (customer_id,board_name)
+                    VALUES
+                        ('{$customer_id}','{$board}')";
+            echo $sql;
+            sql::query($sql);
+            $board_id = sql::lastId();
+        } else {
+            $board_id = $rs["id"];
+        }
+        // добавим размеры, ради чего всё и затевалось
+        $sql = "UPDATE boards SET sizex='{$sizex}', sizey='{$sizey}' WHERE id='{$board_id}'";
+        echo $sql; 
+        sql::query($sql);
+
+    }
+
 }
 
 ?>
