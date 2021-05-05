@@ -76,17 +76,17 @@ class orders_posintz_model extends sqltable_model {
         extract($_SESSION[Auth::$lss]);
         $cols["№"] = "№";
         if (empty($customer_id)) {
-            $cols[customer] = "Заказчик";
+            $cols['customer'] = "Заказчик";
         }
         if (empty($order_id)) {
-            $cols[number] = "Заказ";
+            $cols['number'] = "Заказ";
         }
         if (empty($tz_id)) {
-            $cols[tzid] = "ТЗ";
+            $cols['tzid'] = "ТЗ";
         }
-        $cols[posid] = "ID";
-        $cols[blockname] = "Плата";
-        $cols[numbers] = "Количество";
+        $cols['posid'] = "ID";
+        $cols['blockname'] = "Плата";
+        $cols['numbers'] = "Количество";
         return $cols;
     }
 
@@ -100,8 +100,8 @@ class orders_posintz_model extends sqltable_model {
    
     public function getRecord($id) {
         extract($_SESSION[Auth::$lss]); // тут данные выбранных до сих пор заказа и тз
-        $rec[blocks] = $this->getBlocks($customer_id);
-        $rec[tz_id] = $tz_id;
+        $rec['blocks'] = $this->getBlocks($customer_id);
+        $rec['tz_id'] = $tz_id;
         return $rec;
     }
     
@@ -147,12 +147,12 @@ class orders_posintz_model extends sqltable_model {
         boardcomment            blocks
         posintcomment           posintz
         */
-        $rec[first] = '0'; // если вставляем старую плату, а сейчас мы так и делаем
+        $rec['first'] = '0'; // если вставляем старую плату, а сейчас мы так и делаем
         $sql="SELECT * FROM posintz WHERE block_id='{$block_id}' ORDER BY id DESC LIMIT 1";
         $pos = sql::fetchOne($sql);
         if(empty($pos)) {
-            $res[alert] = "Не запускалось такого Новая наверное. Ручками давай.";
-            $res[affected] = false;
+            $res['alert'] = "Не запускалось такого Новая наверное. Ручками давай.";
+            $res['affected'] = false;
             return $res;
         }
         // определим позицию добавленного в тз
@@ -165,8 +165,8 @@ class orders_posintz_model extends sqltable_model {
                 $posintz = array_diff($posintz, array($value["posintz"]));
             }
             if (empty($posintz)) {
-                $res[alert] = "Не лезет. Уже три позиции запихал";
-                $res[affected] = false;
+                $res['alert'] = "Не лезет. Уже три позиции запихал";
+                $res['affected'] = false;
                 return $res;
             } else {
                 $posintz = reset($posintz);
@@ -178,67 +178,67 @@ class orders_posintz_model extends sqltable_model {
         $block = new orders_blocks_model();
         $block = $block->getRecord($block_id);
         // получить данны плат в блоке
-        $board = $block[blockpos][0];
+        $board = $block['blockpos'][0];
         // добавить позицию в таблицу posintz
-        $newpos[tz_id] = $tz_id;
-        $newpos[posintz] = $posintz;
-        $newpos[block_id] = $block_id;
-        $newpos[numpl1] = $newpos[numbers] = $board_num;
-        $newpos[numbl] = $newpos[numblock] = ceil($board_num/$board[nib]);
-        $newpos[first] = 0; // так как мы добавляем из старой
-        $newpos[srok] = $pos[srok];
-        $newpos[priem] = $pos[priem];
-        $newpos[constr] = 1;//$pos[constr]; //один час при повторе
-        $newpos[template_check] = max(array($pos[template_check],$pos[template_make]));
-        $newpos[template_make] = 0;
-        $newpos[comment_id] = $pos[comment_id];
+        $newpos['tz_id'] = $tz_id;
+        $newpos['posintz'] = $posintz;
+        $newpos['block_id'] = $block_id;
+        $newpos['numpl1'] = $newpos['numbers'] = $board_num;
+        $newpos['numbl'] = $newpos['numblock'] = ceil($board_num/$board['nib']);
+        $newpos['first'] = 0; // так как мы добавляем из старой
+        $newpos['srok'] = $pos['srok'];
+        $newpos['priem'] = $pos['priem'];
+        $newpos['constr'] = 1;//$pos[constr]; //один час при повторе
+        $newpos['template_check'] = max(array($pos['template_check'],$pos['template_make']));
+        $newpos['template_make'] = 0;
+        $newpos['comment_id'] = $pos['comment_id'];
         
         sql::insertUpdate($this->maintable,array($newpos));
         // дозаполнить newpos
-        $newpos[blockname] = $block[blockname];
-        $newpos[type] = $board[layers]==1?"ОПП":"ДПП"; // пока будет так
-        $newpos[layers] = $board[layers];
+        $newpos['blockname'] = $block['blockname'];
+        $newpos['type'] = $board['layers']==1?"ОПП":"ДПП"; // пока будет так
+        $newpos['layers'] = $board['layers'];
         $newpos["class"] = $board["class"];
-        $newpos[complexity_factor] = $board[complexity_factor]>0?$board[complexity_factor]:"";
-        $newpos[boardsizex] = $board[sizex];
-        $newpos[boardsizey] = $board[sizey];
-        $newpos[blocksizex] = ceil($block[sizex]);
-        $newpos[blocksizey] = ceil($block[sizey]);
-        $newpos[numonblock] = $board[nib];
-        $newpos[drills] = "{$block[smalldrill]}/{$block[bigdrill]}";
-        $newpos[textolite] = $board[textolite];
-        $newpos[glasscloth] = $board[glasscloth];
-        $newpos[thickness] = $board[thickness];
-        preg_match('/(?P<nummask>[+0-9]*)(?P<mask>.*)/i', $board[mask], $matches);
-        $newpos[mask]=$matches[mask];
-        $newpos[nummask]=empty($matches[nummask])?2:$matches[nummask];
-        $newpos[mark] = $board[mark];
-        $newpos[rmark] = $board[rmark];
-        $newpos[razr] = $board[razr];
-        $newpos[frezcorner] = $board[frezcorner];
-        $newpos[frez_factor] = $board[frez_factor]>0?$board[frez_factor]:"1.0";
-        $newpos[lamel] = $board[numlam]>0?"{$board[numlam]} {$board[lsizex]}x{$board[lsizey]}":"0 0.0x0.0";
-        $newpos[numlam] = $board[numlam];
-        $newpos[lsizex] = $board[lsizex];
-        $newpos[lsizey] = $board[lsizex];
-        $newpos[immer] = $board[immer];
-        $newpos[auarea] = $board[immer]==1?$block[auarea]:"";
+        $newpos['complexity_factor'] = $board['complexity_factor']>0?$board['complexity_factor']:"";
+        $newpos['boardsizex'] = $board['sizex'];
+        $newpos['boardsizey'] = $board['sizey'];
+        $newpos['blocksizex'] = ceil($block['sizex']);
+        $newpos['blocksizey'] = ceil($block['sizey']);
+        $newpos['numonblock'] = $board['nib'];
+        $newpos['drills'] = "{$block['smalldrill']}/{$block['bigdrill']}";
+        $newpos['textolite'] = $board['textolite'];
+        $newpos['glasscloth'] = $board['glasscloth'];
+        $newpos['thickness'] = $board['thickness'];
+        preg_match('/(?P<nummask>[+0-9]*)(?P<mask>.*)/i', $board['mask'], $matches);
+        $newpos['mask']=$matches['mask'];
+        $newpos['nummask']=empty($matches['nummask'])?2:$matches['nummask'];
+        $newpos['mark'] = $board['mark'];
+        $newpos['rmark'] = $board['rmark'];
+        $newpos['razr'] = $board['razr'];
+        $newpos['frezcorner'] = $board['frezcorner'];
+        $newpos['frez_factor'] = $board['frez_factor']>0?$board['frez_factor']:"1.0";
+        $newpos['lamel'] = $board['numlam']>0?"{$board['numlam']} {$board['lsizex']}x{$board['lsizey']}":"0 0.0x0.0";
+        $newpos['numlam'] = $board['numlam'];
+        $newpos['lsizex'] = $board['lsizex'];
+        $newpos['lsizey'] = $board['lsizex'];
+        $newpos['immer'] = $board['immer'];
+        $newpos['auarea'] = $board['immer']==1?$block['auarea']:"";
         // блоки с JSON
         $params = json_decode(multibyte::Unescape(sqltable_model::getComment($block["comment_id"])),true); //получим текщий комент из блока
-        $newpos[boardcomment] = $params[coment];
-        $newpos[eltest] = $params[eltest];
-        $newpos[etpib] = $params[etpib];
-        $newpos[etpoints] = $params[etpoints];
-        $newpos[etcompl] = $params[etcompl];
-        $newpos[posintcomment] = $this->getComment($pos[comment_id]);
+        $newpos['boardcomment'] = $params['coment'];
+        $newpos['eltest'] = $params['eltest'];
+        $newpos['etpib'] = $params['etpib'];
+        $newpos['etpoints'] = $params['etpoints'];
+        $newpos['etcompl'] = $params['etcompl'];
+        $newpos['posintcomment'] = $this->getComment($pos['comment_id']);
         // сохранить данные в файл
         $tz = new orders_tz_model();
         $tz = $tz->getRecord($tz_id);
-        $filelink = $tz[tzlink];
+        $filelink = $tz['tzlink'];
         $filename = fileserver::createdironserver($filelink);
         fileserver::savefile("{$filename}.{$posintz}.txt", $newpos);
         // вывести ссылочку или не надо...
-        $res[affected] = true;
+        $res['affected'] = true;
         return $res;
     }
 
@@ -262,20 +262,20 @@ class orders_posintz_model extends sqltable_model {
                 . "WHERE posintz.id='{$id}'";
         $rec = sql::fetchOne($sql);
         $params = json_decode(multibyte::Unescape(sqltable_model::getComment($rec["bcid"])),true); //получим текщий комент из блока
-        $rec[eltest] = $params[eltest];
-        $rec[etpib] = $params[etpib];
-        $rec[etpoints] = $params[etpoints]*$params[etpib];// В ТЗ используется количество точек на заготовку
-        $rec[etcompl] = $params[etcompl];
-        $rec[thickness] = (float)$rec[thickness];
-        $rec[type] = $rec[layers]>2 ? 'mpp' : 'dpp';
-        $rec[template] = "r{$rec[type]}.xlsm";
-        preg_match('/(?P<nummask>[+0-9]*)(?P<mask>.*)/i', $rec[mask], $matches);
-        $rec[mask]=$matches[mask];
-        $rec[nummask]=empty($matches[nummask])?2:$matches[nummask];
-        $rec[frez_factor]=$rec[frez_factor]>0?$rec[frez_factor]:1.0;
-        $blockstring = fileserver::removeOSsimbols($rec[blockname]." tz {$rec[tz_id]} posintz {$id}");
-        $orderstring = fileserver::removeOSsimbols($rec[letter]);
-        $rec[filename] = "t:\\\\Расчет стоимости плат\\\\{$rec[customer]}\\\\{$orderstring}\\\\{$blockstring}.xlsm";
+        $rec['eltest'] = $params['eltest'];
+        $rec['etpib'] = $params['etpib'];
+        $rec['etpoints'] = $params['etpoints']*$params['etpib'];// В ТЗ используется количество точек на заготовку
+        $rec['etcompl'] = $params['etcompl'];
+        $rec['thickness'] = (float)$rec['thickness'];
+        $rec['type'] = $rec['layers']>2 ? 'mpp' : 'dpp';
+        $rec['template'] = "r{$rec['type']}.xlsm";
+        preg_match('/(?P<nummask>[+0-9]*)(?P<mask>.*)/i', $rec['mask'], $matches);
+        $rec['mask']=$matches['mask'];
+        $rec['nummask']=empty($matches['nummask'])?2:$matches['nummask'];
+        $rec['frez_factor']=$rec['frez_factor']>0?$rec['frez_factor']:1.0;
+        $blockstring = fileserver::removeOSsimbols($rec['blockname']." tz {$rec['tz_id']} posintz {$id}");
+        $orderstring = fileserver::removeOSsimbols($rec['letter']);
+        $rec['filename'] = "t:\\\\Расчет стоимости плат\\\\{$rec['customer']}\\\\{$orderstring}\\\\{$blockstring}.xlsm";
         return $rec;
     }
     
@@ -290,11 +290,11 @@ class orders_posintz_model extends sqltable_model {
     public function getFileLinkForRaschet($rec) {
         extract($rec);
         $res = $this->getFilesForId('posintz', $id);
-        if (empty($res[link])) {
+        if (empty($res['link'])) {
             return false;
         } else {
-            if (file_exists(fileserver::serverfilelink($res[file][0][file_link]))) {
-                return $res[file][0][file_link];
+            if (file_exists(fileserver::serverfilelink($res['file'][0]['file_link']))) {
+                return $res['file'][0]['file_link'];
             } else {
                 return false;
             }
@@ -309,8 +309,8 @@ class orders_posintz_model extends sqltable_model {
      */
     public function getPosintzIdsByOneId($id) {
         //$res = sql::fetchOne("SELECT tz_id FROM posintz WHERE id='{$id}'");
-        $tzid = sql::fetchOne("SELECT tz_id FROM posintz WHERE id='{$id}'")[tz_id];
-        $orderid = sql::fetchOne("SELECT order_id FROM tz WHERE id='{$tzid}'")[order_id];
+        $tzid = sql::fetchOne("SELECT tz_id FROM posintz WHERE id='{$id}'")['tz_id'];
+        $orderid = sql::fetchOne("SELECT order_id FROM tz WHERE id='{$tzid}'")['order_id'];
         return sql::fetchAll("SELECT id FROM posintz WHERE tz_id in (SELECT id FROM tz WHERE order_id = '{$orderid}')");
     }
 }
