@@ -26,6 +26,43 @@ class update_model {
         sql::query($sql);
         return sql::lastId();
     }
+    /**
+     * запись количества отверстий на плату, фрезы отрицательный диаметр имеют
+     * drillsostav имеет формат size|count x size|count x size|count x
+     * то есть после последнего икса ничего нет
+     * только для плат
+     * Добавлено поле для плат
+     * ALTER TABLE `boards` ADD `extinfo` TEXT NOT NULL COMMENT 'Дополнительная информация в JSON или тексте' AFTER `comment_id`; 
+     */
+    public function drillcount($rec) {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        extract($rec);
+
+        $sql = "SELECT id FROM customers WHERE customer='{$customer}'";
+        $rs = sql::fetchOne($sql);
+        if (empty($rs)) {
+            $sql = "INSERT INTO customers (customer) VALUES ('{$customer}')";
+            sql::query($sql);
+            echo $sql;
+            $customer_id = sql::lastId();
+        } else {
+            $customer_id = $rs['id'];
+        }
+        // получить идентификатор платы всё равно нужно
+        $sql = "SELECT id FROM boards WHERE customer_id='{$customer_id}' AND board_name='{$board}'";
+        $rs = sql::fetchOne($sql);
+        if (empty($rs)) {
+            /*
+            пустую не меняем
+            */
+        } else {
+            $board_id = $rs["id"];
+        }
+
+        $sql = "UPDATE boards SET extinfo = '{$drillsostav}' WHERE id='{$board_id}'";
+        sql::query($sql);
+        echo "{$board_id}\r\n";
+    }
 
     public function copper($rec) {
         $rec = multibyte::cp1251_to_utf8($rec);
