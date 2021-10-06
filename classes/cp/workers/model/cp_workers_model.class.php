@@ -24,10 +24,10 @@ class cp_workers_model extends sqltable_model {
 
     public function getCols() {
         $cols = array();
-        $cols[№] = "№";
-        $cols[fio] = "ФИО";
-        $cols[dolz] = "Должность";
-        $cols[dr] = "День рождения";
+        $cols['№'] = "№";
+        $cols['fio'] = "ФИО";
+        $cols['dolz'] = "Должность";
+        $cols['dr'] = "День рождения";
         return $cols;
     }
 

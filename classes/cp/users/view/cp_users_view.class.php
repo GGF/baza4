@@ -9,8 +9,8 @@ class cp_users_view extends sqltable_view {
 
     public function showrec($rec) {
 
-        $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
-        $form->init($rec[edit]);
+        $form = new ajaxform_edit($this->owner->getName(), $rec['action']);
+        $form->init($rec['edit']);
         $fields = array(
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
@@ -54,18 +54,18 @@ class cp_users_view extends sqltable_view {
     }
 
     public function showrigths($rec) {
-        $uid = $rec[edit];
-        $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
-        $form->init($rec[edit]);
-        foreach ($rec[types] as $key => $val) {
+        $uid = $rec['edit'];
+        $form = new ajaxform_edit($this->owner->getName(), $rec['action']);
+        $form->init($rec['edit']);
+        foreach ($rec['types'] as $key => $val) {
             $label = sprintf("<span id='rrr' rtype='{$val["type"]}'>[%-25s]</span>:", $val["type"]);
             $form->addFields(array(
                 array(
                     "type" => AJAXFORM_TYPE_CHECKBOXES,
-                    "name" => $val[name],
+                    "name" => $val['name'],
                     "label" => $label,
-                    "value" => $val[value],
-                    "values" => $val[values],
+                    "value" => $val['value'],
+                    "values" => $val['values'],
                     "options" => array("nobr" => true, "html" => " rtype=" . $val["type"] . " "),),
             ));
         }

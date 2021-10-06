@@ -2,15 +2,15 @@
 
 class cp_todo_view extends sqltable_view {
 
-    // обязательно определять для модуля
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     public function getDir() {
         return __DIR__;
     }
 
     public function showrec($rec) {
 
-        $form = new ajaxform_edit($this->owner->getName(), $rec[action]);
-        $form->init($rec[edit]);
+        $form = new ajaxform_edit($this->owner->getName(), $rec['action']);
+        $form->init($rec['edit']);
         $fields = array();
         $form->addFields(array(
             array(

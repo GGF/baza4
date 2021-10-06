@@ -23,9 +23,9 @@ class getdata_model extends sqltable_model {
                 FROM blockpos 
                 JOIN boards ON boards.id=blockpos.board_id 
                 WHERE blockpos.block_id='{$res["id"]}'";
-        $res[blockpos] = sql::fetchAll($sql);
-        $rec[blockcomment] = $this->getComment($rec[comment_id]);
-        $rec[boardcomment] = $this->getComment($rec[blockpos][0][comment_id]);
+        $res['blockpos'] = sql::fetchAll($sql);
+        $rec['blockcomment'] = $this->getComment($rec['comment_id']);
+        $rec['boardcomment'] = $this->getComment($rec['blockpos'][0]['comment_id']);
         $out .= json_encode($res);
         return $out;
     }
@@ -40,7 +40,7 @@ class getdata_model extends sqltable_model {
         extract($rec);
         $out = '';
         $sql = "SELECT * FROM `zaomppsklads`.`sk_mat__spr` ORDER BY nazv";
-        $res[textolite] = sql::fetchAll($sql);
+        $res['textolite'] = sql::fetchAll($sql);
         $out .= json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
         return $out;
     }
@@ -56,16 +56,16 @@ class getdata_model extends sqltable_model {
         $out = '';
         $sql = "SELECT count(*) as records, `customer`, `order` as ordernumber FROM `moneyfororder`  ";
         $rs = sql::fetchAll($sql);
-        $resarr[orderdata] = $rs;
+        $resarr['orderdata'] = $rs;
         $sql = "SELECT board,trud,mater, matedizm AS edizm,SUM(matcost) AS summatcost,SUM(matras) AS summatras,
                     SUM(trudcost) AS sumtrudcost,
                     SUM(trudem) AS sumtrudem 
                         FROM `moneyfororder` GROUP BY `board`,`mater`,`trud` ";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
         $rs = sql::fetchAll($sql);
-        $resarr[datas] = $rs;
+        $resarr['datas'] = $rs;
         $sql = "SELECT board FROM `moneyfororder` GROUP BY `board`";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
         $rs = sql::fetchAll($sql);
-        $resarr[boards] = $rs;
+        $resarr['boards'] = $rs;
         
         //return print_r($rs);
         /*$board = $rs[0][board];
