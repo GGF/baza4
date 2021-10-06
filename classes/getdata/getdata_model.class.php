@@ -121,29 +121,25 @@ class getdata_model extends sqltable_model {
      * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&table=customers&id=5" > res
      * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&object=orders_customers_model&id=5" > res
      * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&object=orders_customers_model&id=5&format=json" > res
-     * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&table=customers&id=%%D0%%90%%D0%%B7%%D0%%B8%%D0%%BC%%D1%%83%%D1%%82&field=customer" >res
-     * tear "http://baza4/?level=getdata&getdata[act]=uniget&table=customers&id=Аврора&field=customer" >res
+     * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&table=customers&str=%%D0%%90%%D0%%B7%%D0%%B8%%D0%%BC%%D1%%83%%D1%%82&field=customer" >res
+     * tear "http://baza4/?level=getdata&getdata[act]=uniget&table=boards&field=boardname&getfield=extinfo&str=GGFF.758725.148" >res
      */
     public function uniget($rec) {
         if(!multibyte::is_utf($rec)) {
             $rec = multibyte::cp1251_to_utf8($rec);
         }
         extract($rec);
+        if (!isset($getfield)) {
+            $getfield = '*';
+        } else {
+            $getfield = "`{$getfield}`"; 
+        }
         if(!isset($format)) {
             $format = "keyline";
         }
         if (isset($id)) {
             if (isset($table)) {
-                if(1*$id!=0) {
-                    $sql = "SELECT * FROM `{$table}` WHERE id='{$id}'";
-                } else { 
-                    if (isset($field)) {
-                        $sql = "SELECT * FROM `{$table}` WHERE `{$field}`='{$id}'";
-                    } else {
-                        // не определить
-                        return;
-                    }
-                }
+                $sql = "SELECT {$getfield} FROM `{$table}` WHERE id='{$id}'";
                 $res = sql::fetchOne($sql);
             } elseif (isset($object)) {
                 if(class_exists($object)) {
@@ -153,7 +149,21 @@ class getdata_model extends sqltable_model {
                     }
                 }
             }
-            // вывод
+        } elseif (isset($str)) {
+            if (isset($field)) {
+                if (!isset($like)) { // вид поиска
+                    $sql = "SELECT {$getfield} FROM `{$table}` WHERE `{$field}`='{$str}'";
+                } else {
+                    $sql = "SELECT {$getfield} FROM `{$table}` WHERE `{$field}` LIKE '%{$str}%'";
+                }
+                $res = sql::fetchOne($sql);
+            } else {
+                // не определить
+                return;
+            }
+        }
+        // вывод
+        if (!empty($res)) {
             if ($format == "json") {
                 $res = json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
                 echo $res;
