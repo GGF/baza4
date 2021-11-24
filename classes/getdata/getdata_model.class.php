@@ -125,9 +125,9 @@ class getdata_model extends sqltable_model {
      * tear "http://baza4/?level=getdata&getdata[act]=uniget&table=boards&field=boardname&getfield=extinfo&str=GGFF.758725.148" >res
      */
     public function uniget($rec) {
-        if(!multibyte::is_utf($rec)) {
+        //if(!multibyte::is_utf($rec)) { // чтото оно плохо работает. А! если хоть ктото из массива попадает под utf, то весь массив считается
             $rec = multibyte::cp1251_to_utf8($rec);
-        }
+        //}
         extract($rec);
         if (!isset($getfield)) {
             $getfield = '*';
