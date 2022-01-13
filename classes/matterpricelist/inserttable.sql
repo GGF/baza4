@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Янв 13 2022 г., 12:59
+-- Время создания: Янв 13 2022 г., 13:33
 -- Версия сервера: 10.3.28-MariaDB
 -- Версия PHP: 7.2.24
 
@@ -25,10 +25,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `calc__matter`
+-- Структура таблицы `calc__matters`
 --
 
-CREATE TABLE `calc__matter` (
+CREATE TABLE `calc__matters` (
   `id` int(11) NOT NULL,
   `matter_name` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT 'Наименование материала',
   `matter_unit` varchar(10) CHARACTER SET utf8 NOT NULL COMMENT 'Единицы измерения',
@@ -56,14 +56,21 @@ CREATE TABLE `calc__matter_pricelist` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `calc__supplier`
+-- Структура таблицы `calc__suppliers`
 --
 
-CREATE TABLE `calc__supplier` (
+CREATE TABLE `calc__suppliers` (
   `id` int(11) NOT NULL,
-  `suppplier_name` varchar(500) CHARACTER SET utf8 NOT NULL COMMENT 'Наименование поставщика',
+  `supplier_name` varchar(500) CHARACTER SET utf8 NOT NULL COMMENT 'Наименование поставщика',
   `supplier_shortname` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT 'Короткое наименование для списка выборов'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Справочник поставщиков';
+
+--
+-- Дамп данных таблицы `calc__suppliers`
+--
+
+INSERT INTO `calc__suppliers` (`id`, `supplier_name`, `supplier_shortname`) VALUES
+(1, 'ООО \"Петрокоммерц\"', 'ООО \"Петрокоммерц\"');
 
 -- --------------------------------------------------------
 
@@ -77,25 +84,37 @@ CREATE TABLE `calc__types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Типы материалов для расчета (там около шести типов)';
 
 --
+-- Дамп данных таблицы `calc__types`
+--
+
+INSERT INTO `calc__types` (`id`, `type`) VALUES
+(0, 'БАЗОВЫЕ   МАТЕРИАЛЫ'),
+(1, 'ОСНОВНЫЕ  МАТЕРИАЛЫ (присутствующие в готовом в изделии)'),
+(2, 'ОСНОВНЫЕ  МАТЕРИАЛЫ (непосредственно задействованные в производственных процессах )');
+
+--
 -- Индексы сохранённых таблиц
 --
 
 --
--- Индексы таблицы `calc__matter`
+-- Индексы таблицы `calc__matters`
 --
-ALTER TABLE `calc__matter`
+ALTER TABLE `calc__matters`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `calc__matter_pricelist`
 --
 ALTER TABLE `calc__matter_pricelist`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `matter_name_id` (`matter_name_id`),
+  ADD KEY `matter_type_id` (`matter_type_id`),
+  ADD KEY `supplier_id` (`supplier_id`);
 
 --
--- Индексы таблицы `calc__supplier`
+-- Индексы таблицы `calc__suppliers`
 --
-ALTER TABLE `calc__supplier`
+ALTER TABLE `calc__suppliers`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -109,9 +128,9 @@ ALTER TABLE `calc__types`
 --
 
 --
--- AUTO_INCREMENT для таблицы `calc__matter`
+-- AUTO_INCREMENT для таблицы `calc__matters`
 --
-ALTER TABLE `calc__matter`
+ALTER TABLE `calc__matters`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -121,16 +140,28 @@ ALTER TABLE `calc__matter_pricelist`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `calc__supplier`
+-- AUTO_INCREMENT для таблицы `calc__suppliers`
 --
-ALTER TABLE `calc__supplier`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `calc__suppliers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `calc__types`
 --
 ALTER TABLE `calc__types`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `calc__matter_pricelist`
+--
+ALTER TABLE `calc__matter_pricelist`
+  ADD CONSTRAINT `calc__matter_pricelist_ibfk_1` FOREIGN KEY (`matter_name_id`) REFERENCES `calc__matters` (`id`),
+  ADD CONSTRAINT `calc__matter_pricelist_ibfk_2` FOREIGN KEY (`matter_type_id`) REFERENCES `calc__types` (`id`),
+  ADD CONSTRAINT `calc__matter_pricelist_ibfk_3` FOREIGN KEY (`supplier_id`) REFERENCES `calc__suppliers` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
