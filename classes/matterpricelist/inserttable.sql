@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Янв 13 2022 г., 12:16
+-- Время создания: Янв 13 2022 г., 12:59
 -- Версия сервера: 10.3.28-MariaDB
 -- Версия PHP: 7.2.24
 
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `calc__matter` (
   `id` int(11) NOT NULL,
-  `matter_name` varchar(255) NOT NULL COMMENT 'Наименование материала',
-  `matter_unit` varchar(10) NOT NULL COMMENT 'Единицы измерения',
+  `matter_name` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT 'Наименование материала',
+  `matter_unit` varchar(10) CHARACTER SET utf8 NOT NULL COMMENT 'Единицы измерения',
   `matter_factor` float NOT NULL COMMENT 'Коэффициэнт перевода в нормальные единицы'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Справочник материалов для расчета';
 
@@ -47,10 +47,10 @@ CREATE TABLE `calc__matter_pricelist` (
   `matter_type_id` int(11) NOT NULL COMMENT 'ИД типа из справочника',
   `matter_name_id` int(11) NOT NULL COMMENT 'ИД типа из справочника',
   `matter_price` float NOT NULL COMMENT 'Цена в рублях',
-  `invoice` varchar(500) NOT NULL COMMENT 'Накладная/приходный ордер',
+  `invoice` varchar(500) CHARACTER SET utf8 NOT NULL COMMENT 'Накладная/приходный ордер',
   `supplier_id` int(11) NOT NULL COMMENT 'ИД поставщика из справочника',
-  `change_act` varchar(500) NOT NULL COMMENT 'Акт перевода наименованийй и единиц',
-  `coment` varchar(500) NOT NULL COMMENT 'Коментарий'
+  `change_act` varchar(500) CHARACTER SET utf8 NOT NULL COMMENT 'Акт перевода наименованийй и единиц',
+  `coment` varchar(500) CHARACTER SET utf8 NOT NULL COMMENT 'Коментарий'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Список цен на материалы';
 
 -- --------------------------------------------------------
@@ -61,8 +61,8 @@ CREATE TABLE `calc__matter_pricelist` (
 
 CREATE TABLE `calc__supplier` (
   `id` int(11) NOT NULL,
-  `suppplier_name` varchar(500) NOT NULL COMMENT 'Наименование поставщика',
-  `supplier_shortname` varchar(50) NOT NULL COMMENT 'Короткое наименование для списка выборов'
+  `suppplier_name` varchar(500) CHARACTER SET utf8 NOT NULL COMMENT 'Наименование поставщика',
+  `supplier_shortname` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT 'Короткое наименование для списка выборов'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Справочник поставщиков';
 
 -- --------------------------------------------------------
@@ -73,7 +73,7 @@ CREATE TABLE `calc__supplier` (
 
 CREATE TABLE `calc__types` (
   `id` int(11) NOT NULL,
-  `type` varchar(255) NOT NULL
+  `type` varchar(255) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Типы материалов для расчета (там около шести типов)';
 
 --
