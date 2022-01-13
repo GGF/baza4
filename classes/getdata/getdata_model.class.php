@@ -23,9 +23,9 @@ class getdata_model extends sqltable_model {
                 FROM blockpos 
                 JOIN boards ON boards.id=blockpos.board_id 
                 WHERE blockpos.block_id='{$res["id"]}'";
-        $res[blockpos] = sql::fetchAll($sql);
-        $rec[blockcomment] = $this->getComment($rec[comment_id]);
-        $rec[boardcomment] = $this->getComment($rec[blockpos][0][comment_id]);
+        $res['blockpos'] = sql::fetchAll($sql);
+        $rec['blockcomment'] = $this->getComment($rec['comment_id']);
+        $rec['boardcomment'] = $this->getComment($rec['blockpos'][0]['comment_id']);
         $out .= json_encode($res);
         return $out;
     }
@@ -40,7 +40,7 @@ class getdata_model extends sqltable_model {
         extract($rec);
         $out = '';
         $sql = "SELECT * FROM `zaomppsklads`.`sk_mat__spr` ORDER BY nazv";
-        $res[textolite] = sql::fetchAll($sql);
+        $res['textolite'] = sql::fetchAll($sql);
         $out .= json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
         return $out;
     }
@@ -56,16 +56,16 @@ class getdata_model extends sqltable_model {
         $out = '';
         $sql = "SELECT count(*) as records, `customer`, `order` as ordernumber FROM `moneyfororder`  ";
         $rs = sql::fetchAll($sql);
-        $resarr[orderdata] = $rs;
+        $resarr['orderdata'] = $rs;
         $sql = "SELECT board,trud,mater, matedizm AS edizm,SUM(matcost) AS summatcost,SUM(matras) AS summatras,
                     SUM(trudcost) AS sumtrudcost,
                     SUM(trudem) AS sumtrudem 
                         FROM `moneyfororder` GROUP BY `board`,`mater`,`trud` ";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
         $rs = sql::fetchAll($sql);
-        $resarr[datas] = $rs;
+        $resarr['datas'] = $rs;
         $sql = "SELECT board FROM `moneyfororder` GROUP BY `board`";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
         $rs = sql::fetchAll($sql);
-        $resarr[boards] = $rs;
+        $resarr['boards'] = $rs;
         
         //return print_r($rs);
         /*$board = $rs[0][board];
@@ -125,9 +125,9 @@ class getdata_model extends sqltable_model {
      * tear "http://baza4/?level=getdata&getdata[act]=uniget&table=boards&field=boardname&getfield=extinfo&str=GGFF.758725.148" >res
      */
     public function uniget($rec) {
-        if(!multibyte::is_utf($rec)) {
+        //if(!multibyte::is_utf($rec)) { // чтото оно плохо работает. А! если хоть ктото из массива попадает под utf, то весь массив считается
             $rec = multibyte::cp1251_to_utf8($rec);
-        }
+        //}
         extract($rec);
         if (!isset($getfield)) {
             $getfield = '*';

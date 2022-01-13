@@ -24,10 +24,10 @@ class cp_users_model extends sqltable_model {
 
     public function getCols() {
         $cols = array();
-        $cols[id] = "ID";
-        $cols[nik] = "Nik";
-        $cols[fullname] = "Fullname";
-        $cols[position] = "Position";
+        $cols['id'] = "ID";
+        $cols['nik'] = "Nik";
+        $cols['fullname'] = "Fullname";
+        $cols['position'] = "Position";
         return $cols;
     }
 
@@ -81,17 +81,17 @@ class cp_users_model extends sqltable_model {
         $res1 = sql::fetchAll($sql);
         $out = array();
         foreach ($res as $rs) {
-            $rec[type] = $rs[type];
-            $rec[name] = "r|{$rs["id"]}";
+            $rec['type'] = $rs['type'];
+            $rec['name'] = "r|{$rs["id"]}";
             foreach ($res1 as $rs1) {
                 $sql = "SELECT * FROM rights WHERE type_id='{$rs["id"]}' AND u_id='{$userid}' AND rtype_id='{$rs1["id"]}'";
                 $rs2 = sql::fetchOne($sql);
                 $value[$rs1["id"]] = ($rs2["right"] == 1 ? 1 : 0);
                 $values[$rs1["id"]] = $rs1["rtype"];
             }
-            $rec[value] = $value;
-            $rec[values] = $values;
-            $out[types][] = $rec;
+            $rec['value'] = $value;
+            $rec['values'] = $values;
+            $out['types'][] = $rec;
         }
         return $out;
     }
