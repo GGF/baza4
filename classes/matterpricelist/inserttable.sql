@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Янв 13 2022 г., 13:33
+-- Время создания: Янв 14 2022 г., 09:30
 -- Версия сервера: 10.3.28-MariaDB
 -- Версия PHP: 7.2.24
 
@@ -30,10 +30,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `calc__matters` (
   `id` int(11) NOT NULL,
-  `matter_name` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT 'Наименование материала',
-  `matter_unit` varchar(10) CHARACTER SET utf8 NOT NULL COMMENT 'Единицы измерения',
-  `matter_factor` float NOT NULL COMMENT 'Коэффициэнт перевода в нормальные единицы'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Справочник материалов для расчета';
+  `matter_name` varchar(255) NOT NULL COMMENT 'Наименование материала',
+  `matter_unit` varchar(10) NOT NULL COMMENT 'Единицы измерения',
+  `matter_factor` float NOT NULL DEFAULT 1 COMMENT 'Коэффициэнт перевода в нормальные единицы'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Справочник материалов для расчета';
 
 -- --------------------------------------------------------
 
@@ -43,15 +43,17 @@ CREATE TABLE `calc__matters` (
 
 CREATE TABLE `calc__matter_pricelist` (
   `id` int(11) NOT NULL,
-  `record_date` datetime NOT NULL COMMENT 'Дата записи',
+  `record_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Дата записи',
   `matter_type_id` int(11) NOT NULL COMMENT 'ИД типа из справочника',
   `matter_name_id` int(11) NOT NULL COMMENT 'ИД типа из справочника',
-  `matter_price` float NOT NULL COMMENT 'Цена в рублях',
-  `invoice` varchar(500) CHARACTER SET utf8 NOT NULL COMMENT 'Накладная/приходный ордер',
+  `discharge_norm_in` float NOT NULL DEFAULT 0 COMMENT 'Норма расхода на внутреннние слои',
+  `discharge_norm_out` float NOT NULL DEFAULT 0 COMMENT 'Норма расхода на наружные слои',
+  `matter_price` float NOT NULL DEFAULT 0 COMMENT 'Цена в рублях',
+  `invoice` varchar(500) DEFAULT NULL COMMENT 'Накладная/приходный ордер',
   `supplier_id` int(11) NOT NULL COMMENT 'ИД поставщика из справочника',
-  `change_act` varchar(500) CHARACTER SET utf8 NOT NULL COMMENT 'Акт перевода наименованийй и единиц',
-  `coment` varchar(500) CHARACTER SET utf8 NOT NULL COMMENT 'Коментарий'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Список цен на материалы';
+  `change_act` varchar(500) DEFAULT NULL COMMENT 'Акт перевода наименованийй и единиц',
+  `coment` varchar(500) DEFAULT NULL COMMENT 'Коментарий'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Список цен на материалы';
 
 -- --------------------------------------------------------
 
@@ -61,16 +63,9 @@ CREATE TABLE `calc__matter_pricelist` (
 
 CREATE TABLE `calc__suppliers` (
   `id` int(11) NOT NULL,
-  `supplier_name` varchar(500) CHARACTER SET utf8 NOT NULL COMMENT 'Наименование поставщика',
-  `supplier_shortname` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT 'Короткое наименование для списка выборов'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Справочник поставщиков';
-
---
--- Дамп данных таблицы `calc__suppliers`
---
-
-INSERT INTO `calc__suppliers` (`id`, `supplier_name`, `supplier_shortname`) VALUES
-(1, 'ООО \"Петрокоммерц\"', 'ООО \"Петрокоммерц\"');
+  `supplier_name` varchar(500) NOT NULL COMMENT 'Наименование поставщика',
+  `supplier_shortname` varchar(50) NOT NULL COMMENT 'Короткое наименование для списка выборов'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Справочник поставщиков';
 
 -- --------------------------------------------------------
 
@@ -80,17 +75,8 @@ INSERT INTO `calc__suppliers` (`id`, `supplier_name`, `supplier_shortname`) VALU
 
 CREATE TABLE `calc__types` (
   `id` int(11) NOT NULL,
-  `type` varchar(255) CHARACTER SET utf8 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Типы материалов для расчета (там около шести типов)';
-
---
--- Дамп данных таблицы `calc__types`
---
-
-INSERT INTO `calc__types` (`id`, `type`) VALUES
-(0, 'БАЗОВЫЕ   МАТЕРИАЛЫ'),
-(1, 'ОСНОВНЫЕ  МАТЕРИАЛЫ (присутствующие в готовом в изделии)'),
-(2, 'ОСНОВНЫЕ  МАТЕРИАЛЫ (непосредственно задействованные в производственных процессах )');
+  `type` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Типы материалов для расчета (там около шести типов)';
 
 --
 -- Индексы сохранённых таблиц
@@ -143,13 +129,13 @@ ALTER TABLE `calc__matter_pricelist`
 -- AUTO_INCREMENT для таблицы `calc__suppliers`
 --
 ALTER TABLE `calc__suppliers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `calc__types`
 --
 ALTER TABLE `calc__types`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
