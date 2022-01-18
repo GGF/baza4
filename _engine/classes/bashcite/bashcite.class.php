@@ -1,4 +1,4 @@
-<?
+<?php
 class bashcite extends lego_abstract {
 	private $bash;
 	// обязательно определять для модуля

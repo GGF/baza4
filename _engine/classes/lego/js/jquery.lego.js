@@ -41,7 +41,7 @@ $(function(){
                 return false;
             }
         }
-        //alert(url);
+        $().lego.log('url - '+url);
         if(target_element == "self")
             $(this).hide();
         if(action==null)
@@ -129,8 +129,8 @@ $(function(){
 
     jQuery.fn.lego.log = function(variable){
         //return log(variable);
-    //        if(typeof console == "undefined") return;
-    //        console.log(variable);
+            if(typeof console == "undefined") return;
+        //    console.log(variable);
     }
 
     jQuery.fn.lego.getNoAjaxUrl = function(url){
@@ -141,8 +141,13 @@ $(function(){
         var arr = new Object();
         var path = url.indexOf("?") == -1 ? url : url.substring(0, url.indexOf("?"));
         var query = url.substring(url.indexOf("?")+1);
+        $().lego.log('url - '+url);
+        $().lego.log('arr - '+arr);
+        $().lego.log('target - '+legotarget);
         parse_str(query, arr);
+        $().lego.log('arr - '+arr);
         arr.ajax = legotarget; // добавляем магический параметр ajax в гет
+        $().lego.log('arr - '+arr);
         if(legotarget == null) delete arr.ajax;
         return path+"?"+urldecode(http_build_query(arr));
     }

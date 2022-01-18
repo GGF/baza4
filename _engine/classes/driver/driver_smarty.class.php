@@ -1,4 +1,4 @@
-<?
+<?php
 class driver_smarty implements ITemplateCompiler{
 	private $tpl;
 	function __construct(){
@@ -15,15 +15,15 @@ class driver_smarty implements ITemplateCompiler{
     }
     
     public function setTemplateDir($template_dir){
-    	$this->tpl->template_dir = $template_dir;
+    	$this->tpl->setTemplateDir($template_dir);
 	}
 	
     public function setCompileDir($compile_dir){
-    	$this->tpl->compile_dir = $compile_dir;
+    	$this->tpl->setCompileDir($compile_dir);
 	}
     
     public function getTemplateDir(){
-    	return $this->tpl->template_dir;
+    	return $this->tpl->getTemplateDir();
 	}
 }
 

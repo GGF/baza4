@@ -9,7 +9,7 @@ class cp_workers_view extends sqltable_view {
 
     public function showrec($rec) {
 
-        $rec[fields] = array(
+        $rec['fields'] = array(
             array(
                 "type" => AJAXFORM_TYPE_TEXT,
                 "name" => "f",

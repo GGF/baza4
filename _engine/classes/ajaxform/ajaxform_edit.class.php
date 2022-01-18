@@ -1,4 +1,4 @@
-<?
+<?php
 
 class ajaxform_edit_field {
 
@@ -60,7 +60,7 @@ class ajaxform_edit {
     }
 
     public function addFieldAsArray($field, $unid=false) {
-        if ($field[type]==AJAXFORM_TYPE_CHECKBOX)
+        if ($field['type']==AJAXFORM_TYPE_CHECKBOX)
             $this->addField('', $field["name"], $field["type"]);
         else 
             $this->addField($field["label"], $field["name"], $field["type"]);
@@ -88,8 +88,12 @@ class ajaxform_edit {
         }
     }
 
+    /**
+     * Выдает HTML формы
+     * @return string - HTML
+     */
     public function getOutput() {
-        $out = '<div class="editdiv">';
+        $out = '<div class="editdiv">'; // ключевая фраза, если она есть значит форма иначе сообщение
         $this->form->init();
         $out .= $this->form->form();
         $out .= $this->form->add("edit");
@@ -122,7 +126,7 @@ class ajaxform_edit {
         $out = '';
         if ($field->type != AJAXFORM_TYPE_HIDDEN) {
             $out .= "<div id='tr{$field->name}'>";
-            $out .= "<label class=nobreak>{$field->label}:</label><div style='float: right;' class=nobreak>" . $this->form->add($field->name) . "</div><div style='float:none;clear:both;'></div></div>";
+            $out .= "<label class=nobreak>{$field->label}</label><div style='float: right;' class=nobreak>" . $this->form->add($field->name) . "</div><div style='float:none;clear:both;'></div></div>";
         } else {
             $out .= "<div class='hidden'>" . $this->form->add($field->name)."</div>";
         }

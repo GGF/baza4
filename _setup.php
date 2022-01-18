@@ -27,12 +27,12 @@ if  (APPLICATION_ENV === "development") {
     $_SERVER["debug"] = false;
 }
 
-$_SERVER[Auth] = true;
+$_SERVER["Auth"] = true;
 
-if ($_REQUEST[level] == 'update' || $_REQUEST[level] == 'getdata') { //update лучше не выводить отладочный текст. как нить так отлажу
+if ($_REQUEST["level"] == 'update' || $_REQUEST["level"] == 'getdata') { //update лучше не выводить отладочный текст. как нить так отлажу
     $_SERVER["debug"]["noCache"]["php"] = true;
     $_SERVER["debug"]["report"] = false;
-    $_SERVER[Auth] = false;
+    $_SERVER["Auth"] = false;
 }
 
 $_SERVER['SYSCACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
@@ -41,10 +41,10 @@ $_SERVER['CACHE'] = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
 // База данных
 $_SERVER["mysql"] = array(
     "lang" => array(
-        "host" => "localhost",
-        "base" => "zaompp",
-        "name" => "root",
-        "pass" => "MMnnHsafL",
+        "host" => getenv('APPLICATION_DBHOST') ,
+        "base" => getenv('APPLICATION_DB') ,
+        "name" => getenv('APPLICATION_DBUSER') ,
+        "pass" => getenv('APPLICATION_DBPASS') ,
         "log" => array(
             "query" => true,
             "notice" => true,
@@ -56,20 +56,20 @@ $_SERVER["mysql"] = array(
     ),
 );
 
-$_SERVER[storagebase] = "zaomppsklads";
+$_SERVER["storagebase"] = getenv('APPLICATION_DB2');
 
 // Временная зона
 date_default_timezone_set("Europe/Moscow");
 
 // Кодировки
-$_SERVER[Encoding] = "UTF-8";     // HTML
-$_SERVER[EncodingSQL] = 'utf8';   // SQL
-$_SERVER[EncodingCP] = 'UTF-8';   // 
-$_SERVER[EncodingFS] = "UTF-8";   // File system
+$_SERVER["Encoding"] = "UTF-8";     // HTML
+$_SERVER["EncodingSQL"] = 'utf8';   // SQL
+$_SERVER["EncodingCP"] = 'UTF-8';   // 
+$_SERVER["EncodingFS"] = "UTF-8";   // File system
 
 // настройки файлового сервера
 // на каком сервере файлы шарятся
-define("NETBIOS_SERVERNAME", "servermpp");
+define("NETBIOS_SERVERNAME", "pcbshop");
 // коренвой катлог  для share [z] и [t]
 define("SHARE_ROOT_DIR", "/home/common/");
 // каталог сохранения файлов относительно DOCUMENT_ROOT
@@ -103,10 +103,11 @@ if (!$_SERVER["debug"]["noCache"]["php"]) {
             cache::buildScript($_SESSION["cache"], 'php');
     }
 }
-/*
- * пожалуй уберу строчку из файла autoload и поставлю включение сюда
- */
-//include_once __DIR__ . '/_engine/autoload.php'; // инклудим автозагрузку модулей
+
+
+// здесь уже определен автозагрузчик классов, я стал использовать новый смарти и ему бы установить каталог для готовых шаблонов
+Output::getTemplateCompiler()->setCompileDir($_SERVER['DOCUMENT_ROOT'] . '/tmp');
+
 
 ob_get_clean();
 /*
@@ -115,7 +116,7 @@ ob_get_clean();
 Lang::getInstance()->setLang('ru');
 
 // перехватим ошибки
-if ($_SERVER[debug][report]) {
+if ($_SERVER["debug"]["report"]) {
     console::getInstance();//->out(print_r($_REQUEST, true));
     profiler::add('Autoexec', 'Выполнение начальных установок');
 }

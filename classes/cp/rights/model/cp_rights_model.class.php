@@ -17,15 +17,15 @@ class cp_rights_model extends sqltable_model {
                 ((isset($all)) ? "" : "LIMIT 20");
         $ret = sql::fetchAll($sql);
         foreach ($ret as &$value) {
-            $value[what] = html_entity_decode($value[what]);
+            $value['what'] = html_entity_decode($value['what']);
         }
         return $ret;
     }
 
     public function getCols() {
         $cols = array();
-        $cols[id] = "ID";
-        $cols[type] = "На что";
+        $cols['id'] = "ID";
+        $cols['type'] = "На что";
         return $cols;
     }
 

@@ -1,4 +1,4 @@
-<?
+<?php
 class bashcite_model {
 	/*
 	* @var Хранит текущую выбранную цитату

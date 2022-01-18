@@ -1,4 +1,4 @@
-<?
+<?php
 class driver_dirty implements ITemplateCompiler{
 	private $tpl;
 	function __construct(){

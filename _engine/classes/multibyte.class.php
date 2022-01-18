@@ -2,6 +2,11 @@
 
 class multibyte {
 
+/**
+ * Проверяет кодирован ли объект в UTF
+ * Работает некорректно. потому что если в массиве один элемент кодирован, считается что весь массив такой, а может быть и не так.
+ * @return boolean
+ */
     static public function is_utf($t) {
         if (is_array($t)) {
             foreach ($t as $value) {
@@ -38,7 +43,10 @@ class multibyte {
             foreach ($var as $k => $v)
                 $newVar[$k] = self::cp1251_to_utf8($v);
         } else {
-            $newVar = iconv("CP1251", "UTF-8", $var);
+            if ( ! self::is_utf($var) )
+                $newVar = iconv("CP1251", "UTF-8", $var);
+            else 
+                $newVar = $var;
         }
         return $newVar;
     }

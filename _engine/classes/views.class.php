@@ -2,24 +2,24 @@
 abstract class views {
     /**
      * Каталог расположения потомка, в нем хранятся шаблоны и css
-     * @var type
+     * @var string
      */
     protected $dir;
     /**
      * Имя класса, может понадобится
-     * @var type
+     * @var string
      */
     private $name;
     /**
      * Кто создавал, контроллер
-     * @var type
+     * @var Object
      */
     protected $owner;
 
     /**
      * Конструктор
      * @param Object $owner
-     * @param String $name
+     * @param string $name
      */
     public function __construct($owner=null,$name = false) {
         if (!$name)
@@ -33,7 +33,7 @@ abstract class views {
      * Функция определения каталога расположения потомка абстрактного класса,
      * чаще всего возвращает __DIR__, но у потомков потомков этого абстрактного
      * класса может не переписываться и шаблоны будут браться предыдущие
-     * @return String
+     * @return string
      */
     abstract public function getDir();
 

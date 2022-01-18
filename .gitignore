@@ -2,3 +2,6 @@
 /files/
 classes/orders/posintz/view/rdpp.xlsm
 classes/orders/posintz/view/rmpp.xlsm
+info.php
+debug.log
+baza-dev.code-workspace

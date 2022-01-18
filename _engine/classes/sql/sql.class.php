@@ -1,4 +1,4 @@
-<?
+<?php
 
 class sql {
 
@@ -21,25 +21,25 @@ class sql {
 
     static function init() {
 
-        if ($_SERVER[debug][report]) {
+        if ($_SERVER["debug"]["report"]) {
             profiler::add("Autoexec", "MySQL: Выполнение скриптов до подключения");
         }
 
         self::$db = &self::$lang;
         self::$sh = &self::$shared;
 
-        $_SERVER[mysql][lang][encoding] = $_SERVER[EncodingSQL];
+        $_SERVER["mysql"]["lang"]["encoding"] = $_SERVER["EncodingSQL"];
 
         self::$lang = new sql_PDO(
                         SQL_CONNECTION_LANG,
-                        $_SERVER[mysql][lang]
+                        $_SERVER["mysql"]["lang"]
         );
 //        self::$lang = new sql_PDO(
 //                        SQL_CONNECTION_LANG,
 //                        $_SERVER[mysql][lang]
 //        );        
 
-        if ($_SERVER[debug][report]) {
+        if ($_SERVER["debug"]["report"]) {
             profiler::add("Autoexec", "MySQL: Подключение языковой БД");
         }
 

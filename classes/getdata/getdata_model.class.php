@@ -23,9 +23,9 @@ class getdata_model extends sqltable_model {
                 FROM blockpos 
                 JOIN boards ON boards.id=blockpos.board_id 
                 WHERE blockpos.block_id='{$res["id"]}'";
-        $res[blockpos] = sql::fetchAll($sql);
-        $rec[blockcomment] = $this->getComment($rec[comment_id]);
-        $rec[boardcomment] = $this->getComment($rec[blockpos][0][comment_id]);
+        $res['blockpos'] = sql::fetchAll($sql);
+        $rec['blockcomment'] = $this->getComment($rec['comment_id']);
+        $rec['boardcomment'] = $this->getComment($rec['blockpos'][0]['comment_id']);
         $out .= json_encode($res);
         return $out;
     }
@@ -40,7 +40,7 @@ class getdata_model extends sqltable_model {
         extract($rec);
         $out = '';
         $sql = "SELECT * FROM `zaomppsklads`.`sk_mat__spr` ORDER BY nazv";
-        $res[textolite] = sql::fetchAll($sql);
+        $res['textolite'] = sql::fetchAll($sql);
         $out .= json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
         return $out;
     }
@@ -56,16 +56,16 @@ class getdata_model extends sqltable_model {
         $out = '';
         $sql = "SELECT count(*) as records, `customer`, `order` as ordernumber FROM `moneyfororder`  ";
         $rs = sql::fetchAll($sql);
-        $resarr[orderdata] = $rs;
+        $resarr['orderdata'] = $rs;
         $sql = "SELECT board,trud,mater, matedizm AS edizm,SUM(matcost) AS summatcost,SUM(matras) AS summatras,
                     SUM(trudcost) AS sumtrudcost,
                     SUM(trudem) AS sumtrudem 
                         FROM `moneyfororder` GROUP BY `board`,`mater`,`trud` ";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
         $rs = sql::fetchAll($sql);
-        $resarr[datas] = $rs;
+        $resarr['datas'] = $rs;
         $sql = "SELECT board FROM `moneyfororder` GROUP BY `board`";//WHERE `customer` LIKE '%{$customer}%' AND `order` LIKE '%{$order}%' ";
         $rs = sql::fetchAll($sql);
-        $resarr[boards] = $rs;
+        $resarr['boards'] = $rs;
         
         //return print_r($rs);
         /*$board = $rs[0][board];
@@ -121,29 +121,25 @@ class getdata_model extends sqltable_model {
      * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&table=customers&id=5" > res
      * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&object=orders_customers_model&id=5" > res
      * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&object=orders_customers_model&id=5&format=json" > res
-     * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&table=customers&id=%%D0%%90%%D0%%B7%%D0%%B8%%D0%%BC%%D1%%83%%D1%%82&field=customer" >res
-     * tear "http://baza4/?level=getdata&getdata[act]=uniget&table=customers&id=Аврора&field=customer" >res
+     * rem tear "http://baza4/?level=getdata&getdata[act]=uniget&table=customers&str=%%D0%%90%%D0%%B7%%D0%%B8%%D0%%BC%%D1%%83%%D1%%82&field=customer" >res
+     * tear "http://baza4/?level=getdata&getdata[act]=uniget&table=boards&field=boardname&getfield=extinfo&str=GGFF.758725.148" >res
      */
     public function uniget($rec) {
-        if(!multibyte::is_utf($rec)) {
+        //if(!multibyte::is_utf($rec)) { // чтото оно плохо работает. А! если хоть ктото из массива попадает под utf, то весь массив считается
             $rec = multibyte::cp1251_to_utf8($rec);
-        }
+        //}
         extract($rec);
+        if (!isset($getfield)) {
+            $getfield = '*';
+        } else {
+            $getfield = "`{$getfield}`"; 
+        }
         if(!isset($format)) {
             $format = "keyline";
         }
         if (isset($id)) {
             if (isset($table)) {
-                if(1*$id!=0) {
-                    $sql = "SELECT * FROM `{$table}` WHERE id='{$id}'";
-                } else { 
-                    if (isset($field)) {
-                        $sql = "SELECT * FROM `{$table}` WHERE `{$field}`='{$id}'";
-                    } else {
-                        // не определить
-                        return;
-                    }
-                }
+                $sql = "SELECT {$getfield} FROM `{$table}` WHERE id='{$id}'";
                 $res = sql::fetchOne($sql);
             } elseif (isset($object)) {
                 if(class_exists($object)) {
@@ -153,10 +149,24 @@ class getdata_model extends sqltable_model {
                     }
                 }
             }
-            // вывод
+        } elseif (isset($str)) {
+            if (isset($field)) {
+                if (!isset($like)) { // вид поиска
+                    $sql = "SELECT {$getfield} FROM `{$table}` WHERE `{$field}`='{$str}'";
+                } else {
+                    $sql = "SELECT {$getfield} FROM `{$table}` WHERE `{$field}` LIKE '%{$str}%'";
+                }
+                $res = sql::fetchOne($sql);
+            } else {
+                // не определить
+                return;
+            }
+        }
+        // вывод
+        if (!empty($res)) {
             if ($format == "json") {
                 $res = json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
-                echo $res;
+                //echo $res;
                 return $res;
             } elseif ($format == "array") {
                 return $res;
@@ -171,6 +181,26 @@ class getdata_model extends sqltable_model {
                 return;
             }
         }
+    }
+
+
+    /**
+     * Получить данные по матералу для расчета стоимость, нормы расхода
+     */
+    public function getcalcmatter(Array $rec)
+    {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        extract($rec);
+        $sql = "SELECT calc__matter_pricelist.id AS matter_id,`matter_name`,`matter_unit`,`matter_price`,`discharge_norm_in`,`discharge_norm_out`
+        FROM calc__matter_pricelist
+        JOIN (calc__types,calc__matters,calc__suppliers)
+        ON (calc__matter_pricelist.matter_type_id = calc__types.id 
+            AND calc__matter_pricelist.matter_name_id = calc__matters.id
+            AND calc__matter_pricelist.supplier_id = calc__suppliers.id
+            ) WHERE record_date IN (SELECT MAX(record_date) FROM calc__matter_pricelist GROUP BY matter_name_id) AND matter_name like '%{$matter}%'";
+        $res = sql::fetchOne($sql);
+        $res = json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
+        return $res;
     }
 
 }

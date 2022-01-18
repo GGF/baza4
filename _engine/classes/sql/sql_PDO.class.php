@@ -2,31 +2,31 @@
 
 // Класс подключения и работы с MySQL сервером через PDO (http://ru.php.net/manual/ru/book.pdo.php)
 
-define(SQL_CONNECTION_LANG, "LANG");
-define(SQL_CONNECTION_SHARED, "SHARED");
+define("SQL_CONNECTION_LANG", "LANG");
+define("SQL_CONNECTION_SHARED", "SHARED");
 
-define(SQL_REPORT_ARRAY, false);
-define(SQL_REPORT_HTML, true);
-define(SQL_REPORT_CLEAN, true);
+define("SQL_REPORT_ARRAY", false);
+define("SQL_REPORT_HTML", true);
+define("SQL_REPORT_CLEAN", true);
 
-define(SQL_FETCH_ID, "fetch-id");
-define(SQL_FETCH, false);
-define(SQL_FETCHID, SQL_FETCH_ID);
+define("SQL_FETCH_ID", "fetch-id");
+define("SQL_FETCH", false);
+define("SQL_FETCHID", "SQL_FETCH_ID");
 
-define(SQL_TYPE_NORMAL, "normal");
-define(SQL_TYPE_QUERY, "query");
-define(SQL_TYPE_ERROR, "error");
-define(SQL_TYPE_WARNING, "warning");
-define(SQL_TYPE_NOTICE, "notice");
+define("SQL_TYPE_NORMAL", "normal");
+define("SQL_TYPE_QUERY", "query");
+define("SQL_TYPE_ERROR", "error");
+define("SQL_TYPE_WARNING", "warning");
+define("SQL_TYPE_NOTICE", "notice");
 
 /**
  * Раньше было block — null, log - true, nolog - false
  * Теперь block — блокирует совсем, log — по-умолчанию, 
  * force — логгит в любом случае
  */
-define(SQL_LOG, false);  // default — log, but not display
-define(SQL_LOG_BLOCK, null);  // block
-define(SQL_LOG_FORCE, true);  // force
+define("SQL_LOG", false);  // default — log, but not display
+define("SQL_LOG_BLOCK", null);  // block
+define("SQL_LOG_FORCE", true);  // force
 
 class sql_PDO {
     /*
@@ -98,41 +98,41 @@ class sql_PDO {
     function __construct($type, $array) {
 
         $logLevel = $array["log"];
-        $encoding = $array[encoding] ? $array[encoding] :
-                $_SERVER[EncodingSQL];
+        $encoding = $array["encoding"] ? $array["encoding"] :
+                $_SERVER["EncodingSQL"];
 
         if (!is_array($logLevel) || !count($logLevel))
-            $logLevel = array(SQL_TYPE_ERROR => true);
+            $logLevel = array("SQL_TYPE_ERROR" => true);
 
         // always log normal
-        $logLevel[SQL_TYPE_NORMAL] = true;
+        $logLevel["SQL_TYPE_NORMAL"] = true;
 
         $this->_type = $type;
 
         $this->_tokens = array_reverse($this->_tokens);
         foreach ($this->_tokens as $t) {
-            $this->_PREGtokens[patterns][] = "$t ";
-            $this->_PREGtokens[replaces][] = "<b>{$t}</b> ";
-            $this->_PREGtokens[patterns][] = " $t";
-            $this->_PREGtokens[replaces][] = " <b>{$t}</b>";
+            $this->_PREGtokens["patterns"][] = "$t ";
+            $this->_PREGtokens["replaces"][] = "<b>{$t}</b> ";
+            $this->_PREGtokens["patterns"][] = " $t";
+            $this->_PREGtokens["replaces"][] = " <b>{$t}</b>";
         }
 
         $this->_logLevel = $logLevel;
 
-        $this->_persistent = $array[persistent] ? true : false;
+        $this->_persistent = $array["persistent"] ? true : false;
 
         try {
             // соединение одновременно с выбором базы
-            $this->_connection = new PDO("mysql:host={$array[host]};dbname={$array[base]}",
-                            $array[name], $array[pass],
+            $this->_connection = new PDO("mysql:host={$array["host"]};dbname={$array["base"]}",
+                            $array["name"], $array["pass"],
                             array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$encoding}",
                                 PDO::ATTR_PERSISTENT => $this->_persistent));
         } catch (PDOException $e) {
             // На деле нужно вернуть ошибку туда откуда все началось
             throw(new Exception("Ошибка подключения: " . $e->getMessage()));
         }
-          $this->_base = $array[base];
-          $this->_host = $array[host];
+          $this->_base = $array["base"];
+          $this->_host = $array["host"];
           $this->_encoding = $encoding;
 
     }
