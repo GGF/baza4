@@ -166,7 +166,7 @@ class getdata_model extends sqltable_model {
         if (!empty($res)) {
             if ($format == "json") {
                 $res = json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
-                echo $res;
+                //echo $res;
                 return $res;
             } elseif ($format == "array") {
                 return $res;
@@ -181,6 +181,26 @@ class getdata_model extends sqltable_model {
                 return;
             }
         }
+    }
+
+
+    /**
+     * Получить данные по матералу для расчета стоимость, нормы расхода
+     */
+    public function getcalcmatter(Array $rec)
+    {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        extract($rec);
+        $sql = "SELECT calc__matter_pricelist.id AS matter_id,`matter_name`,`matter_unit`,`matter_price`,`discharge_norm_in`,`discharge_norm_out`
+        FROM calc__matter_pricelist
+        JOIN (calc__types,calc__matters,calc__suppliers)
+        ON (calc__matter_pricelist.matter_type_id = calc__types.id 
+            AND calc__matter_pricelist.matter_name_id = calc__matters.id
+            AND calc__matter_pricelist.supplier_id = calc__suppliers.id
+            ) WHERE record_date IN (SELECT MAX(record_date) FROM calc__matter_pricelist GROUP BY matter_name_id) AND matter_name like '%{$matter}%'";
+        $res = sql::fetchOne($sql);
+        $res = json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
+        return $res;
     }
 
 }

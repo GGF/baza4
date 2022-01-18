@@ -16,6 +16,7 @@ class baza extends firstlevel {
         $this->menu->add('productioncard', 'Производство');
         $this->menu->add('storages', 'Склады');
         $this->menu->add('cp', 'ПУ');
+        $this->menu->add('matterpricelist', 'Цены для расчетов', false);
         $this->menu->add('wiki', 'База знаний', false);
         //$this->menu->add('docs', 'Документы',false);
         $this->menu->add('help', 'Помощь', false);
