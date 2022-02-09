@@ -275,7 +275,7 @@ class orders_posintz_model extends sqltable_model {
         $rec['frez_factor']=$rec['frez_factor']>0?$rec['frez_factor']:1.0;
         $blockstring = fileserver::removeOSsimbols($rec['blockname']." tz {$rec['tz_id']} posintz {$id}");
         $orderstring = fileserver::removeOSsimbols($rec['letter']);
-        $rec['filename'] = "t:\\\\Расчет стоимости плат\\\\{$rec['customer']}\\\\{$orderstring}\\\\{$blockstring}.xlsm";
+        $rec['filename'] = CALC_FILES_DIR . "{$rec['customer']}\\\\{$orderstring}\\\\{$blockstring}.xlsm";
         return $rec;
     }
     
