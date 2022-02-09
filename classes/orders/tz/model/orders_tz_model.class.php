@@ -45,7 +45,7 @@ class orders_tz_model extends sqltable_model {
         }
         $ret = sql::fetchAll($sql);
         if ($all)
-            $_SESSION[Auth::$lss][tz_id] = '';
+            $_SESSION[Auth::$lss]['tz_id'] = '';
         return $ret;
     }
 
@@ -53,15 +53,15 @@ class orders_tz_model extends sqltable_model {
         $cols = array();
         extract($_SESSION[Auth::$lss]);
         if (empty($customer_id)) {
-            $cols[customer] = "Заказчик";
+            $cols['customer'] = "Заказчик";
         }
         if (empty($order_id)) {
-            $cols[number] = "Заказ";
+            $cols['number'] = "Заказ";
         }
-        $cols[tzid] = "ID";
-        $cols[type] = "Тип";
-        $cols[tz_date] = "Дата";
-        $cols[nik] = "Кто заполнил";
+        $cols['tzid'] = "ID";
+        $cols['type'] = "Тип";
+        $cols['tz_date'] = "Дата";
+        $cols['nik'] = "Кто заполнил";
         return $cols;
     }
 
@@ -101,7 +101,7 @@ class orders_tz_model extends sqltable_model {
         $orderid = $order_id;
         $sql = "SELECT COUNT(*)+1 AS next FROM tz WHERE order_id='{$orderid}'";
         $rs = sql::fetchOne($sql);
-        $pos_in_order = $rs[next];
+        $pos_in_order = $rs['next'];
 
         // добавление
         // создать файл с табличкой
@@ -127,7 +127,7 @@ class orders_tz_model extends sqltable_model {
         do {
             $filetype = $typetz == "mpp" ? "МПП" : ($typetz == "dpp" ? "ДПП" : ($typetz == "mppb" ? "МПП-Блок" : "ДПП-Блок"));
             $orderstring = fileserver::removeOSsimbols($rs["number"]);
-            $file_link = "t:\\\\Расчет стоимости плат\\\\ТехЗад\\\\{$customer}\\\\{$tzid}-{$filetype}-{$pos_in_order}-{$orderstring} от {$rs["orderdate"]}.xls";
+            $file_link = TZ_FILES_DIR . "{$customer}\\\\{$orderstring}\\\\{$tzid}-{$filetype}-{$pos_in_order}-{$orderstring}-{$rs["orderdate"]}.xls";
             $filename = fileserver::createdironserver($file_link);
             $fe = file_exists($filename);
             if ($fe)
