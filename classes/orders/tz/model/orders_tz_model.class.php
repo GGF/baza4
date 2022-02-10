@@ -127,7 +127,7 @@ class orders_tz_model extends sqltable_model {
         do {
             $filetype = $typetz == "mpp" ? "МПП" : ($typetz == "dpp" ? "ДПП" : ($typetz == "mppb" ? "МПП-Блок" : "ДПП-Блок"));
             $orderstring = fileserver::removeOSsimbols($rs["number"]);
-            $file_link = TZ_FILES_DIR . "{$customer}\\\\{$orderstring}\\\\{$tzid}-{$filetype}-{$pos_in_order}-{$orderstring}-{$rs["orderdate"]}.xls";
+            $file_link = TZ_FILES_DIR . "{$customer}\\\\{$rs["orderdate"]}-{$orderstring}\\\\{$tzid}-{$filetype}-{$pos_in_order}-{$orderstring}-{$rs["orderdate"]}.xls";
             $filename = fileserver::createdironserver($file_link);
             $fe = file_exists($filename);
             if ($fe)
