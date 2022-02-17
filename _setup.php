@@ -75,7 +75,7 @@ define("SHARE_ROOT_DIR", "/home/common/");
 // каталог сохранения файлов относительно DOCUMENT_ROOT
 define("UPLOAD_FILES_DIR", "/files/");
 // каталог расчетов
-define("CALC_FILES_DIR", "t:\\\\Расчет стоимости плат\\\\");
+define("CALC_FILES_DIR", "t:\\\\Расчет стоимости плат\\\\Расчет\\\\");
 // каталог техзаданий
 define("TZ_FILES_DIR", "t:\\\\Расчет стоимости плат\\\\ТехЗад\\\\");
 
