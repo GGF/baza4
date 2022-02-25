@@ -268,7 +268,7 @@ class orders_posintz_model extends sqltable_model {
         $rec['etcompl'] = $params['etcompl'];
         $rec['thickness'] = (float)$rec['thickness'];
         $rec['type'] = $rec['layers']>2 ? 'mpp' : 'dpp';
-        $rec['template'] = "r{$rec['type']}.xlsm";
+        $rec['template'] = "calc.xlsm";//"r{$rec['type']}.xlsm";
         preg_match('/(?P<nummask>[+0-9]*)(?P<mask>.*)/i', $rec['mask'], $matches);
         $rec['mask']=$matches['mask'];
         $rec['nummask']=empty($matches['nummask'])?2:$matches['nummask'];
