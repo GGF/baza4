@@ -215,7 +215,7 @@ class sql_PDO {
      */
     function format($query) {
 
-        $regs = "";
+        $regs = array();
         $query = str_replace("\r", "", $query);
         preg_match_all('/^([\t]+)/sim', $query, $regs, PREG_PATTERN_ORDER);
         if (count($regs[0])) {
@@ -232,7 +232,7 @@ class sql_PDO {
             $query = "\n" . implode("\n", $xquery);
         }
 
-        return str_replace($this->_PREGtokens[patterns], $this->_PREGtokens[replaces], $query);
+        return str_replace($this->_PREGtokens['patterns'], $this->_PREGtokens['replaces'], $query);
     }
 
     /**
@@ -638,12 +638,11 @@ class sql_PDO {
      * 	Функция подготавливает входной массив для вставки
      * 	@param  array  $data  Массив для вставки, 
      * 	@param  array  $keys  Только избранные ключи, 
-     * 	@return  array
+     * 	@return  string
      */
     function insert_prepare($data,$keys=array()) {
-
+        $sql = array();
         if (empty($keys)) {
-            $sql = "";
             foreach ($data as $k => $v)
                 $sql[$k] = "'" . $this->check($v) . "'";
         } else {
@@ -690,7 +689,7 @@ class sql_PDO {
                 if (mb_strlen($SQL . $SQLrow . ", ") > $this->maxPacket()) {
                     $SQLn++;
                     $SQL[$SQLn] = $SQLbase;
-                    $this->log("insert(): Новый подзапрос №{$c}", SQL_TYPE_WARNING);
+                    $this->log("insert(): Новый подзапрос №{$SQLn}", SQL_TYPE_WARNING);
                 }
                 $SQL[$SQLn] .= $SQLrow . ", ";
             }
@@ -743,10 +742,11 @@ class sql_PDO {
             $fields[]="`{$value["Field"]}`";
         }
         $fieldsintable = $fields;
-        $fields = $this->insert_getFields(reset($data), true);
+        $data_first_elem = reset($data);
+        $fields = $this->insert_getFields($data_first_elem, true);
         sort($fields);
         sort($fieldsintable);
-        $fields = array_intersect($fields,$fieldsintable);
+        $fields = array_intersect((array)$fields,$fieldsintable);
         $values = array();
 
         foreach ($data as $dataRow) {
