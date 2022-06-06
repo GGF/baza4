@@ -201,7 +201,7 @@ class ajaxform extends JsCSS {
         //$req = $_REQUEST[$this->name];
         //$this->alert(print_r($req, true));
 
-        if (count($_FILES[$this->name]['name'])) {
+        if (!empty($_FILES[$this->name]['name'])) { //06-06-2022 был count
 
             foreach ($_FILES[$this->name]['name'] as $file => $name) {
 
@@ -1366,7 +1366,7 @@ class ajaxform extends JsCSS {
         if ($value)
             $array['src'] = $value;
 
-        if (count($this->errors)) {
+        if (!empty($this->errors)) { //03-06-2022 было count, но на пустой ругалось
 
             foreach ($this->errors as $error) {
 

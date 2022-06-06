@@ -237,7 +237,7 @@ class sqltable_view extends views {
                 $delstr = '';
                 reset($cols);
                 foreach ($cols as $key => $val) {
-                    $disablelink = strstr($rs["$key"], 'href=');
+                    $disablelink = (bool) strstr($rs["$key"], 'href=');
                     $disablelink |= ( $key == 'check' or $key == "№");
                     $out .= "<td>" . ($disablelink ? "" : $link ) .
                             (empty($rs["$key"]) ? "&nbsp;" : $rs["$key"]) .
