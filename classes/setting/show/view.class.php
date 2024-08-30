@@ -8,12 +8,13 @@ class setting_show_view extends sqltable_view {
     
     public function showrec($rec) {
         //$out = print_r($rec,true);
-        if (!empty($rec[id])) {
-            $out .= "{$rec[description]} : <input type=text name='{$rec[key]}' id='{$rec[key]}' size='20'>";
+        $out = '';
+        if (!empty($rec['id'])) {
+            $out .= "{$rec['description']} : <input type=text name='{$rec['key']}' id='{$rec['key']}' size='20'>";
             $out .= "<input type='button' value='save' id='storebutton'>";
             $out .= '<script>';
-            $out .= "$('#{$rec[key]}').val(localStorage.getItem('{$rec[key]}'));";
-            $out .= "$('#storebutton').click(function(){ localStorage.setItem('{$rec[key]}',$('#{$rec[key]}').val());});";
+            $out .= "$('#{$rec['key']}').val(localStorage.getItem('{$rec['key']}'));";
+            $out .= "$('#storebutton').click(function(){ localStorage.setItem('{$rec['key']}',$('#{$rec['key']}').val());});";
             $out .= '</script>';
             return $out;
         } else {
@@ -30,8 +31,8 @@ class setting_show_view extends sqltable_view {
                 "label" => "Описание:",
                 "value" => "",
             ));
-            $rec[fields] = $fields;
-            $rec[files] = false;
+            $rec['fields'] = $fields;
+            $rec['files'] = false;
             return parent::showrec($rec);
         }
     }

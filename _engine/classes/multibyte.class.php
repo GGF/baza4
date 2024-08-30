@@ -61,9 +61,9 @@ class multibyte {
                 $newVar[self::UTF($k, $action)] = self::UTF($v, $action);
         } else {
             if ($action == 'ENCODE') {
-                $newVar = (!self::is_utf($var)) ? iconv($_SERVER[EncodingCP], "UTF-8", $var) : $var;
+                $newVar = (!self::is_utf($var)) ? iconv($_SERVER['EncodingCP'], "UTF-8", $var) : $var;
             } else {
-                $newVar = (self::is_utf($var)) ? iconv("UTF-8", $_SERVER[EncodingCP], $var) : $var;
+                $newVar = (self::is_utf($var)) ? iconv("UTF-8", $_SERVER['EncodingCP'], $var) : $var;
             }
         }
 
@@ -89,7 +89,7 @@ class multibyte {
         //array_walk_recursive($var, create_function('&$item,$key', '{$item=multibyte::Escape($item);;}'));
 //        array_walk_recursive($var, create_function('&$item,$key', '{$item=htmlentities($item);}'));
         
-        if ($_SERVER [Encoding] != "UTF-8") $var = self::UTF_encode($var);
+        if ($_SERVER ['Encoding'] != "UTF-8") $var = self::UTF_encode($var);
         $json = json_encode($var,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
 
 //        if ($removeEntities)
@@ -101,12 +101,12 @@ class multibyte {
     // FROM JSON TO ARRAY
     static public function Json_decode($json) {
 
-        if ($_SERVER [Encoding] != "UTF-8")
+        if ($_SERVER ['Encoding'] != "UTF-8")
             $json = self::UTF_encode($json);
 
         $var = json_decode($json, true);
 
-        if ($_SERVER [Encoding] != "UTF-8")
+        if ($_SERVER ['Encoding'] != "UTF-8")
             $var = self::UTF_decode($var);
 
         return $var;
@@ -148,7 +148,7 @@ class multibyte {
         }
 
         $str = implode($str);
-        return $encode ? iconv("UTF-8", $_SERVER[EncodingCP], $str) : $str;
+        return $encode ? iconv("UTF-8", $_SERVER['EncodingCP'], $str) : $str;
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -237,7 +237,7 @@ class multibyte {
         if ($index >= $len)
             return false;
 
-        $h = ord($c{$index});
+        $h = ord($c[$index]);
 
         if ($h <= 0x7F) {
             $bytes = 1;
@@ -246,16 +246,16 @@ class multibyte {
             return false;
         } else if ($h <= 0xDF && $index < $len - 1) {
             $bytes = 2;
-            return ($h & 0x1F) << 6 | (ord($c{$index + 1}) & 0x3F);
+            return ($h & 0x1F) << 6 | (ord($c[$index + 1]) & 0x3F);
         } else if ($h <= 0xEF && $index < $len - 2) {
             $bytes = 3;
-            return ($h & 0x0F) << 12 | (ord($c{$index + 1}) & 0x3F) << 6
-            | (ord($c{$index + 2}) & 0x3F);
+            return ($h & 0x0F) << 12 | (ord($c[$index + 1]) & 0x3F) << 6
+            | (ord($c[$index + 2]) & 0x3F);
         } else if ($h <= 0xF4 && $index < $len - 3) {
             $bytes = 4;
-            return ($h & 0x0F) << 18 | (ord($c{$index + 1}) & 0x3F) << 12
-            | (ord($c{$index + 2}) & 0x3F) << 6
-            | (ord($c{$index + 3}) & 0x3F);
+            return ($h & 0x0F) << 18 | (ord($c[$index + 1]) & 0x3F) << 12
+            | (ord($c[$index + 2]) & 0x3F) << 6
+            | (ord($c[$index + 3]) & 0x3F);
         } else
             return false;
     }

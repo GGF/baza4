@@ -14,7 +14,7 @@ class orders_posintz_model extends sqltable_model {
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = parent::getData($all, $order, $find, $idstr);
 //        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
-        extract($_SESSION[Auth::$lss]);
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]);
         if (!empty($tz_id)) {
             $tzid = $tz_id;
             $sql = "SELECT *,posintz.id as posid,posintz.id
@@ -73,7 +73,7 @@ class orders_posintz_model extends sqltable_model {
     public function getCols() {
         $cols = array();
 //        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$this->idstr);
-        extract($_SESSION[Auth::$lss]);
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]);
         $cols["№"] = "№";
         if (empty($customer_id)) {
             $cols['customer'] = "Заказчик";
@@ -99,7 +99,7 @@ class orders_posintz_model extends sqltable_model {
     }
    
     public function getRecord($id) {
-        extract($_SESSION[Auth::$lss]); // тут данные выбранных до сих пор заказа и тз
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]); // тут данные выбранных до сих пор заказа и тз
         $rec['blocks'] = $this->getBlocks($customer_id);
         $rec['tz_id'] = $tz_id;
         return $rec;

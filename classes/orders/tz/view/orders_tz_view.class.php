@@ -8,8 +8,8 @@ class orders_tz_view extends sqltable_view {
     }
 
     public function showrec($rec) {
-        Output::assign('tzlink', fileserver::sharefilelink($rec[tzlink]));
-        Output::assign('tzid', $rec[id]);
+        Output::assign('tzlink', fileserver::sharefilelink($rec['tzlink']));
+        Output::assign('tzid', $rec['id']);
         return $this->fetch('tzlink.tpl').'<script>reload_table()</script>';;
     }
 
@@ -27,10 +27,10 @@ class orders_tz_view extends sqltable_view {
     }
 
     public function selecttype($data) {
-        Output::assign('mppblink', $data[mppblink]);
-        Output::assign('mpplink', $data[mpplink]);
-        Output::assign('dppblink', $data[dppblink]);
-        Output::assign('dpplink', $data[dpplink]);
+        Output::assign('mppblink', $data['mppblink']);
+        Output::assign('mpplink', $data['mpplink']);
+        Output::assign('dppblink', $data['dppblink']);
+        Output::assign('dpplink', $data['dpplink']);
         $out = $this->fetch('seltype.tpl');
         return $out;
     }

@@ -4,7 +4,7 @@ class storage_moves_model extends storage_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $spr_id = $_SESSION[Auth::$lss][tovarid];
+        $spr_id = $_SESSION[Auth::$lss]['tovarid'];
         if (empty($spr_id))
             return array();
         if ($all) {
@@ -41,14 +41,14 @@ class storage_moves_model extends storage_model {
 
     public function getCols() {
         $cols = array();
-        $cols[id] = "ID";
-        $cols[ddate] = "Дата";
-        $cols[prras] = "+/-";
-        $cols[numd] = "№ док.";
-        $cols[supply] = "Поставщик";
-        $cols[quant] = "Кол-во";
-        $cols[comment] = "Примечание";
-        $cols[price] = "Цена";
+        $cols['id'] = "ID";
+        $cols['ddate'] = "Дата";
+        $cols['prras'] = "+/-";
+        $cols['numd'] = "№ док.";
+        $cols['supply'] = "Поставщик";
+        $cols['quant'] = "Кол-во";
+        $cols['comment'] = "Примечание";
+        $cols['price'] = "Цена";
         return $cols;
     }
 
@@ -85,13 +85,13 @@ class storage_moves_model extends storage_model {
                 AND {$this->db}sk_{$this->sklad}_spr.id={$this->db}sk_{$this->sklad}_dvizh.spr_id)
              WHERE sk_{$this->sklad}_dvizh.id='{$edit}'";
         $rec = sqltable_model::getRecord($sql);
-        $rec[supply] = $supply;
+        $rec['supply'] = $supply;
         return $rec;
     }
 
     public function setRecord($data) {
         extract($data);
-        $spr_id = $_SESSION[Auth::$lss][tovarid];
+        $spr_id = $_SESSION[Auth::$lss]['tovarid'];
         /*
         * Актуализация цены
         */
@@ -118,7 +118,7 @@ class storage_moves_model extends storage_model {
             $sql = "SELECT id FROM {$this->db}sk_{$this->sklad}_postav WHERE supply='$supply'";
             $rs = sql::fetchOne($sql);
             if (!empty($rs)) {
-                $post_id = $rs[id];
+                $post_id = $rs['id'];
             } else {
                 $sql = "INSERT INTO {$this->db}sk_{$this->sklad}_postav (supply) VALUES ('$supply')";
                 sql::query($sql);

@@ -370,7 +370,7 @@ class ajaxform extends JsCSS {
                 $json[$array['name']] = array(
                     "name" => $array['name'],
                     "type" => $array['type'],
-                    "values" => @array_keys($array['values']),
+                    "values" => is_array($array['values'])?array_keys($array['values']):'',
                 );
             }
         }
@@ -420,7 +420,8 @@ class ajaxform extends JsCSS {
      */
     function sessionGet($partial = false) {
 
-        if (count($this->_session)) {
+        //TODO: why there is count()?
+        if (is_array($this->_session)) {
 
             $this->errors = $this->_session['errors'];
             $this->session = $this->_session['session'];

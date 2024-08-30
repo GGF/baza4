@@ -4,7 +4,7 @@ class storage_archivemoves_model extends storage_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = array();
-        $spr_id = $_SESSION[Auth::$lss][arctovarid];
+        $spr_id = $_SESSION[Auth::$lss]['arctovarid'];
         $sql = "SELECT *,sk_arc_{$this->sklad}_dvizh.id
                 FROM {$this->db}sk_arc_{$this->sklad}_dvizh
                 JOIN ({$this->db}sk_{$this->sklad}_postav,{$this->db}coments)
@@ -21,13 +21,13 @@ class storage_archivemoves_model extends storage_model {
 
     public function getCols() {
         $cols = array();
-        $cols[ddate] = "Дата";
-        $cols[prras] = "+/-";
-        $cols[numd] = "№ док.";
-        $cols[supply] = "Поставщик";
-        $cols[quant] = "Кол-во";
-        $cols[comment] = "Примечание";
-        $cols[price] = "Цена";
+        $cols['ddate'] = "Дата";
+        $cols['prras'] = "+/-";
+        $cols['numd'] = "№ док.";
+        $cols['supply'] = "Поставщик";
+        $cols['quant'] = "Кол-во";
+        $cols['comment'] = "Примечание";
+        $cols['price'] = "Цена";
         return $cols;
     }
 

@@ -9,9 +9,10 @@ class storage_moves_view extends sqltable_view {
 
     public function showrec($rec) {
 
-        $rec[fields] = array();
-        $date=(!empty($rec[edit])?date("d.m.Y",mktime(0,0,0,ceil(substr($rec["ddate"],5,2)),ceil(substr($rec["ddate"],8,2)),ceil(substr($rec["ddate"],1,4)))):date("d.m.Y"));
-        array_push($rec[fields],
+        $rec['fields'] = array();
+        $date=(!empty($rec['edit'])?date("d.m.Y",mktime(0,0,0,ceil((float)substr($rec["ddate"],5,2)),ceil((float)substr($rec["ddate"],8,2)),ceil((float)substr($rec["ddate"],1,4))))
+                                                        :date("d.m.Y"));
+        array_push($rec['fields'],
                 array(
                     "type" => AJAXFORM_TYPE_HIDDEN,
                     "name" => "spr_id",
@@ -51,7 +52,7 @@ class storage_moves_view extends sqltable_view {
                     "type" => AJAXFORM_TYPE_SELECT,
                     "name" => "supply_id",
                     "label" => "Поставщик:",
-                    "values" => $rec[supply],
+                    "values" => $rec['supply'],
                     "value" => $rec["supply_id"],
                 ),
                 array(

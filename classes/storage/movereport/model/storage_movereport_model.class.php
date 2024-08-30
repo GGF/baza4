@@ -54,11 +54,11 @@ class storage_movereport_model extends storage_model {
 
     public function getCols() {
         $cols = array();
-        $cols[nazv] = "Наименование";
-        $cols[prihod] = "Приход";
-        $cols[rashod] = "Расход";
-        $cols[ost] = "Остаток на сегодня";
-        $cols[edizm] = "Ед.Изм.";
+        $cols['nazv'] = "Наименование";
+        $cols['prihod'] = "Приход";
+        $cols['rashod'] = "Расход";
+        $cols['ost'] = "Остаток на сегодня";
+        $cols['edizm'] = "Ед.Изм.";
         return $cols;
     }
 
@@ -92,7 +92,7 @@ class storage_movereport_model extends storage_model {
 					JOIN {$this->db}sk_{$this->sklad}_spr ON (sk_{$this->sklad}_spr.id=sk_{$this->sklad}_dvizh.spr_id)
 					WHERE ddate >= '{$sdate}'
 							AND ddate <= '{$edate}'
-							AND sk_{$this->sklad}_spr.id='{$rs[id]}'
+							AND sk_{$this->sklad}_spr.id='{$rs['id']}'
 							AND type='1'
 							AND numd<>'9999'
 					GROUP BY sk_{$this->sklad}_spr.id";
@@ -105,7 +105,7 @@ class storage_movereport_model extends storage_model {
 					JOIN {$this->db}sk_{$this->sklad}_spr ON (sk_{$this->sklad}_spr.id=sk_{$this->sklad}_dvizh_arc.spr_id)
 					WHERE ddate >= '{$sdate}'
 							AND ddate <= '{$edate}'
-							AND sk_{$this->sklad}_spr.id='{$rs[id]}'
+							AND sk_{$this->sklad}_spr.id='{$rs['id']}'
 							AND type='1'
 							AND numd<>'9999'
 							GROUP BY sk_{$this->sklad}_spr.id";
@@ -117,7 +117,7 @@ class storage_movereport_model extends storage_model {
 					JOIN {$this->db}sk_{$this->sklad}_spr ON (sk_{$this->sklad}_spr.id=sk_{$this->sklad}_dvizh.spr_id)
 					WHERE ddate >= '{$sdate}'
 							AND ddate <= '{$edate}'
-							AND sk_{$this->sklad}_spr.id='{$rs[id]}'
+							AND sk_{$this->sklad}_spr.id='{$rs['id']}'
 							AND type='0'
 							AND numd<>'9999'
 					GROUP BY sk_{$this->sklad}_spr.id";
@@ -129,7 +129,7 @@ class storage_movereport_model extends storage_model {
 					JOIN {$this->db}sk_{$this->sklad}_spr ON (sk_{$this->sklad}_spr.id=sk_{$this->sklad}_dvizh_arc.spr_id)
 					WHERE ddate >= '{$sdate}'
 							AND ddate <= '{$edate}'
-							AND sk_{$this->sklad}_spr.id='{$rs[id]}'
+							AND sk_{$this->sklad}_spr.id='{$rs['id']}'
 							AND type='0'
 							AND numd<>'9999'
 					GROUP BY sk_{$this->sklad}_spr.id";
@@ -138,11 +138,11 @@ class storage_movereport_model extends storage_model {
                 $rash += $rs1["prihod"];
             }
             if ( $prih!=0 || $rash!=0 || $rs["ost"]!=0 ) {
-                $cols[nazv] = $rs[nazv];
-                $cols[prihod] = sprintf("%10.2f", $prih);
-                $cols[rashod] = sprintf("%10.2f", $rash);
-                $cols[ost] = sprintf("%10.2f", $rs["ost"]);
-                $cols[edizm] = $rs[edizm];
+                $cols['nazv'] = $rs['nazv'];
+                $cols['prihod'] = sprintf("%10.2f", $prih);
+                $cols['rashod'] = sprintf("%10.2f", $rash);
+                $cols['ost'] = sprintf("%10.2f", $rs["ost"]);
+                $cols['edizm'] = $rs['edizm'];
                 $ret[] = $cols;
             }
         }

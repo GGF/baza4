@@ -661,8 +661,8 @@ class sql_mysql {
 
             while ($f = $this->fetch($r)) {
 
-                if (isset($f[id]) && $id == SQL_FETCH_ID)
-                    $output[$f[id]] = $f; else {
+                if (isset($f['id']) && $id == SQL_FETCH_ID)
+                    $output[$f['id']] = $f; else {
                     $output[$k++] = $f;
                 }
             }

@@ -19,24 +19,24 @@ class orders_customers_model extends sqltable_model {
                 ($all ? "" : "LIMIT 20");
         $ret = sql::fetchAll($sql);
         foreach ($ret as &$value) {
-            $files = $this->getFilesForId($this->maintable, $value[id]);
-            $value[files] = $files[link];
+            $files = $this->getFilesForId($this->maintable, $value['id']);
+            $value['files'] = $files['link'];
         }
         if($all) {
-            $_SESSION[Auth::$lss][customer_id]='';
-            $_SESSION[Auth::$lss][order_id]='';
-            $_SESSION[Auth::$lss][tz_id]='';
+            $_SESSION[Auth::$lss]['customer_id']='';
+            $_SESSION[Auth::$lss]['order_id']='';
+            $_SESSION[Auth::$lss]['tz_id']='';
         }
         return $ret;
     }
 
     public function getCols() {
         $cols = array();
-        $cols[id] = "ID";
-        $cols[customer] = "Заказчик";
-        $cols[fullname] = "Полное название";
-        $cols[kdir] = "Сверловки";
-        $cols[files] = "Файлы";
+        $cols['id'] = "ID";
+        $cols['customer'] = "Заказчик";
+        $cols['fullname'] = "Полное название";
+        $cols['kdir'] = "Сверловки";
+        $cols['files'] = "Файлы";
         return $cols;
     }
 

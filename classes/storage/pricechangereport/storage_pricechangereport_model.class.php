@@ -19,10 +19,10 @@ class storage_pricechangereport_model extends storage_movereport_model {
      */
     public function getCols() {
         $cols = array();
-        $cols[nazv] = "Наименование";
-        $cols[oldprice] = "Старая цена";
-        $cols[newprice] = "Новая цена";
-        $cols[ratio] = "Процентное изменение";
+        $cols['nazv'] = "Наименование";
+        $cols['oldprice'] = "Старая цена";
+        $cols['newprice'] = "Новая цена";
+        $cols['ratio'] = "Процентное изменение";
         return $cols;
     }
 
@@ -49,7 +49,7 @@ class storage_pricechangereport_model extends storage_movereport_model {
 					JOIN {$this->db}sk_{$this->sklad}_spr ON (sk_{$this->sklad}_spr.id=sk_{$this->sklad}_dvizh.spr_id)
 					WHERE ddate >= '{$sdate}'
 							AND ddate <= '{$edate}'
-							AND sk_{$this->sklad}_spr.id='{$rs[id]}'
+							AND sk_{$this->sklad}_spr.id='{$rs['id']}'
 							AND type='1'
 							AND numd<>'9999'
 					ORDER BY ddate DESC LIMIT 1";
@@ -61,7 +61,7 @@ class storage_pricechangereport_model extends storage_movereport_model {
             $sql = "SELECT price as oldprice FROM ({$this->db}sk_{$this->sklad}_dvizh)
 					JOIN {$this->db}sk_{$this->sklad}_spr ON (sk_{$this->sklad}_spr.id=sk_{$this->sklad}_dvizh.spr_id)
 					WHERE ddate < '{$sdate}'
-							AND sk_{$this->sklad}_spr.id='{$rs[id]}'
+							AND sk_{$this->sklad}_spr.id='{$rs['id']}'
 							AND type='1'
 							AND numd<>'9999'
 					ORDER BY ddate DESC LIMIT 1";
@@ -71,10 +71,10 @@ class storage_pricechangereport_model extends storage_movereport_model {
             
             // если цены отичаются добавим в вывод
             if ( $newprice!=$oldprice && $oldprice!=0 && $newprice!=0 ) { // проверка на ноль, чтобы не делить на него при вычислении соотношения
-                $col[nazv] = $rs[nazv];
-                $col[newprice] = sprintf("%10.2f", $newprice);
-                $col[oldprice] = sprintf("%10.2f", $oldprice);
-                $col[ratio] = sprintf("%+10.2f", ($newprice-$oldprice)*100/$oldprice );
+                $col['nazv'] = $rs['nazv'];
+                $col['newprice'] = sprintf("%10.2f", $newprice);
+                $col['oldprice'] = sprintf("%10.2f", $oldprice);
+                $col['ratio'] = sprintf("%+10.2f", ($newprice-$oldprice)*100/$oldprice );
                 $ret[] = $col;
             }
         }

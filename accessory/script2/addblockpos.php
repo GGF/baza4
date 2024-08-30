@@ -26,13 +26,13 @@ if (empty($rs)) {
     echo -1;
     exit;
 }
-$customer_id = $rs[id];
+$customer_id = $rs['id'];
 // плату
 // коментарий
 $sql = "SELECT id FROM boards WHERE customer_id='$customer_id' AND board_name='$board'";
 $rs = sql::fetchOne($sql);
 if (empty($comment)) {
-    $comment_id = $rs[comment_id];
+    $comment_id = $rs['comment_id'];
 } else {
     $sql = "SELECT * FROM coments WHERE comment='{$comment}'";
     $com = sql::fetchOne($sql);
@@ -41,7 +41,7 @@ if (empty($comment)) {
         sql::query($sql);
         $comment_id = sql::lastId();
     } else {
-        $comment_id = $com[id];
+        $comment_id = $com['id'];
     }
 }
 $sql = "REPLACE INTO boards 

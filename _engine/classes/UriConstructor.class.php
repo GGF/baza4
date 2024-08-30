@@ -20,7 +20,7 @@ class UriConstructor {
 
     public function clear() {
         $this->arr = array();
-        $this->put('level',$_REQUEST[level]);
+        $this->put('level',$_REQUEST['level']);
         return $this;
     }
 

@@ -19,7 +19,7 @@ class lanch_zap_model extends sqltable_model {
             $res = sql::fetchAll($sql);
             if (!empty($res)) {
                 foreach ($res as $value) {
-                    $ids[] = $value[block_id];
+                    $ids[] = $value['block_id'];
                 }
                 $ids = "blocks.id IN (".join(',', $ids).") OR ";
                 
@@ -54,16 +54,16 @@ class lanch_zap_model extends sqltable_model {
     public function getCols() {
         $cols = array();
 	$cols["№"]="№";
-	$cols[ldate]="Дата";
-	$cols[lanchid]="ID";
-	$cols[nik]="Запустил";
-	$cols[customer]="Заказчик";
-	$cols[number]="Заказ";
-	$cols[blockname]="Блок";
-	$cols[boardtype]="Тип";
-	$cols[part]="Партия";
-	$cols[numbz]="Заг.";
-	$cols[numbp]="Плат";
+	$cols['ldate']="Дата";
+	$cols['lanchid']="ID";
+	$cols['nik']="Запустил";
+	$cols['customer']="Заказчик";
+	$cols['number']="Заказ";
+	$cols['blockname']="Блок";
+	$cols['boardtype']="Тип";
+	$cols['part']="Партия";
+	$cols['numbz']="Заг.";
+	$cols['numbp']="Плат";
         return $cols;
     }
 
@@ -84,10 +84,10 @@ class lanch_zap_model extends sqltable_model {
     
     public function getRecord($edit) {
         $rec = parent::getRecord($edit);
-        $sql = "SELECT * FROM blockpos JOIN boards ON boards.id=blockpos.board_id WHERE block_id={$rec[block_id]}";
-        $rec[boards] = sql::fetchAll($sql);
-        foreach ($rec[boards] as &$value) {
-            $value[filelinks] = $this->getFilesForId('boards', $value[board_id]);
+        $sql = "SELECT * FROM blockpos JOIN boards ON boards.id=blockpos.board_id WHERE block_id={$rec['block_id']}";
+        $rec['boards'] = sql::fetchAll($sql);
+        foreach ($rec['boards'] as &$value) {
+            $value['filelinks'] = $this->getFilesForId('boards', $value['board_id']);
         }
         return $rec;
     }
@@ -98,12 +98,12 @@ class lanch_zap_model extends sqltable_model {
         $res = sql::fetchOne($sql);
         if (empty ($res))
             return false;
-        $sql = "SELECT * FROM filelinks WHERE id='{$res[file_link_id]}'";
+        $sql = "SELECT * FROM filelinks WHERE id='{$res['file_link_id']}'";
         $res = sql::fetchOne($sql);
         if (empty ($res))
             return false;
-        $rec[link] = fileserver::sharefilelink($res[file_link]);
-        $rec[id] = $id;
+        $rec['link'] = fileserver::sharefilelink($res['file_link']);
+        $rec['id'] = $id;
         return $rec;
     }
 
@@ -113,16 +113,16 @@ class lanch_zap_model extends sqltable_model {
         $res = sql::fetchOne($sql);
         if (empty ($res))
             return false;
-        $rec[id] = $res[tz_id];
-        $sql = "SELECT * FROM tz WHERE id='{$res[tz_id]}'";
+        $rec['id'] = $res['tz_id'];
+        $sql = "SELECT * FROM tz WHERE id='{$res['tz_id']}'";
         $res = sql::fetchOne($sql);
         if (empty ($res))
             return false;
-        $sql = "SELECT * FROM filelinks WHERE id='{$res[file_link_id]}'";
+        $sql = "SELECT * FROM filelinks WHERE id='{$res['file_link_id']}'";
         $res = sql::fetchOne($sql);
         if (empty ($res))
             return false;
-        $rec[link] = fileserver::sharefilelink($res[file_link]);
+        $rec['link'] = fileserver::sharefilelink($res['file_link']);
         return $rec;
     }
 
@@ -132,13 +132,13 @@ class lanch_zap_model extends sqltable_model {
         $res = sql::fetchOne($sql);
         if (empty ($res))
             return false;
-        $sql = "SELECT * FROM tz WHERE id='{$res[tz_id]}'";
+        $sql = "SELECT * FROM tz WHERE id='{$res['tz_id']}'";
         $res = sql::fetchOne($sql);
         if (empty ($res))
             return false;
                 // файлы  для заказа
-        $files = $this->getFilesForId('orders', $res[order_id]);
-        $rec[link] = $files[link];
+        $files = $this->getFilesForId('orders', $res['order_id']);
+        $rec['link'] = $files['link'];
         return $rec;
     }
 
@@ -147,14 +147,14 @@ class lanch_zap_model extends sqltable_model {
         $res = sql::fetchOne($sql);
         if (empty ($res))
             return false;
-        $sql = "SELECT count(*) as numbers,board_id FROM `blockpos` WHERE block_id='{$res[block_id]}' ";
+        $sql = "SELECT count(*) as numbers,board_id FROM `blockpos` WHERE block_id='{$res['block_id']}' ";
         $res = sql::fetchOne($sql);
         if (empty ($res))
             return false;
-        if ($res[numbers]>1) return false;
-        $sql = "SELECT sum(`number`) as numbers FROM `zadel`  WHERE `board_id`='{$res[board_id]}' GROUP BY `board_id`";
+        if ($res['numbers']>1) return false;
+        $sql = "SELECT sum(`number`) as numbers FROM `zadel`  WHERE `board_id`='{$res['board_id']}' GROUP BY `board_id`";
         $res = sql::fetchOne($sql);
-        return $res[numbers];
+        return $res['numbers'];
     }
     public function getPath($id) {
         $sql = "SELECT customer,blockname

@@ -63,7 +63,7 @@ class Auth_model extends model {
         $res = sql::fetchOne($sql);
         if ($res) {
             $sql = "INSERT INTO session (session,u_id) " .
-                    "VALUES ('{$session_id}','{$res[id]}')";
+                    "VALUES ('{$session_id}','{$res['id']}')";
             sql::query($sql);
         } else {
             // неудачная авторизация запишем минус один и в главной сообщим

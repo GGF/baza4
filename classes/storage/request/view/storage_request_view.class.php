@@ -15,10 +15,10 @@ class storage_request_view extends sqltable_view {
     public function getTitle($data) {
         $out = 'Требования за:';
         $out.= '<select name=ddate id=selectrequestdate>';
-        foreach ($data[dates] as $rs) {
-            $out.="<option value='{$rs[ddate]}'";
-            if (!empty($data[ddate])) {
-                $out.= $data[ddate] == $rs["ddate"] ? "SELECTED" : "";
+        foreach ($data['dates'] as $rs) {
+            $out.="<option value='{$rs['ddate']}'";
+            if (!empty($data['ddate'])) {
+                $out.= $data['ddate'] == $rs["ddate"] ? "SELECTED" : "";
             }
             $out.=">" . sprintf("%s", $rs["ddate"]) . "</option>";
         }

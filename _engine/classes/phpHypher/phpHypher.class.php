@@ -199,10 +199,10 @@ class phpHypher {
 
 		// convert the first letter to low case
 		$word_lower = $word;
-		$st_pos = strpos($this->alphabet_uc, $word{0});
+		$st_pos = strpos($this->alphabet_uc, $word[0]);
 		if ($st_pos !== false) {
 			$ll = $this->left_limit_uc;
-			$word_lower{0} = $this->alphabet{$st_pos};
+			$word_lower[0] = $this->alphabet[$st_pos];
 		} else
 			$ll = $this->left_limit;
 
@@ -210,10 +210,10 @@ class phpHypher {
 
 		// check all letters but the first for upper case
 		for ($i = 1, $len = strlen($word_lower); $i < $len; $i++) {
-			$st_pos = strpos($this->alphabet_uc, $word{$i});
+			$st_pos = strpos($this->alphabet_uc, $word[$i]);
 			if ($st_pos !== false) {
 				if ($this->proceed_uppercase)
-					$word_lower{$i} = $this->alphabet{$st_pos};
+					$word_lower[$i] = $this->alphabet[$st_pos];
 				else
 					return $instr;
 			}

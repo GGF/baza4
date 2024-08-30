@@ -14,7 +14,7 @@ class storage extends secondlevel {
 
     public function init() {
         parent::init();
-        CTitle::addSection("Склады | " . storages::$storages[$_SESSION[Auth::$lss][storagetype]][title]);
+        CTitle::addSection("Склады | " . storages::$storages[$_SESSION[Auth::$lss]['storagetype']]['title']);
 	// TODO: перенести вмодели
 //        $sql = "SELECT COUNT(*) FROM `{$_SERVER[storagebase]}`.`sk_" .
 //                storages::$storages[$_SESSION[Auth::$lss][storagetype]][sklad] .
@@ -30,7 +30,7 @@ class storage extends secondlevel {
     }
 
     public function __call($name, $arguments) {
-        $arguments[nooutput] = true;
+        $arguments['nooutput'] = true;
         parent::__call($name, $arguments);
         $this->need_yaer_arc = $this->table->model->getNeedArc();
         //console::getInstance()->out("lss=".Auth::$lss." ".print_r($_SESSION,true));
@@ -61,8 +61,8 @@ class storage extends secondlevel {
             return $this->menu->getOutput();
     }
 
-    public function action_back() {
-        $_SESSION[Auth::$lss][storagetype] = '';
+    public function action_back($parent='') {
+        $_SESSION[Auth::$lss]['storagetype'] = '';
         parent::action_back('storages');
     }
 

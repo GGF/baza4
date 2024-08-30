@@ -19,13 +19,13 @@ class storage_rest_model extends storage_model {
 
     public function getCols() {
         $cols = array();
-        $cols[nazv] = "Название";
-        $cols[edizm] = "Ед.Изм.";
-        $cols[spr_price] = "Цена";
-        $cols[koeff] = "Коэфф";
-        $cols[ost] = "Остаток на складе";
-        $cols[krost] = "Крит. кол-во";
-        $cols[malo] = "Внимание";
+        $cols['nazv'] = "Название";
+        $cols['edizm'] = "Ед.Изм.";
+        $cols['spr_price'] = "Цена";
+        $cols['koeff'] = "Коэфф";
+        $cols['ost'] = "Остаток на складе";
+        $cols['krost'] = "Крит. кол-во";
+        $cols['malo'] = "Внимание";
         return $cols;
     }
 
@@ -96,7 +96,7 @@ class storage_rest_model extends storage_model {
                 FROM {$this->db}sk_{$this->sklad}_dvizh_arc
                 ORDER BY ddate DESC LIMIT 1";
         $rs = sql::fetchOne($sql);
-        return $rs[need];
+        return $rs['need'];
     }
 
 }

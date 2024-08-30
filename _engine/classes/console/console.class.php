@@ -250,7 +250,7 @@ if ($_SERVER["debug"]["report"]) {
             return $out;
     }
 
-    function cmsErrorHandler($errno, $errmsg, $filename, $linenum, $vars) {
+    function cmsErrorHandler($errno, $errmsg, $filename, $linenum) {
         // if not an error has been supressed with an @
         if (error_reporting() == 0 && ($errno != E_ERROR || E_USER_ERROR))
             return;

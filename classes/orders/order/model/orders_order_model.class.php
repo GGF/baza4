@@ -16,7 +16,8 @@ class orders_order_model extends sqltable_model {
         //$ret = parent::getData($all, $sort_order, $find, $idstr); // родительский несипользуется
         
         $sort_order = strstr($sort_order, 'files') ? '' : $sort_order; // не удается отсортировать по файлам
-        extract($_SESSION[Auth::$lss]);
+        if(is_array($_SESSION[Auth::$lss])) 
+            extract($_SESSION[Auth::$lss]);
         if (empty($customer_id)) {
             $sql = "SELECT *, orders.id AS oid, IF(onlycalc,'&#8730;','') as onlycalc,
                         orders.id
@@ -38,27 +39,28 @@ class orders_order_model extends sqltable_model {
         }
         $ret = sql::fetchAll($sql);
         foreach ($ret as &$value) {
-            $files = $this->getFilesForId('orders', $value[id]);
-            $value[files] = $files[link];
+            $files = $this->getFilesForId('orders', $value['id']);
+            $value['files'] = $files['link'];
         }
         if ($all) {
-            $_SESSION[Auth::$lss][order_id] = '';
-            $_SESSION[Auth::$lss][tz_id]='';
+            $_SESSION[Auth::$lss]['order_id'] = '';
+            $_SESSION[Auth::$lss]['tz_id']='';
         }
         return $ret;
     }
 
     public function getCols() {
         $cols = array();
-        extract($_SESSION[Auth::$lss]);
+        if(is_array($_SESSION[Auth::$lss])) 
+            extract($_SESSION[Auth::$lss]);
         if (empty($customer_id)) {
-            $cols[customer] = "Заказчик";
+            $cols['customer'] = "Заказчик";
         }
-        $cols[oid] = "ID";
-        $cols[orderdate] = "Дата заказа";
-        $cols[number] = "Номер заказа";
-        $cols[onlycalc] = "Только считать";
-        $cols[files] = "Файлы";
+        $cols['oid'] = "ID";
+        $cols['orderdate'] = "Дата заказа";
+        $cols['number'] = "Номер заказа";
+        $cols['onlycalc'] = "Только считать";
+        $cols['files'] = "Файлы";
         return $cols;
     }
 
@@ -73,12 +75,12 @@ class orders_order_model extends sqltable_model {
         $tzs = sql::fetchAll("SELECT * FROM tz WHERE order_id='{$orderid}'");
         foreach ($tzs as $tz) {
             // удаление
-            sql::query("DELETE FROM tz WHERE id='{$tz[id]}'");
+            sql::query("DELETE FROM tz WHERE id='{$tz['id']}'");
             $affected += sql::affected();
             // удаление связей
-            $posintzs = sql::fetchAll("SELECT * FROM posintz WHERE tz_id='{$tz[id]}'");
+            $posintzs = sql::fetchAll("SELECT * FROM posintz WHERE tz_id='{$tz['id']}'");
             foreach ($posintzs as $pos) {
-                sql::query("DELETE FROM posintz WHERE id='{$pos[id]}'");
+                sql::query("DELETE FROM posintz WHERE id='{$pos['id']}'");
                 $affected += sql::affected();
             }
         }
@@ -87,11 +89,11 @@ class orders_order_model extends sqltable_model {
 
     public function getRecord($edit) {
         if (empty($edit)) {
-            $rec[customers] = $this->getCustomers();
+            $rec['customers'] = $this->getCustomers();
             return $rec;
         }
         $rec = sql::fetchOne("SELECT * FROM orders WHERE id='{$edit}'");
-        $rec[files] = $this->getFilesForId('orders', $edit);
+        $rec['files'] = $this->getFilesForId('orders', $edit);
         return $rec;
     }
 

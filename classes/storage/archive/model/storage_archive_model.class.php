@@ -18,11 +18,11 @@ class storage_archive_model extends storage_model {
 
     public function getCols() {
         $cols = array();
-        $cols[nazv] = "Название";
-        $cols[edizm] = "Ед.Изм.";
-        $cols[ost] = "Остаток на складе";
-        $cols[krost] = "Крит. кол-во";
-        $cols[malo] = "Внимание";
+        $cols['nazv'] = "Название";
+        $cols['edizm'] = "Ед.Изм.";
+        $cols['ost'] = "Остаток на складе";
+        $cols['krost'] = "Крит. кол-во";
+        $cols['malo'] = "Внимание";
         return $cols;
     }
 
