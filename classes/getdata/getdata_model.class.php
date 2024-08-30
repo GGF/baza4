@@ -197,7 +197,8 @@ class getdata_model extends sqltable_model {
         ON (calc__matter_pricelist.matter_type_id = calc__types.id 
             AND calc__matter_pricelist.matter_name_id = calc__matters.id
             AND calc__matter_pricelist.supplier_id = calc__suppliers.id
-            ) WHERE record_date IN (SELECT MAX(record_date) FROM calc__matter_pricelist GROUP BY matter_name_id) AND matter_name like '%{$matter}%'";
+            ) WHERE record_date IN (SELECT MAX(record_date) FROM calc__matter_pricelist GROUP BY matter_name_id) AND matter_name like '%{$matter}%' ORDER BY `record_date` DESC";
+            // ORDER BY `record_date` DESC - изза одинаковых дат, добавлял группой получилась неразбериха
         $res = sql::fetchOne($sql);
         $res = json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
         return $res;
