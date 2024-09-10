@@ -84,7 +84,7 @@ class storage_moves_model extends storage_model {
                 AND coments.id=sk_{$this->sklad}_dvizh.comment_id
                 AND {$this->db}sk_{$this->sklad}_spr.id={$this->db}sk_{$this->sklad}_dvizh.spr_id)
              WHERE sk_{$this->sklad}_dvizh.id='{$edit}'";
-        $rec = sqltable_model::getRecord($sql);
+        $rec = sql::fetchOne($sql);
         $rec['supply'] = $supply;
         return $rec;
     }
@@ -139,10 +139,12 @@ class storage_moves_model extends storage_model {
             $comment_id = sql::lastId();
         }
         list($numdf, $numyr) = explode("/", $numd);
+        $numyr = (int)$numyr; // maribd начала ругать пустые строки в целые поля
         if (empty($edit)) {
             //добавление нового
             $ddate = date("Y-m-d", mktime(0, 0, 0, substr($ddate, 3, 2), substr($ddate, 0, 2), substr($ddate, 6, 4))); //$dyear."-".$dmonth."-".$dday;
-            $sql = "INSERT INTO {$this->db}sk_{$this->sklad}_dvizh (type,numd,numdf,docyr,spr_id,quant,ddate,post_id,comment_id,price) VALUES ('$type','$numd','$numdf','$numyr','$spr_id','$quant','$ddate','$post_id','$comment_id','$price')";
+            $sql = "INSERT INTO {$this->db}sk_{$this->sklad}_dvizh (type,numd,numdf,docyr,spr_id,quant,ddate,post_id,comment_id,price) 
+                                                                VALUES ('$type','$numd','$numdf','$numyr','$spr_id','$quant','$ddate','$post_id','$comment_id','$price')";
             sql::query($sql);
             sql::error(true);
             $sql = "UPDATE {$this->db}sk_{$this->sklad}_ost SET ost=ost" . ($type ? "+" : "-") . abs($quant) . " WHERE spr_id='$spr_id'";

@@ -9,8 +9,8 @@ class storage_rest_view extends sqltable_view {
 
     public function showrec($rec) {
 
-        $rec[fields] = array();
-        array_push($rec[fields],
+        $rec['fields'] = array();
+        array_push($rec['fields'],
 			array(
 				"type"		=> AJAXFORM_TYPE_TEXT,
 				"name"		=> "nazv",
