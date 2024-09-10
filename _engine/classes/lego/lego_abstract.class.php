@@ -337,7 +337,7 @@ abstract class lego_abstract extends JsCSS {
      * Получить коннкретный параметр
      * @param string $param_name Имя параметра
      * @param string $lego_name
-     * @return boolean
+     * @return var
      */
     public function getLegoParam($param_name, $lego_name = false) {
         $lego_params = $this->getLegoParams($lego_name);

@@ -26,7 +26,7 @@ class lanch_nzap_view extends sqltable_view {
             Output::assign('mplink', $rec['mp']['mplink']);
             $out .= $this->fetch('mp.tpl');
         }
-        if ($rec['zadel']>=($rec['block']['boardinorder']*1) && ($rec['block']['boardinorder']*1)>0 ) {
+        if ($rec['zadel']>=(int)($rec['block']['boardinorder']) && (int)($rec['block']['boardinorder'])>0 ) {
             // показать кнопку использования задела
             Output::assign('zadellink', $rec['zadellink']);
             $out .= $this->fetch('zadel.tpl');

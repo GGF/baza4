@@ -92,15 +92,17 @@ class Auth extends lego_abstract {
      * @param string $action Деййствие на которое запрашиваются права
      * @return boolean
      */
-    public function getRights($type=false, $action=false) {
-        if ($type) {
-            if ($action) {
-                return $this->rights[$type][$action];
+    public function getRights($type='', $action='') {
+        if (!empty($type)) {
+            if (!empty($action)) {
+                if (isset($this->rights[$type][$action]))
+                    return $this->rights[$type][$action]; // если определены права то вернем
             } else {
-                return $this->rights[$type];
+                if (isset($this->rights[$type]))
+                    return $this->rights[$type];
             }
         }
-        return $this->rights;
+        return false; // а уж если не определены то не разрешим //$this->rights;
     }
 
     /**

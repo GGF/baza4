@@ -133,10 +133,12 @@ class sqltable extends lego_abstract {
         }
 
         $param = $this->getLegoParam('index');
-        $this->all = (bool) $param[0];
-        $this->order = $param[1];
-        $this->find = $param[2]; //empty($_REQUEST['find'])?$param[2]:  multibyte::UTF_decode($_REQUEST['find']);
-        $this->idstr = $param[3];
+        if (is_array($param)) {
+            $this->all = (bool) $param[0];
+            $this->order = $param[1];
+            $this->find = $param[2]; //empty($_REQUEST['find'])?$param[2]:  multibyte::UTF_decode($_REQUEST['find']);
+            $this->idstr = $param[3];
+        }
 
         $this->del = Auth::getInstance()->getRights($this->type, 'del');
         $this->edit = Auth::getInstance()->getRights($this->type, 'edit');
