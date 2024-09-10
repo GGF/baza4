@@ -109,7 +109,7 @@ abstract class JsCSS implements IJsCSS {
         if ($dir[strlen($dir) - 1] != '/')
             $dir .= '/';
         $files = array();
-        $h = @opendir($dir);
+        if (is_dir($dir)) $h = @opendir($dir);
         if ($h) {
             while ($filename = @readdir($h)) {
                 if ($filename[0] == '.')

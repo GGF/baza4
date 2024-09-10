@@ -135,7 +135,7 @@ class Auth_model extends model {
 	    // не  оказалось сессии в базе
 	    $rec["success"] = 'Auth.session.nosession';
 	}
-	$rec["mes"] .= Lang::getString($rec["success"]);
+	$rec["mes"] = Lang::getString($rec["success"]);
 	return $rec;
     }
 

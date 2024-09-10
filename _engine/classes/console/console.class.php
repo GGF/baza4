@@ -254,6 +254,14 @@ if ($_SERVER["debug"]["report"]) {
         // if not an error has been supressed with an @
         if (error_reporting() == 0 && ($errno != E_ERROR || E_USER_ERROR))
             return;
+        // оджавленная ошибка в php 8
+        if (error_reporting() == E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE )
+            return;
+        /**
+         * До версии PHP 8.0.0 функция error_reporting(), вызываемая внутри пользовательского обработчика ошибок, 
+         * всегда возвращала 0, если ошибка была подавлена оператором @. Начиная с PHP 8.0.0 она возвращает 
+         * значение этого (побитового) выражения: E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE.
+         */
         switch ($errno) {
             case E_ERROR :
                 $type = "ERROR";
