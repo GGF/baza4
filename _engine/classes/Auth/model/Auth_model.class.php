@@ -43,7 +43,7 @@ class Auth_model extends model {
      * @param array $replace
      */
     public function install($replace=array()) {
-        if (sql::queryfile($this->dir . "/install.sql",$replace)) {
+        if (sql::queryfile($this->getDir() . "/install.sql",$replace)) {
                echo "install complete";
         }
     }
