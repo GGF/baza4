@@ -34,7 +34,7 @@ class storage_moves_view extends sqltable_view {
                         "0" => "Расход",
                     ),
                     "value" => $rec["type"],
-                    "options" => array("html"=>" autohide=1 "),
+                    "options" => array("html"=>" autohide=1 myid=prselect "),
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_TEXT,
@@ -46,7 +46,7 @@ class storage_moves_view extends sqltable_view {
                     "type" => AJAXFORM_TYPE_TEXT,
                     "name" => "quant",
                     "label" => 'Количество:',
-                    "value" => $rec["quant"],
+                    "value" => isset($rec['quant'])?$rec['quant']:0,
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_SELECT,
@@ -54,6 +54,7 @@ class storage_moves_view extends sqltable_view {
                     "label" => "Поставщик:",
                     "values" => $rec['supply'],
                     "value" => $rec["supply_id"],
+                    "options" => array("html"=>" autohide=1 myid=supply "),
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_TEXT,
@@ -65,7 +66,7 @@ class storage_moves_view extends sqltable_view {
                     "type" => AJAXFORM_TYPE_TEXT,
                     "name" => "price",
                     "label" => 'Стоимость:',
-                    "value" => $rec["price"],
+                    "value" => isset($rec['price'])?$rec['price']:0.0,
                 ),
                 array(
                     "type" => AJAXFORM_TYPE_TEXTAREA,
@@ -76,7 +77,7 @@ class storage_moves_view extends sqltable_view {
                 )
         );
         $out = parent::showrec($rec);
-        $out .= "<script>$('select[autohide=1]').trigger('myevent');</script>";
+        $out .= "<script>$('select[autohide=1]').trigger('change');</script>";
         return $out;
     }
 
