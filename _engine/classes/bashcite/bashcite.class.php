@@ -14,13 +14,15 @@ class bashcite extends lego_abstract {
 		Output::assign('linkplusbash',$this->actUri('plusbash')->url());
 		Output::assign('linkminusbash',$this->actUri('minusbash')->url());
 
-                if ($_SESSION['bashcite']) {
-                    $ret = $this->_getcite();
-                    Output::assign('bashcite',$ret);
-                    $ret = $this->fetch("bashcite.tpl");
-                } else {
-                    $ret = $this->fetch("bashcitehide.tpl");
-                }
+                if (isset($_SESSION['bashcite']) ) {
+					if($_SESSION['bashcite']) {
+						$ret = $this->_getcite();
+						Output::assign('bashcite',$ret);
+						$ret = $this->fetch("bashcite.tpl");
+					} else {
+						$ret = $this->fetch("bashcitehide.tpl");
+					}
+				}
                 if (Ajax::isAjaxRequest())
                     return $ret;
                 else

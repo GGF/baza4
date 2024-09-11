@@ -22,7 +22,7 @@ class lanch_nzap_view extends sqltable_view {
         }
         Output::assign('onlycalclink', $rec['onlycalclink']);
         $out = $this->fetch('record.tpl');
-        if ($rec['mp']) {
+        if ( isset($rec['mp']) ) {
             Output::assign('mplink', $rec['mp']['mplink']);
             $out .= $this->fetch('mp.tpl');
         }
@@ -37,7 +37,7 @@ class lanch_nzap_view extends sqltable_view {
                     Output::assign($key, $val);
                 }
                 if (Auth::getInstance()->getRights('lanch_nzap', 'edit')) {
-                    if ($party['slid']) {
+                    if (isset($party['slid'])) {
                         $out .= $this->fetch('partylink.tpl');
                     } else {
                         $out .= $this->fetch('partybutton.tpl');

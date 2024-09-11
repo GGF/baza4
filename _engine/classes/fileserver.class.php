@@ -54,13 +54,25 @@ class fileserver {
     }
 
     /**
+     * Проверка каталога на пустость
+     * @param string
+     * @return bool
+     */
+    static public function is_dir_empty($dir) {
+        return (count(scandir($dir)) == 2);
+      }
+      
+    /**
      * Создает каталог на сервере по переданному файлу, возвращает имя файла в этом каталоге относительно файловой системы сервера
      * @param string $filename - имя файла в любом виде, то есть на сетевом диске z: или /home/common/z
      * @return string - имя файла на в файловой системе 
      */
     static public function createdironserver($filelink) {
         $filelink = self::normalizefile($filelink);
-        list($disk, $path) = explode(":", $filelink);
+        $disk='';
+        $path='';
+        if (strstr(':',$filelink))
+            list($disk, $path) = explode(":", $filelink);
         $serpath = SHARE_ROOT_DIR . strtolower($disk) . "/";
         $dirs = explode("\\", $path);
         $filename = $dirs[count($dirs) - 1];

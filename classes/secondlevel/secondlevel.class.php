@@ -37,7 +37,7 @@ class secondlevel extends firstlevel {
         } catch (Exception $e) {
             return $this->_404("[class=" . get_class($this) . "] : " . $e->getMessage());
         }
-        if ($arguments['nooutput'])
+        if (isset($arguments['nooutput']))
             return;
         if ($this->table->run()) {
             if (Ajax::isAjaxRequest()) {

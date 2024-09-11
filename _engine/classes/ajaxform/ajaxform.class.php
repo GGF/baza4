@@ -1677,7 +1677,7 @@ class ajaxform extends JsCSS {
                             @unlink($f);
                     }
 
-                @rmdir($e);
+                if (fileserver::is_dir_empty($e)) @rmdir($e);
             }
     }
 

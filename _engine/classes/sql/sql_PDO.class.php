@@ -47,7 +47,7 @@ class sql_PDO {
     public $_errorsArray = array();
     public $_warnings = 0;
     public $_log = array();
-    public $_logLevel = false;
+    public $_logLevel = array();
     public $_logForce = false;
     public $_execTime = 0;
     public $_queryTime = 0;
@@ -538,7 +538,10 @@ class sql_PDO {
 
         $this->query($query, $array, $log);
         $res = $this->_statement->fetchAll();
-        return $res[$i];
+        if ( is_array($res) && count($res)>0 )
+            return $res[$i];
+        else
+            return array();
     }
 
     /**
