@@ -103,24 +103,30 @@ abstract class JsCSS implements IJsCSS {
         return $css;
     }
 
+    /**
+     * Проход каталога в глубину
+     * @return array
+     */
     static public function getDirDeep($dir=false, $mask=false, $webdir=false) {
         if (!$dir)
             $dir = __DIR__;
         if ($dir[strlen($dir) - 1] != '/')
             $dir .= '/';
         $files = array();
-        if (is_dir($dir)) $h = @opendir($dir);
-        if ($h) {
-            while ($filename = @readdir($h)) {
-                if ($filename[0] == '.')
-                    continue;
-                if (is_dir($dir . "{$filename}/"))
-                    $files = array_merge($files, self::getDirDeep($dir . "{$filename}/", $mask, $webdir));
-                elseif (!$mask || preg_match($mask, $filename)) {
-                    if (!$webdir)
-                        $files[] = $dir . "{$filename}";
-                    else
-                        $files[] = str_ireplace($_SERVER['DOCUMENT_ROOT'], "", $dir . "{$filename}");
+        if (is_dir($dir)) {
+            $h = @opendir($dir);
+            if ($h) {
+                while ($filename = @readdir($h)) {
+                    if ($filename[0] == '.')
+                        continue;
+                    if (is_dir($dir . "{$filename}/"))
+                        $files = array_merge($files, self::getDirDeep($dir . "{$filename}/", $mask, $webdir));
+                    elseif (!$mask || preg_match($mask, $filename)) {
+                        if (!$webdir)
+                            $files[] = $dir . "{$filename}";
+                        else
+                            $files[] = str_ireplace($_SERVER['DOCUMENT_ROOT'], "", $dir . "{$filename}");
+                    }
                 }
             }
         }
