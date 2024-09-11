@@ -49,7 +49,7 @@ class storage_moves_view extends sqltable_view {
                     "value" => isset($rec['quant'])?$rec['quant']:0,
                 ),
                 array(
-                    "type" => AJAXFORM_TYPE_SELECT,
+                    "type" => AJAXFORM_TYPE_HIDDEN, //AJAXFORM_TYPE_SELECT,
                     "name" => "supply_id",
                     "label" => "Поставщик:",
                     "values" => $rec['supply'],
@@ -57,13 +57,13 @@ class storage_moves_view extends sqltable_view {
                     "options" => array("html"=>" autohide=1 myid=supply "),
                 ),
                 array(
-                    "type" => AJAXFORM_TYPE_TEXT,
+                    "type" => AJAXFORM_TYPE_HIDDEN, //AJAXFORM_TYPE_TEXT,
                     "name" => "supply",
                     "label" => 'Новый:',
                     "value" => "",
                 ),
                 array(
-                    "type" => AJAXFORM_TYPE_TEXT,
+                    "type" => AJAXFORM_TYPE_HIDDEN, //AJAXFORM_TYPE_TEXT,
                     "name" => "price",
                     "label" => 'Стоимость:',
                     "value" => isset($rec['price'])?$rec['price']:0.0,
