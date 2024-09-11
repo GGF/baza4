@@ -407,6 +407,26 @@ class sqltable extends lego_abstract {
         return '';
     }
 
+    /**
+     * Похоже надо перектыить getactionparams, а то неправильно получает
+     */
+    public function getActionParams($action = false)
+    {
+        $par = parent::getActionParams($action);
+                // возникла ошибка что не было нулевого элемента массива (в таблице - это $all) и смещались параметры - 
+        // так что проверим нулевой и если нет вставим нуль, хотя там может быть другие ... ну посмотрим
+        if (!isset($par[0])) {
+            $ret[0]=0;
+            foreach($par as $one) {
+                $ret[]=$one;
+            }
+        } else {
+            $ret = $par;
+        }
+        return $ret;
+
+    }
+
 }
 
 ?>
