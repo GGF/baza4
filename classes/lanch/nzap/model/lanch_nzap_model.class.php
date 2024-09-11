@@ -153,7 +153,10 @@ class lanch_nzap_model extends sqltable_model {
                 $sql = "SELECT numbers FROM posintz WHERE tz_id='{$rs['tzid']}'
                         AND block_id='{$rs1['bid']}'";
                 $rs2 = sql::fetchOne($sql);
-                $nz = ceil($rs2['numbers'] / $rs1['nib']);
+                if ( isset($rs2['numbers']) )
+                    $nz = ceil($rs2['numbers'] / $rs1['nib']);
+                else
+                    $nz=1;
                 $nl = $rs1['layers'];
                 $cl = $rs1['class'];
                 $piz = $rs1['nib'];

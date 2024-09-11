@@ -233,7 +233,8 @@ class sqltable_view extends views {
                         "data-silent='#{$this->owner->tid}' legotarget='{$this->owner->getName()}' data-silent-action='append' " .
                         "href='{$url}' id='showlink'><div class='fullwidth'>";
                 $linkend = "</div></a>";
-                $rs["file_link"] = substr($rs["file_link"], strrpos($rs["file_link"], "\\") + 1);
+                if (isset($rs["file_link"])) 
+                    $rs["file_link"] = substr($rs["file_link"], strrpos($rs["file_link"], "\\") + 1);
                 $delstr = '';
                 reset($cols);
                 foreach ($cols as $key => $val) {

@@ -28,7 +28,7 @@ class lanch_nzap extends sqltable {
             return $this->view->getMessage('Нет прав на редактирование');
         $rec = $this->model->getRecord($id);
         $rec['onlycalclink'] = $this->actUri('ordertoonclycalc', $id)->url();
-        if ($rec['mp']) {
+        if ( isset($rec['mp']) ) {
             $rec['mp']['mplink'] = $this->actUri('masterplate', $id)->url();
         }
         if ($rec['zadel']>0) { 
