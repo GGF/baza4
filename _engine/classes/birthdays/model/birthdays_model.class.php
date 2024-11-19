@@ -18,6 +18,7 @@ class birthdays_model {
             $filetime = @filemtime($filenamerss);
             if (!$filetime || (date('d',$filetime)!=date('d'))) {
                 $data = preg_replace("/\x01/","",file_get_contents('http://www.calend.ru/img/export/calend.rss'));
+                $data = preg_replace("/^<\?xml\s.*$/m","",$data); //19-11-2024 там в какой то мемент некоректный ролог появился, чем ругаться с админами - просто удалю
                 @file_put_contents ($filenamerss, $data);
                 @chmod($filenamerss, 0777);
             }
