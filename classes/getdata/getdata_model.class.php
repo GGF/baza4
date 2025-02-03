@@ -204,6 +204,19 @@ class getdata_model extends sqltable_model {
         return $res;
     }
 
+    /**
+     * Получить данные повозможности изготовления платы
+     */
+    public function getpossibility(Array $rec)
+    {
+        $rec = multibyte::cp1251_to_utf8($rec);
+        extract($rec);
+        $sql = "SELECT *
+        FROM possibility_boards WHERE board LIKE '{$board}'";
+        $res = sql::fetchOne($sql);
+        $res = json_encode($res,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
+        return $res;
+    }
 }
 
 ?>
