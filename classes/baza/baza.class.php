@@ -14,6 +14,7 @@ class baza extends firstlevel {
         $this->menu->add('lanch', 'Запуски');
         $this->menu->add('orders', 'Заказы');
         $this->menu->add('productioncard', 'Производство');
+        $this->menu->add('possibility', 'Можем');
         $this->menu->add('storages', 'Склады');
         $this->menu->add('cp', 'ПУ');
         $this->menu->add('matterpricelist', 'Цены для расчетов', false);
