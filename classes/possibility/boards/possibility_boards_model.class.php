@@ -27,6 +27,12 @@ class possibility_boards_model extends sqltable_model {
         return $ret;
     }
 
+    public function setRecord($data) {
+        if (empty($data['possibility']))
+            $data['possibility'] = 0; // пропадал параметр если снят флажок, надо проверить другие места TODO
+        return parent::setRecord($data);
+    }
+
 }
 
 
