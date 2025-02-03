@@ -14,14 +14,14 @@ class bashcite extends lego_abstract {
 		Output::assign('linkplusbash',$this->actUri('plusbash')->url());
 		Output::assign('linkminusbash',$this->actUri('minusbash')->url());
 
-                if ($_SESSION[bashcite]) {
-                    $ret = $this->_getcite();
-                    Output::assign('bashcite',$ret);
-                    $ret = $this->fetch("bashcite.tpl");
-                } else {
-                    $ret = $this->fetch("bashcitehide.tpl");
-                }
-                if (Ajax::isAjaxRequest())
+				$ret = $this->fetch("bashcitehide.tpl");
+                if (isset($_SESSION['bashcite']) && $_SESSION['bashcite']) {
+						$ret = $this->_getcite();
+						Output::assign('bashcite',$ret);
+						$ret = $this->fetch("bashcite.tpl");
+				}
+				
+				if (Ajax::isAjaxRequest())
                     return $ret;
                 else
                     return "<div id='bashcite'>{$ret}</div>";
@@ -35,12 +35,12 @@ class bashcite extends lego_abstract {
 		return $this->action_index();
 	}
 	public function action_hidebash() {
-            $_SESSION[bashcite] = false;
+            $_SESSION['bashcite'] = false;
 //                $this->_cookieSet('bashcite','hide');
             return $this->action_index();
 	}
 	public function action_showbash() {
-            $_SESSION[bashcite] = true;
+            $_SESSION['bashcite'] = true;
 //		$cookie = $this->_cookie("bashcite");
 //		if ($cookie!= 'show')
 //			$this->_cookieSet('bashcite','show');

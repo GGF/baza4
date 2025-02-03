@@ -47,7 +47,7 @@ class matterpricelist_prices_model extends sqltable_model {
             extract($_SESSION[Auth::$lss]);
         }
 
-        $sql = "SELECT calc__matter_pricelist.id AS id,`type`,`matter_name`,`matter_unit`,`matter_price`,`invoice`,`supplier_name`,`change_act`,`coment`
+        $sql = "SELECT calc__matter_pricelist.id AS id,`type`,`matter_name`,`matter_unit`,`matter_price`,`invoice`,`supplier_name`,`change_act`,`coment`,`discharge_norm_in`,`discharge_norm_out`
                 FROM calc__matter_pricelist
                 JOIN (calc__types,calc__matters,calc__suppliers)
                 ON (calc__matter_pricelist.matter_type_id = calc__types.id 
@@ -69,6 +69,8 @@ class matterpricelist_prices_model extends sqltable_model {
         $cols['type'] = 'Тип';
         $cols['matter_name'] = 'Материал';
         $cols['matter_unit'] = 'ед.изм.';
+        $cols['discharge_norm_in'] = 'вн';
+        $cols['discharge_norm_out'] = 'нар';
         $cols['matter_price'] = 'Цена';
         $cols['invoice'] = 'Накладная/Приходный ордер';
         $cols['supplier_name'] = 'Постащик';

@@ -133,10 +133,12 @@ class sqltable extends lego_abstract {
         }
 
         $param = $this->getLegoParam('index');
-        $this->all = (bool) $param[0];
-        $this->order = $param[1];
-        $this->find = $param[2]; //empty($_REQUEST['find'])?$param[2]:  multibyte::UTF_decode($_REQUEST['find']);
-        $this->idstr = $param[3];
+        if (is_array($param)) {
+            $this->all = (bool) $param[0];
+            $this->order = $param[1];
+            $this->find = $param[2]; //empty($_REQUEST['find'])?$param[2]:  multibyte::UTF_decode($_REQUEST['find']);
+            $this->idstr = $param[3];
+        }
 
         $this->del = Auth::getInstance()->getRights($this->type, 'del');
         $this->edit = Auth::getInstance()->getRights($this->type, 'edit');
@@ -403,6 +405,26 @@ class sqltable extends lego_abstract {
     public function action_deletecomment($id) {
         $this->model->deleteComment($id);
         return '';
+    }
+
+    /**
+     * Похоже надо перектыить getactionparams, а то неправильно получает
+     */
+    public function getActionParams($action = false)
+    {
+        $par = parent::getActionParams($action);
+                // возникла ошибка что не было нулевого элемента массива (в таблице - это $all) и смещались параметры - 
+        // так что проверим нулевой и если нет вставим нуль, хотя там может быть другие ... ну посмотрим
+        if (!isset($par[0])) {
+            $ret[0]=0;
+            foreach($par as $one) {
+                $ret[]=$one;
+            }
+        } else {
+            $ret = $par;
+        }
+        return $ret;
+
     }
 
 }

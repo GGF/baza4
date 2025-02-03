@@ -22,11 +22,11 @@ class lanch_nzap_view extends sqltable_view {
         }
         Output::assign('onlycalclink', $rec['onlycalclink']);
         $out = $this->fetch('record.tpl');
-        if ($rec['mp']) {
+        if ( isset($rec['mp']) ) {
             Output::assign('mplink', $rec['mp']['mplink']);
             $out .= $this->fetch('mp.tpl');
         }
-        if ($rec['zadel']>=($rec['block']['boardinorder']*1) && ($rec['block']['boardinorder']*1)>0 ) {
+        if ($rec['zadel']>=(int)($rec['block']['boardinorder']) && (int)($rec['block']['boardinorder'])>0 ) {
             // показать кнопку использования задела
             Output::assign('zadellink', $rec['zadellink']);
             $out .= $this->fetch('zadel.tpl');
@@ -37,7 +37,7 @@ class lanch_nzap_view extends sqltable_view {
                     Output::assign($key, $val);
                 }
                 if (Auth::getInstance()->getRights('lanch_nzap', 'edit')) {
-                    if ($party['slid']) {
+                    if (isset($party['slid'])) {
                         $out .= $this->fetch('partylink.tpl');
                     } else {
                         $out .= $this->fetch('partybutton.tpl');

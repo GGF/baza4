@@ -39,7 +39,7 @@ if (empty($rs)) {
 	echo -1;
 	exit;
 }
-$customer_id = $rs[id];
+$customer_id = $rs['id'];
 
 // Определим идентификатор пользователя
 $sql="SELECT id FROM users WHERE nik='$user'";
@@ -78,7 +78,7 @@ if (empty($com)) {
 	sql::query($sql);
 	$comment_id = sql::lastId();
 } else {
-	$comment_id = $com[id];
+	$comment_id = $com['id'];
 }
 
 // добавим МП если есть такое исправим

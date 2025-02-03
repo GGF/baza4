@@ -5,7 +5,7 @@ class orders_money_view extends sqltable_view {
     public function showrec($rec) {
 
         extract($rec);
-        extract($_SESSION[Auth::$lss]);//list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]);//list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
         $fields = array();
 /*
         if (empty($rec[edit]) && empty($customer_id)) {
@@ -38,7 +38,7 @@ class orders_money_view extends sqltable_view {
             "options" => array("html" => "size=30",),
             "obligatory" => true,
         ));*/
-        $rec[fields] = $fields;
+        $rec['fields'] = $fields;
         //$rec[files]=$this->owner->model->getFiles;
         return parent::showrec($rec);
     }

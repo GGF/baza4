@@ -57,7 +57,7 @@ class Menu extends lego_abstract {
                 Output::assign('text',$text);
                 //Output::assign('hyphertext',hypher::addhypher($text));
                 Output::assign('hyphertext',(new phpHypher('conf/hyph_ru_RU.conf'))->hyphenate($text,'UTF-8'));
-                Output::assign('ajax',($item[noajax]?'':"data-silent='{$this->parent->getMainTarget()}' legotarget='{$this->parent->getName()}'"));
+                Output::assign('ajax',($item['noajax']?'':"data-silent='{$this->parent->getMainTarget()}' legotarget='{$this->parent->getName()}'"));
                 Output::assign('type',$type);
                 Output::assign('url',$uri->set($this->parent->getName(),$type)->url());
                 Output::assign('selected',($this->parent->getAction()==$type?" menu-item-sel":""));

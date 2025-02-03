@@ -3,57 +3,57 @@
 class storages extends firstlevel {
 
     public static $storages = array(
-        himiya => array(
-            sklad => 'him_',
-            title => 'Материалы'
+        'himiya' => array(
+            'sklad' => 'him_',
+            'title' => 'Материалы'
         ),
-        materials => array(
-            sklad => 'mat_',
-            title => 'Текстолит'
+        'materials' => array(
+            'sklad' => 'mat_',
+            'title' => 'Текстолит'
         ),
-        himiya2 => array(
-            sklad => 'him1_',
-            title => 'Лаборатория'
+        'himiya2' => array(
+            'sklad' => 'him1_',
+            'title' => 'Лаборатория'
         ),
-        sverla => array(
-            sklad => 'sver_',
-            title => 'Сверла 3.0'
+        'sverla' => array(
+            'sklad' => 'sver_',
+            'title' => 'Сверла 3.0'
         ),
-        halaty => array(
-            sklad => 'hal_',
-            title => 'Спецодежда'
+        'halaty' => array(
+            'sklad' => 'hal_',
+            'title' => 'Спецодежда'
         ),
-        instr => array(
-            sklad => 'inst_',
-            title => 'ОС'
+        'instr' => array(
+            'sklad' => 'inst_',
+            'title' => 'ОС'
         ),
-        himiya => array(
-            sklad => 'him_',
-            title => 'Материалы'
+        'himiya' => array(
+            'sklad' => 'him_',
+            'title' => 'Материалы'
         ),
-        nepon => array(
-            sklad => 'nepon_',
-            title => 'Св 3.175'
+        'nepon' => array(
+            'sklad' => 'nepon_',
+            'title' => 'Св 3.175'
         ),
-        maloc => array(
-            sklad => 'maloc_',
-            title => 'Малоценка'
+        'maloc' => array(
+            'sklad' => 'maloc_',
+            'title' => 'Малоценка'
         ),
-        stroy => array(
-            sklad => 'stroy_',
-            title => 'Стройматериалы'
+        'stroy' => array(
+            'sklad' => 'stroy_',
+            'title' => 'Стройматериалы'
         ),
-        zap => array(
-            sklad => 'zap_',
-            title => 'З и И'
+        'zap' => array(
+            'sklad' => 'zap_',
+            'title' => 'З и И'
         ),
-        test => array(
-            sklad => 'test_',
-            title => 'Склад для отладки'
+        'test' => array(
+            'sklad' => 'test_',
+            'title' => 'Склад для отладки'
         ),
-        test1 => array(
-            sklad => 'test1_',
-            title => 'Склад для отладки1'
+        'test1' => array(
+            'sklad' => 'test1_',
+            'title' => 'Склад для отладки1'
         ),
     );
 
@@ -77,7 +77,7 @@ class storages extends firstlevel {
 
     public function getIndexMenu() {
         foreach (storages::$storages as $key => $value) {
-            $this->menu->add($key, $value[title], false);
+            $this->menu->add($key, $value['title'], false);
         }
         $this->menu->add('back', 'назад', false);
         if ($this->menu->run())
@@ -87,7 +87,7 @@ class storages extends firstlevel {
     public function __call($name, $arguments) {
         // тут надо разбить указатель на склад по локальному окну
         // то есть из скрипта получить значение
-        $_SESSION[Auth::$lss][storagetype] = str_replace('action_', '', $name);
+        $_SESSION[Auth::$lss]['storagetype'] = str_replace('action_', '', $name);
         $name = 'action_storage';
         parent::__call($name, $arguments);
     }

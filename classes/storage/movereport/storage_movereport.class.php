@@ -8,9 +8,9 @@ class storage_movereport extends sqltable {
     }
 
     public function action_index($all = '', $order = '', $find = '', $idstr = '') {
-        $month = $_REQUEST[selectmonth];
-        $sdate = $_REQUEST[sdate];
-        $edate = $_REQUEST[edate];
+        $month = $_REQUEST['selectmonth'];
+        $sdate = $_REQUEST['sdate'];
+        $edate = $_REQUEST['edate'];
 
         $idstr = !empty($month) ? ("month:{$month}") :
                 (!empty($sdate) ? "range:{$sdate}:{$edate}" : '');

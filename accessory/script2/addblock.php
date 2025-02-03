@@ -24,7 +24,7 @@ if (empty($rs)) {
 	echo -1;
 	exit;
 }
-$customer_id = $rs[id];
+$customer_id = $rs['id'];
 // добавление блока
 $sql = "SELECT id FROM blocks WHERE customer_id='{$customer_id}' AND blockname='{$blockname}'";
 $rs = sql::fetchOne($sql);

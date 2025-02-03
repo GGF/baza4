@@ -1,6 +1,10 @@
+/* комбобоксы стали глючить, не буду прикреплять ко всем выборам*/
+/*
 select {
     padding:    0;
 }
+*/
+  
 .custom-combobox {
     position: relative;
     display: inline-block;

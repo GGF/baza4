@@ -3,7 +3,7 @@
 class birthdays_model {
 
     public function getToday() {
-        $filename = $_SERVER[CACHE] . '/birhdays.html';
+        $filename = $_SERVER['CACHE'] . '/birhdays.html';
         if(file_exists($filename) && (date('d',@filemtime($filename))==date('d'))) {
             return file_get_contents($filename);
         }
@@ -14,10 +14,11 @@ class birthdays_model {
             //$calend = file_get_contents('http://www.calend.ru/img/export/calend.rss');
             //$calend = file_get_contents(__DIR__ . '/sample.xml');
             //return $this->xml2html($calend, __DIR_ . "/calend.xsl");
-            $filenamerss = $_SERVER[CACHE] . '/calend.xml';
+            $filenamerss = $_SERVER['CACHE'] . '/calend.xml';
             $filetime = @filemtime($filenamerss);
             if (!$filetime || (date('d',$filetime)!=date('d'))) {
                 $data = preg_replace("/\x01/","",file_get_contents('http://www.calend.ru/img/export/calend.rss'));
+                $data = preg_replace("/^<\?xml\s.*$/m","",$data); //19-11-2024 там в какой то мемент некоректный ролог появился, чем ругаться с админами - просто удалю
                 @file_put_contents ($filenamerss, $data);
                 @chmod($filenamerss, 0777);
             }

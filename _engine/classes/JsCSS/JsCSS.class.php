@@ -39,11 +39,11 @@ abstract class JsCSS implements IJsCSS {
         $jses = $this->getJavascripts();
         $ret = "";
         foreach ($csses as $one) {
-            $one = $one{0}=='/'?$one:'/'.$one;
+            $one = $one[0]=='/'?$one:'/'.$one;
             $ret .= "<style media='all' type='text/css' >@import url({$one}?{$this->getVersion()});</style> \n";
         }
         foreach ($jses as $one) {
-            $one = $one{0}=='/'?$one:'/'.$one;
+            $one = $one[0]=='/'?$one:'/'.$one;
             $ret .= "<script type='text/javascript' src='{$one}?{$this->getVersion()}'></script>\n";
         }
         return $ret;
@@ -53,7 +53,7 @@ abstract class JsCSS implements IJsCSS {
         $jses = $this->getAllJavascripts();
         $ret = "";
         foreach ($jses as $one) {
-            $one = $one{0}=='/'?$one:'/'.$one;
+            $one = $one[0]=='/'?$one:'/'.$one;
             $ret .= "<script type='text/javascript' src='{$one}?{$this->getVersion()}'></script>\n";
         }
         return $ret;
@@ -63,7 +63,7 @@ abstract class JsCSS implements IJsCSS {
         $csses = $this->getAllStylesheets();
         $ret = "";
         foreach ($csses as $one) {
-            $one = $one{0}=='/'?$one:'/'.$one;
+            $one = $one[0]=='/'?$one:'/'.$one;
             $ret .= "<style media='all' type='text/css' >@import url({$one}?{$this->getVersion()});</style> \n";
         }
         return $ret;
@@ -103,23 +103,31 @@ abstract class JsCSS implements IJsCSS {
         return $css;
     }
 
+    /**
+     * Проход каталога в глубину
+     * @return array
+     */
     static public function getDirDeep($dir=false, $mask=false, $webdir=false) {
         if (!$dir)
             $dir = __DIR__;
-        if ($dir{strlen($dir) - 1} != '/')
+        if ($dir[strlen($dir) - 1] != '/')
             $dir .= '/';
         $files = array();
-        $h = @opendir($dir);
-        while ($filename = @readdir($h)) {
-            if ($filename{0} == '.')
-                continue;
-            if (is_dir($dir . "{$filename}/"))
-                $files = array_merge($files, self::getDirDeep($dir . "{$filename}/", $mask, $webdir));
-            elseif (!$mask || preg_match($mask, $filename)) {
-                if (!$webdir)
-                    $files[] = $dir . "{$filename}";
-                else
-                    $files[] = str_ireplace($_SERVER['DOCUMENT_ROOT'], "", $dir . "{$filename}");
+        if (is_dir($dir)) {
+            $h = @opendir($dir);
+            if ($h) {
+                while ($filename = @readdir($h)) {
+                    if ($filename[0] == '.')
+                        continue;
+                    if (is_dir($dir . "{$filename}/"))
+                        $files = array_merge($files, self::getDirDeep($dir . "{$filename}/", $mask, $webdir));
+                    elseif (!$mask || preg_match($mask, $filename)) {
+                        if (!$webdir)
+                            $files[] = $dir . "{$filename}";
+                        else
+                            $files[] = str_ireplace($_SERVER['DOCUMENT_ROOT'], "", $dir . "{$filename}");
+                    }
+                }
             }
         }
         return $files;

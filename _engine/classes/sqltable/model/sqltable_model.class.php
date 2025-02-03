@@ -76,7 +76,7 @@ class sqltable_model extends model {
     }
 
     /**
-     * @param int $id - идентификатор
+     * @param int|array $id - идентификатор или массив с данными о редактировании
      * @return array - массив с данным о записи
      */
     public function getRecord($id) {

@@ -43,7 +43,7 @@ class Auth_model extends model {
      * @param array $replace
      */
     public function install($replace=array()) {
-        if (sql::queryfile($this->dir . "/install.sql",$replace)) {
+        if (sql::queryfile($this->getDir() . "/install.sql",$replace)) {
                echo "install complete";
         }
     }
@@ -63,7 +63,7 @@ class Auth_model extends model {
         $res = sql::fetchOne($sql);
         if ($res) {
             $sql = "INSERT INTO session (session,u_id) " .
-                    "VALUES ('{$session_id}','{$res[id]}')";
+                    "VALUES ('{$session_id}','{$res['id']}')";
             sql::query($sql);
         } else {
             // неудачная авторизация запишем минус один и в главной сообщим
@@ -135,7 +135,7 @@ class Auth_model extends model {
 	    // не  оказалось сессии в базе
 	    $rec["success"] = 'Auth.session.nosession';
 	}
-	$rec["mes"] .= Lang::getString($rec["success"]);
+	$rec["mes"] = Lang::getString($rec["success"]);
 	return $rec;
     }
 

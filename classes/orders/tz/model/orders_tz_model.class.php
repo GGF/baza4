@@ -8,7 +8,7 @@ class orders_tz_model extends sqltable_model {
 
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = parent::getData($all, $order, $find, $idstr);
-        extract($_SESSION[Auth::$lss]);
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]);
         if (!empty($customer_id)) {
             if (empty($order_id)) {
                 $sql = "SELECT *,IF(instr(file_link,'-МПП-')>0, IF(instr(file_link,'Блок')>0,'МПП(Блок)','МПП'), IF(instr(file_link,'Блок')>0,'ДПП(Блок)','ДПП')) AS type,
@@ -45,23 +45,23 @@ class orders_tz_model extends sqltable_model {
         }
         $ret = sql::fetchAll($sql);
         if ($all)
-            $_SESSION[Auth::$lss][tz_id] = '';
+            $_SESSION[Auth::$lss]['tz_id'] = '';
         return $ret;
     }
 
     public function getCols() {
         $cols = array();
-        extract($_SESSION[Auth::$lss]);
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]);
         if (empty($customer_id)) {
-            $cols[customer] = "Заказчик";
+            $cols['customer'] = "Заказчик";
         }
         if (empty($order_id)) {
-            $cols[number] = "Заказ";
+            $cols['number'] = "Заказ";
         }
-        $cols[tzid] = "ID";
-        $cols[type] = "Тип";
-        $cols[tz_date] = "Дата";
-        $cols[nik] = "Кто заполнил";
+        $cols['tzid'] = "ID";
+        $cols['type'] = "Тип";
+        $cols['tz_date'] = "Дата";
+        $cols['nik'] = "Кто заполнил";
         return $cols;
     }
 
@@ -97,11 +97,11 @@ class orders_tz_model extends sqltable_model {
         extract($rec);
         // np не надо редактировать - только добавлять с текущей датой и пользователем
         // определим позицию в письме
-        extract($_SESSION[Auth::$lss]);//list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]);//list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
         $orderid = $order_id;
         $sql = "SELECT COUNT(*)+1 AS next FROM tz WHERE order_id='{$orderid}'";
         $rs = sql::fetchOne($sql);
-        $pos_in_order = $rs[next];
+        $pos_in_order = $rs['next'];
 
         // добавление
         // создать файл с табличкой
@@ -127,7 +127,7 @@ class orders_tz_model extends sqltable_model {
         do {
             $filetype = $typetz == "mpp" ? "МПП" : ($typetz == "dpp" ? "ДПП" : ($typetz == "mppb" ? "МПП-Блок" : "ДПП-Блок"));
             $orderstring = fileserver::removeOSsimbols($rs["number"]);
-            $file_link = "t:\\\\Расчет стоимости плат\\\\ТехЗад\\\\{$customer}\\\\{$tzid}-{$filetype}-{$pos_in_order}-{$orderstring} от {$rs["orderdate"]}.xls";
+            $file_link = TZ_FILES_DIR . "{$customer}\\\\{$rs["orderdate"]}-{$orderstring}\\\\{$tzid}-{$filetype}-{$pos_in_order}-{$orderstring}-{$rs["orderdate"]}.xls";
             $filename = fileserver::createdironserver($file_link);
             $fe = file_exists($filename);
             if ($fe)

@@ -255,7 +255,7 @@ abstract class lego_abstract extends JsCSS {
                 parse_str($info['query'], $get);
             //$info['query'] = http_build_query(array_merge($get, array(Ajax::key() => $ajax_element)));
             $url = (isset($info['scheme']) ? $info['scheme'] . "://" : "http://")
-                    . (isset($info['host']) ? $info['host'] : $_SERVER[HTTP_HOST])
+                    . (isset($info['host']) ? $info['host'] : $_SERVER['HTTP_HOST'])
                     . (isset($info['path']) ? $info['path'] : "")
                     . (isset($info['query']) ? "?" . $info['query'] : "");
             echo "<script>";
@@ -337,7 +337,7 @@ abstract class lego_abstract extends JsCSS {
      * Получить коннкретный параметр
      * @param string $param_name Имя параметра
      * @param string $lego_name
-     * @return boolean
+     * @return var
      */
     public function getLegoParam($param_name, $lego_name = false) {
         $lego_params = $this->getLegoParams($lego_name);
@@ -549,7 +549,7 @@ abstract class lego_abstract extends JsCSS {
     public function fetch($template) {
         /* TODO: тут проблемы с отрисовкой, нужно наследовать шаблоны
         */
-        if ($_SERVER[debug][report])
+        if ($_SERVER['debug']['report'])
             profiler::add("Выполнение", "{$this->name}: {$template} начало отрисовки");
         // найдем шаблон
         $obj = $this;
@@ -568,7 +568,7 @@ abstract class lego_abstract extends JsCSS {
                 $obj = false;
             }
         }
-        if ($_SERVER[debug][report])
+        if ($_SERVER['debug']['report'])
             profiler::add("Выполнение", "{$this->name}: {$template} конец отрисовки");
         return $content;
     }

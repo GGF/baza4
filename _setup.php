@@ -2,6 +2,7 @@
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT );
 
+$_SERVER["project"]["name"] = 'Baza of MPP'; // установим имя проекта, раз оно используется в переводчике Lang
 
 // КОНФИГУРАЦИЯ DEBUG РЕЖИМА
 
@@ -74,6 +75,10 @@ define("NETBIOS_SERVERNAME", "pcbshop");
 define("SHARE_ROOT_DIR", "/home/common/");
 // каталог сохранения файлов относительно DOCUMENT_ROOT
 define("UPLOAD_FILES_DIR", "/files/");
+// каталог расчетов
+define("CALC_FILES_DIR", "t:\\\\Расчет стоимости плат\\\\Расчет\\\\");
+// каталог техзаданий
+define("TZ_FILES_DIR", "t:\\\\Расчет стоимости плат\\\\ТехЗад\\\\");
 
 ob_start();
 

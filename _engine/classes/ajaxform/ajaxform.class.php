@@ -201,7 +201,7 @@ class ajaxform extends JsCSS {
         //$req = $_REQUEST[$this->name];
         //$this->alert(print_r($req, true));
 
-        if (count($_FILES[$this->name]['name'])) {
+        if (!empty($_FILES[$this->name]['name'])) { //06-06-2022 был count
 
             foreach ($_FILES[$this->name]['name'] as $file => $name) {
 
@@ -370,7 +370,7 @@ class ajaxform extends JsCSS {
                 $json[$array['name']] = array(
                     "name" => $array['name'],
                     "type" => $array['type'],
-                    "values" => @array_keys($array['values']),
+                    "values" => is_array($array['values'])?array_keys($array['values']):'',
                 );
             }
         }
@@ -420,7 +420,8 @@ class ajaxform extends JsCSS {
      */
     function sessionGet($partial = false) {
 
-        if (count($this->_session)) {
+        //TODO: why there is count()?
+        if (is_array($this->_session)) {
 
             $this->errors = $this->_session['errors'];
             $this->session = $this->_session['session'];
@@ -1366,7 +1367,7 @@ class ajaxform extends JsCSS {
         if ($value)
             $array['src'] = $value;
 
-        if (count($this->errors)) {
+        if (!empty($this->errors)) { //03-06-2022 было count, но на пустой ругалось
 
             foreach ($this->errors as $error) {
 
@@ -1676,7 +1677,7 @@ class ajaxform extends JsCSS {
                             @unlink($f);
                     }
 
-                @rmdir($e);
+                if (fileserver::is_dir_empty($e)) @rmdir($e);
             }
     }
 

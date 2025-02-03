@@ -29,15 +29,15 @@ class orders_money_model extends sqltable_model {
 
     public function getCols() {
         $cols = array();
-        $cols[customer] = "Заказчик";
-        $cols[order] = "Заказ";
-        $cols[mater] = "Материал";
-        $cols[matedizm] = "ед.изм.";
-        $cols[summatras] = "Расход";
-        $cols[summatcost] = "Стоимость";
-        $cols[trud] = "Операция";
-        $cols[sumtrudem] = "Трудоемкость";
-        $cols[sumtrudcost] = "Стоимость";
+        $cols['customer'] = "Заказчик";
+        $cols['order'] = "Заказ";
+        $cols['mater'] = "Материал";
+        $cols['matedizm'] = "ед.изм.";
+        $cols['summatras'] = "Расход";
+        $cols['summatcost'] = "Стоимость";
+        $cols['trud'] = "Операция";
+        $cols['sumtrudem'] = "Трудоемкость";
+        $cols['sumtrudcost'] = "Стоимость";
         return $cols;
     }
 

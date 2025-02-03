@@ -111,7 +111,7 @@ class ajaxform_edit {
         $out .= $this->form->end();
         $out .= $this->form->destroy();
         $out .= '</div>'; //для прокрутки
-        $out .= "<script>\$('select').combobox();</script>";
+        //$out .= "<script>\$('select').combobox();</script>";
         $lastunid = '';
         foreach ($this->unids as $unid) {
             $out .= "<script>\$('[fieldid=" . $unid . "]').keyboard('enter',function(){\$('[fieldid='+\$(this).attr('fieldnext')+']').focus();});</script>";

@@ -20,7 +20,7 @@ class orders_posintz extends sqltable {
     }
 
     public function action_index($all = '', $order = '', $find = '', $idstr = '') {
-        extract($_SESSION[Auth::$lss]);
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]);
         $customer = $this->model->getCustomer($customer_id);
         $customer = $customer['customer'];
         $orderarr = $this->model->getOrder($order_id);
@@ -37,7 +37,7 @@ class orders_posintz extends sqltable {
         if (!Auth::getInstance()->getRights($this->getName(), 'edit')) {
             return $this->view->getMessage('Нет прав на редактирование');
         }
-        extract($_SESSION[Auth::$lss]); // тут данные выбранных до сих пор заказа и тз
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]); // тут данные выбранных до сих пор заказа и тз
         if (empty($id)) {
             // добавить плату в ТЗ
             if (empty($tz_id)) {

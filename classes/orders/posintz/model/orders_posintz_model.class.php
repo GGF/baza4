@@ -14,7 +14,7 @@ class orders_posintz_model extends sqltable_model {
     public function getData($all=false, $order='', $find='', $idstr='') {
         $ret = parent::getData($all, $order, $find, $idstr);
 //        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$idstr);
-        extract($_SESSION[Auth::$lss]);
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]);
         if (!empty($tz_id)) {
             $tzid = $tz_id;
             $sql = "SELECT *,posintz.id as posid,posintz.id
@@ -73,7 +73,7 @@ class orders_posintz_model extends sqltable_model {
     public function getCols() {
         $cols = array();
 //        list($customer_id,$order_id,$tz_id,$posintzid) = explode(':',$this->idstr);
-        extract($_SESSION[Auth::$lss]);
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]);
         $cols["№"] = "№";
         if (empty($customer_id)) {
             $cols['customer'] = "Заказчик";
@@ -99,7 +99,7 @@ class orders_posintz_model extends sqltable_model {
     }
    
     public function getRecord($id) {
-        extract($_SESSION[Auth::$lss]); // тут данные выбранных до сих пор заказа и тз
+        if(is_array($_SESSION[Auth::$lss])) extract($_SESSION[Auth::$lss]); // тут данные выбранных до сих пор заказа и тз
         $rec['blocks'] = $this->getBlocks($customer_id);
         $rec['tz_id'] = $tz_id;
         return $rec;
@@ -268,14 +268,14 @@ class orders_posintz_model extends sqltable_model {
         $rec['etcompl'] = $params['etcompl'];
         $rec['thickness'] = (float)$rec['thickness'];
         $rec['type'] = $rec['layers']>2 ? 'mpp' : 'dpp';
-        $rec['template'] = "r{$rec['type']}.xlsm";
+        $rec['template'] = "calc.xlsm";//"r{$rec['type']}.xlsm";
         preg_match('/(?P<nummask>[+0-9]*)(?P<mask>.*)/i', $rec['mask'], $matches);
         $rec['mask']=$matches['mask'];
         $rec['nummask']=empty($matches['nummask'])?2:$matches['nummask'];
         $rec['frez_factor']=$rec['frez_factor']>0?$rec['frez_factor']:1.0;
         $blockstring = fileserver::removeOSsimbols($rec['blockname']." tz {$rec['tz_id']} posintz {$id}");
         $orderstring = fileserver::removeOSsimbols($rec['letter']);
-        $rec['filename'] = "t:\\\\Расчет стоимости плат\\\\{$rec['customer']}\\\\{$orderstring}\\\\{$blockstring}.xlsm";
+        $rec['filename'] = CALC_FILES_DIR . "{$rec['customer']}\\\\{$orderstring}\\\\{$blockstring}.xlsm";
         return $rec;
     }
     
