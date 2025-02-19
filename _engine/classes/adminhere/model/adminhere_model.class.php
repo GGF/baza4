@@ -5,7 +5,10 @@ class adminhere_model {
 		$res=sql::fetchAll($sql);
 		$ret = '';
 		foreach($res as $rs){
-			$ret .= "<div>".$rs['nik']." - ".date("H:i:s",mktime(0, 0, 0, date("m")  , date("d"), date("Y"))+$rs['lt'])."</div>";
+			// z - дней с начала года
+			// Z - разница в секундах местного и UTC
+			$ret .= "<div>".$rs['nik']." - ".date("z H:i:s",($rs['lt']-date('Z')))."</div>";
+
 		}
 		return $ret;
 	}
