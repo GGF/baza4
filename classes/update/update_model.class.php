@@ -368,7 +368,7 @@ class update_model {
         $sql = "SELECT id,kdir FROM customers WHERE customer='{$customer}'";
         $rs = sql::fetchOne($sql);
         if (!empty($rs)) {
-            $date = date("ymd");
+            /*$date = date("ymd");
             $rs['kdir'] .=  "\\{$drillname}\\{$date}";
             //$rs[kdir] .= ($mpp != -1 ? "\\MPP" : "\\DPP") . "\\{$drillname}\\{$date}";
             $out = "mkdir k:\\{$rs['kdir']}" . "\\\n";
@@ -388,6 +388,12 @@ class update_model {
             $out .= "copy /Y .\\{$drillname}-*.mx1 k:\\" . $rs['kdir'] . "\\\n";
             $out .= "copy /Y .\\{$drillname}-*.prl k:\\" . $rs['kdir'] . "\\\n";
             $out .= "copy /Y .\\{$drillname}-*.fx2 k:\\" . $rs['kdir'] . "\\\n";
+            return $out;*/
+            $date = date("ymd");
+            $rs['kdir'] .=  "\\{$drillname}\\{$date}";
+            $out = "set destination=k:\\{$rs['kdir']}" . "\\\n";
+            $out .= "if not exist \"%destination%\" mkdir \"%destination%\"". "\\\n";;
+            $out .= "powershell.exe -Command \"& { Get-ChildItem .\* -Include '*.fx2','*.ex2','*.sch' | Where-Object {\$_.LastWriteTime -gt (Get-Date).AddMinutes(-10)} | Copy-Item -Destination '%destination%' }\"". "\\\n";;
             return $out;
         }        
     }
