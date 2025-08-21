@@ -129,6 +129,7 @@ class orders_tz_model extends sqltable_model {
             $orderstring = fileserver::removeOSsimbols($rs["number"]);
             $file_link = TZ_FILES_DIR . "{$customer}\\\\{$rs["orderdate"]}-{$orderstring}\\\\{$tzid}-{$filetype}-{$pos_in_order}-{$orderstring}-{$rs["orderdate"]}.xls";
             $filename = fileserver::createdironserver($file_link);
+            if ( $filename == false ) break; //ошибка создания каталога
             $fe = file_exists($filename);
             if ($fe)
                 $pos_in_order++;

@@ -69,26 +69,49 @@ class fileserver {
      */
     static public function createdironserver($filelink) {
         $filelink = self::normalizefile($filelink);
-        $disk='';
-        $path='';
-        if (strstr(':',$filelink))
-            list($disk, $path) = explode(":", $filelink);
+        error_log($filelink);
+        
+        $disk = '';
+        $path = '';
+        
+        if (strstr($filelink, ':')) {
+            list($disk, $path) = explode(":", $filelink, 2); // limit=2 для безопасности
+        }
+        
+        /*if (empty($disk) || empty($path)) {
+            error_log("Invalid file path format: " . $filelink);
+            return false;
+        }
+            */
+        
         $serpath = SHARE_ROOT_DIR . strtolower($disk) . "/";
-        $dirs = explode("\\", $path);
-        $filename = $dirs[count($dirs) - 1];
-        unset($dirs[count($dirs) - 1]);
+        
+        // Поддержка разных разделителей путей
+        $path = str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, $path);
+        $dirs = explode(DIRECTORY_SEPARATOR, $path);
+        $filename = array_pop($dirs);
+        
+        error_log($filename);
+        
         $dir = $serpath;
         $cats = '';
+        
         foreach ($dirs as $cat) {
+            error_log($cat);
             if (!empty($cat)) {
                 $cats .= $cat . "/";
                 $dir = multibyte::UTF_encode($serpath . $cats);
+                
                 if (!is_dir($dir)) {
-                    mkdir($dir);
-                    chmod($dir, 0775); //security hole
+                    // Создаем директорию с рекурсией и безопасными правами
+                    if (!mkdir($dir, 0777, true)) { //security hole
+                        error_log("Failed to create directory: " . $dir);
+                        return false;
+                    }
                 }
             }
         }
+        
         return $dir . multibyte::UTF_encode($filename);
     }
 

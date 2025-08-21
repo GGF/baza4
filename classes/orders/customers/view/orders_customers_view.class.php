@@ -26,7 +26,7 @@ class orders_customers_view extends sqltable_view {
                 "value" => $rec["kdir"],
             ),
         );
-        $rec[fields] = $fields;
+        $rec["fields"] = $fields;
         return parent::showrec($rec);
     }
 
